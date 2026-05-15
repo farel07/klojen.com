@@ -2,77 +2,107 @@
 
 Platform portal berita digital modern yang mendukung proses publikasi artikel, manajemen konten redaksi, moderasi komentar, serta interaksi pembaca secara real-time.
 
-📌 Deskripsi Sistem
+---
 
-Portal Berita merupakan sistem manajemen berita berbasis web yang dirancang untuk mendukung alur kerja tim redaksi mulai dari penulisan artikel, proses editorial, hingga publikasi ke pembaca.
+## 📌 Deskripsi Sistem
 
-Sistem menyediakan:
+**klojen.com** merupakan sistem manajemen portal berita berbasis web yang dirancang untuk mendukung seluruh alur kerja tim redaksi, mulai dari penulisan artikel, proses editorial, hingga publikasi kepada pembaca secara real-time.
 
-Portal publik untuk pembaca
-Dashboard CMS untuk admin, editor, dan jurnalis
-Sistem kategori & tag
-Komentar bersarang (threaded comments)
-Bookmark artikel
-Upload media
-Role-based access control
+Sistem menyediakan berbagai fitur utama seperti:
 
-✨ Fitur Utama
-📰 Manajemen Artikel
-Create, update, delete artikel
-Status artikel:
-Draft
-Review
-Published
-Archived
-Featured article
-Scheduled publishing
+- 🌐 Portal publik untuk pembaca
+- 🛠️ Dashboard CMS untuk admin, editor, dan jurnalis
+- 🏷️ Sistem kategori & tag
+- 💬 Komentar bersarang (*threaded comments*)
+- 🔖 Bookmark artikel
+- 🖼️ Upload media
+- 🔐 Role-based access control
 
-👥 Role & Permission
+---
+
+# ✨ Fitur Utama
+
+## 📰 Manajemen Artikel
+
+- Create, update, delete artikel
+- Status artikel:
+  - Draft
+  - Review
+  - Published
+  - Archived
+- Featured article
+- Scheduled publishing
+
+---
+
+## 👥 Role & Permission
 
 Sistem memiliki 4 role utama:
 
-| Role       | Akses                    |
-| ---------- | ------------------------ |
-| Admin      | Mengelola seluruh sistem |
-| Editor     | Review & publish artikel |
-| Journalist | Menulis artikel          |
-| Reader     | Membaca & berkomentar    |
+| Role | Akses |
+|---|---|
+| Admin | Mengelola seluruh sistem |
+| Editor | Review & publish artikel |
+| Journalist | Menulis artikel |
+| Reader | Membaca & berkomentar |
 
-🗂️ Kategori & Tag
-Kategori bersarang (nested category)
-Sistem tag fleksibel
-URL SEO friendly menggunakan slug
+---
 
-💬 Komentar
-Komentar artikel
-Moderasi komentar
-Reply komentar (threaded comments)
+## 🗂️ Kategori & Tag
 
-📌 Bookmark
-Simpan artikel favorit
-Riwayat artikel tersimpan
+- Kategori bersarang (*nested category*)
+- Sistem tag fleksibel
+- URL SEO-friendly menggunakan slug
 
-🖼️ Media Management
-Upload gambar/video/audio
-Integrasi cloud storage
-Alt text untuk SEO & accessibility
+---
 
-🏗️ Arsitektur Sistem
+## 💬 Komentar
 
-Frontend
+- Komentar artikel
+- Moderasi komentar
+- Reply komentar (*threaded comments*)
+
+---
+
+## 🔖 Bookmark
+
+- Simpan artikel favorit
+- Riwayat artikel tersimpan
+
+---
+
+## 🖼️ Media Management
+
+- Upload gambar, video, dan audio
+- Integrasi cloud storage
+- Alt text untuk SEO & accessibility
+
+---
+
+# 🏗️ Arsitektur Sistem
+
+## 🎨 Frontend
+
 Portal publik dan dashboard CMS dibangun menggunakan:
+
 - Next.js
 - Tailwind CSS
-- Backend
 
-REST API untuk seluruh proses bisnis sistem.
+---
 
-Rekomendasi teknologi:
+## ⚙️ Backend
 
-Node.js + Express / NestJS
-Laravel (alternatif)
-JWT Authentication
-Database
+REST API digunakan untuk menangani seluruh proses bisnis sistem.
+
+### Teknologi yang digunakan:
+
+- Laravel
+- JWT Authentication
+
+---
+
+## 🗄️ Database
 
 Menggunakan relational database:
-MySQL
+
+- MySQL
