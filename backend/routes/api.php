@@ -1,19 +1,30 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BerandaController;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes — Portal Berita Klojen
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/ping', function () {
-    return response()->json([
-        'message' => 'Hello from Laravel 12!',
-        'status' => 'ok',
-    ]);
+    return response()->json(['status' => 'ok', 'message' => 'Portal Berita API aktif.']);
 });
 
-Route::get('/users', function () {
-    return response()->json([
-        'data' => [
-            ['id' => 1, 'name' => 'Budi', 'email' => 'budi@mail.com'],
-            ['id' => 2, 'name' => 'Siti', 'email' => 'siti@mail.com'],
-        ]
-    ]);
+// ── Auth ─────────────────────────────────────────────────────────────────────
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login',    [AuthController::class, 'login']);
+    Route::post('/refresh',  [AuthController::class, 'refresh']);
+
+    // Endpoint yang memerlukan access_token valid
+    Route::middleware('auth:api')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+    });
 });
+
+// ── Beranda ──────────────────────────────────────────────────────────────────
+Route::get('/beranda', [BerandaController::class, 'index']);
