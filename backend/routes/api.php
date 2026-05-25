@@ -1,19 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BerandaController;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes — Portal Berita Klojen
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/ping', function () {
-    return response()->json([
-        'message' => 'Hello from Laravel 12!',
-        'status' => 'ok',
-    ]);
+    return response()->json(['status' => 'ok', 'message' => 'Portal Berita API aktif.']);
 });
 
-Route::get('/users', function () {
-    return response()->json([
-        'data' => [
-            ['id' => 1, 'name' => 'Budi', 'email' => 'budi@mail.com'],
-            ['id' => 2, 'name' => 'Siti', 'email' => 'siti@mail.com'],
-        ]
-    ]);
-});
+// ── Beranda ──────────────────────────────────────────────────────────────────
+Route::get('/beranda', [BerandaController::class, 'index']);
