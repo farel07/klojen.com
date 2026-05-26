@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RefreshToken;
-use App\Models\User;
+use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    public function __construct(
+        protected AuthService $authService,
+    ) {}
+
     // ── POST /auth/register ──────────────────────────────────────────────────
 
     /**
      * Registrasi akun baru.
-     * Default role = reader.
      */
     public function register(Request $request): JsonResponse
     {
@@ -25,12 +25,8 @@ class AuthController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        $user = User::create([
-            'name'     => $validated['name'],
-            'email'    => $validated['email'],
-            'password' => $validated['password'], // auto-hashed via cast
-            'role'     => 'reader',
-        ]);
+        $result = $this->authService->register($validated);
+        $user   = $result['user'];
 
         return response()->json([
             'status' => 'success',
@@ -55,51 +51,25 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        // Cari user berdasarkan email
-        $user = User::where('email', $validated['email'])->first();
-
-        // Verifikasi kredensial
-        if (!$user || !Hash::check($validated['password'], $user->password)) {
+        try {
+            $result = $this->authService->login($validated, $request);
+        } catch (\RuntimeException $e) {
             return response()->json([
                 'status'  => 'error',
-                'message' => 'Email atau password salah.',
-            ], 401);
+                'message' => $e->getMessage(),
+            ], $e->getCode() ?: 400);
         }
-
-        // Cek apakah akun aktif
-        if (!$user->is_active) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Akun Anda telah dinonaktifkan. Hubungi admin.',
-            ], 403);
-        }
-
-        // Generate JWT access token
-        $accessToken = auth('api')->login($user);
-        $ttl         = config('jwt.ttl'); // dalam menit
-
-        // Generate refresh token
-        $rawRefreshToken = Str::random(64);
-
-        RefreshToken::create([
-            'user_id'     => $user->id,
-            'token_hash'  => hash('sha256', $rawRefreshToken),
-            'device_info' => $request->userAgent(),
-            'ip_address'  => $request->ip(),
-            'is_revoked'  => false,
-            'expires_at'  => now()->addDays(14), // refresh token 14 hari
-        ]);
 
         return response()->json([
             'status' => 'success',
             'data'   => [
-                'access_token'  => $accessToken,
-                'refresh_token' => $rawRefreshToken,
-                'expires_in'    => $ttl * 60, // konversi ke detik
+                'access_token'  => $result['access_token'],
+                'refresh_token' => $result['refresh_token'],
+                'expires_in'    => $result['expires_in'],
                 'user'          => [
-                    'id'   => $user->id,
-                    'name' => $user->name,
-                    'role' => $user->role,
+                    'id'   => $result['user']->id,
+                    'name' => $result['user']->name,
+                    'role' => $result['user']->role,
                 ],
             ],
         ]);
@@ -116,54 +86,20 @@ class AuthController extends Controller
             'refresh_token' => 'required|string',
         ]);
 
-        $tokenHash = hash('sha256', $validated['refresh_token']);
-
-        $refreshToken = RefreshToken::where('token_hash', $tokenHash)->first();
-
-        // Token tidak ditemukan
-        if (!$refreshToken) {
+        try {
+            $result = $this->authService->refresh($validated['refresh_token']);
+        } catch (\RuntimeException $e) {
             return response()->json([
                 'status'  => 'error',
-                'message' => 'Refresh token tidak valid.',
-            ], 401);
+                'message' => $e->getMessage(),
+            ], $e->getCode() ?: 400);
         }
-
-        // Token sudah di-revoke
-        if ($refreshToken->is_revoked) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Refresh token telah dicabut.',
-            ], 401);
-        }
-
-        // Token sudah expired
-        if ($refreshToken->isExpired()) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Refresh token sudah kedaluwarsa. Silakan login ulang.',
-            ], 401);
-        }
-
-        // Cek user masih aktif
-        $user = $refreshToken->user;
-
-        if (!$user || !$user->is_active) {
-            $refreshToken->update(['is_revoked' => true]);
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Akun tidak ditemukan atau telah dinonaktifkan.',
-            ], 403);
-        }
-
-        // Generate access token baru
-        $accessToken = auth('api')->login($user);
-        $ttl         = config('jwt.ttl');
 
         return response()->json([
             'status' => 'success',
             'data'   => [
-                'access_token' => $accessToken,
-                'expires_in'   => $ttl * 60,
+                'access_token' => $result['access_token'],
+                'expires_in'   => $result['expires_in'],
             ],
         ]);
     }
@@ -180,17 +116,7 @@ class AuthController extends Controller
             'refresh_token' => 'required|string',
         ]);
 
-        // Revoke refresh token di database
-        $tokenHash = hash('sha256', $validated['refresh_token']);
-        RefreshToken::where('token_hash', $tokenHash)
-            ->update(['is_revoked' => true]);
-
-        // Invalidasi JWT access token (blacklist)
-        try {
-            auth('api')->logout();
-        } catch (\Exception $e) {
-            // Token mungkin sudah expired, tetap lanjutkan logout
-        }
+        $this->authService->logout($validated['refresh_token']);
 
         return response()->json([
             'status'  => 'success',
