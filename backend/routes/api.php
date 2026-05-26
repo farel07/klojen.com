@@ -5,9 +5,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\CategoryController;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 use App\Http\Controllers\TagController;
 >>>>>>> 118c0af (feat: add fallback when tags data is empty)
+=======
+use App\Http\Controllers\TagController;
+>>>>>>> 118c0afbda9438fc4f7a199380f9a2ba004bd5a7
 
 /*
 |--------------------------------------------------------------------------
@@ -37,8 +41,14 @@ Route::get('/beranda', [BerandaController::class, 'index']);
 // ── Categories ───────────────────────────────────────────────────────────────
 Route::get('/categories', [CategoryController::class, 'index']);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 // ── Tags ─────────────────────────────────────────────────────────────────────
 Route::get('/tags', [TagController::class, 'index']);
 >>>>>>> 118c0af (feat: add fallback when tags data is empty)
+=======
+
+// ── Tags ─────────────────────────────────────────────────────────────────────
+Route::get('/tags', [TagController::class, 'index']);
+>>>>>>> 118c0afbda9438fc4f7a199380f9a2ba004bd5a7
