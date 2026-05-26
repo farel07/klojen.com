@@ -34,9 +34,5 @@ Route::get('/beranda', [BerandaController::class, 'index']);
 // ── Categories ───────────────────────────────────────────────────────────────
 Route::get('/categories', [CategoryController::class, 'index']);
 
-
-// ── Tags ─────────────────────────────────────────────────────────────────────
-Route::get('/tags', [TagController::class, 'index']);
-
 // ── Tags ─────────────────────────────────────────────────────────────────────
 Route::get('/tags', [TagController::class, 'index']);
