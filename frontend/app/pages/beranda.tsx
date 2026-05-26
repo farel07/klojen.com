@@ -1,35 +1,40 @@
-import Link from "next/link";
+'use client';
 
-export default function Home() {
+import Link from 'next/link';
+import { useAuthStore } from '@/stores/authStore';
+
+export default function Beranda() {
+  const { isAuthenticated } = useAuthStore();
+
   // 1. DATA DUMMY (Siap diganti dengan data dari API Laravel nanti)
   const popularNews = [
-    { id: 1, title: "5 Wisata Alam di Malang Raya yang Wajib Dikunjungi", date: "25 Mei 2026", time: "13.50", img: "" },
-    { id: 2, title: "Kuliner Khas Malang yang Menggugah Selera Wisatawan", date: "25 Mei 2026", time: "13.50", img: "" },
-    { id: 3, title: "10 Hotel Nyaman di Malang dengan View Pegunungan", date: "25 Mei 2026", time: "13.50", img: "" },
-    { id: 4, title: "Dunia Pendidikan Malang Fokus pada Teknologi dan Kreativitas Siswa", date: "25 Mei 2026", time: "13.50", img: "" },
+    { id: 1, slug: 'wisata-alam-malang', title: '5 Wisata Alam di Malang Raya yang Wajib Dikunjungi', date: '25 Mei 2026', time: '13.50', img: '' },
+    { id: 2, slug: 'kuliner-khas-malang', title: 'Kuliner Khas Malang yang Menggugah Selera Wisatawan', date: '25 Mei 2026', time: '13.50', img: '' },
+    { id: 3, slug: 'hotel-view-pegunungan', title: '10 Hotel Nyaman di Malang dengan View Pegunungan', date: '25 Mei 2026', time: '13.50', img: '' },
+    { id: 4, slug: 'pendidikan-teknologi-malang', title: 'Dunia Pendidikan Malang Fokus pada Teknologi dan Kreativitas Siswa', date: '25 Mei 2026', time: '13.50', img: '' },
   ];
 
   const latestNews = [
-    { id: 1, title: "Tumpak Sewu, Destinasi Alam di Malang", category: "WISATA", color: "bg-emerald-500", img: "" },
-    { id: 2, title: "Rawon Legendaris Malang yang Wajib Dicoba Saat Musim Hujan", category: "KULINER", color: "bg-orange-500", img: "" },
-    { id: 3, title: "5 Kampus Favorit di Malang dengan Lingkungan Belajar Nyaman", category: "PENDIDIKAN", color: "bg-blue-500", img: "" },
-    { id: 4, title: "Rekomendasi Hotel Nyaman di Tengah Kota Malang", category: "HOTEL", color: "bg-violet-500", img: "" },
+    { id: 1, slug: 'tumpak-sewu', title: 'Tumpak Sewu, Destinasi Alam di Malang', category: 'WISATA', categorySlug: 'wisata', color: 'bg-emerald-500', img: '' },
+    { id: 2, slug: 'rawon-legendaris', title: 'Rawon Legendaris Malang yang Wajib Dicoba Saat Musim Hujan', category: 'KULINER', categorySlug: 'kuliner', color: 'bg-orange-500', img: '' },
+    { id: 3, slug: 'kampus-favorit-malang', title: '5 Kampus Favorit di Malang dengan Lingkungan Belajar Nyaman', category: 'PENDIDIKAN', categorySlug: 'pendidikan', color: 'bg-blue-500', img: '' },
+    { id: 4, slug: 'hotel-tengah-kota', title: 'Rekomendasi Hotel Nyaman di Tengah Kota Malang', category: 'HOTEL', categorySlug: 'hotel', color: 'bg-violet-500', img: '' },
   ];
 
   const categories = [
-    { id: 1, name: "Kuliner", desc: "Temukan berbagai cita rasa khas Malang yang menggugah selera.", img: "" },
-    { id: 2, name: "Wisata", desc: "Jelajahi destinasi wisata terbaik di Malang.", img: "" },
-    { id: 3, name: "Pendidikan", desc: "Informasi sekolah, kampus, dan pendidikan terbaik.", img: "" },
-    { id: 4, name: "Hotel", desc: "Temukan hotel nyaman untuk pengalaman menginap terbaik.", img: "" },
+    { id: 1, name: 'Kuliner', slug: 'kuliner', desc: 'Temukan berbagai cita rasa khas Malang yang menggugah selera.', img: '' },
+    { id: 2, name: 'Wisata', slug: 'wisata', desc: 'Jelajahi destinasi wisata terbaik di Malang.', img: '' },
+    { id: 3, name: 'Pendidikan', slug: 'pendidikan', desc: 'Informasi sekolah, kampus, dan pendidikan terbaik.', img: '' },
+    { id: 4, name: 'Hotel', slug: 'hotel', desc: 'Temukan hotel nyaman untuk pengalaman menginap terbaik.', img: '' },
   ];
 
   const readNow = [
-    { id: 1, title: "Alun-Alun Malang, Ikon Kota yang Selalu Ramai", desc: "Tempat favorit warga untuk bersantai, kuliner malam, dan menikmati suasana kota.", img: "" },
-    { id: 2, title: "Alun-Alun Malang, Ikon Kota yang Selalu Ramai", desc: "Tempat favorit warga untuk bersantai, kuliner malam, dan menikmati suasana kota.", img: "" },
-    { id: 3, title: "Kampung Warna-Warni Jodipan yang Instagramable", desc: "Destinasi wisata penuh warna yang cocok untuk berburu foto estetik.", img: "" },
-    { id: 4, title: "Kampung Warna-Warni Jodipan yang Instagramable", desc: "Destinasi wisata penuh warna yang cocok untuk berburu foto estetik.", img: "" },
-    { id: 5, title: "Kayutangan Heritage, Menelusuri Sejarah Kota Malang", desc: "Kawasan bersejarah dengan bangunan klasik dan suasana tempo dulu yang menarik.", img: "" },
-    { id: 6, title: "Kayutangan Heritage, Menelusuri Sejarah Kota Malang", desc: "Kawasan bersejarah dengan bangunan klasik dan suasana tempo dulu yang menarik.", img: "" },
+    { id: 1, slug: 'alun-alun-malang-1', title: 'Alun-Alun Malang, Ikon Kota yang Selalu Ramai', desc: 'Tempat favorit warga untuk bersantai, kuliner malam, dan menikmati suasana kota.', img: '' },
+    { id: 2, slug: 'alun-alun-malang-2', title: 'Alun-Alun Malang, Ikon Kota yang Selalu Ramai', desc: 'Tempat favorit warga untuk bersantai, kuliner malam, dan menikmati suasana kota.', img: '' },
+    { id: 3, slug: 'kampung-warna-warni-1', title: 'Kampung Warna-Warni Jodipan yang Instagramable', desc: 'Destinasi wisata penuh warna yang cocok untuk berburu foto estetik.', img: '' },
+    { id: 4, slug: 'kampung-warna-warni-2', title: 'Kampung Warna-Warni Jodipan yang Instagramable', desc: 'Destinasi wisata penuh warna yang cocok untuk berburu foto estetik.', img: '' },
+    { id: 5, slug: 'kayutangan-heritage-1', title: 'Kayutangan Heritage, Menelusuri Sejarah Kota Malang', desc: 'Kawasan bersejarah dengan bangunan klasik dan suasana tempo dulu yang menarik.', img: '' },
+    { id: 6, slug: 'kayutangan-heritage-2', title: 'Kayutangan Heritage, Menelusuri Sejarah Kota Malang', desc: 'Kawasan bersejarah dengan bangunan klasik dan suasana tempo dulu yang menarik.', img: '' },
   ];
 
   return (
@@ -38,22 +43,22 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Featured */}
-          <div className="lg:col-span-2 relative rounded-2xl overflow-hidden h-[400px] lg:h-[500px] group cursor-pointer bg-gray-200">
-            <img src={""} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Featured" />
+          <Link href="/air-terjun-coban-rondo" className="lg:col-span-2 relative rounded-2xl overflow-hidden h-[400px] lg:h-[500px] group cursor-pointer bg-gray-200 block">
+            <img src={''} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Featured" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
             <div className="absolute bottom-0 left-0 p-8 text-white w-full md:w-4/5">
               <span className="bg-emerald-500 text-white text-[10px] tracking-wider font-bold px-3 py-1.5 rounded-full mb-4 inline-block">WISATA</span>
               <h2 className="text-3xl lg:text-4xl font-bold mb-3 leading-tight">Air Terjun Coban Rondo, Keindahan Alam di Malang yang Memikat</h2>
               <p className="text-gray-200 text-sm md:text-base line-clamp-2">Nikmati kesejukan alam dan panorama eksotis Air Terjun Coban Rondo yang cocok untuk liburan keluarga maupun healing akhir pekan.</p>
             </div>
-          </div>
+          </Link>
 
           {/* Popular List */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col">
             <h3 className="font-bold text-lg text-gray-900 mb-6">TERPOPULER MINGGU INI</h3>
             <div className="space-y-6 flex-1">
               {popularNews.map((news) => (
-                <div key={news.id} className="flex gap-4 group cursor-pointer">
+                <Link key={news.id} href={`/${news.slug}`} className="flex gap-4 group cursor-pointer">
                   <div className="w-28 h-20 shrink-0 overflow-hidden rounded-xl bg-gray-200">
                     <img src={news.img} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" alt={news.title} />
                   </div>
@@ -64,7 +69,7 @@ export default function Home() {
                       <span>{news.time}</span>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -77,22 +82,28 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {latestNews.map((news) => (
-              <div key={news.id} className="group cursor-pointer flex flex-col">
+              <Link key={news.id} href={`/${news.slug}`} className="group cursor-pointer flex flex-col">
                 <div className="relative rounded-2xl overflow-hidden mb-4 h-48 shadow-sm bg-gray-200">
                   <img src={news.img} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt={news.title} />
-                  <span className={`absolute top-3 left-3 ${news.color} text-white text-[10px] tracking-wider font-bold px-3 py-1 rounded-full`}>{news.category}</span>
+                  <Link
+                    href={`/kategori/${news.categorySlug}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className={`absolute top-3 left-3 ${news.color} text-white text-[10px] tracking-wider font-bold px-3 py-1 rounded-full hover:opacity-80 transition-opacity`}
+                  >
+                    {news.category}
+                  </Link>
                 </div>
                 <h4 className="font-bold text-sm text-gray-900 mb-4 line-clamp-2 group-hover:text-blue-600 transition-colors flex-1">{news.title}</h4>
                 <div className="flex items-center justify-between text-[11px] text-gray-400 mt-auto">
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 bg-gray-300 rounded-full overflow-hidden"><img src={""} alt="Author" /></div>
+                    <div className="w-4 h-4 bg-gray-300 rounded-full overflow-hidden"><img src={''} alt="Author" /></div>
                     <span className="font-semibold text-gray-900">Klojen</span>
                   </div>
                   <div className="flex gap-2">
                     <span>25 Mei 2026</span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
@@ -101,7 +112,7 @@ export default function Home() {
             <div className="relative z-10 h-full flex flex-col">
               <h4 className="font-semibold text-sm mb-6 text-white">Cuaca Malang Hari ini</h4>
               <div className="flex items-center justify-center gap-4 mb-8 flex-1 text-white">
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center"><img src={""} alt="Weather" /></div>
+                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center"><img src={''} alt="Weather" /></div>
                 <div className="text-left">
                   <div className="text-4xl font-bold tracking-tighter">24° C</div>
                   <div className="text-sm font-medium mt-1">Cerah Berawan</div>
@@ -132,26 +143,55 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent group-hover:from-black/90 transition-colors duration-300"></div>
               <div className="absolute inset-0 p-8 flex flex-col justify-between">
                 <div className="flex justify-end">
-                  <button className="border border-white/60 text-white text-xs font-medium px-4 py-2 rounded-full flex items-center gap-2 hover:bg-white/20 backdrop-blur-sm transition-all">
+                  <Link
+                    href={`/kategori/${cat.slug}`}
+                    className="border border-white/60 text-white text-xs font-medium px-4 py-2 rounded-full flex items-center gap-2 hover:bg-white/20 backdrop-blur-sm transition-all"
+                  >
                     Lihat Semua &rarr;
-                  </button>
+                  </Link>
                 </div>
-                <div className="text-white transform transition-transform duration-300 group-hover:-translate-y-2">
+                <Link href={`/kategori/${cat.slug}`} className="text-white transform transition-transform duration-300 group-hover:-translate-y-2">
                   <h4 className="text-3xl font-bold mb-3">{cat.name}</h4>
                   <p className="text-sm text-gray-200 max-w-md line-clamp-2">{cat.desc}</p>
-                </div>
+                </Link>
               </div>
             </div>
           ))}
         </div>
       </section>
 
+      {/* BANNER MASUK — tampil hanya jika belum login */}
+      {!isAuthenticated && (
+        <section className="max-w-7xl mx-auto px-6 mt-4">
+          <div className="bg-gray-900 rounded-2xl px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="text-white font-bold text-xl mb-1">Bergabung dengan Klojen</h3>
+              <p className="text-gray-400 text-sm">Daftar sekarang untuk menyimpan artikel favorit dan ikut berkomentar.</p>
+            </div>
+            <div className="flex gap-3 shrink-0">
+              <Link
+                href="/login"
+                className="bg-white text-gray-900 px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-100 transition-colors"
+              >
+                Masuk
+              </Link>
+              <Link
+                href="/register"
+                className="bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition-colors"
+              >
+                Daftar
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* READ NOW SECTION */}
-      <section className="max-w-7xl mx-auto px-6 py-10 border-t border-gray-100 mt-4 mb-12">
+      <section className="max-w-7xl mx-auto px-6 py-10 border-t border-gray-100 mt-8 mb-12">
         <h3 className="font-bold text-xl text-gray-900 mb-8">BACA SEKARANG</h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-8">
           {readNow.map((item) => (
-            <div key={item.id} className="flex gap-6 group cursor-pointer items-center">
+            <Link key={item.id} href={`/${item.slug}`} className="flex gap-6 group cursor-pointer items-center">
               <div className="w-40 h-28 shrink-0 overflow-hidden rounded-xl shadow-sm bg-gray-200">
                 <img src={item.img} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt={item.title} />
               </div>
@@ -159,7 +199,7 @@ export default function Home() {
                 <h4 className="font-bold text-[15px] text-gray-900 mb-2 leading-snug group-hover:text-blue-600 transition-colors">{item.title}</h4>
                 <p className="text-[13px] text-gray-500 line-clamp-2 leading-relaxed">{item.desc}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

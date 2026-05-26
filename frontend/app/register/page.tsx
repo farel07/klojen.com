@@ -5,63 +5,37 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-import { loginSchema, LoginFormValues } from '@/lib/validations';
-import { useAuthStore } from '@/stores/authStore';
-import { saveRefreshToken } from '@/lib/auth';
-import { getErrorMessage } from '@/app/constants/errorMessages';
-import { ApiError, ApiSuccess } from '@/app/types';
-import { CMS_ROLES } from '@/app/constants/roles';
-import axiosInstance from '@/lib/axios';
 import { AxiosError } from 'axios';
 
-interface LoginResponse {
-  access_token: string;
-  refresh_token: string;
-  user: {
-    id: string;
-    name: string;
-    role: 'reader' | 'journalist' | 'editor' | 'admin';
-  };
-}
+import { registerSchema, RegisterFormValues } from '@/lib/validations';
+import { getErrorMessage } from '@/app/constants/errorMessages';
+import { ApiError } from '@/app/types';
+import axiosInstance from '@/lib/axios';
 
-export default function Login() {
+export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const { setAuth } = useAuthStore();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
-  } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (values: LoginFormValues) => {
+  const onSubmit = async (values: RegisterFormValues) => {
     try {
-      const res = await axiosInstance.post<ApiSuccess<LoginResponse>>(
-        '/auth/login',
-        values,
-      );
+      await axiosInstance.post('/auth/register', values);
 
-      const { access_token, refresh_token, user } = res.data.data;
-
-      // Simpan access_token ke Zustand (memory), refresh_token ke localStorage
-      setAuth(access_token, { id: user.id, name: user.name, role: user.role });
-      saveRefreshToken(refresh_token);
-
-      // Redirect berdasarkan role (docs 2.3)
-      if (CMS_ROLES.includes(user.role)) {
-        router.push('/cms/dashboard');
-      } else {
-        router.push('/');
-      }
+      // Setelah sukses daftar, arahkan ke halaman login
+      router.push('/login');
     } catch (err) {
       const axiosErr = err as AxiosError<ApiError>;
+      const backendMessage = axiosErr.response?.data?.message;
       const errorCode = axiosErr.response?.data?.error ?? 'INTERNAL_SERVER_ERROR';
-      const message = getErrorMessage(errorCode);
+      const message = backendMessage || getErrorMessage(errorCode);
 
       setError('root', { message });
     }
@@ -72,7 +46,7 @@ export default function Login() {
       <div className="flex flex-col md:flex-row w-full max-w-[1100px] bg-white rounded-3xl shadow-2xl overflow-hidden min-h-[600px]">
 
         <div className="w-full md:w-1/2 p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-10">Log in</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-10">Sign Up</h2>
 
           <form className="w-full max-w-md mx-auto" onSubmit={handleSubmit(onSubmit)} noValidate>
 
@@ -83,19 +57,34 @@ export default function Login() {
               </div>
             )}
 
+            {/* Nama */}
+            <div className="mb-5">
+              <label htmlFor="name" className="block text-gray-900 font-semibold mb-2">Nama</label>
+              <input
+                type="text"
+                id="name"
+                {...register('name')}
+                className={`w-full bg-white rounded-2xl shadow-sm border px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-shadow text-gray-900 ${
+                  errors.name ? 'border-red-400' : 'border-gray-100'
+                }`}
+                placeholder="Masukkan nama Anda"
+              />
+              {errors.name && (
+                <p className="mt-1.5 text-sm text-red-500">{errors.name.message}</p>
+              )}
+            </div>
+
             {/* Email */}
-            <div className="mb-6">
-              <label htmlFor="email" className="block text-gray-900 font-semibold mb-2">
-                Email
-              </label>
+            <div className="mb-5">
+              <label htmlFor="email" className="block text-gray-900 font-semibold mb-2">Email</label>
               <input
                 type="email"
                 id="email"
                 {...register('email')}
-                className={`w-full bg-white rounded-2xl shadow-sm border px-5 py-4 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-shadow text-gray-900 ${
+                className={`w-full bg-white rounded-2xl shadow-sm border px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-shadow text-gray-900 ${
                   errors.email ? 'border-red-400' : 'border-gray-100'
                 }`}
-                placeholder="Enter your email"
+                placeholder="Masukkan email Anda"
               />
               {errors.email && (
                 <p className="mt-1.5 text-sm text-red-500">{errors.email.message}</p>
@@ -103,19 +92,17 @@ export default function Login() {
             </div>
 
             {/* Password */}
-            <div className="mb-10">
-              <label htmlFor="password" className="block text-gray-900 font-semibold mb-2">
-                Password
-              </label>
+            <div className="mb-8">
+              <label htmlFor="password" className="block text-gray-900 font-semibold mb-2">Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="password"
                   {...register('password')}
-                  className={`w-full bg-white rounded-2xl shadow-sm border px-5 py-4 pr-12 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-shadow text-gray-900 ${
+                  className={`w-full bg-white rounded-2xl shadow-sm border px-5 py-3.5 pr-12 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-shadow text-gray-900 ${
                     errors.password ? 'border-red-400' : 'border-gray-100'
                   }`}
-                  placeholder="Enter your password"
+                  placeholder="Buat password"
                 />
                 <button
                   type="button"
@@ -140,7 +127,7 @@ export default function Login() {
               )}
             </div>
 
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center mb-6">
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -148,24 +135,15 @@ export default function Login() {
                   isSubmitting ? 'bg-slate-600 cursor-not-allowed' : 'bg-slate-900 hover:bg-slate-800'
                 }`}
               >
-                {isSubmitting ? 'Memproses...' : 'Masuk'}
+                {isSubmitting ? 'Memproses...' : 'Daftar'}
               </button>
             </div>
 
-            <div className="text-center space-y-3 text-sm text-gray-600">
-              <Link
-                href="/lupa-password"
-                className="block hover:text-blue-600 hover:underline transition-colors font-medium"
-              >
-                Lupa password? Klik di sini
-              </Link>
+            <div className="text-center text-sm text-gray-600">
               <p>
-                Belum punya akun?{' '}
-                <Link
-                  href="/register"
-                  className="font-bold text-gray-900 hover:text-blue-600 hover:underline transition-colors"
-                >
-                  Daftar Sekarang
+                Sudah punya akun?{' '}
+                <Link href="/login" className="font-bold text-gray-900 hover:text-blue-600 hover:underline transition-colors">
+                  Log in
                 </Link>
               </p>
             </div>
@@ -182,7 +160,7 @@ export default function Login() {
           </div>
           <div className="relative z-10 flex justify-end mt-auto">
             <h1 className="text-white text-4xl lg:text-5xl font-bold text-right leading-tight max-w-md">
-              Temukan Cerita di Setiap Sudut Malang
+              Mulai Langkahmu Bersama Kami
             </h1>
           </div>
         </div>

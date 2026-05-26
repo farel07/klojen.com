@@ -49,11 +49,10 @@ export const commentSchema = z.object({
   parent_id: z.string().uuid().optional(),
 });
 
-// Tambah pengguna (admin)
 export const createUserSchema = z.object({
   name: z.string().min(2, 'Nama minimal 2 karakter'),
   email: z.string().email('Format email tidak valid'),
   role: z.enum(['journalist', 'editor'], {
-    errorMap: () => ({ message: 'Pilih role yang valid' }),
+    message: 'Pilih role yang valid',
   }),
 });

@@ -10,10 +10,10 @@ export const ROLES = {
 export type Role = (typeof ROLES)[keyof typeof ROLES];
 
 export const canPublish = (role: Role) =>
-  [ROLES.EDITOR, ROLES.ADMIN].includes(role);
+  ([ROLES.EDITOR, ROLES.ADMIN] as Role[]).includes(role);
 
 export const canDeleteComment = (role: Role) =>
-  [ROLES.EDITOR, ROLES.ADMIN].includes(role);
+  ([ROLES.EDITOR, ROLES.ADMIN] as Role[]).includes(role);
 
 export const canManageUsers = (role: Role) => role === ROLES.ADMIN;
 
