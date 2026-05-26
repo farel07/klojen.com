@@ -18,6 +18,9 @@
 9. [Class Diagram](#9-class-diagram)
 10. [Peningkatan Sistem](#10-peningkatan-sistem)
 11. [ER Diagram](#11-er-diagram)
+12. [Business Rules](#12-business-rules)
+13. [Error Handling](#13-error-handling)
+14. [API Contract](#14-api-contract)
 
 ---
 
@@ -2061,6 +2064,784 @@ Entity Relationship Diagram (ERD) menggambarkan struktur database sistem portal 
 | 11 | SCHEDULED_ARTICLES | Jadwal tayang otomatis artikel |
 | 12 | SEARCH_INDEXES | Data teroptimasi untuk full-text search MySQL |
 | 13 | COMMENT_RATE_LIMITS | Pembatasan frekuensi komentar per pengguna |
+
+---
+
+# 12. Business Rules
+
+Business Rules mendefinisikan aturan-aturan bisnis yang harus ditegakkan oleh sistem — baik di level backend maupun frontend. Seluruh rule ini wajib diimplementasikan sebelum sistem dianggap siap produksi.
+
+## 12.1 Artikel & Publikasi
+
+| Kode | Rule | Keterangan |
+|---|---|---|
+| BR-01 | Jurnalis hanya bisa membuat artikel dengan status `draft` atau mengajukan ke `review` | Tidak bisa langsung publish |
+| BR-02 | Hanya Editor dan Admin yang bisa mengubah status artikel ke `published`, `scheduled`, atau `archived` | Jurnalis tidak memiliki akses ini |
+| BR-03 | Artikel wajib melewati review Editor sebelum bisa diterbitkan | Jurnalis tidak bisa menerbitkan artikel sendiri |
+| BR-04 | `scheduled_at` harus minimal 5 menit dari waktu sekarang | Mencegah jadwal yang sudah lewat |
+| BR-05 | Artikel yang sudah `published` hanya bisa diubah ke `archived`, tidak bisa kembali ke `draft` | Status bersifat satu arah setelah tayang |
+| BR-06 | Artikel yang di-`archived` tidak tampil di portal publik | Artikel tersembunyi dari pembaca |
+
+## 12.2 Komentar
+
+| Kode | Rule | Keterangan |
+|---|---|---|
+| BR-07 | User wajib login untuk bisa berkomentar | Reader yang belum login tidak bisa mengirim komentar |
+| BR-08 | Panjang komentar minimal 3 karakter, maksimal 1000 karakter | Mencegah komentar kosong atau terlalu panjang |
+| BR-09 | Rate limit: maksimal 10 komentar per jam per user | Mencegah spam komentar |
+| BR-10 | Kedalaman thread balasan maksimal 2 level (komentar → balasan, tidak bisa balas balasan) | Mencegah nested komentar yang terlalu dalam |
+| BR-11 | Hanya Editor dan Admin yang bisa menghapus komentar | Jurnalis dan Reader tidak bisa hapus komentar |
+| BR-12 | Komentar langsung tampil tanpa moderasi (`status=published`) | Tidak ada antrian moderasi |
+
+## 12.3 Media
+
+| Kode | Rule | Keterangan |
+|---|---|---|
+| BR-13 | Format file yang diizinkan: `image/png`, `image/jpeg`, `image/jpg` | Format lain ditolak |
+| BR-14 | Ukuran maksimal file: 2048 KB (2 MB) | File lebih besar dari 2 MB ditolak |
+| BR-15 | Hanya Jurnalis, Editor, dan Admin yang bisa upload media | Reader tidak bisa upload |
+
+## 12.4 Bookmark
+
+| Kode | Rule | Keterangan |
+|---|---|---|
+| BR-16 | User wajib login untuk menyimpan bookmark | Reader yang belum login tidak bisa bookmark |
+| BR-17 | Satu user hanya bisa bookmark satu artikel satu kali — tidak bisa duplikat | Sistem menggunakan toggle: bookmark/unbookmark |
+
+## 12.5 Manajemen Pengguna
+
+| Kode | Rule | Keterangan |
+|---|---|---|
+| BR-18 | Hanya Admin yang bisa membuat, mengedit, menonaktifkan, dan menghapus akun | Role lain tidak punya akses ke `/users` |
+| BR-19 | Admin tidak bisa menghapus atau menonaktifkan akunnya sendiri | Mencegah admin terkunci dari sistem |
+| BR-20 | Saat akun dihapus, artikel milik user diarsipkan — bukan ikut terhapus | Konten tidak hilang meski akunnya dihapus |
+| BR-21 | Email bersifat unik — tidak boleh ada dua akun dengan email yang sama | Dicek saat register dan edit akun |
+
+---
+
+# 13. Error Handling
+
+## 13.1 Format Response Error
+
+Semua error menggunakan format JSON berikut secara konsisten di seluruh endpoint:
+
+```json
+{
+  "status": "error",
+  "code": 400,
+  "error": "VALIDATION_ERROR",
+  "message": "Email sudah terdaftar",
+  "field": "email"
+}
+```
+
+| Field | Tipe | Keterangan |
+|---|---|---|
+| `status` | string | Selalu bernilai `"error"` |
+| `code` | integer | HTTP status code |
+| `error` | string | Kode error dalam format SNAKE_CASE — digunakan frontend untuk logika kondisional |
+| `message` | string | Pesan yang dapat langsung ditampilkan ke user |
+| `field` | string | Field formulir yang bermasalah — opsional, hanya untuk error validasi |
+
+## 13.2 Daftar Error Code
+
+### Auth
+
+| HTTP | Error Code | Message | Trigger |
+|---|---|---|---|
+| 400 | `VALIDATION_ERROR` | Field tidak boleh kosong | Field wajib tidak diisi |
+| 400 | `EMAIL_ALREADY_EXISTS` | Email sudah terdaftar | Register dengan email duplikat |
+| 401 | `INVALID_CREDENTIALS` | Email atau password salah | Login gagal |
+| 401 | `TOKEN_EXPIRED` | Sesi telah berakhir, silakan login ulang | Access token expired |
+| 401 | `TOKEN_INVALID` | Token tidak valid | Token malformed atau salah |
+| 401 | `TOKEN_REVOKED` | Sesi tidak valid, silakan login ulang | Refresh token sudah di-revoke |
+| 403 | `ACCOUNT_INACTIVE` | Akun Anda telah dinonaktifkan | User `is_active=false` mencoba login |
+
+### Artikel
+
+| HTTP | Error Code | Message | Trigger |
+|---|---|---|---|
+| 400 | `VALIDATION_ERROR` | Judul tidak boleh kosong | Field wajib kosong |
+| 403 | `FORBIDDEN` | Anda tidak memiliki akses untuk aksi ini | Role tidak cukup |
+| 404 | `ARTICLE_NOT_FOUND` | Artikel tidak ditemukan | Slug atau ID tidak ada di database |
+| 409 | `SLUG_ALREADY_EXISTS` | Judul artikel sudah digunakan | Slug duplikat |
+| 422 | `INVALID_STATUS_TRANSITION` | Perubahan status tidak diizinkan | Contoh: published → draft |
+| 422 | `SCHEDULED_TIME_TOO_SOON` | Waktu tayang minimal 5 menit dari sekarang | `scheduled_at` terlalu dekat |
+
+### Komentar
+
+| HTTP | Error Code | Message | Trigger |
+|---|---|---|---|
+| 400 | `COMMENT_TOO_SHORT` | Komentar minimal 3 karakter | Panjang < 3 karakter |
+| 400 | `COMMENT_TOO_LONG` | Komentar maksimal 1000 karakter | Panjang > 1000 karakter |
+| 401 | `UNAUTHORIZED` | Anda harus login untuk berkomentar | User belum login |
+| 404 | `COMMENT_NOT_FOUND` | Komentar tidak ditemukan | ID tidak ada di database |
+| 422 | `MAX_REPLY_DEPTH` | Tidak bisa membalas komentar lebih dari 2 level | Nested > 2 level |
+| 429 | `COMMENT_RATE_LIMIT` | Batas komentar telah tercapai, coba lagi dalam X menit | Rate limit 10/jam tercapai |
+
+### Media
+
+| HTTP | Error Code | Message | Trigger |
+|---|---|---|---|
+| 400 | `INVALID_FILE_TYPE` | Format file tidak didukung. Gunakan PNG, JPG, atau JPEG | Tipe file tidak sesuai |
+| 400 | `FILE_TOO_LARGE` | Ukuran file maksimal 2 MB | File > 2048 KB |
+| 400 | `NO_FILE_UPLOADED` | Tidak ada file yang diunggah | Request tanpa file |
+
+### Pengguna
+
+| HTTP | Error Code | Message | Trigger |
+|---|---|---|---|
+| 400 | `EMAIL_ALREADY_EXISTS` | Email sudah terdaftar | Edit email menjadi duplikat |
+| 403 | `CANNOT_MODIFY_SELF` | Admin tidak bisa menonaktifkan atau menghapus akun sendiri | Melanggar BR-19 |
+| 404 | `USER_NOT_FOUND` | Pengguna tidak ditemukan | ID tidak ada di database |
+
+### General
+
+| HTTP | Error Code | Message | Trigger |
+|---|---|---|---|
+| 404 | `NOT_FOUND` | Resource tidak ditemukan | Route atau resource tidak ada |
+| 500 | `INTERNAL_SERVER_ERROR` | Terjadi kesalahan pada server | Unhandled server error |
+
+---
+
+# 14. API Contract
+
+## 14.1 Base URL & Konvensi
+
+```
+Base URL    : https://api.portalberita.com/v1
+Content-Type: application/json
+Authorization: Bearer {access_token}   ← wajib untuk endpoint yang membutuhkan autentikasi
+```
+
+**Keterangan ikon:**
+- `🔒` — Endpoint membutuhkan autentikasi (Bearer token)
+- `👤` — Role yang diizinkan mengakses endpoint
+
+**Format response sukses:**
+```json
+{
+  "status": "success",
+  "data": { }
+}
+```
+
+---
+
+## 14.2 Auth
+
+### POST /auth/register
+
+Mendaftarkan akun baru sebagai Reader.
+
+```json
+// Request Body
+{
+  "name": "Budi Santoso",       // string, wajib
+  "email": "budi@email.com",    // string, wajib, format email, unik
+  "password": "min8karakter"    // string, wajib, minimal 8 karakter
+}
+
+// Response 201 Created
+{
+  "status": "success",
+  "data": {
+    "user_id": "uuid",
+    "name": "Budi Santoso",
+    "email": "budi@email.com",
+    "role": "reader"
+  }
+}
+
+// Error yang mungkin: VALIDATION_ERROR (400), EMAIL_ALREADY_EXISTS (400)
+```
+
+---
+
+### POST /auth/login
+
+Login dan mendapatkan access token + refresh token.
+
+```json
+// Request Body
+{
+  "email": "budi@email.com",
+  "password": "min8karakter"
+}
+
+// Response 200 OK
+{
+  "status": "success",
+  "data": {
+    "access_token": "eyJ...",
+    "refresh_token": "eyJ...",
+    "expires_in": 900,
+    "user": {
+      "id": "uuid",
+      "name": "Budi Santoso",
+      "role": "reader"
+    }
+  }
+}
+
+// Error yang mungkin: INVALID_CREDENTIALS (401), ACCOUNT_INACTIVE (403)
+```
+
+---
+
+### POST /auth/refresh
+
+Memperbarui access token menggunakan refresh token yang masih valid.
+
+```json
+// Request Body
+{
+  "refresh_token": "eyJ..."
+}
+
+// Response 200 OK
+{
+  "status": "success",
+  "data": {
+    "access_token": "eyJ...",
+    "expires_in": 900
+  }
+}
+
+// Error yang mungkin: TOKEN_INVALID (401), TOKEN_REVOKED (401), TOKEN_EXPIRED (401)
+```
+
+---
+
+### POST /auth/logout `🔒`
+
+Mencabut refresh token dan mengakhiri sesi.
+
+```json
+// Request Body
+{
+  "refresh_token": "eyJ..."
+}
+
+// Response 200 OK
+{
+  "status": "success",
+  "message": "Logout berhasil"
+}
+```
+
+---
+
+## 14.3 Artikel
+
+### GET /articles
+
+Mengambil daftar artikel. Tanpa filter status, default menampilkan artikel `published`.
+
+```
+// Query Parameters
+status    : string   — published | draft | review | scheduled | archived
+category  : string   — slug kategori
+tag       : string   — slug tag
+page      : integer  — default 1
+limit     : integer  — default 10, maksimal 50
+featured  : boolean  — filter artikel unggulan
+```
+
+```json
+// Response 200 OK
+{
+  "status": "success",
+  "data": {
+    "articles": [
+      {
+        "id": "uuid",
+        "title": "Judul Artikel",
+        "slug": "judul-artikel",
+        "featured_image_url": "https://cdn.portalberita.com/img.jpg",
+        "category": { "id": "uuid", "name": "Politik", "slug": "politik" },
+        "tags": [{ "id": "uuid", "name": "pemilu", "slug": "pemilu" }],
+        "author": { "id": "uuid", "name": "Budi Santoso" },
+        "published_at": "2025-05-25T10:00:00Z",
+        "view_count": 1240
+      }
+    ],
+    "pagination": {
+      "total": 100,
+      "page": 1,
+      "limit": 10,
+      "total_pages": 10
+    }
+  }
+}
+```
+
+---
+
+### GET /articles/:slug
+
+Mengambil detail satu artikel. View count otomatis di-increment.
+
+```json
+// Response 200 OK
+{
+  "status": "success",
+  "data": {
+    "id": "uuid",
+    "title": "Judul Artikel",
+    "slug": "judul-artikel",
+    "content": "Isi artikel lengkap...",
+    "featured_image_url": "https://...",
+    "status": "published",
+    "is_featured": false,
+    "view_count": 1241,
+    "category": { "id": "uuid", "name": "Politik", "slug": "politik" },
+    "tags": [{ "id": "uuid", "name": "pemilu", "slug": "pemilu" }],
+    "author": { "id": "uuid", "name": "Budi Santoso" },
+    "media": [
+      { "id": "uuid", "file_url": "https://...", "media_type": "image", "alt_text": "Foto" }
+    ],
+    "published_at": "2025-05-25T10:00:00Z",
+    "created_at": "2025-05-24T08:00:00Z"
+  }
+}
+
+// Error yang mungkin: ARTICLE_NOT_FOUND (404)
+```
+
+---
+
+### POST /articles `🔒` `👤 journalist | editor | admin`
+
+Membuat artikel baru dengan status `draft`.
+
+```json
+// Request Body
+{
+  "title": "Judul Artikel",               // string, wajib
+  "content": "Isi artikel...",            // string, wajib
+  "category_id": "uuid",                 // uuid, wajib
+  "tags": ["uuid-tag-1", "uuid-tag-2"],  // array uuid, opsional
+  "featured_image_url": "https://..."    // string, opsional
+}
+
+// Response 201 Created
+{
+  "status": "success",
+  "data": {
+    "id": "uuid",
+    "slug": "judul-artikel",
+    "status": "draft"
+  }
+}
+
+// Error yang mungkin: VALIDATION_ERROR (400), FORBIDDEN (403), SLUG_ALREADY_EXISTS (409)
+```
+
+---
+
+### PUT /articles/:id `🔒` `👤 journalist (artikel sendiri) | editor | admin`
+
+Mengupdate konten artikel. Versi lama otomatis disimpan ke `article_revisions`.
+
+```json
+// Request Body — semua field opsional
+{
+  "title": "Judul Baru",
+  "content": "Isi baru...",
+  "category_id": "uuid",
+  "tags": ["uuid-tag-1"],
+  "featured_image_url": "https://..."
+}
+
+// Response 200 OK
+{
+  "status": "success",
+  "data": {
+    "id": "uuid",
+    "updated_at": "2025-05-25T11:00:00Z"
+  }
+}
+
+// Error yang mungkin: ARTICLE_NOT_FOUND (404), FORBIDDEN (403)
+```
+
+---
+
+### PATCH /articles/:id/status `🔒` `👤 editor | admin`
+
+Mengubah status artikel. Jurnalis tidak bisa mengakses endpoint ini.
+
+```json
+// Request Body
+{
+  "status": "published",                        // wajib: published | scheduled | archived | review
+  "scheduled_at": "2025-06-01T08:00:00Z",      // wajib jika status = scheduled
+  "change_note": "Update data terbaru"          // opsional, catatan untuk article_revisions
+}
+
+// Response 200 OK
+{
+  "status": "success",
+  "data": {
+    "id": "uuid",
+    "status": "published",
+    "published_at": "2025-05-25T11:00:00Z"
+  }
+}
+
+// Error yang mungkin: ARTICLE_NOT_FOUND (404), FORBIDDEN (403),
+//                     INVALID_STATUS_TRANSITION (422), SCHEDULED_TIME_TOO_SOON (422)
+```
+
+---
+
+## 14.4 Komentar
+
+### GET /articles/:id/comments
+
+Mengambil semua komentar sebuah artikel, terstruktur dengan replies.
+
+```json
+// Response 200 OK
+{
+  "status": "success",
+  "data": {
+    "comments": [
+      {
+        "id": "uuid",
+        "content": "Isi komentar",
+        "user": { "id": "uuid", "name": "Budi" },
+        "parent_id": null,
+        "replies": [
+          {
+            "id": "uuid",
+            "content": "Balasan komentar",
+            "user": { "id": "uuid", "name": "Susi" },
+            "parent_id": "uuid-parent",
+            "created_at": "2025-05-25T12:00:00Z"
+          }
+        ],
+        "created_at": "2025-05-25T11:30:00Z"
+      }
+    ],
+    "total": 12
+  }
+}
+```
+
+---
+
+### POST /comments `🔒` `👤 semua role`
+
+Mengirim komentar baru. Komentar langsung tampil tanpa moderasi.
+
+```json
+// Request Body
+{
+  "article_id": "uuid",                              // uuid, wajib
+  "content": "Isi komentar minimal 3 karakter",      // string, wajib, 3–1000 karakter
+  "parent_id": "uuid"                                // uuid, opsional — untuk reply
+}
+
+// Response 201 Created
+{
+  "status": "success",
+  "data": {
+    "id": "uuid",
+    "content": "Isi komentar",
+    "user": { "id": "uuid", "name": "Budi" },
+    "parent_id": null,
+    "created_at": "2025-05-25T12:00:00Z"
+  }
+}
+
+// Error yang mungkin: UNAUTHORIZED (401), COMMENT_TOO_SHORT (400),
+//                     COMMENT_TOO_LONG (400), MAX_REPLY_DEPTH (422),
+//                     COMMENT_RATE_LIMIT (429)
+```
+
+---
+
+### DELETE /comments/:id `🔒` `👤 editor | admin`
+
+Menghapus komentar secara permanen.
+
+```json
+// Response 200 OK
+{
+  "status": "success",
+  "message": "Komentar berhasil dihapus"
+}
+
+// Error yang mungkin: COMMENT_NOT_FOUND (404), FORBIDDEN (403)
+```
+
+---
+
+## 14.5 Media
+
+### POST /media/upload `🔒` `👤 journalist | editor | admin`
+
+Upload file media ke cloud storage.
+
+```
+// Request — multipart/form-data
+file        : binary   wajib — PNG, JPG, atau JPEG, maksimal 2048 KB
+article_id  : uuid     opsional — jika langsung dikaitkan ke artikel
+alt_text    : string   opsional — teks alternatif untuk aksesibilitas
+```
+
+```json
+// Response 201 Created
+{
+  "status": "success",
+  "data": {
+    "id": "uuid",
+    "file_url": "https://cdn.portalberita.com/media/abc.jpg",
+    "media_type": "image",
+    "alt_text": "Foto rapat kabinet"
+  }
+}
+
+// Error yang mungkin: INVALID_FILE_TYPE (400), FILE_TOO_LARGE (400), NO_FILE_UPLOADED (400)
+```
+
+---
+
+### DELETE /media/:id `🔒` `👤 journalist (milik sendiri) | editor | admin`
+
+Menghapus file media dari cloud storage dan database.
+
+```json
+// Response 200 OK
+{
+  "status": "success",
+  "message": "Media berhasil dihapus"
+}
+```
+
+---
+
+## 14.6 Bookmark
+
+### GET /bookmarks `🔒` `👤 semua role`
+
+Mengambil daftar artikel yang sudah di-bookmark oleh user yang sedang login.
+
+```json
+// Response 200 OK
+{
+  "status": "success",
+  "data": {
+    "bookmarks": [
+      {
+        "id": "uuid",
+        "article": {
+          "id": "uuid",
+          "title": "Judul Artikel",
+          "slug": "judul-artikel",
+          "featured_image_url": "https://..."
+        },
+        "created_at": "2025-05-25T10:00:00Z"
+      }
+    ],
+    "total": 5
+  }
+}
+```
+
+---
+
+### POST /bookmarks `🔒` `👤 semua role`
+
+Toggle bookmark — jika belum ada maka disimpan, jika sudah ada maka dihapus.
+
+```json
+// Request Body
+{
+  "article_id": "uuid"   // uuid, wajib
+}
+
+// Response 200 OK
+{
+  "status": "success",
+  "data": {
+    "bookmarked": true    // true = baru disimpan, false = baru dihapus
+  }
+}
+
+// Error yang mungkin: UNAUTHORIZED (401), ARTICLE_NOT_FOUND (404)
+```
+
+---
+
+## 14.7 Pencarian
+
+### GET /search
+
+Mencari artikel berdasarkan kata kunci menggunakan MySQL FULLTEXT search.
+
+```
+// Query Parameters
+q     : string   wajib — kata kunci pencarian, minimal 2 karakter
+page  : integer  opsional — default 1
+limit : integer  opsional — default 10, maksimal 50
+```
+
+```json
+// Response 200 OK
+{
+  "status": "success",
+  "data": {
+    "keyword": "pemilu",
+    "results": [
+      {
+        "id": "uuid",
+        "title": "Hasil Pemilu 2024",
+        "slug": "hasil-pemilu-2024",
+        "featured_image_url": "https://...",
+        "category": { "name": "Politik", "slug": "politik" },
+        "published_at": "2025-05-20T08:00:00Z",
+        "relevance_score": 0.8754
+      }
+    ],
+    "pagination": {
+      "total": 24,
+      "page": 1,
+      "limit": 10,
+      "total_pages": 3
+    }
+  }
+}
+
+// Error yang mungkin: VALIDATION_ERROR (400) jika q < 2 karakter
+```
+
+---
+
+## 14.8 Manajemen Pengguna
+
+### GET /users `🔒` `👤 admin`
+
+Mengambil seluruh daftar pengguna.
+
+```json
+// Response 200 OK
+{
+  "status": "success",
+  "data": {
+    "users": [
+      {
+        "id": "uuid",
+        "name": "Budi Santoso",
+        "email": "budi@email.com",
+        "role": "journalist",
+        "is_active": true,
+        "created_at": "2025-01-01T00:00:00Z"
+      }
+    ],
+    "total": 20
+  }
+}
+```
+
+---
+
+### GET /users/:id `🔒` `👤 admin`
+
+Mengambil detail satu pengguna.
+
+```json
+// Response 200 OK
+{
+  "status": "success",
+  "data": {
+    "id": "uuid",
+    "name": "Budi Santoso",
+    "email": "budi@email.com",
+    "role": "journalist",
+    "is_active": true,
+    "created_at": "2025-01-01T00:00:00Z"
+  }
+}
+
+// Error yang mungkin: USER_NOT_FOUND (404)
+```
+
+---
+
+### POST /users `🔒` `👤 admin`
+
+Membuat akun baru untuk Jurnalis atau Editor. Password sementara digenerate sistem dan dikirim ke email.
+
+```json
+// Request Body
+{
+  "name": "Susi Rahayu",           // string, wajib
+  "email": "susi@email.com",       // string, wajib, format email, unik
+  "role": "journalist"             // string, wajib: journalist | editor
+}
+
+// Response 201 Created
+{
+  "status": "success",
+  "data": {
+    "id": "uuid",
+    "email": "susi@email.com",
+    "role": "journalist"
+  }
+}
+
+// Error yang mungkin: VALIDATION_ERROR (400), EMAIL_ALREADY_EXISTS (400), FORBIDDEN (403)
+```
+
+---
+
+### PATCH /users/:id `🔒` `👤 admin`
+
+Mengupdate data akun pengguna. Jika role diubah, semua refresh token user di-revoke.
+
+```json
+// Request Body — semua field opsional
+{
+  "name": "Susi Rahayu",
+  "email": "susi.baru@email.com",
+  "role": "editor",
+  "is_active": false
+}
+
+// Response 200 OK
+{
+  "status": "success",
+  "data": {
+    "id": "uuid",
+    "updated_at": "2025-05-25T12:00:00Z"
+  }
+}
+
+// Error yang mungkin: USER_NOT_FOUND (404), EMAIL_ALREADY_EXISTS (400),
+//                     CANNOT_MODIFY_SELF (403)
+```
+
+---
+
+### DELETE /users/:id `🔒` `👤 admin`
+
+Menghapus akun pengguna secara permanen. Artikel milik user diarsipkan.
+
+```json
+// Response 200 OK
+{
+  "status": "success",
+  "message": "Akun berhasil dihapus"
+}
+
+// Error yang mungkin: USER_NOT_FOUND (404), CANNOT_MODIFY_SELF (403)
+```
+
+---
+
 
 ---
 
