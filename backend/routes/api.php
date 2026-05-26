@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +30,9 @@ Route::prefix('auth')->group(function () {
 
 // ── Beranda ──────────────────────────────────────────────────────────────────
 Route::get('/beranda', [BerandaController::class, 'index']);
+
+// ── Categories ───────────────────────────────────────────────────────────────
+Route::get('/categories', [CategoryController::class, 'index']);
+
+// ── Tags ─────────────────────────────────────────────────────────────────────
+Route::get('/tags', [TagController::class, 'index']);
