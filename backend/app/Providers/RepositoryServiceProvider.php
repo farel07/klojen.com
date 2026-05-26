@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Repositories\BerandaRepository;
+use App\Repositories\CategoryRepository;
 use App\Repositories\Contracts\BerandaRepositoryInterface;
+use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\RefreshTokenRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\RefreshTokenRepository;
@@ -22,6 +24,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(RefreshTokenRepositoryInterface::class, RefreshTokenRepository::class);
         $this->app->bind(BerandaRepositoryInterface::class, BerandaRepository::class);
+        $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
     }
 
     /**
