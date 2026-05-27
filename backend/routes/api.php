@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
@@ -36,3 +37,8 @@ Route::get('/categories', [CategoryController::class, 'index']);
 
 // ── Tags ─────────────────────────────────────────────────────────────────────
 Route::get('/tags', [TagController::class, 'index']);
+
+// ── Articles ──────────────────────────────────────────────────────────────────
+Route::get('/articles',                  [ArticleController::class, 'index']);
+Route::get('/articles/{slug}',           [ArticleController::class, 'show']);
+Route::get('/articles/{id}/comments',    [ArticleController::class, 'comments']);
