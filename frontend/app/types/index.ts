@@ -66,7 +66,12 @@ export interface Comment {
 
 export interface Bookmark {
   id: string;
-  article: Pick<Article, 'id' | 'title' | 'slug' | 'featured_image_url'>;
+  article: Pick<Article, 'id' | 'title' | 'slug' | 'featured_image_url'> & {
+    excerpt?: string;
+    published_at?: string | null;
+    category?: Category;
+    author?: Pick<User, 'id' | 'name'>;
+  };
   created_at: string;
 }
 
