@@ -161,9 +161,24 @@ class AuthController extends Controller
         $user = auth('api')->user();
 
         $validated = $request->validate([
-            'name'  => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'name'   => 'required|string|max:255',
+            'email'  => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+
+        if ($request->hasFile('avatar')) {
+            // Hapus avatar lama jika ada di storage public
+            if ($user->avatar_url) {
+                $oldPath = str_replace(asset('storage/'), '', $user->avatar_url);
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+            }
+
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $validated['avatar_url'] = asset('storage/' . $path);
+        }
+
+        // Hapus field 'avatar' agar tidak diupdate langsung ke DB
+        unset($validated['avatar']);
 
         $user->update($validated);
 
