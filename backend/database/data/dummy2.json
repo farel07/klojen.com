@@ -1,0 +1,132 @@
+{
+  "users": [
+    {
+      "id": "u-001",
+      "name": "Andi Pratama",
+      "email": "andi@klojen.com",
+      "role": "admin",
+      "is_active": true,
+      "avatar_url": "https://i.pravatar.cc/150?img=1",
+      "bio": "Administrator sistem Portal Berita Klojen."
+    },
+    {
+      "id": "u-002",
+      "name": "Sari Dewi",
+      "email": "sari@klojen.com",
+      "role": "editor",
+      "is_active": true,
+      "avatar_url": "https://i.pravatar.cc/150?img=5",
+      "bio": "Editor senior dengan pengalaman 10 tahun di dunia jurnalistik."
+    },
+    {
+      "id": "u-003",
+      "name": "Budi Santoso",
+      "email": "budi@klojen.com",
+      "role": "journalist",
+      "is_active": true,
+      "avatar_url": "https://i.pravatar.cc/150?img=3",
+      "bio": "Jurnalis bidang pariwisata dan kuliner."
+    }
+  ],
+  "categories": [
+    { "id": "cat-001", "parent_id": null, "name": "Pendidikan", "slug": "pendidikan" },
+    { "id": "cat-002", "parent_id": null, "name": "Kuliner", "slug": "kuliner" },
+    { "id": "cat-003", "parent_id": null, "name": "Wisata", "slug": "wisata" },
+    { "id": "cat-004", "parent_id": null, "name": "Hotel", "slug": "hotel" }
+  ],
+  "tags": [
+    { "id": "tag-001", "name": "Beasiswa", "slug": "beasiswa" },
+    { "id": "tag-002", "name": "Kampus", "slug": "kampus" },
+    { "id": "tag-003", "name": "Bakso", "slug": "bakso" },
+    { "id": "tag-004", "name": "Cafe", "slug": "cafe" },
+    { "id": "tag-005", "name": "Pantai", "slug": "pantai" },
+    { "id": "tag-006", "name": "Staycation", "slug": "staycation" }
+  ],
+  "articles": [
+    {
+      "id": "art-001",
+      "author_id": "u-003",
+      "category_id": "cat-001",
+      "title": "Pemkot Malang Luncurkan Beasiswa Pendidikan untuk Mahasiswa Berprestasi",
+      "slug": "pemkot-malang-luncurkan-beasiswa-pendidikan",
+      "excerpt": "Pemerintah Kota Malang kembali membuka pendaftaran beasiswa untuk mahasiswa berprestasi tahun akademik 2026.",
+      "content": "<p>Pemerintah Kota Malang telah resmi meluncurkan program beasiswa pendidikan untuk mahasiswa berprestasi tingkat S1 dan D4. Program ini diharapkan dapat membantu meringankan biaya perkuliahan bagi mereka yang memiliki potensi luar biasa namun terkendala finansial.</p><p>Pendaftaran beasiswa akan dibuka mulai bulan depan dan para calon penerima dapat mengakses informasi lebih lanjut melalui situs resmi Pemkot Malang.</p>",
+      "featured_image_url": "https://picsum.photos/seed/beasiswa/800/450",
+      "status": "published",
+      "is_featured": true,
+      "view_count": 5420,
+      "published_at": "2026-05-25T07:00:00Z",
+      "created_at": "2026-05-24T20:00:00Z",
+      "tags": ["tag-001", "tag-002"]
+    },
+    {
+      "id": "art-002",
+      "author_id": "u-003",
+      "category_id": "cat-002",
+      "title": "Rekomendasi 5 Bakso Legendaris di Sekitar Klojen",
+      "slug": "rekomendasi-5-bakso-legendaris-klojen",
+      "excerpt": "Jalan-jalan ke Malang tak lengkap tanpa mencoba bakso. Berikut rekomendasi 5 bakso legendaris di Klojen.",
+      "content": "<p>Malang dikenal sebagai surga kuliner, terutama bakso. Di sekitar daerah Klojen, Anda dapat menemukan berbagai macam bakso dengan cita rasa khas dan legendaris. Dari Bakso President hingga Bakso Bakar Pak Man, semua wajib dicoba!</p><p>Jangan lupa untuk menambahkan tahu, siomay, dan gorengan saat menyantap bakso favorit Anda untuk pengalaman kuliner yang maksimal.</p>",
+      "featured_image_url": "https://picsum.photos/seed/bakso/800/450",
+      "status": "published",
+      "is_featured": true,
+      "view_count": 8900,
+      "published_at": "2026-05-26T10:00:00Z",
+      "created_at": "2026-05-25T14:00:00Z",
+      "tags": ["tag-003"]
+    },
+    {
+      "id": "art-003",
+      "author_id": "u-003",
+      "category_id": "cat-003",
+      "title": "Pesona Kampung Warna-Warni Jodipan, Destinasi Unik di Tengah Kota Malang",
+      "slug": "pesona-kampung-warna-warni-jodipan",
+      "excerpt": "Menjelajahi keindahan Kampung Warna-Warni Jodipan yang kini menjadi salah satu ikon pariwisata Kota Malang.",
+      "content": "<p>Terletak di pinggiran Sungai Brantas, Kampung Warna-Warni Jodipan menyuguhkan pemandangan unik dengan rumah-rumah yang dicat penuh warna. Ini merupakan contoh sukses revitalisasi kawasan pemukiman padat menjadi objek wisata yang fotogenik.</p><p>Tak heran banyak wisatawan lokal maupun mancanegara yang menyempatkan diri untuk berburu foto di gang-gang sempit Jodipan.</p>",
+      "featured_image_url": "https://picsum.photos/seed/jodipan/800/450",
+      "status": "published",
+      "is_featured": false,
+      "view_count": 12000,
+      "published_at": "2026-05-27T08:00:00Z",
+      "created_at": "2026-05-26T09:00:00Z",
+      "tags": ["tag-005"]
+    },
+    {
+      "id": "art-004",
+      "author_id": "u-003",
+      "category_id": "cat-004",
+      "title": "Hotel Tugu Malang: Menikmati Sensasi Menginap dengan Nuansa Heritage",
+      "slug": "hotel-tugu-malang-nuansa-heritage",
+      "excerpt": "Review Hotel Tugu Malang, pilihan tepat bagi Anda yang ingin merasakan kemewahan sekaligus nilai sejarah.",
+      "content": "<p>Hotel Tugu Malang tidak hanya sekadar tempat menginap, tetapi juga museum yang hidup. Dengan dekorasi antik dan atmosfer sejarah yang kental, hotel ini menawarkan pengalaman staycation yang tak terlupakan di jantung kota.</p><p>Dari pelayanan ramah hingga restoran dengan menu tradisional yang lezat, Hotel Tugu menjadi destinasi andalan para wisatawan yang mencari ketenangan dan kenyamanan.</p>",
+      "featured_image_url": "https://picsum.photos/seed/hoteltugu/800/450",
+      "status": "published",
+      "is_featured": true,
+      "view_count": 4500,
+      "published_at": "2026-05-28T09:00:00Z",
+      "created_at": "2026-05-27T10:00:00Z",
+      "tags": ["tag-006"]
+    }
+  ],
+  "comments": [
+    {
+      "id": "cmt-001",
+      "article_id": "art-002",
+      "user_id": "u-002",
+      "parent_id": null,
+      "content": "Wah, jadi ngiler baca artikelnya. Wajib mampir pas ke Malang!",
+      "status": "approved",
+      "created_at": "2026-05-26T11:00:00Z"
+    }
+  ],
+  "media": [
+    {
+      "id": "med-001",
+      "article_id": "art-001",
+      "file_url": "https://picsum.photos/seed/beasiswamalang/1200/800",
+      "media_type": "image",
+      "alt_text": "Pemberian Beasiswa Pemkot Malang",
+      "created_at": "2026-05-24T20:30:00Z"
+    }
+  ]
+}
