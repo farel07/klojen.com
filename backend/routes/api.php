@@ -58,4 +58,7 @@ Route::middleware('auth:api')->group(function () {
 Route::middleware('auth:api')->prefix('cms')->group(function () {
     // POST /api/cms/articles  — Buat artikel baru (journalist / editor / admin)
     Route::post('/articles', [CmsArticleController::class, 'store']);
+    
+    // PUT /api/cms/articles/{id} — Update artikel (journalist / editor / admin)
+    Route::put('/articles/{id}', [CmsArticleController::class, 'update']);
 });

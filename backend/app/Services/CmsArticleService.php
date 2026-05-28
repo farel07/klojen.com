@@ -164,4 +164,114 @@ class CmsArticleService
             'created_at'         => $now->toISOString(),
         ];
     }
+
+    // ── Update ───────────────────────────────────────────────────────────────
+
+    /**
+     * Update artikel.
+     *
+     * @param  string $id        UUID artikel yang akan diupdate
+     * @param  int    $userId    ID user yang melakukan update
+     * @param  string $userRole  Role user (journalist, editor, admin)
+     * @param  array  $data      Data baru artikel
+     *
+     * @throws \RuntimeException jika tidak ditemukan, forbidden, atau slug conflict
+     */
+    public function updateArticle(string $id, int $userId, string $userRole, array $data): array
+    {
+        $article = DB::table('articles')->where('id', $id)->first();
+
+        if (! $article) {
+            throw new \RuntimeException('ARTICLE_NOT_FOUND', 404);
+        }
+
+        // ── Validasi Ownership ────────────────────────────────────────────────
+        // Journalist hanya boleh edit artikel miliknya sendiri
+        if ($userRole === 'journalist' && $article->author_id !== $userId) {
+            throw new \RuntimeException('FORBIDDEN_OWNERSHIP', 403);
+        }
+
+        // ── 1. Tentukan slug (jika berubah/diisi manual) ──────────────────────
+        $slug = $article->slug;
+        if (! empty($data['slug']) && $data['slug'] !== $article->slug) {
+            // Slug manual
+            $slug = Str::slug($data['slug']);
+            $this->assertSlugAvailable($slug, $id);
+        } elseif (isset($data['title']) && $data['title'] !== $article->title && empty($data['slug'])) {
+            // Judul berubah, slug tidak diisi manual → generate ulang
+            $slug = $this->generateUniqueSlug($data['title']);
+            
+            // Karena auto-generate, mungkin perlu di-suffix lagi meski kita kecualikan id ini
+            // Tapi generateUniqueSlug tidak menerima excludeId. 
+            // Namun itu aman karena loop akan mengecek DB, dan jika bentrok dia otomatis -2.
+        }
+
+        $now = now();
+
+        DB::transaction(function () use ($id, $article, $userId, $data, $slug, $now) {
+            // ── 2. INSERT Revision (Snapshot LAMA sebelum update) ──────────────
+            DB::table('article_revisions')->insert([
+                'id'               => (string) Str::uuid(),
+                'article_id'       => $id,
+                'edited_by'        => $userId, // User yang mengubah saat ini
+                'title_snapshot'   => $article->title,
+                'content_snapshot' => $article->content,
+                'change_note'      => $data['change_note'] ?? 'Update artikel',
+                'created_at'       => $now,
+            ]);
+
+            // ── 3. UPDATE articles ─────────────────────────────────────────────
+            DB::table('articles')
+                ->where('id', $id)
+                ->update([
+                    'category_id'        => $data['category_id'] ?? $article->category_id,
+                    'title'              => $data['title'] ?? $article->title,
+                    'slug'               => $slug,
+                    'excerpt'            => array_key_exists('excerpt', $data) ? $data['excerpt'] : $article->excerpt,
+                    'content'            => $data['content'] ?? $article->content,
+                    'featured_image_url' => array_key_exists('featured_image_url', $data) ? $data['featured_image_url'] : $article->featured_image_url,
+                    'updated_at'         => $now,
+                ]);
+
+            // ── 4. UPDATE article_tags ─────────────────────────────────────────
+            if (isset($data['tag_ids'])) {
+                // Hapus semua tag lama
+                DB::table('article_tags')->where('article_id', $id)->delete();
+
+                // Insert tag baru
+                if (! empty($data['tag_ids'])) {
+                    DB::table('article_tags')->insert(
+                        array_map(
+                            fn(string $tagId) => [
+                                'article_id' => $id,
+                                'tag_id'     => $tagId,
+                            ],
+                            $data['tag_ids']
+                        )
+                    );
+                }
+            }
+        });
+
+        // ── 5. Return payload data artikel yang sudah diupdate ────────────────
+        $updatedArticle = DB::table('articles')->where('id', $id)->first();
+        $tagIds = DB::table('article_tags')->where('article_id', $id)->pluck('tag_id')->toArray();
+
+        return [
+            'id'                 => $updatedArticle->id,
+            'author_id'          => $updatedArticle->author_id,
+            'category_id'        => $updatedArticle->category_id,
+            'title'              => $updatedArticle->title,
+            'slug'               => $updatedArticle->slug,
+            'excerpt'            => $updatedArticle->excerpt,
+            'featured_image_url' => $updatedArticle->featured_image_url,
+            'status'             => $updatedArticle->status,
+            'is_featured'        => (bool) $updatedArticle->is_featured,
+            'view_count'         => $updatedArticle->view_count,
+            'tag_ids'            => $tagIds,
+            'published_at'       => $updatedArticle->published_at,
+            'created_at'         => $updatedArticle->created_at,
+            'updated_at'         => $updatedArticle->updated_at,
+        ];
+    }
 }

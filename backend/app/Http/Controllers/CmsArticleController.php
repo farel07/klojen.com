@@ -117,4 +117,78 @@ class CmsArticleController extends Controller
             'data'   => $article,
         ], 201);
     }
+
+    /**
+     * PUT /api/cms/articles/{id}
+     *
+     * Update artikel.
+     * Journalist hanya bisa update artikel miliknya sendiri. Editor & Admin bisa edit semua.
+     */
+    public function update(Request $request, string $id): JsonResponse
+    {
+        /** @var \App\Models\User $user */
+        $user = auth('api')->user();
+
+        if (! in_array($user->role, ['journalist', 'editor', 'admin'])) {
+            return response()->json([
+                'status'  => 'error',
+                'code'    => 403,
+                'error'   => 'FORBIDDEN_ROLE',
+                'message' => 'Hanya journalist, editor, dan admin yang dapat mengedit artikel.',
+            ], 403);
+        }
+
+        $validated = $request->validate([
+            'title'               => 'sometimes|required|string|max:500',
+            'content'             => 'sometimes|required|string',
+            'category_id'         => 'sometimes|required|string|exists:categories,id',
+            'slug'                => 'nullable|string|max:600|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+            'excerpt'             => 'nullable|string|max:1000',
+            'featured_image_url'  => 'nullable|url|max:2048',
+            'tag_ids'             => 'nullable|array',
+            'tag_ids.*'           => 'string|exists:tags,id',
+            'change_note'         => 'nullable|string|max:500',
+        ]);
+
+        try {
+            $article = $this->cmsArticleService->updateArticle($id, $user->id, $user->role, $validated);
+        } catch (\RuntimeException $e) {
+            if ($e->getMessage() === 'ARTICLE_NOT_FOUND') {
+                return response()->json([
+                    'status'  => 'error',
+                    'code'    => 404,
+                    'error'   => 'NOT_FOUND',
+                    'message' => 'Artikel tidak ditemukan.',
+                ], 404);
+            }
+            if ($e->getMessage() === 'FORBIDDEN_OWNERSHIP') {
+                return response()->json([
+                    'status'  => 'error',
+                    'code'    => 403,
+                    'error'   => 'FORBIDDEN_OWNERSHIP',
+                    'message' => 'Anda hanya diizinkan mengubah artikel Anda sendiri.',
+                ], 403);
+            }
+            if ($e->getMessage() === 'SLUG_ALREADY_EXISTS') {
+                return response()->json([
+                    'status'  => 'error',
+                    'code'    => 409,
+                    'error'   => 'SLUG_ALREADY_EXISTS',
+                    'message' => 'Slug yang Anda masukkan sudah digunakan artikel lain.',
+                ], 409);
+            }
+
+            return response()->json([
+                'status'  => 'error',
+                'code'    => 500,
+                'error'   => 'INTERNAL_ERROR',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $article,
+        ], 200);
+    }
 }
