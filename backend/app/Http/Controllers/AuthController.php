@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -98,8 +99,14 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'data'   => [
-                'access_token' => $result['access_token'],
-                'expires_in'   => $result['expires_in'],
+                'access_token'  => $result['access_token'],
+                'refresh_token' => $validated['refresh_token'],
+                'expires_in'    => $result['expires_in'],
+                'user'          => [
+                    'id'   => $result['user']->id,
+                    'name' => $result['user']->name,
+                    'role' => $result['user']->role,
+                ],
             ],
         ]);
     }
@@ -121,6 +128,101 @@ class AuthController extends Controller
         return response()->json([
             'status'  => 'success',
             'message' => 'Logout berhasil',
+        ]);
+    }
+
+    // ── GET /auth/me ─────────────────────────────────────────────────────────
+
+    /**
+     * Dapatkan data profil user yang sedang login.
+     */
+    public function me(Request $request): JsonResponse
+    {
+        $user = auth('api')->user();
+        return response()->json([
+            'status' => 'success',
+            'data'   => [
+                'id'         => $user->id,
+                'name'       => $user->name,
+                'email'      => $user->email,
+                'role'       => $user->role,
+                'avatar_url' => $user->avatar_url,
+            ],
+        ]);
+    }
+
+    // ── PUT /auth/profile ────────────────────────────────────────────────────
+
+    /**
+     * Update data profil (nama & email).
+     */
+    public function updateProfile(Request $request): JsonResponse
+    {
+        $user = auth('api')->user();
+
+        $validated = $request->validate([
+            'name'   => 'required|string|max:255',
+            'email'  => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('avatar')) {
+            // Hapus avatar lama jika ada di storage public
+            if ($user->avatar_url) {
+                $oldPath = str_replace(asset('storage/'), '', $user->avatar_url);
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+            }
+
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $validated['avatar_url'] = asset('storage/' . $path);
+        }
+
+        // Hapus field 'avatar' agar tidak diupdate langsung ke DB
+        unset($validated['avatar']);
+
+        $user->update($validated);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Profil berhasil diperbarui.',
+            'data'    => [
+                'id'         => $user->id,
+                'name'       => $user->name,
+                'email'      => $user->email,
+                'role'       => $user->role,
+                'avatar_url' => $user->avatar_url,
+            ],
+        ]);
+    }
+
+    // ── PUT /auth/change-password ────────────────────────────────────────────
+
+    /**
+     * Ubah password user.
+     */
+    public function changePassword(Request $request): JsonResponse
+    {
+        $user = auth('api')->user();
+
+        $validated = $request->validate([
+            'current_password' => 'required|string',
+            'new_password'     => 'required|string|min:8',
+        ]);
+
+        if (!Hash::check($validated['current_password'], $user->password)) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Password saat ini salah.',
+            ], 422);
+        }
+
+        $user->update([
+            'password' => $validated['new_password'],
+        ]);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Password berhasil diubah.',
         ]);
     }
 }
