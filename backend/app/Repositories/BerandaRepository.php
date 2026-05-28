@@ -13,7 +13,7 @@ class BerandaRepository implements BerandaRepositoryInterface
 
     public function __construct()
     {
-        $this->dataPath = database_path('data/dummy.json');
+        $this->dataPath = database_path('data/dummy2.json');
     }
 
     /**

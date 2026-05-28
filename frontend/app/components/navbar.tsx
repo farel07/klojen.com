@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 import { clearRefreshToken } from "@/lib/auth";
+import { getCategories, CategoryWithChildren } from "@/lib/api/categories";
 
 // ─── AuthButton ───────────────────────────────────────────────────────────────
 
@@ -140,11 +141,47 @@ function AuthButton({ mobile = false, onClose }: AuthButtonProps) {
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 
+const STATIC_LINKS = [{ name: "Beranda", path: "/" }];
+
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [categories, setCategories] = useState<CategoryWithChildren[]>([]);
     const pathname = usePathname();
 
-    const isActive = (path: string) => pathname === path;
+    // Fetch parent categories from API
+    useEffect(() => {
+        getCategories()
+            .then((res) => {
+                // Hanya ambil parent kategori (parent_id === null)
+                const parents = res.data.data.filter(
+                    (c) => c.parent_id === null
+                );
+                setCategories(parents);
+            })
+            .catch(() => {
+                // Fallback ke kategori statis jika gagal
+                setCategories([
+                    { id: "1", name: "Kuliner",    slug: "kuliner",    parent_id: null, children: [] },
+                    { id: "2", name: "Wisata",     slug: "wisata",     parent_id: null, children: [] },
+                    { id: "3", name: "Pendidikan", slug: "pendidikan", parent_id: null, children: [] },
+                    { id: "4", name: "Hotel",      slug: "hotel",      parent_id: null, children: [] },
+                ]);
+            });
+    }, []);
+
+    // Build nav links: Beranda + semua parent categories
+    const navLinks = [
+        ...STATIC_LINKS,
+        ...categories.map((cat) => ({
+            name: cat.name,
+            path: `/kategori/${cat.slug}`,
+        })),
+    ];
+
+    const isActive = (path: string) => {
+        if (path === "/") return pathname === "/";
+        return pathname === path || pathname.startsWith(path);
+    };
 
     return (
         <>
@@ -169,13 +206,7 @@ const Navbar = () => {
 
                     {/* Desktop Menu */}
                     <nav className="hidden lg:flex items-center gap-8">
-                        {[
-                            { name: "Beranda", path: "/" },
-                            { name: "Kuliner", path: "/kuliner" },
-                            { name: "Wisata", path: "/wisata" },
-                            { name: "Pendidikan", path: "/pendidikan" },
-                            { name: "Hotel", path: "/hotel" },
-                        ].map((link) => {
+                        {navLinks.map((link) => {
                             const active = isActive(link.path);
                             return (
                                 <Link
@@ -207,13 +238,7 @@ const Navbar = () => {
                     {/* Mobile Menu */}
                     {isOpen && (
                         <div className="absolute top-[75px] left-0 w-full bg-white/90 backdrop-blur-xl border border-black/10 rounded-2xl shadow-xl p-6 flex flex-col gap-3 lg:hidden">
-                            {[
-                                { name: "Beranda", path: "/" },
-                                { name: "Kuliner", path: "/kuliner" },
-                                { name: "Wisata", path: "/wisata" },
-                                { name: "Pendidikan", path: "/pendidikan" },
-                                { name: "Hotel", path: "/hotel" },
-                            ].map((link) => {
+                            {navLinks.map((link) => {
                                 const active = isActive(link.path);
                                 return (
                                     <Link
