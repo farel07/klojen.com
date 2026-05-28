@@ -54,6 +54,7 @@ class ArticleService
     /**
      * Ambil detail artikel berdasarkan slug.
      * Return null jika tidak ditemukan atau status bukan published.
+     * View count bertambah 1 setiap kali artikel berhasil diambil.
      */
     public function getArticleBySlug(string $slug): ?array
     {
@@ -64,6 +65,13 @@ class ArticleService
         if (! $article || $article['status'] !== 'published') {
             return null;
         }
+
+        // Tambah view_count +1 dan simpan
+        $this->berandaRepository->incrementViewCount($slug);
+
+        // Reload data agar view_count yang dikembalikan sudah ter-update
+        $data    = $this->getRawData();
+        $article = collect($data['articles'])->firstWhere('slug', $slug);
 
         return $this->enrich($article, $data);
     }

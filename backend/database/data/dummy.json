@@ -1,350 +1,489 @@
 {
-  "users": [
-    {
-      "id": "u-001",
-      "name": "Andi Pratama",
-      "email": "andi@klojen.com",
-      "role": "admin",
-      "is_active": true,
-      "avatar_url": "https://i.pravatar.cc/150?img=1",
-      "bio": "Administrator sistem Portal Berita Klojen."
-    },
-    {
-      "id": "u-002",
-      "name": "Sari Dewi",
-      "email": "sari@klojen.com",
-      "role": "editor",
-      "is_active": true,
-      "avatar_url": "https://i.pravatar.cc/150?img=5",
-      "bio": "Editor senior dengan pengalaman 10 tahun di dunia jurnalistik."
-    },
-    {
-      "id": "u-003",
-      "name": "Budi Santoso",
-      "email": "budi@klojen.com",
-      "role": "journalist",
-      "is_active": true,
-      "avatar_url": "https://i.pravatar.cc/150?img=3",
-      "bio": "Jurnalis bidang politik dan pemerintahan."
-    },
-    {
-      "id": "u-004",
-      "name": "Rina Kusuma",
-      "email": "rina@klojen.com",
-      "role": "journalist",
-      "is_active": true,
-      "avatar_url": "https://i.pravatar.cc/150?img=9",
-      "bio": "Jurnalis bidang ekonomi dan bisnis."
-    },
-    {
-      "id": "u-005",
-      "name": "Dani Wahyu",
-      "email": "dani@klojen.com",
-      "role": "journalist",
-      "is_active": true,
-      "avatar_url": "https://i.pravatar.cc/150?img=7",
-      "bio": "Jurnalis bidang teknologi dan startup."
-    }
-  ],
-
-  "categories": [
-    { "id": "cat-001", "parent_id": null, "name": "Politik", "slug": "politik" },
-    { "id": "cat-002", "parent_id": null, "name": "Ekonomi", "slug": "ekonomi" },
-    { "id": "cat-003", "parent_id": null, "name": "Olahraga", "slug": "olahraga" },
-    { "id": "cat-004", "parent_id": null, "name": "Teknologi", "slug": "teknologi" },
-    { "id": "cat-005", "parent_id": null, "name": "Hiburan", "slug": "hiburan" },
-    { "id": "cat-006", "parent_id": "cat-001", "name": "Pemerintahan", "slug": "pemerintahan" },
-    { "id": "cat-007", "parent_id": "cat-001", "name": "DPR & Legislatif", "slug": "dpr-legislatif" },
-    { "id": "cat-008", "parent_id": "cat-002", "name": "Pasar Modal", "slug": "pasar-modal" },
-    { "id": "cat-009", "parent_id": "cat-002", "name": "UMKM", "slug": "umkm" },
-    { "id": "cat-010", "parent_id": "cat-003", "name": "Sepak Bola", "slug": "sepak-bola" },
-    { "id": "cat-011", "parent_id": "cat-003", "name": "Badminton", "slug": "badminton" },
-    { "id": "cat-012", "parent_id": "cat-004", "name": "Startup", "slug": "startup" },
-    { "id": "cat-013", "parent_id": "cat-004", "name": "AI & Machine Learning", "slug": "ai-machine-learning" }
-  ],
-
-  "tags": [
-    { "id": "tag-001", "name": "Pemilu 2024", "slug": "pemilu-2024" },
-    { "id": "tag-002", "name": "APBN", "slug": "apbn" },
-    { "id": "tag-003", "name": "Timnas Indonesia", "slug": "timnas-indonesia" },
-    { "id": "tag-004", "name": "Artificial Intelligence", "slug": "artificial-intelligence" },
-    { "id": "tag-005", "name": "Jokowi", "slug": "jokowi" },
-    { "id": "tag-006", "name": "Prabowo", "slug": "prabowo" },
-    { "id": "tag-007", "name": "Rupiah", "slug": "rupiah" },
-    { "id": "tag-008", "name": "Liga Champions", "slug": "liga-champions" },
-    { "id": "tag-009", "name": "Startup Indonesia", "slug": "startup-indonesia" },
-    { "id": "tag-010", "name": "Bencana Alam", "slug": "bencana-alam" },
-    { "id": "tag-011", "name": "Korupsi", "slug": "korupsi" },
-    { "id": "tag-012", "name": "Inflasi", "slug": "inflasi" }
-  ],
-
-  "articles": [
-    {
-      "id": "art-001",
-      "author_id": "u-003",
-      "category_id": "cat-001",
-      "title": "Pemerintah Umumkan Kabinet Baru, Ini Daftar Lengkap Menterinya",
-      "slug": "pemerintah-umumkan-kabinet-baru",
-      "excerpt": "Presiden resmi melantik 34 menteri kabinet baru dalam upacara khidmat di Istana Negara Jakarta.",
-      "content": "<p>Presiden Republik Indonesia hari ini secara resmi melantik 34 menteri yang akan mengisi posisi dalam kabinet baru. Pelantikan berlangsung di Istana Negara, Jakarta, dihadiri oleh para pejabat negara dan tokoh masyarakat.</p><p>Kabinet baru ini membawa wajah-wajah segar sekaligus figur berpengalaman yang diharapkan mampu membawa perubahan nyata bagi rakyat Indonesia. Sejumlah kementerian strategis mendapat perhatian khusus, termasuk Kementerian Ekonomi, Kesehatan, dan Pendidikan.</p>",
-      "featured_image_url": "https://picsum.photos/seed/kabinet/800/450",
-      "status": "published",
-      "is_featured": true,
-      "view_count": 15420,
-      "published_at": "2026-05-19T07:00:00Z",
-      "created_at": "2026-05-18T20:00:00Z",
-      "tags": ["tag-005", "tag-006"]
-    },
-    {
-      "id": "art-002",
-      "author_id": "u-004",
-      "category_id": "cat-002",
-      "title": "Rupiah Menguat ke Level Rp15.800 per Dolar AS Pagi Ini",
-      "slug": "rupiah-menguat-ke-level-15800",
-      "excerpt": "Nilai tukar rupiah terhadap dolar Amerika Serikat menguat signifikan didorong sentimen positif pasar global.",
-      "content": "<p>Nilai tukar rupiah terhadap dolar Amerika Serikat (AS) menguat pada perdagangan pagi ini. Rupiah dibuka menguat ke level Rp15.800 per dolar AS, naik 120 poin dari penutupan kemarin di Rp15.920.</p><p>Penguatan rupiah ini didorong oleh sentimen positif dari pasar global setelah data inflasi Amerika Serikat yang dirilis semalam lebih rendah dari perkiraan. Hal ini meningkatkan harapan bahwa Federal Reserve akan segera memangkas suku bunga.</p>",
-      "featured_image_url": "https://picsum.photos/seed/rupiah/800/450",
-      "status": "published",
-      "is_featured": true,
-      "view_count": 9870,
-      "published_at": "2026-05-19T06:30:00Z",
-      "created_at": "2026-05-19T06:00:00Z",
-      "tags": ["tag-007", "tag-012"]
-    },
-    {
-      "id": "art-003",
-      "author_id": "u-005",
-      "category_id": "cat-004",
-      "title": "Google Luncurkan Model AI Terbaru, Mampu Saingi GPT-5",
-      "slug": "google-luncurkan-model-ai-terbaru",
-      "excerpt": "Google DeepMind memperkenalkan Gemini Ultra 2.0 yang diklaim melampaui performa model AI terdepan saat ini.",
-      "content": "<p>Google DeepMind secara resmi memperkenalkan Gemini Ultra 2.0, model kecerdasan buatan (AI) terbaru mereka yang diklaim memiliki performa melampaui GPT-5 dari OpenAI dalam berbagai tolok ukur standar industri.</p><p>Dalam demo yang digelar di kantor pusat Google di Mountain View, California, Gemini Ultra 2.0 berhasil menyelesaikan berbagai tugas kompleks mulai dari analisis kode, penulisan kreatif, hingga pemecahan masalah matematika tingkat lanjut dengan akurasi yang mengesankan.</p>",
-      "featured_image_url": "https://picsum.photos/seed/googleai/800/450",
-      "status": "published",
-      "is_featured": true,
-      "view_count": 23150,
-      "published_at": "2026-05-18T14:00:00Z",
-      "created_at": "2026-05-18T12:00:00Z",
-      "tags": ["tag-004"]
-    },
-    {
-      "id": "art-004",
-      "author_id": "u-003",
-      "category_id": "cat-006",
-      "title": "KPK Tetapkan Tersangka Baru Kasus Korupsi Dana Infrastruktur",
-      "slug": "kpk-tetapkan-tersangka-baru-korupsi-infrastruktur",
-      "excerpt": "Komisi Pemberantasan Korupsi menetapkan dua tersangka baru terkait dugaan korupsi proyek jalan tol senilai Rp2,3 triliun.",
-      "content": "<p>Komisi Pemberantasan Korupsi (KPK) kembali menetapkan dua tersangka baru dalam kasus dugaan korupsi proyek pembangunan jalan tol senilai Rp2,3 triliun. Kedua tersangka adalah pejabat dari kementerian terkait dan seorang pengusaha swasta.</p><p>Juru bicara KPK dalam konferensi pers menyatakan bahwa penyidikan terus berkembang dan tidak menutup kemungkinan adanya tersangka tambahan dalam waktu dekat.</p>",
-      "featured_image_url": "https://picsum.photos/seed/kpk/800/450",
-      "status": "published",
-      "is_featured": false,
-      "view_count": 12300,
-      "published_at": "2026-05-19T05:00:00Z",
-      "created_at": "2026-05-18T22:00:00Z",
-      "tags": ["tag-011"]
-    },
-    {
-      "id": "art-005",
-      "author_id": "u-005",
-      "category_id": "cat-012",
-      "title": "Startup Fintech Indonesia Raih Pendanaan Seri B Senilai $50 Juta",
-      "slug": "startup-fintech-indonesia-raih-pendanaan-seri-b",
-      "excerpt": "PayKita, startup fintech asal Bandung, berhasil menutup putaran pendanaan Seri B senilai 50 juta dolar AS.",
-      "content": "<p>PayKita, startup teknologi keuangan (fintech) asal Bandung, berhasil menutup putaran pendanaan Seri B senilai 50 juta dolar AS atau sekitar Rp790 miliar. Putaran pendanaan ini dipimpin oleh firma modal ventura asal Singapura, SoftBank Vision Fund Asia.</p><p>CEO PayKita menyebutkan dana ini akan digunakan untuk ekspansi ke tiga negara ASEAN — Malaysia, Thailand, dan Vietnam — serta pengembangan fitur AI-powered financial planning yang ditargetkan rilis akhir tahun ini.</p>",
-      "featured_image_url": "https://picsum.photos/seed/fintech/800/450",
-      "status": "published",
-      "is_featured": false,
-      "view_count": 7640,
-      "published_at": "2026-05-18T10:00:00Z",
-      "created_at": "2026-05-18T08:00:00Z",
-      "tags": ["tag-009", "tag-004"]
-    },
-    {
-      "id": "art-006",
-      "author_id": "u-003",
-      "category_id": "cat-010",
-      "title": "Timnas Indonesia Lolos ke Final Piala AFF Usai Kalahkan Vietnam 3-1",
-      "slug": "timnas-indonesia-lolos-final-piala-aff",
-      "excerpt": "Garuda Muda tampil gemilang mengalahkan Vietnam dengan skor 3-1 dan berhak melaju ke babak final Piala AFF 2026.",
-      "content": "<p>Timnas Indonesia berhasil melaju ke babak final Piala AFF 2026 setelah mengalahkan Vietnam dengan skor telak 3-1 dalam pertandingan semifinal yang berlangsung di Stadion Gelora Bung Karno, Jakarta.</p><p>Tiga gol Indonesia dicetak oleh Marselino Ferdinan (menit 23), Egy Maulana Vikri (menit 55), dan Witan Sulaeman (menit 78). Satu gol balasan Vietnam dicetak oleh Nguyen Van Toan pada menit ke-61.</p>",
-      "featured_image_url": "https://picsum.photos/seed/timnas/800/450",
-      "status": "published",
-      "is_featured": true,
-      "view_count": 31200,
-      "published_at": "2026-05-17T22:00:00Z",
-      "created_at": "2026-05-17T21:00:00Z",
-      "tags": ["tag-003", "tag-008"]
-    },
-    {
-      "id": "art-007",
-      "author_id": "u-004",
-      "category_id": "cat-008",
-      "title": "IHSG Ditutup Menguat 1,2% ke Level 7.450, Saham Perbankan Jadi Motor",
-      "slug": "ihsg-ditutup-menguat-saham-perbankan",
-      "excerpt": "Indeks Harga Saham Gabungan (IHSG) ditutup menguat 1,2 persen ke level 7.450 pada akhir perdagangan hari ini.",
-      "content": "<p>Indeks Harga Saham Gabungan (IHSG) ditutup menguat 1,2 persen atau naik 88 poin ke level 7.450 pada perdagangan hari ini. Penguatan ini didorong oleh kenaikan saham-saham sektor perbankan dan energi yang mendominasi perdagangan.</p><p>Saham BBCA naik 2,1 persen, BBRI naik 1,8 persen, dan BMRI naik 1,5 persen. Total nilai transaksi hari ini mencapai Rp12,4 triliun dengan volume 18,5 miliar saham.</p>",
-      "featured_image_url": "https://picsum.photos/seed/ihsg/800/450",
-      "status": "published",
-      "is_featured": false,
-      "view_count": 5430,
-      "published_at": "2026-05-19T04:00:00Z",
-      "created_at": "2026-05-18T23:00:00Z",
-      "tags": ["tag-002", "tag-012"]
-    },
-    {
-      "id": "art-008",
-      "author_id": "u-005",
-      "category_id": "cat-013",
-      "title": "Meta Perkenalkan Llama 4: Model Open Source yang Bisa Dijalankan di Laptop",
-      "slug": "meta-perkenalkan-llama-4-open-source",
-      "excerpt": "Meta AI merilis Llama 4, model bahasa besar open source yang dirancang agar bisa berjalan efisien di perangkat consumer.",
-      "content": "<p>Meta AI resmi merilis Llama 4, generasi terbaru dari model bahasa besar (LLM) open source mereka yang kini dapat dijalankan langsung di laptop dengan spesifikasi consumer-grade. Ini adalah terobosan signifikan yang memungkinkan developer individu mengakses kemampuan AI canggih tanpa bergantung pada cloud computing.</p><p>Llama 4 tersedia dalam tiga varian ukuran: 7B, 13B, dan 70B parameter, dengan versi 7B mampu berjalan pada laptop dengan GPU 8GB VRAM.</p>",
-      "featured_image_url": "https://picsum.photos/seed/llama4/800/450",
-      "status": "published",
-      "is_featured": false,
-      "view_count": 18900,
-      "published_at": "2026-05-17T09:00:00Z",
-      "created_at": "2026-05-17T07:00:00Z",
-      "tags": ["tag-004"]
-    },
-    {
-      "id": "art-009",
-      "author_id": "u-003",
-      "category_id": "cat-007",
-      "title": "DPR Sahkan RUU Keamanan Siber, Ini Poin-poin Krusialnya",
-      "slug": "dpr-sahkan-ruu-keamanan-siber",
-      "excerpt": "Dewan Perwakilan Rakyat secara resmi mengesahkan Rancangan Undang-Undang Keamanan Siber dalam rapat paripurna.",
-      "content": "<p>Dewan Perwakilan Rakyat (DPR) RI secara resmi mengesahkan Rancangan Undang-Undang (RUU) Keamanan Siber menjadi Undang-Undang dalam rapat paripurna yang berlangsung hari ini. UU ini menjadi landasan hukum baru bagi perlindungan infrastruktur digital nasional.</p><p>Beberapa poin krusial dalam UU baru ini antara lain kewajiban enkripsi data sensitif, pembentukan Badan Keamanan Siber Nasional (BKSN), dan sanksi pidana bagi pelaku serangan siber terhadap infrastruktur kritis.</p>",
-      "featured_image_url": "https://picsum.photos/seed/dpr/800/450",
-      "status": "published",
-      "is_featured": false,
-      "view_count": 8760,
-      "published_at": "2026-05-16T11:00:00Z",
-      "created_at": "2026-05-16T09:00:00Z",
-      "tags": ["tag-004", "tag-011"]
-    },
-    {
-      "id": "art-010",
-      "author_id": "u-004",
-      "category_id": "cat-009",
-      "title": "Program KUR 2026 Dibuka, Bunga 3% per Tahun untuk UMKM",
-      "slug": "program-kur-2026-dibuka-bunga-3-persen",
-      "excerpt": "Pemerintah resmi membuka program Kredit Usaha Rakyat 2026 dengan bunga subsidi 3 persen per tahun.",
-      "content": "<p>Pemerintah melalui Kementerian Koperasi dan UKM secara resmi membuka program Kredit Usaha Rakyat (KUR) 2026 dengan suku bunga subsidi sebesar 3 persen per tahun. Total anggaran yang disiapkan untuk program ini mencapai Rp300 triliun.</p><p>KUR 2026 menyasar pelaku UMKM yang belum memiliki akses ke perbankan formal, dengan plafon pinjaman mulai dari Rp10 juta hingga Rp500 juta tergantung kategori usaha.</p>",
-      "featured_image_url": "https://picsum.photos/seed/kur/800/450",
-      "status": "published",
-      "is_featured": false,
-      "view_count": 6120,
-      "published_at": "2026-05-15T08:00:00Z",
-      "created_at": "2026-05-15T06:00:00Z",
-      "tags": ["tag-002", "tag-009"]
-    },
-    {
-      "id": "art-011",
-      "author_id": "u-005",
-      "category_id": "cat-004",
-      "title": "Apple Umumkan iPhone 18 dengan Chip A19 dan Fitur AI On-Device",
-      "slug": "apple-umumkan-iphone-18-chip-a19",
-      "excerpt": "Apple memperkenalkan iPhone 18 yang ditenagai chip A19 Bionic dengan kemampuan AI on-device yang belum pernah ada sebelumnya.",
-      "content": "<p>Apple secara resmi mengumumkan iPhone 18 dalam acara Worldwide Developers Conference (WWDC) tahunan mereka. Smartphone flagship terbaru ini ditenagai chip A19 Bionic yang diklaim 40 persen lebih cepat dari pendahulunya.</p><p>Fitur unggulan iPhone 18 adalah kemampuan AI on-device yang memungkinkan pemrosesan model bahasa besar langsung di perangkat tanpa koneksi internet, menjaga privasi pengguna sepenuhnya.</p>",
-      "featured_image_url": "https://picsum.photos/seed/iphone18/800/450",
-      "status": "published",
-      "is_featured": false,
-      "view_count": 14500,
-      "published_at": "2026-05-14T15:00:00Z",
-      "created_at": "2026-05-14T12:00:00Z",
-      "tags": ["tag-004"]
-    },
-    {
-      "id": "art-012",
-      "author_id": "u-003",
-      "category_id": "cat-011",
-      "title": "Kevin/Marcus Juarai All England 2026 dengan Dramatis di Game Ketiga",
-      "slug": "kevin-marcus-juarai-all-england-2026",
-      "excerpt": "Pasangan ganda putra andalan Indonesia, Kevin Sanjaya dan Marcus Gideon, meraih gelar All England 2026.",
-      "content": "<p>Pasangan ganda putra Indonesia, Kevin Sanjaya Sukamuljo dan Marcus Fernaldi Gideon, berhasil meraih gelar juara All England 2026 setelah mengalahkan pasangan China, Liang/Wang, dengan skor 21-19, 17-21, 21-18 dalam pertandingan final yang dramatis.</p><p>Kemenangan ini menjadi gelar All England ketujuh bagi Kevin/Marcus dan mengukuhkan mereka sebagai salah satu pasangan ganda putra terbaik sepanjang masa.</p>",
-      "featured_image_url": "https://picsum.photos/seed/badminton/800/450",
-      "status": "published",
-      "is_featured": false,
-      "view_count": 19800,
-      "published_at": "2026-05-13T18:00:00Z",
-      "created_at": "2026-05-13T16:00:00Z",
-      "tags": ["tag-003"]
-    }
-  ],
-
-  "comments": [
-    {
-      "id": "cmt-001",
-      "article_id": "art-001",
-      "user_id": "u-003",
-      "parent_id": null,
-      "content": "Semoga kabinet baru ini bisa benar-benar membawa perubahan untuk rakyat kecil.",
-      "status": "approved",
-      "created_at": "2026-05-19T08:00:00Z"
-    },
-    {
-      "id": "cmt-002",
-      "article_id": "art-001",
-      "user_id": "u-004",
-      "parent_id": "cmt-001",
-      "content": "Setuju, yang paling penting adalah konsistensi dan transparansi dalam menjalankan program.",
-      "status": "approved",
-      "created_at": "2026-05-19T08:30:00Z"
-    },
-    {
-      "id": "cmt-003",
-      "article_id": "art-003",
-      "user_id": "u-005",
-      "parent_id": null,
-      "content": "Persaingan AI semakin sengit. Bagus untuk ekosistem developer secara keseluruhan.",
-      "status": "approved",
-      "created_at": "2026-05-18T15:00:00Z"
-    },
-    {
-      "id": "cmt-004",
-      "article_id": "art-006",
-      "user_id": "u-003",
-      "parent_id": null,
-      "content": "Garuda terus melaju! Semoga di final bisa tampil sama baiknya.",
-      "status": "approved",
-      "created_at": "2026-05-17T23:00:00Z"
-    },
-    {
-      "id": "cmt-005",
-      "article_id": "art-006",
-      "user_id": "u-004",
-      "parent_id": "cmt-004",
-      "content": "Marselino memang luar biasa, pemain muda terbaik Asia Tenggara saat ini!",
-      "status": "approved",
-      "created_at": "2026-05-17T23:30:00Z"
-    }
-  ],
-
-  "media": [
-    {
-      "id": "med-001",
-      "article_id": "art-001",
-      "file_url": "https://picsum.photos/seed/kabinet-full/1200/800",
-      "media_type": "image",
-      "alt_text": "Pelantikan Kabinet Baru di Istana Negara",
-      "created_at": "2026-05-18T20:30:00Z"
-    },
-    {
-      "id": "med-002",
-      "article_id": "art-003",
-      "file_url": "https://picsum.photos/seed/gemini2/1200/800",
-      "media_type": "image",
-      "alt_text": "Demo Gemini Ultra 2.0 oleh Google DeepMind",
-      "created_at": "2026-05-18T12:30:00Z"
-    },
-    {
-      "id": "med-003",
-      "article_id": "art-006",
-      "file_url": "https://picsum.photos/seed/gbk/1200/800",
-      "media_type": "image",
-      "alt_text": "Suporter Indonesia merayakan kemenangan di GBK",
-      "created_at": "2026-05-17T21:30:00Z"
-    }
-  ]
+    "users": [
+        {
+            "id": "u-001",
+            "name": "Andi Pratama",
+            "email": "andi@klojen.com",
+            "role": "admin",
+            "is_active": true,
+            "avatar_url": "https://i.pravatar.cc/150?img=1",
+            "bio": "Administrator sistem Portal Berita Klojen."
+        },
+        {
+            "id": "u-002",
+            "name": "Sari Dewi",
+            "email": "sari@klojen.com",
+            "role": "editor",
+            "is_active": true,
+            "avatar_url": "https://i.pravatar.cc/150?img=5",
+            "bio": "Editor senior dengan pengalaman 10 tahun di dunia jurnalistik."
+        },
+        {
+            "id": "u-003",
+            "name": "Budi Santoso",
+            "email": "budi@klojen.com",
+            "role": "journalist",
+            "is_active": true,
+            "avatar_url": "https://i.pravatar.cc/150?img=3",
+            "bio": "Jurnalis bidang politik dan pemerintahan."
+        },
+        {
+            "id": "u-004",
+            "name": "Rina Kusuma",
+            "email": "rina@klojen.com",
+            "role": "journalist",
+            "is_active": true,
+            "avatar_url": "https://i.pravatar.cc/150?img=9",
+            "bio": "Jurnalis bidang ekonomi dan bisnis."
+        },
+        {
+            "id": "u-005",
+            "name": "Dani Wahyu",
+            "email": "dani@klojen.com",
+            "role": "journalist",
+            "is_active": true,
+            "avatar_url": "https://i.pravatar.cc/150?img=7",
+            "bio": "Jurnalis bidang teknologi dan startup."
+        }
+    ],
+    "categories": [
+        {
+            "id": "cat-001",
+            "parent_id": null,
+            "name": "Politik",
+            "slug": "politik"
+        },
+        {
+            "id": "cat-002",
+            "parent_id": null,
+            "name": "Ekonomi",
+            "slug": "ekonomi"
+        },
+        {
+            "id": "cat-003",
+            "parent_id": null,
+            "name": "Olahraga",
+            "slug": "olahraga"
+        },
+        {
+            "id": "cat-004",
+            "parent_id": null,
+            "name": "Teknologi",
+            "slug": "teknologi"
+        },
+        {
+            "id": "cat-005",
+            "parent_id": null,
+            "name": "Hiburan",
+            "slug": "hiburan"
+        },
+        {
+            "id": "cat-006",
+            "parent_id": "cat-001",
+            "name": "Pemerintahan",
+            "slug": "pemerintahan"
+        },
+        {
+            "id": "cat-007",
+            "parent_id": "cat-001",
+            "name": "DPR & Legislatif",
+            "slug": "dpr-legislatif"
+        },
+        {
+            "id": "cat-008",
+            "parent_id": "cat-002",
+            "name": "Pasar Modal",
+            "slug": "pasar-modal"
+        },
+        {
+            "id": "cat-009",
+            "parent_id": "cat-002",
+            "name": "UMKM",
+            "slug": "umkm"
+        },
+        {
+            "id": "cat-010",
+            "parent_id": "cat-003",
+            "name": "Sepak Bola",
+            "slug": "sepak-bola"
+        },
+        {
+            "id": "cat-011",
+            "parent_id": "cat-003",
+            "name": "Badminton",
+            "slug": "badminton"
+        },
+        {
+            "id": "cat-012",
+            "parent_id": "cat-004",
+            "name": "Startup",
+            "slug": "startup"
+        },
+        {
+            "id": "cat-013",
+            "parent_id": "cat-004",
+            "name": "AI & Machine Learning",
+            "slug": "ai-machine-learning"
+        }
+    ],
+    "tags": [
+        {
+            "id": "tag-001",
+            "name": "Pemilu 2024",
+            "slug": "pemilu-2024"
+        },
+        {
+            "id": "tag-002",
+            "name": "APBN",
+            "slug": "apbn"
+        },
+        {
+            "id": "tag-003",
+            "name": "Timnas Indonesia",
+            "slug": "timnas-indonesia"
+        },
+        {
+            "id": "tag-004",
+            "name": "Artificial Intelligence",
+            "slug": "artificial-intelligence"
+        },
+        {
+            "id": "tag-005",
+            "name": "Jokowi",
+            "slug": "jokowi"
+        },
+        {
+            "id": "tag-006",
+            "name": "Prabowo",
+            "slug": "prabowo"
+        },
+        {
+            "id": "tag-007",
+            "name": "Rupiah",
+            "slug": "rupiah"
+        },
+        {
+            "id": "tag-008",
+            "name": "Liga Champions",
+            "slug": "liga-champions"
+        },
+        {
+            "id": "tag-009",
+            "name": "Startup Indonesia",
+            "slug": "startup-indonesia"
+        },
+        {
+            "id": "tag-010",
+            "name": "Bencana Alam",
+            "slug": "bencana-alam"
+        },
+        {
+            "id": "tag-011",
+            "name": "Korupsi",
+            "slug": "korupsi"
+        },
+        {
+            "id": "tag-012",
+            "name": "Inflasi",
+            "slug": "inflasi"
+        }
+    ],
+    "articles": [
+        {
+            "id": "art-001",
+            "author_id": "u-003",
+            "category_id": "cat-001",
+            "title": "Pemerintah Umumkan Kabinet Baru, Ini Daftar Lengkap Menterinya",
+            "slug": "pemerintah-umumkan-kabinet-baru",
+            "excerpt": "Presiden resmi melantik 34 menteri kabinet baru dalam upacara khidmat di Istana Negara Jakarta.",
+            "content": "<p>Presiden Republik Indonesia hari ini secara resmi melantik 34 menteri yang akan mengisi posisi dalam kabinet baru. Pelantikan berlangsung di Istana Negara, Jakarta, dihadiri oleh para pejabat negara dan tokoh masyarakat.</p><p>Kabinet baru ini membawa wajah-wajah segar sekaligus figur berpengalaman yang diharapkan mampu membawa perubahan nyata bagi rakyat Indonesia. Sejumlah kementerian strategis mendapat perhatian khusus, termasuk Kementerian Ekonomi, Kesehatan, dan Pendidikan.</p>",
+            "featured_image_url": "https://picsum.photos/seed/kabinet/800/450",
+            "status": "published",
+            "is_featured": true,
+            "view_count": 15421,
+            "published_at": "2026-05-19T07:00:00Z",
+            "created_at": "2026-05-18T20:00:00Z",
+            "tags": [
+                "tag-005",
+                "tag-006"
+            ]
+        },
+        {
+            "id": "art-002",
+            "author_id": "u-004",
+            "category_id": "cat-002",
+            "title": "Rupiah Menguat ke Level Rp15.800 per Dolar AS Pagi Ini",
+            "slug": "rupiah-menguat-ke-level-15800",
+            "excerpt": "Nilai tukar rupiah terhadap dolar Amerika Serikat menguat signifikan didorong sentimen positif pasar global.",
+            "content": "<p>Nilai tukar rupiah terhadap dolar Amerika Serikat (AS) menguat pada perdagangan pagi ini. Rupiah dibuka menguat ke level Rp15.800 per dolar AS, naik 120 poin dari penutupan kemarin di Rp15.920.</p><p>Penguatan rupiah ini didorong oleh sentimen positif dari pasar global setelah data inflasi Amerika Serikat yang dirilis semalam lebih rendah dari perkiraan. Hal ini meningkatkan harapan bahwa Federal Reserve akan segera memangkas suku bunga.</p>",
+            "featured_image_url": "https://picsum.photos/seed/rupiah/800/450",
+            "status": "published",
+            "is_featured": true,
+            "view_count": 9870,
+            "published_at": "2026-05-19T06:30:00Z",
+            "created_at": "2026-05-19T06:00:00Z",
+            "tags": [
+                "tag-007",
+                "tag-012"
+            ]
+        },
+        {
+            "id": "art-003",
+            "author_id": "u-005",
+            "category_id": "cat-004",
+            "title": "Google Luncurkan Model AI Terbaru, Mampu Saingi GPT-5",
+            "slug": "google-luncurkan-model-ai-terbaru",
+            "excerpt": "Google DeepMind memperkenalkan Gemini Ultra 2.0 yang diklaim melampaui performa model AI terdepan saat ini.",
+            "content": "<p>Google DeepMind secara resmi memperkenalkan Gemini Ultra 2.0, model kecerdasan buatan (AI) terbaru mereka yang diklaim memiliki performa melampaui GPT-5 dari OpenAI dalam berbagai tolok ukur standar industri.</p><p>Dalam demo yang digelar di kantor pusat Google di Mountain View, California, Gemini Ultra 2.0 berhasil menyelesaikan berbagai tugas kompleks mulai dari analisis kode, penulisan kreatif, hingga pemecahan masalah matematika tingkat lanjut dengan akurasi yang mengesankan.</p>",
+            "featured_image_url": "https://picsum.photos/seed/googleai/800/450",
+            "status": "published",
+            "is_featured": true,
+            "view_count": 23152,
+            "published_at": "2026-05-18T14:00:00Z",
+            "created_at": "2026-05-18T12:00:00Z",
+            "tags": [
+                "tag-004"
+            ]
+        },
+        {
+            "id": "art-004",
+            "author_id": "u-003",
+            "category_id": "cat-006",
+            "title": "KPK Tetapkan Tersangka Baru Kasus Korupsi Dana Infrastruktur",
+            "slug": "kpk-tetapkan-tersangka-baru-korupsi-infrastruktur",
+            "excerpt": "Komisi Pemberantasan Korupsi menetapkan dua tersangka baru terkait dugaan korupsi proyek jalan tol senilai Rp2,3 triliun.",
+            "content": "<p>Komisi Pemberantasan Korupsi (KPK) kembali menetapkan dua tersangka baru dalam kasus dugaan korupsi proyek pembangunan jalan tol senilai Rp2,3 triliun. Kedua tersangka adalah pejabat dari kementerian terkait dan seorang pengusaha swasta.</p><p>Juru bicara KPK dalam konferensi pers menyatakan bahwa penyidikan terus berkembang dan tidak menutup kemungkinan adanya tersangka tambahan dalam waktu dekat.</p>",
+            "featured_image_url": "https://picsum.photos/seed/kpk/800/450",
+            "status": "published",
+            "is_featured": false,
+            "view_count": 12300,
+            "published_at": "2026-05-19T05:00:00Z",
+            "created_at": "2026-05-18T22:00:00Z",
+            "tags": [
+                "tag-011"
+            ]
+        },
+        {
+            "id": "art-005",
+            "author_id": "u-005",
+            "category_id": "cat-012",
+            "title": "Startup Fintech Indonesia Raih Pendanaan Seri B Senilai $50 Juta",
+            "slug": "startup-fintech-indonesia-raih-pendanaan-seri-b",
+            "excerpt": "PayKita, startup fintech asal Bandung, berhasil menutup putaran pendanaan Seri B senilai 50 juta dolar AS.",
+            "content": "<p>PayKita, startup teknologi keuangan (fintech) asal Bandung, berhasil menutup putaran pendanaan Seri B senilai 50 juta dolar AS atau sekitar Rp790 miliar. Putaran pendanaan ini dipimpin oleh firma modal ventura asal Singapura, SoftBank Vision Fund Asia.</p><p>CEO PayKita menyebutkan dana ini akan digunakan untuk ekspansi ke tiga negara ASEAN — Malaysia, Thailand, dan Vietnam — serta pengembangan fitur AI-powered financial planning yang ditargetkan rilis akhir tahun ini.</p>",
+            "featured_image_url": "https://picsum.photos/seed/fintech/800/450",
+            "status": "published",
+            "is_featured": false,
+            "view_count": 7640,
+            "published_at": "2026-05-18T10:00:00Z",
+            "created_at": "2026-05-18T08:00:00Z",
+            "tags": [
+                "tag-009",
+                "tag-004"
+            ]
+        },
+        {
+            "id": "art-006",
+            "author_id": "u-003",
+            "category_id": "cat-010",
+            "title": "Timnas Indonesia Lolos ke Final Piala AFF Usai Kalahkan Vietnam 3-1",
+            "slug": "timnas-indonesia-lolos-final-piala-aff",
+            "excerpt": "Garuda Muda tampil gemilang mengalahkan Vietnam dengan skor 3-1 dan berhak melaju ke babak final Piala AFF 2026.",
+            "content": "<p>Timnas Indonesia berhasil melaju ke babak final Piala AFF 2026 setelah mengalahkan Vietnam dengan skor telak 3-1 dalam pertandingan semifinal yang berlangsung di Stadion Gelora Bung Karno, Jakarta.</p><p>Tiga gol Indonesia dicetak oleh Marselino Ferdinan (menit 23), Egy Maulana Vikri (menit 55), dan Witan Sulaeman (menit 78). Satu gol balasan Vietnam dicetak oleh Nguyen Van Toan pada menit ke-61.</p>",
+            "featured_image_url": "https://picsum.photos/seed/timnas/800/450",
+            "status": "published",
+            "is_featured": true,
+            "view_count": 31201,
+            "published_at": "2026-05-17T22:00:00Z",
+            "created_at": "2026-05-17T21:00:00Z",
+            "tags": [
+                "tag-003",
+                "tag-008"
+            ]
+        },
+        {
+            "id": "art-007",
+            "author_id": "u-004",
+            "category_id": "cat-008",
+            "title": "IHSG Ditutup Menguat 1,2% ke Level 7.450, Saham Perbankan Jadi Motor",
+            "slug": "ihsg-ditutup-menguat-saham-perbankan",
+            "excerpt": "Indeks Harga Saham Gabungan (IHSG) ditutup menguat 1,2 persen ke level 7.450 pada akhir perdagangan hari ini.",
+            "content": "<p>Indeks Harga Saham Gabungan (IHSG) ditutup menguat 1,2 persen atau naik 88 poin ke level 7.450 pada perdagangan hari ini. Penguatan ini didorong oleh kenaikan saham-saham sektor perbankan dan energi yang mendominasi perdagangan.</p><p>Saham BBCA naik 2,1 persen, BBRI naik 1,8 persen, dan BMRI naik 1,5 persen. Total nilai transaksi hari ini mencapai Rp12,4 triliun dengan volume 18,5 miliar saham.</p>",
+            "featured_image_url": "https://picsum.photos/seed/ihsg/800/450",
+            "status": "published",
+            "is_featured": false,
+            "view_count": 5430,
+            "published_at": "2026-05-19T04:00:00Z",
+            "created_at": "2026-05-18T23:00:00Z",
+            "tags": [
+                "tag-002",
+                "tag-012"
+            ]
+        },
+        {
+            "id": "art-008",
+            "author_id": "u-005",
+            "category_id": "cat-013",
+            "title": "Meta Perkenalkan Llama 4: Model Open Source yang Bisa Dijalankan di Laptop",
+            "slug": "meta-perkenalkan-llama-4-open-source",
+            "excerpt": "Meta AI merilis Llama 4, model bahasa besar open source yang dirancang agar bisa berjalan efisien di perangkat consumer.",
+            "content": "<p>Meta AI resmi merilis Llama 4, generasi terbaru dari model bahasa besar (LLM) open source mereka yang kini dapat dijalankan langsung di laptop dengan spesifikasi consumer-grade. Ini adalah terobosan signifikan yang memungkinkan developer individu mengakses kemampuan AI canggih tanpa bergantung pada cloud computing.</p><p>Llama 4 tersedia dalam tiga varian ukuran: 7B, 13B, dan 70B parameter, dengan versi 7B mampu berjalan pada laptop dengan GPU 8GB VRAM.</p>",
+            "featured_image_url": "https://picsum.photos/seed/llama4/800/450",
+            "status": "published",
+            "is_featured": false,
+            "view_count": 18900,
+            "published_at": "2026-05-17T09:00:00Z",
+            "created_at": "2026-05-17T07:00:00Z",
+            "tags": [
+                "tag-004"
+            ]
+        },
+        {
+            "id": "art-009",
+            "author_id": "u-003",
+            "category_id": "cat-007",
+            "title": "DPR Sahkan RUU Keamanan Siber, Ini Poin-poin Krusialnya",
+            "slug": "dpr-sahkan-ruu-keamanan-siber",
+            "excerpt": "Dewan Perwakilan Rakyat secara resmi mengesahkan Rancangan Undang-Undang Keamanan Siber dalam rapat paripurna.",
+            "content": "<p>Dewan Perwakilan Rakyat (DPR) RI secara resmi mengesahkan Rancangan Undang-Undang (RUU) Keamanan Siber menjadi Undang-Undang dalam rapat paripurna yang berlangsung hari ini. UU ini menjadi landasan hukum baru bagi perlindungan infrastruktur digital nasional.</p><p>Beberapa poin krusial dalam UU baru ini antara lain kewajiban enkripsi data sensitif, pembentukan Badan Keamanan Siber Nasional (BKSN), dan sanksi pidana bagi pelaku serangan siber terhadap infrastruktur kritis.</p>",
+            "featured_image_url": "https://picsum.photos/seed/dpr/800/450",
+            "status": "published",
+            "is_featured": false,
+            "view_count": 8760,
+            "published_at": "2026-05-16T11:00:00Z",
+            "created_at": "2026-05-16T09:00:00Z",
+            "tags": [
+                "tag-004",
+                "tag-011"
+            ]
+        },
+        {
+            "id": "art-010",
+            "author_id": "u-004",
+            "category_id": "cat-009",
+            "title": "Program KUR 2026 Dibuka, Bunga 3% per Tahun untuk UMKM",
+            "slug": "program-kur-2026-dibuka-bunga-3-persen",
+            "excerpt": "Pemerintah resmi membuka program Kredit Usaha Rakyat 2026 dengan bunga subsidi 3 persen per tahun.",
+            "content": "<p>Pemerintah melalui Kementerian Koperasi dan UKM secara resmi membuka program Kredit Usaha Rakyat (KUR) 2026 dengan suku bunga subsidi sebesar 3 persen per tahun. Total anggaran yang disiapkan untuk program ini mencapai Rp300 triliun.</p><p>KUR 2026 menyasar pelaku UMKM yang belum memiliki akses ke perbankan formal, dengan plafon pinjaman mulai dari Rp10 juta hingga Rp500 juta tergantung kategori usaha.</p>",
+            "featured_image_url": "https://picsum.photos/seed/kur/800/450",
+            "status": "published",
+            "is_featured": false,
+            "view_count": 6120,
+            "published_at": "2026-05-15T08:00:00Z",
+            "created_at": "2026-05-15T06:00:00Z",
+            "tags": [
+                "tag-002",
+                "tag-009"
+            ]
+        },
+        {
+            "id": "art-011",
+            "author_id": "u-005",
+            "category_id": "cat-004",
+            "title": "Apple Umumkan iPhone 18 dengan Chip A19 dan Fitur AI On-Device",
+            "slug": "apple-umumkan-iphone-18-chip-a19",
+            "excerpt": "Apple memperkenalkan iPhone 18 yang ditenagai chip A19 Bionic dengan kemampuan AI on-device yang belum pernah ada sebelumnya.",
+            "content": "<p>Apple secara resmi mengumumkan iPhone 18 dalam acara Worldwide Developers Conference (WWDC) tahunan mereka. Smartphone flagship terbaru ini ditenagai chip A19 Bionic yang diklaim 40 persen lebih cepat dari pendahulunya.</p><p>Fitur unggulan iPhone 18 adalah kemampuan AI on-device yang memungkinkan pemrosesan model bahasa besar langsung di perangkat tanpa koneksi internet, menjaga privasi pengguna sepenuhnya.</p>",
+            "featured_image_url": "https://picsum.photos/seed/iphone18/800/450",
+            "status": "published",
+            "is_featured": false,
+            "view_count": 14500,
+            "published_at": "2026-05-14T15:00:00Z",
+            "created_at": "2026-05-14T12:00:00Z",
+            "tags": [
+                "tag-004"
+            ]
+        },
+        {
+            "id": "art-012",
+            "author_id": "u-003",
+            "category_id": "cat-011",
+            "title": "Kevin/Marcus Juarai All England 2026 dengan Dramatis di Game Ketiga",
+            "slug": "kevin-marcus-juarai-all-england-2026",
+            "excerpt": "Pasangan ganda putra andalan Indonesia, Kevin Sanjaya dan Marcus Gideon, meraih gelar All England 2026.",
+            "content": "<p>Pasangan ganda putra Indonesia, Kevin Sanjaya Sukamuljo dan Marcus Fernaldi Gideon, berhasil meraih gelar juara All England 2026 setelah mengalahkan pasangan China, Liang/Wang, dengan skor 21-19, 17-21, 21-18 dalam pertandingan final yang dramatis.</p><p>Kemenangan ini menjadi gelar All England ketujuh bagi Kevin/Marcus dan mengukuhkan mereka sebagai salah satu pasangan ganda putra terbaik sepanjang masa.</p>",
+            "featured_image_url": "https://picsum.photos/seed/badminton/800/450",
+            "status": "published",
+            "is_featured": false,
+            "view_count": 19800,
+            "published_at": "2026-05-13T18:00:00Z",
+            "created_at": "2026-05-13T16:00:00Z",
+            "tags": [
+                "tag-003"
+            ]
+        }
+    ],
+    "comments": [
+        {
+            "id": "cmt-001",
+            "article_id": "art-001",
+            "user_id": "u-003",
+            "parent_id": null,
+            "content": "Semoga kabinet baru ini bisa benar-benar membawa perubahan untuk rakyat kecil.",
+            "status": "approved",
+            "created_at": "2026-05-19T08:00:00Z"
+        },
+        {
+            "id": "cmt-002",
+            "article_id": "art-001",
+            "user_id": "u-004",
+            "parent_id": "cmt-001",
+            "content": "Setuju, yang paling penting adalah konsistensi dan transparansi dalam menjalankan program.",
+            "status": "approved",
+            "created_at": "2026-05-19T08:30:00Z"
+        },
+        {
+            "id": "cmt-003",
+            "article_id": "art-003",
+            "user_id": "u-005",
+            "parent_id": null,
+            "content": "Persaingan AI semakin sengit. Bagus untuk ekosistem developer secara keseluruhan.",
+            "status": "approved",
+            "created_at": "2026-05-18T15:00:00Z"
+        },
+        {
+            "id": "cmt-004",
+            "article_id": "art-006",
+            "user_id": "u-003",
+            "parent_id": null,
+            "content": "Garuda terus melaju! Semoga di final bisa tampil sama baiknya.",
+            "status": "approved",
+            "created_at": "2026-05-17T23:00:00Z"
+        },
+        {
+            "id": "cmt-005",
+            "article_id": "art-006",
+            "user_id": "u-004",
+            "parent_id": "cmt-004",
+            "content": "Marselino memang luar biasa, pemain muda terbaik Asia Tenggara saat ini!",
+            "status": "approved",
+            "created_at": "2026-05-17T23:30:00Z"
+        }
+    ],
+    "media": [
+        {
+            "id": "med-001",
+            "article_id": "art-001",
+            "file_url": "https://picsum.photos/seed/kabinet-full/1200/800",
+            "media_type": "image",
+            "alt_text": "Pelantikan Kabinet Baru di Istana Negara",
+            "created_at": "2026-05-18T20:30:00Z"
+        },
+        {
+            "id": "med-002",
+            "article_id": "art-003",
+            "file_url": "https://picsum.photos/seed/gemini2/1200/800",
+            "media_type": "image",
+            "alt_text": "Demo Gemini Ultra 2.0 oleh Google DeepMind",
+            "created_at": "2026-05-18T12:30:00Z"
+        },
+        {
+            "id": "med-003",
+            "article_id": "art-006",
+            "file_url": "https://picsum.photos/seed/gbk/1200/800",
+            "media_type": "image",
+            "alt_text": "Suporter Indonesia merayakan kemenangan di GBK",
+            "created_at": "2026-05-17T21:30:00Z"
+        }
+    ]
 }
