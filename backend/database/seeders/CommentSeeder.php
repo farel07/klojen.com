@@ -33,6 +33,6 @@ class CommentSeeder extends Seeder
 
     private function loadJson(): array
     {
-        return json_decode(file_get_contents(database_path('data/dummy.json')), true);
+        return json_decode(file_get_contents(database_path('data/dummy2.json')), true);
     }
 }
