@@ -2,15 +2,12 @@
 
 namespace App\Repositories\Contracts;
 
+use Illuminate\Database\Eloquent\Collection;
+
 interface BerandaRepositoryInterface
 {
     /**
-     * Muat seluruh data mentah dari sumber data (JSON, DB, dsb).
+     * Ambil kategori utama (tanpa parent) beserta sub-kategorinya.
      */
-    public function getAllRawData(): array;
-
-    /**
-     * Tambah view_count artikel sebesar 1 berdasarkan slug.
-     */
-    public function incrementViewCount(string $slug): void;
+    public function getHierarchicalCategories(): Collection;
 }
