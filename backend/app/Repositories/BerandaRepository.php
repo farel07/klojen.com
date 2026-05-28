@@ -2,48 +2,19 @@
 
 namespace App\Repositories;
 
+use App\Models\Category;
 use App\Repositories\Contracts\BerandaRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class BerandaRepository implements BerandaRepositoryInterface
 {
     /**
-     * Path ke file data dummy JSON.
+     * Ambil kategori utama (tanpa parent) beserta sub-kategorinya dari database.
      */
-    protected string $dataPath;
-
-    public function __construct()
+    public function getHierarchicalCategories(): Collection
     {
-        $this->dataPath = database_path('data/dummy2.json');
-    }
-
-    /**
-     * Muat seluruh data mentah dari file JSON.
-     */
-    public function getAllRawData(): array
-    {
-        return json_decode(file_get_contents($this->dataPath), true);
-    }
-
-    /**
-     * Tambah view_count artikel sebesar 1 berdasarkan slug.
-     * Perubahan disimpan kembali ke file JSON.
-     */
-    public function incrementViewCount(string $slug): void
-    {
-        $data = $this->getAllRawData();
-
-        foreach ($data['articles'] as &$article) {
-            if ($article['slug'] === $slug) {
-                $article['view_count'] = ($article['view_count'] ?? 0) + 1;
-                break;
-            }
-        }
-        unset($article);
-
-        file_put_contents(
-            $this->dataPath,
-            json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
-        );
+        return Category::whereNull('parent_id')
+            ->with('children')
+            ->get();
     }
 }
-
