@@ -122,6 +122,7 @@ class AuthService
         return [
             'access_token' => $accessToken,
             'expires_in'   => $ttl * 60,
+            'user'         => $user,
         ];
     }
 
