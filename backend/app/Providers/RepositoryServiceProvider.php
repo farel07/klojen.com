@@ -28,6 +28,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(BerandaRepositoryInterface::class, BerandaRepository::class);
         $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
         $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
+        $this->app->bind(\App\Repositories\Contracts\MediaRepositoryInterface::class, \App\Repositories\MediaRepository::class);
     }
 
     /**

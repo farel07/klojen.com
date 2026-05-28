@@ -44,8 +44,11 @@ Route::get('/articles',                  [ArticleController::class, 'index']);
 Route::get('/articles/{slug}',           [ArticleController::class, 'show']);
 Route::get('/articles/{id}/comments',    [ArticleController::class, 'comments']);
 
-// ── Bookmarks (requires authentication) ───────────────────────────────────────
+// ── Bookmarks & Media (requires authentication) ───────────────────────────────────────
 Route::middleware('auth:api')->group(function () {
     Route::get('/bookmarks',  [BookmarkController::class, 'index']);
     Route::post('/bookmarks', [BookmarkController::class, 'toggle']);
+    
+    // Media
+    Route::post('/media/upload', [\App\Http\Controllers\MediaController::class, 'upload']);
 });
