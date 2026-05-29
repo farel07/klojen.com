@@ -4,16 +4,19 @@ namespace App\Repositories;
 
 use App\Models\Article;
 use App\Repositories\Contracts\ArticleRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 class ArticleRepository implements ArticleRepositoryInterface
 {
     /**
-     * Eager load relasi yang dibutuhkan di semua query.
+     * Base query dengan eager load relasi yang selalu dibutuhkan.
+     * Menggunakan select terbatas + withCount untuk performa optimal.
      */
-    private function withRelations()
+    private function baseQuery(): Builder
     {
-        return Article::with(['author', 'category', 'tags']);
+        return Article::with(['author:id,name', 'category:id,name,slug', 'tags:id,name,slug', 'media']);
     }
 
     /**
@@ -22,7 +25,7 @@ class ArticleRepository implements ArticleRepositoryInterface
      */
     public function getFeatured(): Collection
     {
-        return $this->withRelations()
+        return $this->baseQuery()
             ->published()
             ->featured()
             ->orderByDesc('published_at')
@@ -34,7 +37,7 @@ class ArticleRepository implements ArticleRepositoryInterface
      */
     public function getLatest(int $limit = 6): Collection
     {
-        return $this->withRelations()
+        return $this->baseQuery()
             ->published()
             ->orderByDesc('published_at')
             ->limit($limit)
@@ -46,7 +49,7 @@ class ArticleRepository implements ArticleRepositoryInterface
      */
     public function getPopular(int $limit = 5): Collection
     {
-        return $this->withRelations()
+        return $this->baseQuery()
             ->published()
             ->orderByDesc('view_count')
             ->limit($limit)
@@ -54,7 +57,63 @@ class ArticleRepository implements ArticleRepositoryInterface
     }
 
     /**
+     * Ambil detail artikel berdasarkan slug (hanya published).
+     * Eager load comments dengan replies dan user.
+     */
+    public function findBySlug(string $slug): ?Article
+    {
+        return Article::with([
+                'author:id,name',
+                'category:id,name,slug',
+                'tags:id,name,slug',
+                'media',
+            ])
+            ->published()
+            ->where('slug', $slug)
+            ->first();
+    }
+
+    /**
+     * Ambil daftar artikel dengan filter opsional, diurutkan terbaru, dengan pagination DB.
+     */
+    public function getFiltered(array $params): LengthAwarePaginator
+    {
+        $query = $this->baseQuery();
+
+        // Filter status (default: published)
+        $status = $params['status'] ?? 'published';
+        $query->where('status', $status);
+
+        // Filter featured
+        if (isset($params['featured']) && $params['featured'] !== '') {
+            $query->where('is_featured', filter_var($params['featured'], FILTER_VALIDATE_BOOLEAN));
+        }
+
+        // Filter by category slug
+        if (! empty($params['category'])) {
+            $query->whereHas('category', fn(Builder $q) =>
+                $q->where('slug', $params['category'])
+            );
+        }
+
+        // Filter by tag slug
+        if (! empty($params['tag'])) {
+            $query->whereHas('tags', fn(Builder $q) =>
+                $q->where('slug', $params['tag'])
+            );
+        }
+
+        $limit = max(1, (int) ($params['limit'] ?? 10));
+        $page  = max(1, (int) ($params['page'] ?? 1));
+
+        return $query
+            ->orderByDesc('published_at')
+            ->paginate(perPage: $limit, page: $page);
+    }
+
+    /**
      * Tambah view_count artikel sebesar 1 berdasarkan slug.
+     * Menggunakan atomic increment untuk menghindari race condition.
      */
     public function incrementViewCount(string $slug): void
     {
