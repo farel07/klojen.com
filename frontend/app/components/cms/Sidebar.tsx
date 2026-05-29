@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
-  Newspaper,
-  ImageIcon,
+  HardDrive,
+  Database,
+  PenLine,
   MessageSquare,
   Users,
   LogOut,
@@ -34,15 +35,21 @@ const NAV_ITEMS: NavItem[] = [
     roles: ['journalist', 'editor', 'admin'],
   },
   {
-    label: 'Artikel',
-    href: '/cms/artikel',
-    icon: Newspaper,
+    label: 'Media Tersimpan',
+    href: '/cms/media',
+    icon: HardDrive,
     roles: ['journalist', 'editor', 'admin'],
   },
   {
-    label: 'Media',
-    href: '/cms/media',
-    icon: ImageIcon,
+    label: 'Bank Berita',
+    href: '/cms/artikel',
+    icon: Database,
+    roles: ['journalist', 'editor', 'admin'],
+  },
+  {
+    label: 'Tulis Berita',
+    href: '/cms/tulis-berita',
+    icon: PenLine,
     roles: ['journalist', 'editor', 'admin'],
   },
   {
