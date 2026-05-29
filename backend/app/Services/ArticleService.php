@@ -2,54 +2,15 @@
 
 namespace App\Services;
 
-use App\Repositories\Contracts\BerandaRepositoryInterface;
+use App\Models\Article;
+use App\Models\Comment;
+use App\Repositories\Contracts\ArticleRepositoryInterface;
 
 class ArticleService
 {
     public function __construct(
-        protected BerandaRepositoryInterface $berandaRepository,
+        protected ArticleRepositoryInterface $articleRepository,
     ) {}
-
-    /**
-     * Ambil semua data mentah sekaligus dan resolve relasi (author, category, tags, media).
-     */
-    private function getRawData(): array
-    {
-        return $this->berandaRepository->getAllRawData();
-    }
-
-    /**
-     * Enrich satu artikel: tambahkan relasi author, category, tags, media.
-     */
-    private function enrich(array $article, array $data): array
-    {
-        $users      = collect($data['users'])->keyBy('id');
-        $categories = collect($data['categories']);
-        $tags       = collect($data['tags'])->keyBy('id');
-        $media      = collect($data['media'] ?? []);
-
-        $article['author']   = $users->get($article['author_id']);
-        $article['category'] = $categories->firstWhere('id', $article['category_id']);
-        $article['tags']     = collect($article['tags'])
-            ->map(fn($tid) => $tags->get($tid))
-            ->filter()
-            ->values()
-            ->toArray();
-        $article['media'] = $media
-            ->where('article_id', $article['id'])
-            ->map(fn($m) => [
-                'id'         => $m['id'],
-                'file_url'   => $m['file_url'],
-                'media_type' => $m['media_type'],
-                'alt_text'   => $m['alt_text'] ?? null,
-            ])
-            ->values()
-            ->toArray();
-
-        unset($article['author_id'], $article['category_id']);
-
-        return $article;
-    }
 
     /**
      * Ambil detail artikel berdasarkan slug.
@@ -58,22 +19,17 @@ class ArticleService
      */
     public function getArticleBySlug(string $slug): ?array
     {
-        $data    = $this->getRawData();
-        $article = collect($data['articles'])
-            ->firstWhere('slug', $slug);
+        $article = $this->articleRepository->findBySlug($slug);
 
-        if (! $article || $article['status'] !== 'published') {
+        if (! $article) {
             return null;
         }
 
-        // Tambah view_count +1 dan simpan
-        $this->berandaRepository->incrementViewCount($slug);
+        // Atomic increment — tidak perlu reload karena kita manual set di response
+        $this->articleRepository->incrementViewCount($slug);
+        $article->view_count += 1;
 
-        // Reload data agar view_count yang dikembalikan sudah ter-update
-        $data    = $this->getRawData();
-        $article = collect($data['articles'])->firstWhere('slug', $slug);
-
-        return $this->enrich($article, $data);
+        return $this->formatArticle($article);
     }
 
     /**
@@ -81,111 +37,96 @@ class ArticleService
      */
     public function getCommentsByArticleId(string $articleId): array
     {
-        $data     = $this->getRawData();
-        $users    = collect($data['users'])->keyBy('id');
-        $allCmts  = collect($data['comments'] ?? [])
+        // Satu query: top-level approved + replies approved dengan user
+        $topLevel = Comment::with(['user:id,name', 'replies' => function ($q) {
+            $q->approved()->with('user:id,name')->orderBy('created_at');
+        }])
             ->where('article_id', $articleId)
-            ->where('status', 'approved');
+            ->approved()
+            ->topLevel()
+            ->orderBy('created_at')
+            ->get();
 
-        // Level 1: komentar tanpa parent
-        $top = $allCmts
-            ->whereNull('parent_id')
-            ->sortBy('created_at')
-            ->values()
-            ->map(function (array $c) use ($users, $allCmts): array {
-                // Level 2: replies
-                $replies = $allCmts
-                    ->where('parent_id', $c['id'])
-                    ->sortBy('created_at')
-                    ->values()
-                    ->map(fn(array $r) => $this->formatComment($r, $users))
-                    ->toArray();
-
-                $formatted           = $this->formatComment($c, $users);
-                $formatted['replies'] = $replies;
-
-                return $formatted;
-            })
-            ->toArray();
-
-        return $top;
-    }
-
-    private function formatComment(array $comment, \Illuminate\Support\Collection $users): array
-    {
-        $user = $users->get($comment['user_id']);
-
-        return [
-            'id'         => $comment['id'],
-            'content'    => $comment['content'],
-            'parent_id'  => $comment['parent_id'],
-            'created_at' => $comment['created_at'],
-            'replies'    => [],
-            'user'       => $user ? [
-                'id'   => $user['id'],
-                'name' => $user['name'],
-            ] : ['id' => null, 'name' => 'Anonim'],
-        ];
+        return $topLevel->map(fn(Comment $c) => $this->formatComment($c, withReplies: true))->values()->toArray();
     }
 
     /**
-     * Ambil daftar artikel dengan filter opsional.
+     * Ambil daftar artikel dengan filter opsional dan pagination dari DB.
      */
     public function getArticles(array $params = []): array
     {
-        $data     = $this->getRawData();
-        $articles = collect($data['articles']);
-
-        // Filter status
-        $status = $params['status'] ?? 'published';
-        $articles = $articles->where('status', $status);
-
-        // Filter featured
-        if (isset($params['featured']) && $params['featured'] !== '') {
-            $isFeatured = filter_var($params['featured'], FILTER_VALIDATE_BOOLEAN);
-            $articles   = $articles->where('is_featured', $isFeatured);
-        }
-
-        // Filter category slug
-        if (! empty($params['category'])) {
-            $categories  = collect($data['categories']);
-            $catId       = $categories->firstWhere('slug', $params['category'])['id'] ?? null;
-            if ($catId) {
-                $articles = $articles->where('category_id', $catId);
-            }
-        }
-
-        // Filter tag slug
-        if (! empty($params['tag'])) {
-            $tags  = collect($data['tags']);
-            $tagId = $tags->firstWhere('slug', $params['tag'])['id'] ?? null;
-            if ($tagId) {
-                $articles = $articles->filter(fn($a) => in_array($tagId, $a['tags'] ?? []));
-            }
-        }
-
-        // Urut terbaru
-        $articles = $articles->sortByDesc('published_at')->values();
-
-        $total = $articles->count();
-        $page  = (int) ($params['page'] ?? 1);
-        $limit = (int) ($params['limit'] ?? 10);
-
-        $paginated = $articles
-            ->skip(($page - 1) * $limit)
-            ->take($limit)
-            ->map(fn($a) => $this->enrich($a, $data))
-            ->values()
-            ->toArray();
+        $paginator = $this->articleRepository->getFiltered($params);
 
         return [
-            'articles'   => $paginated,
+            'articles'   => collect($paginator->items())->map(fn(Article $a) => $this->formatArticle($a))->values()->toArray(),
             'pagination' => [
-                'total'       => $total,
-                'page'        => $page,
-                'limit'       => $limit,
-                'total_pages' => (int) ceil($total / $limit),
+                'total'       => $paginator->total(),
+                'page'        => $paginator->currentPage(),
+                'limit'       => $paginator->perPage(),
+                'total_pages' => $paginator->lastPage(),
             ],
         ];
+    }
+
+    // ── Private helpers ───────────────────────────────────────────────────────
+
+    private function formatArticle(Article $article): array
+    {
+        return [
+            'id'                 => $article->id,
+            'title'              => $article->title,
+            'slug'               => $article->slug,
+            'excerpt'            => $article->excerpt,
+            'content'            => $article->content,
+            'featured_image_url' => $article->featured_image_url,
+            'status'             => $article->status,
+            'is_featured'        => $article->is_featured,
+            'view_count'         => $article->view_count,
+            'published_at'       => $article->published_at?->toIso8601String(),
+            'author'             => $article->author ? [
+                'id'   => $article->author->id,
+                'name' => $article->author->name,
+            ] : null,
+            'category'           => $article->category ? [
+                'id'   => $article->category->id,
+                'name' => $article->category->name,
+                'slug' => $article->category->slug,
+            ] : null,
+            'tags'               => $article->tags->map(fn($t) => [
+                'id'   => $t->id,
+                'name' => $t->name,
+                'slug' => $t->slug,
+            ])->values()->toArray(),
+            'media'              => $article->media->map(fn($m) => [
+                'id'         => $m->id,
+                'file_url'   => $m->file_url,
+                'media_type' => $m->media_type,
+                'alt_text'   => $m->alt_text,
+            ])->values()->toArray(),
+        ];
+    }
+
+    private function formatComment(Comment $comment, bool $withReplies = false): array
+    {
+        $formatted = [
+            'id'         => $comment->id,
+            'content'    => $comment->content,
+            'parent_id'  => $comment->parent_id,
+            'created_at' => $comment->created_at?->toIso8601String(),
+            'replies'    => [],
+            'user'       => $comment->user ? [
+                'id'   => $comment->user->id,
+                'name' => $comment->user->name,
+            ] : ['id' => null, 'name' => 'Anonim'],
+        ];
+
+        if ($withReplies && $comment->relationLoaded('replies')) {
+            $formatted['replies'] = $comment->replies
+                ->map(fn(Comment $r) => $this->formatComment($r))
+                ->values()
+                ->toArray();
+        }
+
+        return $formatted;
     }
 }
