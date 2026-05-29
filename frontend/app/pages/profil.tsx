@@ -46,9 +46,13 @@ export default function ProfilPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Modals state
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  // View/Edit state
+  const [isEditing, setIsEditing] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+
+  // Avatar upload states
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   // Password visibility
   const [showCurrentPass, setShowCurrentPass] = useState(false);
@@ -107,11 +111,61 @@ export default function ProfilPage() {
     }
   }, [profile, resetProfile]);
 
+  // Avatar file upload handlers
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        setProfileFormError("root", {
+          message: "Ukuran file maksimal adalah 2MB.",
+        });
+        return;
+      }
+      if (!["image/png", "image/jpeg", "image/jpg"].includes(file.type)) {
+        setProfileFormError("root", {
+          message: "Format file harus PNG atau JPG.",
+        });
+        return;
+      }
+      setSelectedFile(file);
+      const previewUrl = URL.createObjectURL(file);
+      setAvatarPreview(previewUrl);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setSelectedFile(null);
+    if (avatarPreview) {
+      URL.revokeObjectURL(avatarPreview);
+      setAvatarPreview(null);
+    }
+    if (profile) {
+      resetProfile({
+        name: profile.name,
+        email: profile.email,
+      });
+    }
+  };
+
   const onEditProfileSubmit = async (values: ProfileFormValues) => {
     try {
-      const res = await axiosInstance.put<ApiSuccess<UserProfile>>(
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("email", values.email);
+      if (selectedFile) {
+        formData.append("avatar", selectedFile);
+      }
+      formData.append("_method", "PUT");
+
+      const res = await axiosInstance.post<ApiSuccess<UserProfile>>(
         "/auth/profile",
-        values
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
 
       const updated = res.data.data;
@@ -126,7 +180,12 @@ export default function ProfilPage() {
       }
 
       setSuccessMessage("Profil Anda berhasil diperbarui.");
-      setIsEditModalOpen(false);
+      setIsEditing(false);
+      setSelectedFile(null);
+      if (avatarPreview) {
+        URL.revokeObjectURL(avatarPreview);
+        setAvatarPreview(null);
+      }
       
       // Clear success notification after 4s
       setTimeout(() => setSuccessMessage(null), 4000);
@@ -193,13 +252,37 @@ export default function ProfilPage() {
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
-          <span className="text-black/70 font-medium">Lihat Profile</span>
+          <button
+            onClick={handleCancelEdit}
+            className="text-black/25 hover:text-black/50 transition-colors font-medium cursor-pointer bg-transparent border-0 p-0"
+            type="button"
+          >
+            Lihat Profile
+          </button>
+          {isEditing && (
+            <>
+              <svg
+                className="h-3 w-3 text-black/25"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2.5"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+              <span className="text-black/70 font-medium">Edit Profile</span>
+            </>
+          )}
         </div>
 
         {/* Main Title and Subtitle */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-black/70 mb-2">Profile Saya</h1>
-          <p className="text-black/25 text-lg">Kelola informasi profil dan akun Anda</p>
+          <h1 className="text-4xl font-bold text-black/70 mb-2">
+            {isEditing ? "Edit Profile" : "Profile Saya"}
+          </h1>
+          <p className="text-black/25 text-lg">
+            {isEditing ? "Perbarui informasi profil dan akun Anda" : "Kelola informasi profil dan akun Anda"}
+          </p>
         </div>
 
         {/* Global Toast/Alert Message */}
@@ -233,194 +316,175 @@ export default function ProfilPage() {
             </button>
           </div>
         ) : profile ? (
-          /* Main Profile Card */
-          <div className="bg-white border-[0.5px] border-gray-300 rounded-[10px] shadow-sm p-8 md:p-12 w-full">
-            
-            {/* Top Section: Account Information */}
-            <div className="flex flex-col md:flex-row gap-12">
-              
-              {/* Large Avatar */}
-              <div className="flex-shrink-0 flex justify-center md:justify-start">
-                <div className="w-48 h-48 md:w-56 md:h-56 rounded-full bg-[#838383]/10 flex items-center justify-center overflow-hidden relative border border-gray-200/50">
-                  {/* Custom silhouette matching figma style */}
-                  <svg
-                    viewBox="0 0 100 100"
-                    className="w-2/3 h-2/3 text-[#838383]/40 fill-current translate-y-3.5"
-                  >
-                    <circle cx="50" cy="35" r="18" />
-                    <path d="M50 58c-22 0-32 12-32 22v5h64v-5c0-10-10-22-32-22z" />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Information Details */}
-              <div className="flex-grow w-full md:pl-4">
+          
+          isEditing ? (
+            /* Edit Profile Card (Active Mode) */
+            <div className="bg-white border-[0.5px] border-gray-300 rounded-[10px] shadow-sm w-full overflow-hidden">
+              {/* Two Column Section */}
+              <div className="flex flex-col md:flex-row">
                 
-                {/* Section Header & Action Button */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
-                  <h2 className="text-3xl font-bold text-black/70">
+                {/* Left Column: Profile Photo Upload */}
+                <div className="w-full md:w-[260px] flex-shrink-0 flex flex-col items-center border-b md:border-b-0 md:border-r border-gray-200 p-8 md:p-10">
+                  {/* Heading — same size as right column */}
+                  <h2 className="text-2xl font-bold text-black/80 mb-6 w-full text-center">
+                    Foto Profile
+                  </h2>
+
+                  {/* Avatar Circle — centered */}
+                  <div className="w-44 h-44 mb-6 rounded-full bg-[#c8d5e8] overflow-hidden flex items-center justify-center mx-auto">
+                    {avatarPreview ? (
+                      <img
+                        src={avatarPreview}
+                        alt="Avatar Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : profile.avatar_url ? (
+                      <img
+                        src={profile.avatar_url}
+                        alt="Avatar Current"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      /* Avatar person icon — fully visible, centered, matching reference image */
+                      <svg
+                        viewBox="0 0 100 90"
+                        className="w-[58%] h-[58%] fill-current text-[#4a6fa5]"
+                      >
+                        {/* Head */}
+                        <circle cx="50" cy="28" r="18" />
+                        {/* Body/shoulders */}
+                        <path d="M50 52c-22 0-34 13-34 24v6h68v-6c0-11-12-24-34-24z" />
+                      </svg>
+                    )}
+                  </div>
+
+                  {/* Upload Controls */}
+                  <div className="w-full text-center">
+                    <p className="text-gray-700 font-medium mb-3 text-sm">Upload Image :</p>
+                    {/* Choose File + filename on one line, no truncation */}
+                    <div className="flex items-center justify-center gap-2 mb-4 flex-wrap">
+                      <label className="cursor-pointer bg-white border border-gray-300 text-gray-700 px-4 py-1.5 rounded hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm whitespace-nowrap">
+                        <span>Choose File</span>
+                        <input
+                          type="file"
+                          className="hidden"
+                          accept="image/png, image/jpeg"
+                          onChange={handleFileChange}
+                        />
+                      </label>
+                      <span className="text-gray-400 text-sm whitespace-nowrap">
+                        {selectedFile ? selectedFile.name : "No File Chosen"}
+                      </span>
+                    </div>
+                    <p className="text-gray-400 text-xs leading-relaxed mb-1">
+                      Jika tidak mengubah gambar,<br />kolom ini tidak perlu diiisi
+                    </p>
+                    <p className="text-gray-400 text-xs">
+                      Format : JPG, PNG. Maks 2MB
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right Column: Account Information Form */}
+                <div className="flex-1 flex flex-col p-8 md:p-10">
+                  {/* Heading — same size as left column */}
+                  <h2 className="text-2xl font-bold text-black/80 mb-6">
                     Informasi Akun
                   </h2>
-                  <button
-                    onClick={() => {
-                      resetProfile({ name: profile.name, email: profile.email });
-                      setIsEditModalOpen(true);
-                    }}
-                    className="bg-[#1d5bb4] hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg flex items-center gap-2 font-medium transition-colors text-sm shadow-sm"
-                  >
-                    <Edit3 size={16} />
-                    <span>Edit Profil</span>
-                  </button>
-                </div>
 
-                {/* Data Fields */}
-                <div className="space-y-8">
-                  {/* Name Field */}
-                  <div className="flex items-center gap-6">
-                    <div className="w-8 flex justify-center">
-                      <UserIcon className="w-6 h-7 text-black/70" />
+                  <form id="edit-profile-form" onSubmit={handleSubmitProfile(onEditProfileSubmit)} className="space-y-5 flex-grow">
+                    
+                    {/* Form Root Error */}
+                    {profileErrors.root && (
+                      <div className="bg-red-50 border border-red-200 text-red-700 text-sm p-3 rounded-lg flex items-start gap-2">
+                        <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+                        <span>{profileErrors.root.message}</span>
+                      </div>
+                    )}
+
+                    {/* Name Input Field */}
+                    <div>
+                      <label className="block text-gray-800 font-medium mb-1.5 text-sm">
+                        Nama
+                      </label>
+                      <div className="relative">
+                        {/* User icon — outline style matching Figma */}
+                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                          <svg
+                            className="w-4 h-4 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                          </svg>
+                        </div>
+                        <input
+                          type="text"
+                          {...registerProfile("name")}
+                          className={`w-full pl-10 pr-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-gray-700 bg-white text-sm transition-all ${
+                            profileErrors.name ? "border-red-400 focus:ring-red-400" : "border-gray-300"
+                          }`}
+                          placeholder=""
+                        />
+                      </div>
+                      {profileErrors.name && (
+                        <p className="mt-1 ml-4 text-xs text-red-500">{profileErrors.name.message}</p>
+                      )}
                     </div>
-                    <div className="w-24 text-black/25 text-xl font-medium">Nama</div>
-                    <div className="text-black/70 text-xl font-semibold truncate">
-                      {profile.name}
+
+                    {/* Email Input Field */}
+                    <div>
+                      <label className="block text-gray-800 font-medium mb-1.5 text-sm">
+                        Email
+                      </label>
+                      <div className="relative">
+                        {/* Mail icon — outline style matching Figma */}
+                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                          <svg
+                            className="w-4 h-4 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                          </svg>
+                        </div>
+                        <input
+                          type="email"
+                          {...registerProfile("email")}
+                          className={`w-full pl-10 pr-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-gray-700 bg-white text-sm transition-all ${
+                            profileErrors.email ? "border-red-400 focus:ring-red-400" : "border-gray-300"
+                          }`}
+                          placeholder=""
+                        />
+                      </div>
+                      {profileErrors.email && (
+                        <p className="mt-1 ml-4 text-xs text-red-500">{profileErrors.email.message}</p>
+                      )}
                     </div>
-                  </div>
 
-                  {/* Email Field */}
-                  <div className="flex items-center gap-6">
-                    <div className="w-8 flex justify-center">
-                      <Mail className="w-7 h-7 text-black/70" />
-                    </div>
-                    <div className="w-24 text-black/25 text-xl font-medium">Email</div>
-                    <div className="text-black/70 text-xl font-semibold truncate">
-                      {profile.email}
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            {/* Horizontal Divider stretching full width of card */}
-            <hr className="border-t border-gray-300 my-12" />
-
-            {/* Bottom Section: Account Security */}
-            <div>
-              
-              {/* Heading and Button Row */}
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
-                <h2 className="text-3xl font-bold text-black/70">
-                  Keamanan Akun
-                </h2>
-                <button
-                  onClick={() => {
-                    resetPassword();
-                    setIsPasswordModalOpen(true);
-                  }}
-                  className="border border-[#1d5bb4] text-[#1d5bb4] hover:bg-blue-50 bg-white px-6 py-2.5 rounded-lg flex items-center gap-2 font-medium transition-colors text-sm shadow-sm"
-                >
-                  <Lock size={16} />
-                  <span>Ubah Password</span>
-                </button>
-              </div>
-
-              {/* Password Field Row */}
-              <div className="flex items-center gap-6 md:ml-4">
-                <div className="w-8 flex justify-center">
-                  <Lock className="w-6 h-7 text-black/70" />
-                </div>
-                <div className="w-24 text-black/25 text-xl font-medium">Pasword</div>
-                <div className="text-black/70 text-4xl tracking-[0.2em] leading-none mt-2 select-none">
-                  ••••••••
+                  </form>
                 </div>
               </div>
 
-            </div>
-
-          </div>
-        ) : null}
-
-      </div>
-
-      {/* ── EDIT PROFILE MODAL ── */}
-      {isEditModalOpen && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 md:p-8 shadow-2xl relative animate-scale-up">
-            
-            {/* Close Button */}
-            <button
-              onClick={() => setIsEditModalOpen(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100"
-            >
-              <X size={20} />
-            </button>
-
-            <h3 className="text-xl font-bold text-gray-900 mb-6">
-              Edit Informasi Profil
-            </h3>
-
-            <form onSubmit={handleSubmitProfile(onEditProfileSubmit)} className="space-y-5">
-              
-              {/* Form Root Error */}
-              {profileErrors.root && (
-                <div className="bg-red-50 border border-red-200 text-red-700 text-sm p-4 rounded-xl flex items-start gap-2">
-                  <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                  <span>{profileErrors.root.message}</span>
-                </div>
-              )}
-
-              {/* Name Input */}
-              <div>
-                <label htmlFor="edit-name" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                  Nama Lengkap
-                </label>
-                <input
-                  type="text"
-                  id="edit-name"
-                  {...registerProfile("name")}
-                  className={`w-full bg-white rounded-xl border px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-shadow text-gray-800 ${
-                    profileErrors.name ? "border-red-400" : "border-gray-250"
-                  }`}
-                  placeholder="Nama Lengkap"
-                />
-                {profileErrors.name && (
-                  <p className="mt-1 text-xs text-red-500">{profileErrors.name.message}</p>
-                )}
-              </div>
-
-              {/* Email Input */}
-              <div>
-                <label htmlFor="edit-email" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                  Alamat Email
-                </label>
-                <input
-                  type="email"
-                  id="edit-email"
-                  {...registerProfile("email")}
-                  className={`w-full bg-white rounded-xl border px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-shadow text-gray-800 ${
-                    profileErrors.email ? "border-red-400" : "border-gray-250"
-                  }`}
-                  placeholder="nama@email.com"
-                />
-                {profileErrors.email && (
-                  <p className="mt-1 text-xs text-red-500">{profileErrors.email.message}</p>
-                )}
-              </div>
-
-              {/* Actions */}
-              <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+              {/* Action Buttons Row — full-width bottom of card */}
+              <div className="flex items-center justify-end gap-3 px-8 md:px-10 py-5 border-t border-gray-200 bg-white">
                 <button
                   type="button"
-                  onClick={() => setIsEditModalOpen(false)}
+                  onClick={handleCancelEdit}
                   disabled={isProfileSubmitting}
-                  className="px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-colors text-sm"
+                  className="px-8 py-2.5 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm cursor-pointer"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
+                  form="edit-profile-form"
                   disabled={isProfileSubmitting}
-                  className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold flex items-center gap-2 transition-colors text-sm disabled:opacity-75 disabled:cursor-not-allowed"
+                  className="px-8 py-2.5 bg-[#1d5bb4] hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors flex items-center gap-2 text-sm disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {isProfileSubmitting ? (
                     <>
@@ -432,11 +496,123 @@ export default function ProfilPage() {
                   )}
                 </button>
               </div>
+            </div>
+          ) : (
+            /* Main Profile Card (View Mode) */
+            <div className="bg-white border-[0.5px] border-gray-300 rounded-[10px] shadow-sm p-8 md:p-12 w-full">
+              
+              {/* Top Section: Account Information */}
+              <div className="flex flex-col md:flex-row gap-12">
+                
+                {/* Large Avatar */}
+                <div className="flex-shrink-0 flex justify-center md:justify-start">
+                  <div className="w-48 h-48 md:w-56 md:h-56 rounded-full bg-[#838383]/10 flex items-center justify-center overflow-hidden relative border border-gray-200/50">
+                    {profile.avatar_url ? (
+                      <img
+                        src={profile.avatar_url}
+                        alt={profile.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <svg
+                        viewBox="0 0 100 100"
+                        className="w-2/3 h-2/3 text-[#838383]/40 fill-current translate-y-3.5"
+                      >
+                        <circle cx="50" cy="35" r="18" />
+                        <path d="M50 58c-22 0-32 12-32 22v5h64v-5c0-10-10-22-32-22z" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
 
-            </form>
-          </div>
-        </div>
-      )}
+                {/* Information Details */}
+                <div className="flex-grow w-full md:pl-4">
+                  
+                  {/* Section Header & Action Button */}
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+                    <h2 className="text-3xl font-bold text-black/70">
+                      Informasi Akun
+                    </h2>
+                    <button
+                      onClick={() => {
+                        setIsEditing(true);
+                      }}
+                      className="bg-[#1d5bb4] hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg flex items-center gap-2 font-medium transition-colors text-sm shadow-sm cursor-pointer"
+                    >
+                      <Edit3 size={16} />
+                      <span>Edit Profil</span>
+                    </button>
+                  </div>
+
+                  {/* Data Fields */}
+                  <div className="space-y-8">
+                    {/* Name Field */}
+                    <div className="flex items-center gap-6">
+                      <div className="w-8 flex justify-center">
+                        <UserIcon className="w-6 h-7 text-black/70" />
+                      </div>
+                      <div className="w-24 text-black/25 text-xl font-medium">Nama</div>
+                      <div className="text-black/70 text-xl font-semibold truncate">
+                        {profile.name}
+                      </div>
+                    </div>
+
+                    {/* Email Field */}
+                    <div className="flex items-center gap-6">
+                      <div className="w-8 flex justify-center">
+                        <Mail className="w-7 h-7 text-black/70" />
+                      </div>
+                      <div className="w-24 text-black/25 text-xl font-medium">Email</div>
+                      <div className="text-black/70 text-xl font-semibold truncate">
+                        {profile.email}
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              {/* Horizontal Divider stretching full width of card */}
+              <hr className="border-t border-gray-300 my-12" />
+
+              {/* Bottom Section: Account Security */}
+              <div>
+                
+                {/* Heading and Button Row */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+                  <h2 className="text-3xl font-bold text-black/70">
+                    Keamanan Akun
+                  </h2>
+                  <button
+                    onClick={() => {
+                      resetPassword();
+                      setIsPasswordModalOpen(true);
+                    }}
+                    className="border border-[#1d5bb4] text-[#1d5bb4] hover:bg-blue-50 bg-white px-6 py-2.5 rounded-lg flex items-center gap-2 font-medium transition-colors text-sm shadow-sm cursor-pointer"
+                  >
+                    <Lock size={16} />
+                    <span>Ubah Password</span>
+                  </button>
+                </div>
+
+                {/* Password Field Row */}
+                <div className="flex items-center gap-6 md:ml-4">
+                  <div className="w-8 flex justify-center">
+                    <Lock className="w-6 h-7 text-black/70" />
+                  </div>
+                  <div className="w-24 text-black/25 text-xl font-medium">Pasword</div>
+                  <div className="text-black/70 text-4xl tracking-[0.2em] leading-none mt-2 select-none">
+                    ••••••••
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          )
+        ) : null}
+
+      </div>
 
       {/* ── CHANGE PASSWORD MODAL ── */}
       {isPasswordModalOpen && (
