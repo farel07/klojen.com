@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 import {
   LayoutDashboard,
   Newspaper,
@@ -12,10 +11,9 @@ import {
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
-  UserCircle,
-  Hash,
-  Megaphone,
-  LineChart,
+  PenLine,
+  FileText,
+  Shield,
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import axiosInstance from '@/lib/axios';
@@ -24,72 +22,53 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Role } from '@/app/types';
 
+// ─── Nav item type ────────────────────────────────────────────────────────────
+
 interface NavItem {
   label: string;
   href: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
+  /** Prefix a "+" icon to visually indicate create/shortcut actions */
+  isAction?: boolean;
 }
 
-const EDITOR_NAV_ITEMS: NavItem[] = [
-  {
-    label: 'Dashboard',
-    href: '/cms/dashboard',
-    icon: LayoutDashboard,
-  },
-  {
-    label: 'Artikel',
-    href: '/cms/artikel',
-    icon: Newspaper,
-  },
-  {
-    label: 'Media',
-    href: '/cms/media',
-    icon: ImageIcon,
-  },
-  {
-    label: 'Komentar',
-    href: '/cms/komentar',
-    icon: MessageSquare,
-  },
-];
+// ─── Role-specific nav configs ────────────────────────────────────────────────
 
-const ADMIN_NAV_ITEMS: NavItem[] = [
-  {
-    label: 'Dashboard',
-    href: '/cms/dashboard',
-    icon: LayoutDashboard,
-  },
-  {
-    label: 'Kelola Akun Karyawan',
-    href: '/cms/karyawan',
-    icon: UserCircle,
-  },
-  {
-    label: 'Kelola Akun Pengguna',
-    href: '/cms/pengguna',
-    icon: Users,
-  },
-  {
-    label: 'Kategori dan Tag',
-    href: '/cms/kategori',
-    icon: Hash,
-  },
-  {
-    label: 'Kelola Iklan',
-    href: '/cms/iklan',
-    icon: Megaphone,
-  },
-  {
-    label: 'Statistik Portal',
-    href: '/cms/statistik',
-    icon: LineChart,
-  },
-];
+const NAV_BY_ROLE: Record<Role, NavItem[]> = {
+  reader: [],
+
+  journalist: [
+    { label: 'Dashboard',      href: '/cms/dashboard',      icon: LayoutDashboard },
+    { label: 'Media Tersimpan',href: '/cms/media',           icon: ImageIcon },
+    { label: 'Bank Berita',    href: '/cms/artikel',         icon: Newspaper },
+    { label: 'Tulis Berita',   href: '/cms/artikel/baru',    icon: PenLine,   isAction: true },
+  ],
+
+  editor: [
+    { label: 'Dashboard',      href: '/cms/dashboard',           icon: LayoutDashboard },
+    { label: 'Media Tersimpan',href: '/cms/media',               icon: ImageIcon },
+    { label: 'Bank Berita',    href: '/cms/artikel',             icon: Newspaper },
+    { label: 'Tulis Berita',   href: '/cms/artikel/baru',        icon: PenLine,   isAction: true },
+    { label: 'Draf Berita',    href: '/cms/artikel?status=draft',icon: FileText,  isAction: true },
+  ],
+
+  admin: [
+    { label: 'Dashboard',      href: '/cms/dashboard',      icon: LayoutDashboard },
+    { label: 'Semua Artikel',  href: '/cms/artikel',         icon: Newspaper },
+    { label: 'Media',          href: '/cms/media',           icon: ImageIcon },
+    { label: 'Komentar',       href: '/cms/komentar',        icon: MessageSquare },
+    { label: 'Pengguna',       href: '/cms/pengguna',        icon: Users },
+  ],
+};
+
+// ─── Props ────────────────────────────────────────────────────────────────────
 
 interface SidebarProps {
   collapsed: boolean;
   onToggle: () => void;
 }
+
+// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const pathname = usePathname();
@@ -97,10 +76,24 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const role = user?.role as Role | undefined;
+  const role = (user?.role ?? 'reader') as Role;
+  const navItems = NAV_BY_ROLE[role] ?? [];
 
-  const filteredNav = role === 'admin' ? ADMIN_NAV_ITEMS : EDITOR_NAV_ITEMS;
+  // ── Active detection ──────────────────────────────────────────────────────
+  const isActive = (href: string) => {
+    // Exact match for dashboard and create pages
+    if (href === '/cms/dashboard' || href === '/cms/artikel/baru') {
+      return pathname === href;
+    }
+    // Query-param links: match both pathname AND query
+    if (href.includes('?')) {
+      const [hrefPath] = href.split('?');
+      return pathname === hrefPath && typeof window !== 'undefined' && window.location.search.includes('status=draft');
+    }
+    return pathname.startsWith(href);
+  };
 
+  // ── Logout ────────────────────────────────────────────────────────────────
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
@@ -109,17 +102,12 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
         await axiosInstance.post('/auth/logout', { refresh_token: refreshToken });
       }
     } catch {
-      // Logout tetap lanjut walau request gagal
+      // Lanjut logout meski request gagal
     } finally {
       logout();
       clearRefreshToken();
       router.push('/login');
     }
-  };
-
-  const isActive = (href: string) => {
-    if (href === '/cms/dashboard') return pathname === href;
-    return pathname.startsWith(href);
   };
 
   return (
@@ -130,17 +118,19 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
         ${collapsed ? 'w-20' : 'w-64'}
       `}
     >
-      {/* Logo + Toggle */}
+      {/* ── Logo + Toggle ──────────────────────────────────────────────────── */}
       <div className="flex items-center justify-between px-5 py-7">
         {!collapsed && (
           <div className="flex items-center gap-3">
-            <Image src="/images/logo.png" alt="Klojen Logo" width={40} height={40} className="h-8 w-auto" priority />
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center shadow-md">
+              <span className="text-white font-extrabold text-sm">K</span>
+            </div>
             <span className="text-xl font-bold tracking-tight text-gray-900">Klojen</span>
           </div>
         )}
         {collapsed && (
-          <div className="mx-auto flex h-8 w-8 items-center justify-center overflow-hidden">
-            <Image src="/images/logo.png" alt="Klojen Logo" width={40} height={40} className="h-full w-auto object-contain object-left" priority />
+          <div className="mx-auto w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center shadow-md">
+            <span className="text-white font-extrabold text-sm">K</span>
           </div>
         )}
         {!collapsed && (
@@ -167,10 +157,10 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
         </div>
       )}
 
-      {/* Navigation */}
+      {/* ── Navigation ─────────────────────────────────────────────────────── */}
       <nav className="flex-1 mt-2">
-        <ul className="flex flex-col gap-1 px-2">
-          {filteredNav.map((item) => {
+        <ul className="flex flex-col gap-0.5 px-2">
+          {navItems.map((item) => {
             const active = isActive(item.href);
             const Icon = item.icon;
             return (
@@ -179,7 +169,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                   href={item.href}
                   title={collapsed ? item.label : undefined}
                   className={`
-                    flex items-center gap-4 px-4 py-3 rounded-xl font-medium
+                    flex items-center gap-3 px-4 py-3 rounded-xl font-medium
                     transition-all duration-200 group relative
                     ${active
                       ? 'bg-white text-blue-600 shadow-sm font-semibold'
@@ -192,11 +182,22 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                   {active && (
                     <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-500 rounded-r-full" />
                   )}
+
                   <Icon
-                    size={20}
-                    className={active ? 'text-blue-600' : 'text-gray-500 group-hover:text-gray-700'}
+                    size={19}
+                    className={active ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'}
                   />
-                  {!collapsed && <span className="text-sm">{item.label}</span>}
+
+                  {!collapsed && (
+                    <span className="text-sm flex items-center gap-1.5">
+                      {item.isAction && (
+                        <span className={`text-base leading-none font-bold ${active ? 'text-blue-500' : 'text-gray-400'}`}>
+                          +
+                        </span>
+                      )}
+                      {item.label}
+                    </span>
+                  )}
                 </Link>
               </li>
             );
@@ -204,24 +205,27 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
         </ul>
       </nav>
 
-      {/* Divider */}
+      {/* ── Divider ────────────────────────────────────────────────────────── */}
       <div className="mx-4 border-t border-blue-200/60" />
 
-      {/* Logout */}
+      {/* ── Logout ─────────────────────────────────────────────────────────── */}
       <div className={`mb-6 mt-4 ${collapsed ? 'flex justify-center' : 'px-4'}`}>
         <button
+          id="btn-sidebar-logout"
           onClick={handleLogout}
           disabled={isLoggingOut}
           title={collapsed ? 'Keluar' : undefined}
           className={`
-            flex items-center gap-4 font-medium text-gray-600
+            flex items-center gap-3 font-medium text-gray-600
             hover:text-red-500 transition-colors rounded-xl px-4 py-3
             hover:bg-red-50 w-full disabled:opacity-60
             ${collapsed ? 'justify-center px-0 w-auto' : ''}
           `}
         >
-          <LogOut size={20} />
-          {!collapsed && <span className="text-sm">{isLoggingOut ? 'Keluar...' : 'Keluar'}</span>}
+          <LogOut size={19} />
+          {!collapsed && (
+            <span className="text-sm">{isLoggingOut ? 'Keluar...' : 'Keluar'}</span>
+          )}
         </button>
       </div>
     </aside>

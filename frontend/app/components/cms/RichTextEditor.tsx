@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { Bold, Italic, List, ListOrdered, Heading2, Heading3, Link2, ImageIcon, AlignLeft, AlignCenter, Quote, Code } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Bold, Italic, List, ListOrdered, Heading2, Heading3, Link2, AlignLeft, AlignCenter, Quote, Code } from 'lucide-react';
 
 interface RichTextEditorProps {
   value: string;
@@ -42,17 +42,34 @@ const TOOLBAR_BUTTONS: ToolbarButton[] = [
 export default function RichTextEditor({
   value,
   onChange,
-  placeholder = 'Mulai tulis konten berita di sini...',
-  minHeight = 400,
+  placeholder = 'Tulis isi berita di sini...',
+  minHeight = 280,
 }: RichTextEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [activeFormats, setActiveFormats] = useState<Set<string>>(new Set());
+  const [charCount, setCharCount] = useState(0);
+  // Track if editor is empty to show placeholder
+  const [isEmpty, setIsEmpty] = useState(!value);
+  // To avoid cursor jump, only set innerHTML on mount
+  const isFirstRender = useRef(true);
+
+  // Initialize editor content on mount only
+  useEffect(() => {
+    if (editorRef.current && isFirstRender.current) {
+      editorRef.current.innerHTML = value || '';
+      isFirstRender.current = false;
+      const text = editorRef.current.innerText || '';
+      setCharCount(text.length);
+      setIsEmpty(text.trim() === '');
+    }
+  }, []);
 
   const execCommand = (command: FormatCommand, val?: string) => {
-    document.execCommand(command, false, val);
     editorRef.current?.focus();
+    document.execCommand(command, false, val);
     updateActiveFormats();
+    syncContent();
   };
 
   const updateActiveFormats = () => {
@@ -64,11 +81,21 @@ export default function RichTextEditor({
     setActiveFormats(active);
   };
 
-  const handleInput = () => {
+  const syncContent = () => {
     if (editorRef.current) {
-      onChange(editorRef.current.innerHTML);
-      updateActiveFormats();
+      const html = editorRef.current.innerHTML;
+      const text = editorRef.current.innerText || '';
+      // Treat empty div or <br> as truly empty
+      const effectivelyEmpty = text.trim() === '' || html === '<br>';
+      setIsEmpty(effectivelyEmpty);
+      setCharCount(text.replace(/\n/g, '').length);
+      onChange(effectivelyEmpty ? '' : html);
     }
+  };
+
+  const handleInput = () => {
+    syncContent();
+    updateActiveFormats();
   };
 
   const handleLinkInsert = () => {
@@ -78,6 +105,17 @@ export default function RichTextEditor({
 
   const handleQuote = () => {
     execCommand('formatBlock', 'blockquote');
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    // Support deleting all content with Ctrl+A then Delete/Backspace
+    if (e.key === 'Delete' || e.key === 'Backspace') {
+      // Let native handling occur, then sync
+      setTimeout(() => {
+        syncContent();
+        updateActiveFormats();
+      }, 0);
+    }
   };
 
   return (
@@ -154,8 +192,8 @@ export default function RichTextEditor({
 
       {/* Editable Area */}
       <div className="relative bg-white">
-        {/* Placeholder */}
-        {!value && !isFocused && (
+        {/* Placeholder — shown only when editor is empty and not focused */}
+        {isEmpty && !isFocused && (
           <div
             className="absolute top-4 left-5 text-gray-400 text-sm pointer-events-none select-none"
           >
@@ -169,11 +207,11 @@ export default function RichTextEditor({
           contentEditable
           suppressContentEditableWarning
           onInput={handleInput}
+          onKeyDown={handleKeyDown}
           onKeyUp={updateActiveFormats}
           onMouseUp={updateActiveFormats}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          dangerouslySetInnerHTML={{ __html: value }}
+          onFocus={() => { setIsFocused(true); updateActiveFormats(); }}
+          onBlur={() => { setIsFocused(false); syncContent(); }}
           style={{ minHeight }}
           className="
             px-5 py-4 outline-none text-gray-800 text-sm leading-relaxed
@@ -195,7 +233,7 @@ export default function RichTextEditor({
       {/* Footer: char count */}
       <div className="px-5 py-2 bg-gray-50 border-t border-gray-100 flex justify-end">
         <span className="text-xs text-gray-400">
-          {value.replace(/<[^>]+>/g, '').length} karakter
+          {charCount} karakter
         </span>
       </div>
     </div>
