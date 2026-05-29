@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import {
   LayoutDashboard,
   Newspaper,
@@ -11,6 +12,10 @@ import {
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
+  UserCircle,
+  Hash,
+  Megaphone,
+  LineChart,
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import axiosInstance from '@/lib/axios';
@@ -23,39 +28,61 @@ interface NavItem {
   label: string;
   href: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
-  roles: Role[];
 }
 
-const NAV_ITEMS: NavItem[] = [
+const EDITOR_NAV_ITEMS: NavItem[] = [
   {
     label: 'Dashboard',
     href: '/cms/dashboard',
     icon: LayoutDashboard,
-    roles: ['journalist', 'editor', 'admin'],
   },
   {
     label: 'Artikel',
     href: '/cms/artikel',
     icon: Newspaper,
-    roles: ['journalist', 'editor', 'admin'],
   },
   {
     label: 'Media',
     href: '/cms/media',
     icon: ImageIcon,
-    roles: ['journalist', 'editor', 'admin'],
   },
   {
     label: 'Komentar',
     href: '/cms/komentar',
     icon: MessageSquare,
-    roles: ['editor', 'admin'],
+  },
+];
+
+const ADMIN_NAV_ITEMS: NavItem[] = [
+  {
+    label: 'Dashboard',
+    href: '/cms/dashboard',
+    icon: LayoutDashboard,
   },
   {
-    label: 'Pengguna',
+    label: 'Kelola Akun Karyawan',
+    href: '/cms/karyawan',
+    icon: UserCircle,
+  },
+  {
+    label: 'Kelola Akun Pengguna',
     href: '/cms/pengguna',
     icon: Users,
-    roles: ['admin'],
+  },
+  {
+    label: 'Kategori dan Tag',
+    href: '/cms/kategori',
+    icon: Hash,
+  },
+  {
+    label: 'Kelola Iklan',
+    href: '/cms/iklan',
+    icon: Megaphone,
+  },
+  {
+    label: 'Statistik Portal',
+    href: '/cms/statistik',
+    icon: LineChart,
   },
 ];
 
@@ -72,10 +99,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
   const role = user?.role as Role | undefined;
 
-  const filteredNav = NAV_ITEMS.filter((item) => {
-    if (!role) return false;
-    return item.roles.includes(role);
-  });
+  const filteredNav = role === 'admin' ? ADMIN_NAV_ITEMS : EDITOR_NAV_ITEMS;
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -110,15 +134,13 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
       <div className="flex items-center justify-between px-5 py-7">
         {!collapsed && (
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center shadow-md">
-              <span className="text-white font-extrabold text-sm">K</span>
-            </div>
+            <Image src="/images/logo.png" alt="Klojen Logo" width={40} height={40} className="h-8 w-auto" priority />
             <span className="text-xl font-bold tracking-tight text-gray-900">Klojen</span>
           </div>
         )}
         {collapsed && (
-          <div className="mx-auto w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center shadow-md">
-            <span className="text-white font-extrabold text-sm">K</span>
+          <div className="mx-auto flex h-8 w-8 items-center justify-center overflow-hidden">
+            <Image src="/images/logo.png" alt="Klojen Logo" width={40} height={40} className="h-full w-auto object-contain object-left" priority />
           </div>
         )}
         {!collapsed && (
