@@ -15,4 +15,14 @@ interface UserRepositoryInterface
      * Cari user berdasarkan email.
      */
     public function findByEmail(string $email): ?User;
+
+    /**
+     * Ambil semua user (untuk admin).
+     */
+    public function getAll(): \Illuminate\Database\Eloquent\Collection;
+
+    /**
+     * Cari user berdasarkan ID.
+     */
+    public function findById(int|string $id): ?User;
 }
