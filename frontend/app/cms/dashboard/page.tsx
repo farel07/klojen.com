@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { canPublish } from '@/app/constants/roles';
 import { Role } from '@/app/types';
 import Link from 'next/link';
+import AdminDashboard from '@/app/components/cms/AdminDashboard';
 import {
   FileText,
   Clock,
@@ -132,9 +133,9 @@ const CustomTooltip = ({
   return null;
 };
 
-// ─── Main Page ────────────────────────────────────────────────────────────────
+// ─── Sub-views ────────────────────────────────────────────────────────────────
 
-export default function DashboardPage() {
+function EditorDashboardView() {
   const { user } = useAuthStore();
   const role = user?.role as Role | undefined;
   const isEditorOrAbove = role ? canPublish(role) : false;
@@ -414,4 +415,16 @@ export default function DashboardPage() {
       )}
     </div>
   );
+}
+
+// ─── Main Page Router ────────────────────────────────────────────────────────
+
+export default function DashboardPage() {
+  const { user } = useAuthStore();
+  
+  if (user?.role === 'admin') {
+    return <AdminDashboard />;
+  }
+
+  return <EditorDashboardView />;
 }
