@@ -5,21 +5,17 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import {
   LayoutDashboard,
-  HardDrive,
-  Database,
   PenLine,
-  MessageSquare,
-  Users,
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
-  PenLine,
   FileText,
-  Shield,
   Home,
   ClipboardList,
   Hash,
   LineChart,
+  ImageIcon,
+  Newspaper,
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import axiosInstance from '@/lib/axios';
@@ -46,6 +42,7 @@ interface NavItem {
   href: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
   roles: Role[];
+  isAction?: boolean;
 }
 
 // ─── Role-specific nav configs ────────────────────────────────────────────────
@@ -54,27 +51,27 @@ const NAV_BY_ROLE: Record<Role, NavItem[]> = {
   reader: [],
 
   journalist: [
-    { label: 'Dashboard', href: '/cms/dashboard', icon: LayoutDashboard },
-    { label: 'Media Tersimpan', href: '/cms/media', icon: ImageIcon },
-    { label: 'Bank Berita', href: '/cms/artikel', icon: Newspaper },
-    { label: 'Tulis Berita', href: '/cms/artikel/baru', icon: PenLine, isAction: true },
+    { label: 'Dashboard', href: '/cms/dashboard', icon: LayoutDashboard, roles: ['journalist'] },
+    { label: 'Media Tersimpan', href: '/cms/media', icon: ImageIcon, roles: ['journalist'] },
+    { label: 'Bank Berita', href: '/cms/artikel', icon: Newspaper, roles: ['journalist'] },
+    { label: 'Tulis Berita', href: '/cms/artikel/baru', icon: PenLine, roles: ['journalist'], isAction: true },
   ],
 
   editor: [
-    { label: 'Dashboard', href: '/cms/dashboard', icon: LayoutDashboard },
-    { label: 'Media Tersimpan', href: '/cms/media', icon: ImageIcon },
-    { label: 'Bank Berita', href: '/cms/artikel', icon: Newspaper },
-    { label: 'Tulis Berita', href: '/cms/artikel/baru', icon: PenLine, isAction: true },
-    { label: 'Draf Berita', href: '/cms/artikel?status=draft', icon: FileText, isAction: true },
+    { label: 'Dashboard', href: '/cms/dashboard', icon: LayoutDashboard, roles: ['editor'] },
+    { label: 'Media Tersimpan', href: '/cms/media', icon: ImageIcon, roles: ['editor'] },
+    { label: 'Bank Berita', href: '/cms/artikel', icon: Newspaper, roles: ['editor'] },
+    { label: 'Tulis Berita', href: '/cms/artikel/baru', icon: PenLine, roles: ['editor'], isAction: true },
+    { label: 'Draf Berita', href: '/cms/artikel?status=draft', icon: FileText, roles: ['editor'], isAction: true },
   ],
 
   admin: [
-    { label: 'Dashboard', href: '/cms/dashboard', icon: Home },
-    { label: 'Kelola Akun Karyawan', href: '/cms/karyawan', icon: ImageIcon },
-    { label: 'Kelola Akun Pengguna', href: '/cms/pengguna', icon: ClipboardList },
-    { label: 'Kategori dan Tag', href: '/cms/kategori', icon: Hash },
-    { label: 'Kelola Iklan', href: '/cms/iklan', icon: AdsIcon },
-    { label: 'Statistik Portal', href: '/cms/statistik', icon: LineChart },
+    { label: 'Dashboard', href: '/cms/dashboard', icon: Home, roles: ['admin'] },
+    { label: 'Kelola Akun Karyawan', href: '/cms/karyawan', icon: ImageIcon, roles: ['admin'] },
+    { label: 'Kelola Akun Pengguna', href: '/cms/pengguna', icon: ClipboardList, roles: ['admin'] },
+    { label: 'Kategori dan Tag', href: '/cms/kategori', icon: Hash, roles: ['admin'] },
+    { label: 'Kelola Iklan', href: '/cms/iklan', icon: AdsIcon, roles: ['admin'] },
+    { label: 'Statistik Portal', href: '/cms/statistik', icon: LineChart, roles: ['admin'] },
   ],
 };
 
@@ -93,10 +90,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
   const role = user?.role as Role | undefined;
 
-  const filteredNav = NAV_ITEMS.filter((item) => {
-    if (!role) return false;
-    return item.roles.includes(role);
-  });
+  const filteredNav = role ? NAV_BY_ROLE[role] ?? [] : [];
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
