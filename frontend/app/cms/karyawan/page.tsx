@@ -1,22 +1,23 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, Calendar, Trash2, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { Search, Plus, Calendar, Edit, Trash2, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 
-// Mock Data Pengguna (Reader)
+// Mock Data Karyawan
 const initialData = [
-  { id: 1, nama: 'Surya Afriza', email: 'suryaafriza@gmail.com', role: 'Pembaca', tanggal: '13:30:35 10-02-2004' },
-  { id: 2, nama: 'Rega Yuan cahya', email: 'cantikayuanc14@gmail.com', role: 'Pembaca', tanggal: '13:30:35 10-02-2004' },
-  { id: 3, nama: 'Ismy Dahlia', email: 'IsmyDahlia@gmail.com', role: 'Pembaca', tanggal: '13:30:35 10-02-2004' },
-  { id: 4, nama: 'Farel Aqeel', email: 'farrqeel07@gmail.com', role: 'Pembaca', tanggal: '13:30:35 10-02-2004' },
-  { id: 5, nama: 'Cantika Berliana', email: 'RegaRahmasari@gmail.com', role: 'Pembaca', tanggal: '13:30:35 10-02-2004' },
-  { id: 6, nama: 'Putri Berlian Kristanto', email: 'PutriKristanto@gmail.com', role: 'Pembaca', tanggal: '13:30:35 10-02-2004' },
-  { id: 7, nama: 'Kris Hartono', email: 'kris10@gmail.com', role: 'Pembaca', tanggal: '13:30:35 10-02-2004' },
+  { id: 1, nama: 'Indah Rahma', email: 'neunmarz09@gmail.com', role: 'Pembaca', tanggal: '13:30:35 10-02-2004' },
+  { id: 2, nama: 'Rega Yuan cahya', email: 'cantikayuanc14@gmail.com', role: 'Editor', tanggal: '13:30:35 10-02-2004' },
+  { id: 3, nama: 'Ismy Dahlia', email: 'IsmyDahlia@gmail.com', role: 'Jurnalis', tanggal: '13:30:35 10-02-2004' },
+  { id: 4, nama: 'Farel Aqeel', email: 'farrqeel07@gmail.com', role: 'Admin', tanggal: '13:30:35 10-02-2004' },
+  { id: 5, nama: 'Cantika Berliana', email: 'RegaRahmasari@gmail.com', role: 'Pacar Editor', tanggal: '13:30:35 10-02-2004' },
+  { id: 6, nama: 'Putri Berlian Kristanto', email: 'PutriKristanto@gmail.com', role: 'Pacar 2 Editor', tanggal: '13:30:35 10-02-2004' },
+  { id: 7, nama: 'Kris Hartono', email: 'kris10@gmail.com', role: 'Ayah Editor', tanggal: '13:30:35 10-02-2004' },
   { id: 8, nama: 'Kokoh bagus', email: 'wildandrnzn@gmail.com', role: 'Pembaca', tanggal: '13:30:35 10-02-2004' },
-  { id: 9, nama: 'Kinan Ramadhani', email: 'gatutbersayap@gmail.com', role: 'Pembaca', tanggal: '13:30:35 10-02-2004' },
+  { id: 9, nama: 'Kinan Ramadhani', email: 'gatutbersayap@gmail.com', role: 'Adik Admin', tanggal: '13:30:35 10-02-2004' },
 ];
 
-export default function KelolaPenggunaPage() {
+export default function KelolaKaryawanPage() {
   const [data, setData] = useState(initialData);
   const [search, setSearch] = useState('');
   
@@ -34,6 +35,10 @@ export default function KelolaPenggunaPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [gotoPage, setGotoPage] = useState('');
   const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  // Role Filter state
+  const [roleFilter, setRoleFilter] = useState('Semua');
+  const uniqueRoles = ['Semua', ...Array.from(new Set(data.map(item => item.role)))];
 
   // Filter Data
   const isDateInRange = (tanggal: string) => {
@@ -59,7 +64,8 @@ export default function KelolaPenggunaPage() {
   const filteredData = data.filter((item) => {
     const matchesSearch = item.nama.toLowerCase().includes(search.toLowerCase()) ||
                           item.email.toLowerCase().includes(search.toLowerCase());
-    return matchesSearch && isDateInRange(item.tanggal);
+    const matchesRole = roleFilter === 'Semua' || item.role === roleFilter;
+    return matchesSearch && isDateInRange(item.tanggal) && matchesRole;
   });
 
   // Pagination Logic
@@ -109,17 +115,19 @@ export default function KelolaPenggunaPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Kelola Akun Pengguna</h1>
+        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Kelola Akun Karyawan</h1>
       </div>
 
-      {/* Toolbar (Search, Filter) - No Add Button */}
+      {/* Toolbar (Add, Search, Filter) */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        
-        {/* Placeholder div to push the search and date to the right on md screens, if desired.
-            Based on the mockup, the search input is on the left since there's no button. */}
+        <Link href="/cms/karyawan/tambah" className="flex items-center gap-2 bg-[#363259] hover:bg-[#2a2745] text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors shadow-sm">
+          <Plus size={18} />
+          Tambah Akun
+        </Link>
+
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
           {/* Search Box */}
-          <div className="relative w-full md:w-[400px]">
+          <div className="relative w-full md:w-72">
             <input
               type="text"
               placeholder="Cari Pengguna..."
@@ -129,66 +137,65 @@ export default function KelolaPenggunaPage() {
             />
             <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
           </div>
+
+          {/* Date Filter */}
+          <div className="w-full md:w-auto flex flex-col gap-1 relative">
+            <span className="text-[10px] font-semibold text-gray-500 uppercase ml-1">Date ▽:</span>
+            <button 
+              onClick={() => setIsDatePopoverOpen(!isDatePopoverOpen)}
+              className="flex items-center justify-between w-full md:w-64 px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
+            >
+              <div className="flex items-center gap-2">
+                <Calendar size={14} className="text-gray-400" />
+                <span className="truncate">
+                  {startDate && endDate 
+                    ? `${startDate} - ${endDate}` 
+                    : startDate ? `Dari ${startDate}`
+                    : endDate ? `Sampai ${endDate}`
+                    : 'Semua Tanggal'}
+                </span>
+              </div>
+              <span className="text-gray-400 text-[10px]">▼</span>
+            </button>
+
+            {isDatePopoverOpen && (
+              <div className="absolute top-full right-0 mt-2 p-3 bg-white border border-gray-200 rounded-xl shadow-lg z-10 w-64 flex flex-col gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Mulai Tanggal</label>
+                  <input 
+                    type="date" 
+                    value={startDate} 
+                    onChange={(e) => setStartDate(e.target.value)} 
+                    className="w-full text-xs p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Sampai Tanggal</label>
+                  <input 
+                    type="date" 
+                    value={endDate} 
+                    onChange={(e) => setEndDate(e.target.value)} 
+                    className="w-full text-xs p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                </div>
+                <div className="flex justify-between items-center mt-1">
+                  <button 
+                    onClick={() => { setStartDate(''); setEndDate(''); }}
+                    className="text-xs text-red-500 font-medium hover:underline"
+                  >
+                    Reset
+                  </button>
+                  <button 
+                    onClick={() => setIsDatePopoverOpen(false)}
+                    className="bg-blue-50 text-blue-600 font-semibold text-xs px-4 py-1.5 rounded-lg hover:bg-blue-100 transition-colors"
+                  >
+                    Terapkan
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-
-        {/* Date Filter */}
-        <div className="w-full md:w-auto flex flex-col gap-1 relative">
-          <span className="text-[10px] font-semibold text-gray-500 uppercase ml-1">Date ▽:</span>
-          <button 
-            onClick={() => setIsDatePopoverOpen(!isDatePopoverOpen)}
-            className="flex items-center justify-between w-full md:w-64 px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
-          >
-            <div className="flex items-center gap-2">
-              <Calendar size={14} className="text-gray-400" />
-              <span className="truncate">
-                {startDate && endDate 
-                  ? `${startDate} - ${endDate}` 
-                  : startDate ? `Dari ${startDate}`
-                  : endDate ? `Sampai ${endDate}`
-                  : 'Semua Tanggal'}
-              </span>
-            </div>
-            <span className="text-gray-400 text-[10px]">▼</span>
-          </button>
-
-          {isDatePopoverOpen && (
-            <div className="absolute top-full right-0 mt-2 p-3 bg-white border border-gray-200 rounded-xl shadow-lg z-10 w-64 flex flex-col gap-3">
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Mulai Tanggal</label>
-                <input 
-                  type="date" 
-                  value={startDate} 
-                  onChange={(e) => setStartDate(e.target.value)} 
-                  className="w-full text-xs p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Sampai Tanggal</label>
-                <input 
-                  type="date" 
-                  value={endDate} 
-                  onChange={(e) => setEndDate(e.target.value)} 
-                  className="w-full text-xs p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
-                />
-              </div>
-              <div className="flex justify-between items-center mt-1">
-                <button 
-                  onClick={() => { setStartDate(''); setEndDate(''); }}
-                  className="text-xs text-red-500 font-medium hover:underline"
-                >
-                  Reset
-                </button>
-                <button 
-                  onClick={() => setIsDatePopoverOpen(false)}
-                  className="bg-blue-50 text-blue-600 font-semibold text-xs px-4 py-1.5 rounded-lg hover:bg-blue-100 transition-colors"
-                >
-                  Terapkan
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
       </div>
 
       {/* Table */}
@@ -200,9 +207,17 @@ export default function KelolaPenggunaPage() {
                 <th className="px-6 py-4 font-bold">Nama Pengguna</th>
                 <th className="px-6 py-4 font-bold text-center">Email</th>
                 <th className="px-6 py-4 font-bold">
-                  <div className="flex items-center gap-1">
-                    Role <span className="text-[10px]">▼</span>
-                  </div>
+                  <select 
+                    value={roleFilter}
+                    onChange={(e) => { setRoleFilter(e.target.value); setCurrentPage(1); }}
+                    className="bg-transparent border-none p-0 focus:ring-0 cursor-pointer font-bold text-xs uppercase text-gray-700 outline-none w-auto hover:text-blue-600 transition-colors"
+                  >
+                    {uniqueRoles.map(role => (
+                      <option key={role} value={role} className="text-gray-900 normal-case font-medium">
+                        {role === 'Semua' ? 'ROLE ▽' : role}
+                      </option>
+                    ))}
+                  </select>
                 </th>
                 <th className="px-6 py-4 font-bold">Tanggal Bergabung</th>
                 <th className="px-6 py-4 font-bold text-center">Aksi</th>
@@ -217,6 +232,13 @@ export default function KelolaPenggunaPage() {
                   <td className="px-6 py-4 text-gray-600 font-medium">{item.tanggal}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-center gap-3">
+                      <Link 
+                        href={`/cms/karyawan/edit/${item.id}`}
+                        className="text-green-500 hover:text-green-600 transition-colors bg-green-50 p-1.5 rounded-md border border-green-100 block" 
+                        title="Edit"
+                      >
+                        <Edit size={16} />
+                      </Link>
                       <button 
                         onClick={() => handleDeleteClick(item.id)}
                         className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100" 

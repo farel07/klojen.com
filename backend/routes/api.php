@@ -7,6 +7,8 @@ use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\CmsArticleController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +53,20 @@ Route::get('/articles/{id}/comments',    [ArticleController::class, 'comments'])
 Route::middleware('auth:api')->group(function () {
     Route::get('/bookmarks',  [BookmarkController::class, 'index']);
     Route::post('/bookmarks', [BookmarkController::class, 'toggle']);
+});
+
+// ── CMS (requires authentication + role check inside controller) ──────────
+Route::middleware('auth:api')->prefix('cms')->group(function () {
+    // POST /api/cms/articles  — Buat artikel baru (journalist / editor / admin)
+    Route::post('/articles', [CmsArticleController::class, 'store']);
+    
+    // PUT /api/cms/articles/{id} — Update artikel (journalist / editor / admin)
+    Route::put('/articles/{id}', [CmsArticleController::class, 'update']);
+});
+
+// ── Users (admin only) ────────────────────────────────────────────────────────
+Route::middleware(['auth:api', 'admin'])->prefix('users')->group(function () {
+    Route::get('/',     [UserController::class, 'index']);
+    Route::post('/',    [UserController::class, 'store']);
+    Route::get('/{id}', [UserController::class, 'show']);
 });

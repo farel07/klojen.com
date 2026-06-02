@@ -22,4 +22,24 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::where('email', $email)->first();
     }
+
+    /**
+     * Ambil semua user, diurutkan berdasarkan nama.
+     * SELECT terbatas pada kolom yang diekspos ke admin.
+     */
+    public function getAll(): \Illuminate\Database\Eloquent\Collection
+    {
+        return User::select(['id', 'name', 'email', 'role', 'is_active', 'created_at'])
+            ->orderBy('name')
+            ->get();
+    }
+
+    /**
+     * Cari user berdasarkan ID.
+     */
+    public function findById(int|string $id): ?User
+    {
+        return User::select(['id', 'name', 'email', 'role', 'is_active', 'created_at'])
+            ->find($id);
+    }
 }
