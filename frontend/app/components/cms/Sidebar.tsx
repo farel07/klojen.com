@@ -14,7 +14,7 @@ import {
   ClipboardList,
   Hash,
   LineChart,
-  ImageIcon,
+  Images,
   Newspaper,
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
@@ -52,14 +52,14 @@ const NAV_BY_ROLE: Record<Role, NavItem[]> = {
 
   journalist: [
     { label: 'Dashboard', href: '/cms/dashboard', icon: LayoutDashboard, roles: ['journalist'] },
-    { label: 'Media Tersimpan', href: '/cms/media', icon: ImageIcon, roles: ['journalist'] },
+    { label: 'Media Tersimpan', href: '/cms/media', icon: Images, roles: ['journalist'] },
     { label: 'Bank Berita', href: '/cms/artikel', icon: Newspaper, roles: ['journalist'] },
     { label: 'Tulis Berita', href: '/cms/artikel/baru', icon: PenLine, roles: ['journalist'], isAction: true },
   ],
 
   editor: [
     { label: 'Dashboard', href: '/cms/dashboard', icon: LayoutDashboard, roles: ['editor'] },
-    { label: 'Media Tersimpan', href: '/cms/media', icon: ImageIcon, roles: ['editor'] },
+    { label: 'Media Tersimpan', href: '/cms/media', icon: Images, roles: ['editor'] },
     { label: 'Bank Berita', href: '/cms/artikel', icon: Newspaper, roles: ['editor'] },
     { label: 'Tulis Berita', href: '/cms/artikel/baru', icon: PenLine, roles: ['editor'], isAction: true },
     { label: 'Draf Berita', href: '/cms/artikel?status=draft', icon: FileText, roles: ['editor'], isAction: true },
@@ -67,7 +67,7 @@ const NAV_BY_ROLE: Record<Role, NavItem[]> = {
 
   admin: [
     { label: 'Dashboard', href: '/cms/dashboard', icon: Home, roles: ['admin'] },
-    { label: 'Kelola Akun Karyawan', href: '/cms/karyawan', icon: ImageIcon, roles: ['admin'] },
+    { label: 'Kelola Akun Karyawan', href: '/cms/karyawan', icon: ClipboardList, roles: ['admin'] },
     { label: 'Kelola Akun Pengguna', href: '/cms/pengguna', icon: ClipboardList, roles: ['admin'] },
     { label: 'Kategori dan Tag', href: '/cms/kategori', icon: Hash, roles: ['admin'] },
     { label: 'Kelola Iklan', href: '/cms/iklan', icon: AdsIcon, roles: ['admin'] },
