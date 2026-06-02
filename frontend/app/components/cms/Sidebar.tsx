@@ -2,16 +2,20 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import {
   LayoutDashboard,
-  HardDrive,
-  Database,
   PenLine,
-  MessageSquare,
-  Users,
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
+  FileText,
+  Home,
+  ClipboardList,
+  Hash,
+  LineChart,
+  Images,
+  Newspaper,
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import axiosInstance from '@/lib/axios';
@@ -20,51 +24,58 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Role } from '@/app/types';
 
+// ─── Custom Icons ─────────────────────────────────────────────────────────────
+
+const AdsIcon = ({ size = 19, className = '' }) => (
+  <span
+    className={`font-black flex items-center justify-center tracking-tighter ${className}`}
+    style={{ width: size, height: size, fontSize: size * 0.55 }}
+  >
+    ADS
+  </span>
+);
+
+// ─── Nav item type ────────────────────────────────────────────────────────────
+
 interface NavItem {
   label: string;
   href: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
   roles: Role[];
+  isAction?: boolean;
 }
 
-const NAV_ITEMS: NavItem[] = [
-  {
-    label: 'Dashboard',
-    href: '/cms/dashboard',
-    icon: LayoutDashboard,
-    roles: ['journalist', 'editor', 'admin'],
-  },
-  {
-    label: 'Media Tersimpan',
-    href: '/cms/media',
-    icon: HardDrive,
-    roles: ['journalist', 'editor', 'admin'],
-  },
-  {
-    label: 'Bank Berita',
-    href: '/cms/artikel',
-    icon: Database,
-    roles: ['journalist', 'editor', 'admin'],
-  },
-  {
-    label: 'Tulis Berita',
-    href: '/cms/tulis-berita',
-    icon: PenLine,
-    roles: ['journalist', 'editor', 'admin'],
-  },
-  {
-    label: 'Komentar',
-    href: '/cms/komentar',
-    icon: MessageSquare,
-    roles: ['editor', 'admin'],
-  },
-  {
-    label: 'Pengguna',
-    href: '/cms/pengguna',
-    icon: Users,
-    roles: ['admin'],
-  },
-];
+// ─── Role-specific nav configs ────────────────────────────────────────────────
+
+const NAV_BY_ROLE: Record<Role, NavItem[]> = {
+  reader: [],
+
+  journalist: [
+    { label: 'Dashboard', href: '/cms/dashboard', icon: LayoutDashboard, roles: ['journalist'] },
+    { label: 'Media Tersimpan', href: '/cms/media', icon: Images, roles: ['journalist'] },
+    { label: 'Bank Berita', href: '/cms/artikel', icon: Newspaper, roles: ['journalist'] },
+    { label: 'Tulis Berita', href: '/cms/artikel/baru', icon: PenLine, roles: ['journalist'], isAction: true },
+  ],
+
+  editor: [
+    { label: 'Dashboard', href: '/cms/dashboard', icon: LayoutDashboard, roles: ['editor'] },
+    { label: 'Media Tersimpan', href: '/cms/media', icon: Images, roles: ['editor'] },
+    { label: 'Bank Berita', href: '/cms/artikel', icon: Newspaper, roles: ['editor'] },
+    { label: 'Tulis Berita', href: '/cms/artikel/baru', icon: PenLine, roles: ['editor'], isAction: true },
+    { label: 'Draf Berita', href: '/cms/artikel?status=draft', icon: FileText, roles: ['editor'], isAction: true },
+  ],
+
+  admin: [
+    { label: 'Dashboard', href: '/cms/dashboard', icon: Home, roles: ['admin'] },
+    { label: 'Kelola Akun Karyawan', href: '/cms/karyawan', icon: ClipboardList, roles: ['admin'] },
+    { label: 'Kelola Akun Pengguna', href: '/cms/pengguna', icon: ClipboardList, roles: ['admin'] },
+    { label: 'Kategori dan Tag', href: '/cms/kategori', icon: Hash, roles: ['admin'] },
+    { label: 'Kelola Iklan', href: '/cms/iklan', icon: AdsIcon, roles: ['admin'] },
+    { label: 'Statistik Portal', href: '/cms/statistik', icon: LineChart, roles: ['admin'] },
+  ],
+};
+
+// ─── Props ────────────────────────────────────────────────────────────────────
 
 interface SidebarProps {
   collapsed: boolean;
@@ -79,10 +90,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
   const role = user?.role as Role | undefined;
 
-  const filteredNav = NAV_ITEMS.filter((item) => {
-    if (!role) return false;
-    return item.roles.includes(role);
-  });
+  const filteredNav = role ? NAV_BY_ROLE[role] ?? [] : [];
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -117,15 +125,13 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
       <div className="flex items-center justify-between px-5 py-7">
         {!collapsed && (
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center shadow-md">
-              <span className="text-white font-extrabold text-sm">K</span>
-            </div>
+            <Image src="/images/logo.png" alt="Klojen Logo" width={40} height={40} className="h-8 w-auto" priority />
             <span className="text-xl font-bold tracking-tight text-gray-900">Klojen</span>
           </div>
         )}
         {collapsed && (
-          <div className="mx-auto w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center shadow-md">
-            <span className="text-white font-extrabold text-sm">K</span>
+          <div className="mx-auto flex h-8 w-8 items-center justify-center overflow-hidden">
+            <Image src="/images/logo.png" alt="Klojen Logo" width={40} height={40} className="h-full w-auto object-contain object-left" priority />
           </div>
         )}
         {!collapsed && (

@@ -49,10 +49,29 @@ Route::get('/articles',                  [ArticleController::class, 'index']);
 Route::get('/articles/{slug}',           [ArticleController::class, 'show']);
 Route::get('/articles/{id}/comments',    [ArticleController::class, 'comments']);
 
-// ── Bookmarks (requires authentication) ───────────────────────────────────────
+// ── Bookmarks & Media (requires authentication) ───────────────────────────────────────
 Route::middleware('auth:api')->group(function () {
     Route::get('/bookmarks',  [BookmarkController::class, 'index']);
     Route::post('/bookmarks', [BookmarkController::class, 'toggle']);
+    
+    // Media
+    Route::post('/media/upload', [\App\Http\Controllers\MediaController::class, 'upload']);
+});
+
+// ── CMS (requires authentication + role check inside controller) ──────────
+Route::middleware('auth:api')->prefix('cms')->group(function () {
+    // POST /api/cms/articles  — Buat artikel baru (journalist / editor / admin)
+    Route::post('/articles', [CmsArticleController::class, 'store']);
+
+    // PUT /api/cms/articles/{id} — Update artikel (journalist / editor / admin)
+    Route::put('/articles/{id}', [CmsArticleController::class, 'update']);
+});
+
+// ── Users (admin only) ────────────────────────────────────────────────────────
+Route::middleware(['auth:api', 'admin'])->prefix('users')->group(function () {
+    Route::get('/',     [UserController::class, 'index']);
+    Route::post('/',    [UserController::class, 'store']);
+    Route::get('/{id}', [UserController::class, 'show']);
 });
 
 // ── CMS (requires authentication + role check inside controller) ──────────
