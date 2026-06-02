@@ -31,4 +31,13 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
         RefreshToken::where('token_hash', $tokenHash)
             ->update(['is_revoked' => true]);
     }
+
+    /**
+     * Revoke semua refresh token milik user tertentu.
+     */
+    public function revokeAllForUser(string $userId): void
+    {
+        RefreshToken::where('user_id', $userId)
+            ->update(['is_revoked' => true]);
+    }
 }

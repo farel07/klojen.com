@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Mail\NewUserCredentials;
 use App\Models\User;
+use App\Repositories\Contracts\ArticleRepositoryInterface;
+use App\Repositories\Contracts\RefreshTokenRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -12,6 +14,8 @@ class UserService
 {
     public function __construct(
         protected UserRepositoryInterface $userRepository,
+        protected RefreshTokenRepositoryInterface $refreshTokenRepository,
+        protected ArticleRepositoryInterface $articleRepository,
     ) {}
 
     /**
@@ -80,5 +84,68 @@ class UserService
 
         // Acak urutan karakter
         return str_shuffle($password);
+    }
+
+    /**
+     * Update user oleh admin.
+     * Cek duplikat email, jika ganti role revoke token.
+     *
+     * @throws \RuntimeException
+     */
+    public function updateUser(string $id, array $data, string $currentUserId): User
+    {
+        if ($id === $currentUserId) {
+            throw new \RuntimeException('CANNOT_MODIFY_SELF', 403);
+        }
+
+        $user = $this->userRepository->findById($id);
+        if (!$user) {
+            throw new \RuntimeException('USER_NOT_FOUND', 404);
+        }
+
+        if (isset($data['email']) && $this->userRepository->findByEmailExcept($data['email'], $id)) {
+            throw new \RuntimeException('EMAIL_ALREADY_EXISTS', 409);
+        }
+
+        $oldRole = $user->role;
+        
+        // We only update what is provided
+        $updateData = array_filter($data, fn($value) => !is_null($value));
+
+        $this->userRepository->update($user, $updateData);
+
+        // Jika role diubah, revoke token (logout paksa perangkat aktifnya)
+        if (isset($updateData['role']) && $updateData['role'] !== $oldRole) {
+            $this->refreshTokenRepository->revokeAllForUser($id);
+        }
+
+        return $user->refresh();
+    }
+
+    /**
+     * Delete user oleh admin.
+     * Cek bukan diri sendiri, revoke token, arsipkan artikel, hapus user.
+     *
+     * @throws \RuntimeException
+     */
+    public function deleteUser(string $id, string $currentUserId): void
+    {
+        if ($id === $currentUserId) {
+            throw new \RuntimeException('CANNOT_MODIFY_SELF', 403);
+        }
+
+        $user = $this->userRepository->findById($id);
+        if (!$user) {
+            throw new \RuntimeException('USER_NOT_FOUND', 404);
+        }
+
+        // Revoke token
+        $this->refreshTokenRepository->revokeAllForUser($id);
+
+        // Arsipkan artikel
+        $this->articleRepository->archiveUserArticles($id);
+
+        // Hapus user
+        $this->userRepository->delete($user);
     }
 }

@@ -72,20 +72,6 @@ Route::middleware(['auth:api', 'admin'])->prefix('users')->group(function () {
     Route::get('/',     [UserController::class, 'index']);
     Route::post('/',    [UserController::class, 'store']);
     Route::get('/{id}', [UserController::class, 'show']);
-});
-
-// ── CMS (requires authentication + role check inside controller) ──────────
-Route::middleware('auth:api')->prefix('cms')->group(function () {
-    // POST /api/cms/articles  — Buat artikel baru (journalist / editor / admin)
-    Route::post('/articles', [CmsArticleController::class, 'store']);
-    
-    // PUT /api/cms/articles/{id} — Update artikel (journalist / editor / admin)
-    Route::put('/articles/{id}', [CmsArticleController::class, 'update']);
-});
-
-// ── Users (admin only) ────────────────────────────────────────────────────────
-Route::middleware(['auth:api', 'admin'])->prefix('users')->group(function () {
-    Route::get('/',     [UserController::class, 'index']);
-    Route::post('/',    [UserController::class, 'store']);
-    Route::get('/{id}', [UserController::class, 'show']);
+    Route::patch('/{id}', [UserController::class, 'update']);
+    Route::delete('/{id}', [UserController::class, 'destroy']);
 });

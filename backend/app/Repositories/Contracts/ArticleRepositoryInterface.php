@@ -48,4 +48,9 @@ interface ArticleRepositoryInterface
      * Tambah view_count artikel sebesar 1 berdasarkan slug.
      */
     public function incrementViewCount(string $slug): void;
+
+    /**
+     * Ubah status artikel milik user tertentu menjadi 'archived'.
+     */
+    public function archiveUserArticles(string $userId): void;
 }

@@ -94,6 +94,71 @@ class UserController extends Controller
         ], 201);
     }
 
+    /**
+     * PATCH /api/users/{id}
+     * Update user (admin only).
+     */
+    public function update(Request $request, string $id): JsonResponse
+    {
+        $validated = $request->validate([
+            'name'      => 'sometimes|required|string|max:255',
+            'email'     => 'sometimes|required|string|email|max:255',
+            'role'      => 'sometimes|required|in:admin,editor,journalist,reader',
+            'is_active' => 'sometimes|required|boolean',
+        ]);
+
+        try {
+            $user = $this->userService->updateUser($id, $validated, auth('api')->id());
+        } catch (\RuntimeException $e) {
+            $status = $e->getCode() ?: 500;
+            return response()->json([
+                'status'  => 'error',
+                'code'    => $status,
+                'error'   => $e->getMessage(),
+                'message' => match ($e->getMessage()) {
+                    'USER_NOT_FOUND'       => 'User tidak ditemukan.',
+                    'CANNOT_MODIFY_SELF'   => 'Anda tidak dapat mengubah akun Anda sendiri di halaman ini.',
+                    'EMAIL_ALREADY_EXISTS' => 'Email sudah terdaftar. Gunakan email lain.',
+                    default                => $e->getMessage(),
+                },
+            ], $status);
+        }
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'User berhasil diperbarui.',
+            'data'    => $this->formatUser($user),
+        ]);
+    }
+
+    /**
+     * DELETE /api/users/{id}
+     * Delete user (admin only).
+     */
+    public function destroy(string $id): JsonResponse
+    {
+        try {
+            $this->userService->deleteUser($id, auth('api')->id());
+        } catch (\RuntimeException $e) {
+            $status = $e->getCode() ?: 500;
+            return response()->json([
+                'status'  => 'error',
+                'code'    => $status,
+                'error'   => $e->getMessage(),
+                'message' => match ($e->getMessage()) {
+                    'USER_NOT_FOUND'     => 'User tidak ditemukan.',
+                    'CANNOT_MODIFY_SELF' => 'Anda tidak dapat menghapus akun Anda sendiri.',
+                    default              => $e->getMessage(),
+                },
+            ], $status);
+        }
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'User berhasil dihapus.',
+        ]);
+    }
+
     // ── Private helpers ───────────────────────────────────────────────────────
 
     private function formatUser(\App\Models\User $user): array

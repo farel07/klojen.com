@@ -119,4 +119,12 @@ class ArticleRepository implements ArticleRepositoryInterface
     {
         Article::where('slug', $slug)->increment('view_count');
     }
+
+    /**
+     * Ubah status artikel milik user tertentu menjadi 'archived'.
+     */
+    public function archiveUserArticles(string $userId): void
+    {
+        Article::where('author_id', $userId)->update(['status' => 'archived']);
+    }
 }
