@@ -21,4 +21,19 @@ class MediaRepository implements MediaRepositoryInterface
 
         return $media->toArray();
     }
+    /**
+     * Mencari media berdasarkan ID
+     */
+    public function findById(string $id): ?Media
+    {
+        return Media::find($id);
+    }
+
+    /**
+     * Menghapus media berdasarkan ID
+     */
+    public function deleteMedia(string $id): bool
+    {
+        return Media::destroy($id) > 0;
+    }
 }
