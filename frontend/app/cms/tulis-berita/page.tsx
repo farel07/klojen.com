@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Type,
   FileText,
@@ -13,6 +13,8 @@ import {
   ChevronDown,
   Plus,
   Droplets,
+  XCircle,
+  AlertCircle,
 } from 'lucide-react';
 import RichTextEditor from '@/app/components/cms/RichTextEditor';
 import { useAuthStore } from '@/stores/authStore';
@@ -34,16 +36,44 @@ interface PhotoItem {
 
 export default function TulisBeritaPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user } = useAuthStore();
   const role = user?.role as Role | undefined;
   const isEditorOrAbove = role ? canPublish(role) : false;
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [photos, setPhotos] = useState<PhotoItem[]>([]);
+  // Deteksi apakah ini edit artikel yang ditolak
+  const articleId = searchParams.get('id');
+  const isRejected = searchParams.get('rejected') === 'true';
+  const rejectionReason = searchParams.get('reason') ?? 'Tidak ada catatan dari reviewer.';
+  const [showRejectionBanner, setShowRejectionBanner] = useState(true);
+
+  // Ambil data artikel dari URL params untuk pre-fill form
+  const prefillTitle      = isRejected ? (searchParams.get('title') ?? '')   : '';
+  const prefillContentRaw = isRejected ? (searchParams.get('content') ?? '') : '';
+  const prefillImage      = isRejected ? (searchParams.get('image') ?? '')   : '';
+  const prefillCaption    = isRejected ? (searchParams.get('caption') ?? '') : '';
+  const prefillTagsRaw    = isRejected ? (searchParams.get('tags') ?? '[]')  : '[]';
+
+  // Konversi plain text (paragraf dipisah \n\n) ke HTML <p> agar tampil di editor
+  const prefillContent = prefillContentRaw
+    ? prefillContentRaw
+        .split(/\n\n+/)
+        .map((p) => `<p>${p.trim()}</p>`)
+        .join('')
+    : '';
+
+  const prefillTags: string[] = (() => {
+    try { return JSON.parse(prefillTagsRaw); } catch { return []; }
+  })();
+
+  const [title, setTitle] = useState(prefillTitle);
+  const [content, setContent] = useState(prefillContent);
+  const [photos, setPhotos] = useState<PhotoItem[]>(
+    prefillImage ? [{ url: prefillImage, caption: prefillCaption, watermark: false }] : []
+  );
   const [isDragging, setIsDragging] = useState(false);
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
-  const [tags, setTags] = useState<string[]>(['#KetikPedia']);
+  const [tags, setTags] = useState<string[]>(prefillTags.length > 0 ? prefillTags : ['#KetikPedia']);
   const [tagInput, setTagInput] = useState('');
   const [status, setStatus] = useState('published');
   const [isSaving, setIsSaving] = useState(false);
@@ -119,9 +149,49 @@ export default function TulisBeritaPage() {
     <div className="min-h-full pb-16">
       {/* Page Header */}
       <div className="mb-10 pt-2">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-2">Buat Berita Baru</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-2">
+          {isRejected ? 'Edit Berita' : 'Buat Berita Baru'}
+        </h1>
         <p className="text-gray-400 font-medium text-sm">Isi informasi berita secara lengkap dan benar</p>
       </div>
+
+      {/* ─── Rejection Banner ─── */}
+      {isRejected && showRejectionBanner && (
+        <div className="relative mb-8 max-w-4xl">
+          <div
+            className="flex items-start gap-4 p-4 rounded-2xl border-2"
+            style={{
+              background: 'linear-gradient(135deg, #fff5f5 0%, #fff0f0 100%)',
+              borderColor: '#fca5a5',
+            }}
+          >
+            {/* Icon */}
+            <div className="shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center mt-0.5">
+              <XCircle size={22} className="text-red-500" />
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 min-w-0">
+              <p className="font-extrabold text-red-700 text-base mb-0.5">Berita Ditolak</p>
+              <p className="text-red-500 text-sm mb-3">
+                Berita ini telah di tolak oleh reviewer. Silahkan perbaiki sesuai catatan penolakan dibawah ini lalu kirim ulang.
+              </p>
+              <div className="bg-white/70 border border-red-200 rounded-xl px-4 py-3">
+                <p className="text-xs font-bold text-red-500 mb-1">Alasan Penolakan :</p>
+                <p className="text-sm text-red-700 font-medium leading-relaxed">{rejectionReason}</p>
+              </div>
+            </div>
+
+            {/* Close */}
+            <button
+              onClick={() => setShowRejectionBanner(false)}
+              className="shrink-0 w-7 h-7 rounded-full bg-red-100 hover:bg-red-200 flex items-center justify-center transition-colors"
+            >
+              <X size={14} className="text-red-500" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Form Steps */}
       <div className="relative max-w-4xl">
