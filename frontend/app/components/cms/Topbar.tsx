@@ -27,41 +27,18 @@ export default function Topbar({ onToggle }: TopbarProps) {
 
   const initials = user?.name
     ? user.name
-        .split(' ')
-        .slice(0, 2)
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
+      .split(' ')
+      .slice(0, 2)
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
     : 'U';
 
   const roleLabel = user?.role ? ROLE_LABELS[user.role] ?? user.role : 'Tamu';
   const roleBadge = user?.role ? ROLE_BADGE_COLORS[user.role] ?? 'bg-gray-100 text-gray-700' : '';
 
   return (
-    <header className="flex items-center justify-between px-6 md:px-8 py-4 bg-transparent z-10">
-      {/* Left: Logo + Hamburger */}
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2.5">
-          <Image
-            src="/images/logo.png"
-            alt="Klojen Logo"
-            width={32}
-            height={32}
-            className="h-8 w-auto"
-            priority
-          />
-          <span className="text-lg font-bold tracking-tight text-gray-900">Klojen</span>
-        </div>
-        {onToggle && (
-          <button
-            onClick={onToggle}
-            className="ml-1 p-1.5 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-white/70 transition-colors"
-            title="Toggle sidebar"
-          >
-            <Menu size={20} />
-          </button>
-        )}
-      </div>
+    <header className="flex items-center justify-end px-6 md:px-8 py-4 bg-transparent z-10">
 
       {/* Right: User Profile */}
       <div className="flex items-center gap-3 cursor-pointer group">
