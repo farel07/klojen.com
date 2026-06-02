@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import {
   LayoutDashboard,
   HardDrive,
@@ -12,6 +13,13 @@ import {
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
+  PenLine,
+  FileText,
+  Shield,
+  Home,
+  ClipboardList,
+  Hash,
+  LineChart,
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import axiosInstance from '@/lib/axios';
@@ -20,6 +28,19 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Role } from '@/app/types';
 
+// ─── Custom Icons ─────────────────────────────────────────────────────────────
+
+const AdsIcon = ({ size = 19, className = '' }) => (
+  <span
+    className={`font-black flex items-center justify-center tracking-tighter ${className}`}
+    style={{ width: size, height: size, fontSize: size * 0.55 }}
+  >
+    ADS
+  </span>
+);
+
+// ─── Nav item type ────────────────────────────────────────────────────────────
+
 interface NavItem {
   label: string;
   href: string;
@@ -27,44 +48,37 @@ interface NavItem {
   roles: Role[];
 }
 
-const NAV_ITEMS: NavItem[] = [
-  {
-    label: 'Dashboard',
-    href: '/cms/dashboard',
-    icon: LayoutDashboard,
-    roles: ['journalist', 'editor', 'admin'],
-  },
-  {
-    label: 'Media Tersimpan',
-    href: '/cms/media',
-    icon: HardDrive,
-    roles: ['journalist', 'editor', 'admin'],
-  },
-  {
-    label: 'Bank Berita',
-    href: '/cms/artikel',
-    icon: Database,
-    roles: ['journalist', 'editor', 'admin'],
-  },
-  {
-    label: 'Tulis Berita',
-    href: '/cms/tulis-berita',
-    icon: PenLine,
-    roles: ['journalist', 'editor', 'admin'],
-  },
-  {
-    label: 'Komentar',
-    href: '/cms/komentar',
-    icon: MessageSquare,
-    roles: ['editor', 'admin'],
-  },
-  {
-    label: 'Pengguna',
-    href: '/cms/pengguna',
-    icon: Users,
-    roles: ['admin'],
-  },
-];
+// ─── Role-specific nav configs ────────────────────────────────────────────────
+
+const NAV_BY_ROLE: Record<Role, NavItem[]> = {
+  reader: [],
+
+  journalist: [
+    { label: 'Dashboard', href: '/cms/dashboard', icon: LayoutDashboard },
+    { label: 'Media Tersimpan', href: '/cms/media', icon: ImageIcon },
+    { label: 'Bank Berita', href: '/cms/artikel', icon: Newspaper },
+    { label: 'Tulis Berita', href: '/cms/artikel/baru', icon: PenLine, isAction: true },
+  ],
+
+  editor: [
+    { label: 'Dashboard', href: '/cms/dashboard', icon: LayoutDashboard },
+    { label: 'Media Tersimpan', href: '/cms/media', icon: ImageIcon },
+    { label: 'Bank Berita', href: '/cms/artikel', icon: Newspaper },
+    { label: 'Tulis Berita', href: '/cms/artikel/baru', icon: PenLine, isAction: true },
+    { label: 'Draf Berita', href: '/cms/artikel?status=draft', icon: FileText, isAction: true },
+  ],
+
+  admin: [
+    { label: 'Dashboard', href: '/cms/dashboard', icon: Home },
+    { label: 'Kelola Akun Karyawan', href: '/cms/karyawan', icon: ImageIcon },
+    { label: 'Kelola Akun Pengguna', href: '/cms/pengguna', icon: ClipboardList },
+    { label: 'Kategori dan Tag', href: '/cms/kategori', icon: Hash },
+    { label: 'Kelola Iklan', href: '/cms/iklan', icon: AdsIcon },
+    { label: 'Statistik Portal', href: '/cms/statistik', icon: LineChart },
+  ],
+};
+
+// ─── Props ────────────────────────────────────────────────────────────────────
 
 interface SidebarProps {
   collapsed: boolean;
@@ -117,15 +131,13 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
       <div className="flex items-center justify-between px-5 py-7">
         {!collapsed && (
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center shadow-md">
-              <span className="text-white font-extrabold text-sm">K</span>
-            </div>
+            <Image src="/images/logo.png" alt="Klojen Logo" width={40} height={40} className="h-8 w-auto" priority />
             <span className="text-xl font-bold tracking-tight text-gray-900">Klojen</span>
           </div>
         )}
         {collapsed && (
-          <div className="mx-auto w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center shadow-md">
-            <span className="text-white font-extrabold text-sm">K</span>
+          <div className="mx-auto flex h-8 w-8 items-center justify-center overflow-hidden">
+            <Image src="/images/logo.png" alt="Klojen Logo" width={40} height={40} className="h-full w-auto object-contain object-left" priority />
           </div>
         )}
         {!collapsed && (
