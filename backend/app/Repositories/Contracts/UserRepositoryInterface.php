@@ -25,4 +25,19 @@ interface UserRepositoryInterface
      * Cari user berdasarkan ID.
      */
     public function findById(int|string $id): ?User;
+
+    /**
+     * Cari user berdasarkan email selain ID tertentu.
+     */
+    public function findByEmailExcept(string $email, string|int $exceptId): ?User;
+
+    /**
+     * Update user.
+     */
+    public function update(User $user, array $data): bool;
+
+    /**
+     * Hapus user.
+     */
+    public function delete(User $user): bool;
 }

@@ -20,4 +20,9 @@ interface RefreshTokenRepositoryInterface
      * Revoke (cabut) refresh token berdasarkan hash-nya.
      */
     public function revokeByHash(string $tokenHash): void;
+
+    /**
+     * Revoke semua refresh token milik user tertentu.
+     */
+    public function revokeAllForUser(string $userId): void;
 }

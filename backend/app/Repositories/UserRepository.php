@@ -42,4 +42,28 @@ class UserRepository implements UserRepositoryInterface
         return User::select(['id', 'name', 'email', 'role', 'is_active', 'created_at'])
             ->find($id);
     }
+
+    /**
+     * Cari user berdasarkan email selain ID tertentu.
+     */
+    public function findByEmailExcept(string $email, string|int $exceptId): ?User
+    {
+        return User::where('email', $email)->where('id', '!=', $exceptId)->first();
+    }
+
+    /**
+     * Update user.
+     */
+    public function update(User $user, array $data): bool
+    {
+        return $user->update($data);
+    }
+
+    /**
+     * Hapus user.
+     */
+    public function delete(User $user): bool
+    {
+        return $user->delete();
+    }
 }
