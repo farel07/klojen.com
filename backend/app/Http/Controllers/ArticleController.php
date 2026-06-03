@@ -50,11 +50,33 @@ class ArticleController extends Controller
 
     /**
      * GET /api/articles
-     * Ambil daftar artikel dengan filter opsional.
+     * Ambil daftar artikel dengan filter opsional dan logic berdasarkan header X-Client.
      */
-    public function index(): JsonResponse
+    public function index(\Illuminate\Http\Request $request): JsonResponse
     {
-        $params = request()->only(['status', 'category', 'tag', 'featured', 'page', 'limit']);
+        $params = $request->only(['category', 'tag', 'featured', 'page', 'limit']);
+        
+        $client = $request->header('X-Client', 'public');
+        
+        if ($client === 'cms' && auth('api')->check()) {
+            $user = auth('api')->user();
+
+            if ($user->role === 'journalist') {
+                $params['status'] = $request->input('status', 'all');
+                $params['author_id'] = $user->id;
+            } elseif (in_array($user->role, ['editor', 'admin'])) {
+                $params['status'] = $request->input('status', 'all');
+                if ($request->has('author_id')) {
+                    $params['author_id'] = $request->input('author_id');
+                }
+            } else {
+                $params['status'] = 'published';
+            }
+        } else {
+            // Tanpa JWT atau X-Client=public
+            $params['status'] = 'published';
+        }
+
         $result = $this->articleService->getArticles($params);
 
         return response()->json([

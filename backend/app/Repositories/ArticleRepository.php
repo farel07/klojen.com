@@ -82,7 +82,14 @@ class ArticleRepository implements ArticleRepositoryInterface
 
         // Filter status (default: published)
         $status = $params['status'] ?? 'published';
-        $query->where('status', $status);
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        // Filter by author_id
+        if (! empty($params['author_id'])) {
+            $query->where('author_id', $params['author_id']);
+        }
 
         // Filter featured
         if (isset($params['featured']) && $params['featured'] !== '') {
