@@ -191,4 +191,77 @@ class CmsArticleController extends Controller
             'data'   => $article,
         ], 200);
     }
+
+    /**
+     * PATCH /api/cms/articles/{id}/status
+     *
+     * Update status artikel.
+     * Hanya bisa dilakukan oleh Editor dan Admin.
+     */
+    public function updateStatus(Request $request, string $id): JsonResponse
+    {
+        /** @var \App\Models\User $user */
+        $user = auth('api')->user();
+
+        if (! in_array($user->role, ['editor', 'admin'])) {
+            return response()->json([
+                'status'  => 'error',
+                'code'    => 403,
+                'error'   => 'FORBIDDEN_ROLE',
+                'message' => 'Hanya editor dan admin yang dapat mengubah status artikel.',
+            ], 403);
+        }
+
+        $validated = $request->validate([
+            'status'       => 'required|string|in:draft,review,published,scheduled,archived',
+            'scheduled_at' => 'required_if:status,scheduled|date',
+        ]);
+
+        try {
+            $article = $this->cmsArticleService->updateStatus(
+                $id,
+                $user->id,
+                $user->role,
+                $validated['status'],
+                $validated['scheduled_at'] ?? null
+            );
+        } catch (\RuntimeException $e) {
+            if ($e->getMessage() === 'ARTICLE_NOT_FOUND') {
+                return response()->json([
+                    'status'  => 'error',
+                    'code'    => 404,
+                    'error'   => 'NOT_FOUND',
+                    'message' => 'Artikel tidak ditemukan.',
+                ], 404);
+            }
+            if ($e->getMessage() === 'INVALID_STATUS_TRANSITION') {
+                return response()->json([
+                    'status'  => 'error',
+                    'code'    => 400,
+                    'error'   => 'INVALID_STATUS_TRANSITION',
+                    'message' => 'Transisi status tidak valid (BR-05).',
+                ], 400);
+            }
+            if ($e->getMessage() === 'SCHEDULED_TIME_TOO_SOON') {
+                return response()->json([
+                    'status'  => 'error',
+                    'code'    => 400,
+                    'error'   => 'SCHEDULED_TIME_TOO_SOON',
+                    'message' => 'Waktu jadwal (scheduled_at) harus minimal 5 menit dari sekarang (BR-04).',
+                ], 400);
+            }
+
+            return response()->json([
+                'status'  => 'error',
+                'code'    => 500,
+                'error'   => 'INTERNAL_ERROR',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $article,
+        ], 200);
+    }
 }

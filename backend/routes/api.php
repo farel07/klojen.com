@@ -56,6 +56,7 @@ Route::middleware('auth:api')->group(function () {
     
     // Media
     Route::post('/media/upload', [\App\Http\Controllers\MediaController::class, 'upload']);
+    Route::delete('/media/{id}', [\App\Http\Controllers\MediaController::class, 'destroy']);
 });
 
 // ── CMS (requires authentication + role check inside controller) ──────────
@@ -65,6 +66,9 @@ Route::middleware('auth:api')->prefix('cms')->group(function () {
 
     // PUT /api/cms/articles/{id} — Update artikel (journalist / editor / admin)
     Route::put('/articles/{id}', [CmsArticleController::class, 'update']);
+
+    // PATCH /api/cms/articles/{id}/status — Update status artikel (editor / admin)
+    Route::patch('/articles/{id}/status', [CmsArticleController::class, 'updateStatus']);
 });
 
 // ── Users (admin only) ────────────────────────────────────────────────────────
