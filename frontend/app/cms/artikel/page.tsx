@@ -328,17 +328,24 @@ export default function BankBeritaPage() {
                   {/* Aksi */}
                   <td className="py-5 text-center">
                     <div className="flex items-center justify-center gap-2">
-                      {article.status === 'rejected' ? (
+                      {/* Tombol Preview (Eye) — tersedia untuk semua status */}
+                      <Link
+                        href={`/cms/artikel/${article.id}/preview`}
+                        title="Preview berita"
+                        className="text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        <Eye size={22} strokeWidth={2.5} />
+                      </Link>
+
+                      {/* Tombol Edit — hanya untuk artikel rejected */}
+                      {article.status === 'rejected' && (
                         <Link
                           href={`/cms/tulis-berita?id=${article.id}&rejected=true&reason=${encodeURIComponent(article.rejectionReason ?? '')}&title=${encodeURIComponent(article.title)}&image=${encodeURIComponent(article.image)}&caption=${encodeURIComponent(article.caption ?? '')}&category=${encodeURIComponent(article.category)}&content=${encodeURIComponent(article.content ?? '')}&tags=${encodeURIComponent(JSON.stringify(article.tags ?? []))}`}
-                          className="text-blue-600 hover:text-blue-800 transition-colors"
+                          title="Edit berita"
+                          className="text-gray-500 hover:text-gray-700 transition-colors"
                         >
                           <Edit3 size={20} strokeWidth={2.5} />
                         </Link>
-                      ) : (
-                        <button className="text-blue-600 hover:text-blue-800 transition-colors">
-                          <Eye size={22} strokeWidth={2.5} />
-                        </button>
                       )}
                     </div>
                   </td>
