@@ -35,6 +35,8 @@ interface MockArticleItem {
   content?: string;
   tags?: string[];
   rejectionReason?: string;
+  author?: string;
+  publishedAt?: string;
 }
 
 const MOCK_ARTICLES: MockArticleItem[] = [
