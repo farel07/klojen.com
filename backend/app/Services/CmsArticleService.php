@@ -274,4 +274,105 @@ class CmsArticleService
             'updated_at'         => $updatedArticle->updated_at,
         ];
     }
+
+    /**
+     * Update status artikel.
+     *
+     * @param  string      $id          UUID artikel
+     * @param  int         $userId      ID user
+     * @param  string      $userRole    Role user
+     * @param  string      $status      Status baru
+     * @param  string|null $scheduledAt Jadwal tayang jika status = scheduled
+     *
+     * @throws \RuntimeException jika artikel tidak ditemukan atau validasi gagal
+     */
+    public function updateStatus(string $id, int $userId, string $userRole, string $status, ?string $scheduledAt = null): array
+    {
+        if (! in_array($userRole, ['editor', 'admin'])) {
+            throw new \RuntimeException('FORBIDDEN_ROLE', 403);
+        }
+
+        $article = DB::table('articles')->where('id', $id)->first();
+
+        if (! $article) {
+            throw new \RuntimeException('ARTICLE_NOT_FOUND', 404);
+        }
+
+        // BR-05: Artikel yang sudah published hanya bisa diubah ke archived
+        if ($article->status === 'published' && $status !== 'archived') {
+            throw new \RuntimeException('INVALID_STATUS_TRANSITION', 400);
+        }
+
+        // BR-04: scheduled_at minimal 5 menit dari sekarang
+        if ($status === 'scheduled') {
+            if (! $scheduledAt) {
+                throw new \InvalidArgumentException('scheduled_at is required for scheduled status');
+            }
+            $scheduledTime = \Carbon\Carbon::parse($scheduledAt);
+            if ($scheduledTime->lessThanOrEqualTo(now()->addMinutes(5))) {
+                throw new \RuntimeException('SCHEDULED_TIME_TOO_SOON', 400);
+            }
+        }
+
+        $now = now();
+
+        DB::transaction(function () use ($id, $article, $userId, $status, $scheduledAt, $now) {
+            
+            // Hapus jadwal sebelumnya jika ada
+            DB::table('scheduled_articles')->where('article_id', $id)->delete();
+
+            if ($status === 'scheduled') {
+                DB::table('scheduled_articles')->insert([
+                    'id'           => (string) Str::uuid(),
+                    'article_id'   => $id,
+                    'scheduled_by' => $userId,
+                    'scheduled_at' => $scheduledAt,
+                    'is_published' => false,
+                    'created_at'   => $now,
+                ]);
+            }
+
+            $updateData = [
+                'status'     => $status,
+                'updated_at' => $now,
+            ];
+
+            if ($status === 'published' && $article->status !== 'published') {
+                $updateData['published_at'] = $now;
+            }
+
+            DB::table('articles')->where('id', $id)->update($updateData);
+
+            // Audit Trail
+            DB::table('article_revisions')->insert([
+                'id'               => (string) Str::uuid(),
+                'article_id'       => $id,
+                'edited_by'        => $userId,
+                'title_snapshot'   => $article->title,
+                'content_snapshot' => $article->content,
+                'change_note'      => "Update status menjadi {$status}",
+                'created_at'       => $now,
+            ]);
+        });
+
+        $updatedArticle = DB::table('articles')->where('id', $id)->first();
+        $tagIds = DB::table('article_tags')->where('article_id', $id)->pluck('tag_id')->toArray();
+
+        return [
+            'id'                 => $updatedArticle->id,
+            'author_id'          => $updatedArticle->author_id,
+            'category_id'        => $updatedArticle->category_id,
+            'title'              => $updatedArticle->title,
+            'slug'               => $updatedArticle->slug,
+            'excerpt'            => $updatedArticle->excerpt,
+            'featured_image_url' => $updatedArticle->featured_image_url,
+            'status'             => $updatedArticle->status,
+            'is_featured'        => (bool) $updatedArticle->is_featured,
+            'view_count'         => $updatedArticle->view_count,
+            'tag_ids'            => $tagIds,
+            'published_at'       => $updatedArticle->published_at,
+            'created_at'         => $updatedArticle->created_at,
+            'updated_at'         => $updatedArticle->updated_at,
+        ];
+    }
 }
