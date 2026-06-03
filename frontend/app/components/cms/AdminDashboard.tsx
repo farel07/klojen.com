@@ -19,10 +19,47 @@ import {
   Tooltip,
   ResponsiveContainer,
   LineChart,
-  Line
+  Line,
+  PieChart,
+  Pie,
+  Cell
 } from 'recharts';
 
 // ─── Mock Data ───────────────────────────────────────────────────────────────
+
+const SUMMARY_DATA = {
+  hari_ini: { pageViews: '12.400', totalBerita: '15', userBaru: '8' },
+  '7_hari': { pageViews: '85.200', totalBerita: '84', userBaru: '45' },
+  '30_hari': { pageViews: '340.500', totalBerita: '320', userBaru: '180' },
+  '1_tahun': { pageViews: '4.200.000', totalBerita: '4.500', userBaru: '2.400' },
+};
+
+const CATEGORY_DATA = {
+  hari_ini: [
+    { name: 'Wisata', value: 4, color: '#2563eb', percent: '40%' },
+    { name: 'Kuliner', value: 3, color: '#16a34a', percent: '30%' },
+    { name: 'Pendidikan', value: 2, color: '#f59e0b', percent: '20%' },
+    { name: 'Hotel', value: 1, color: '#a855f7', percent: '10%' },
+  ],
+  '7_hari': [
+    { name: 'Wisata', value: 12, color: '#2563eb', percent: '34%' },
+    { name: 'Kuliner', value: 9, color: '#16a34a', percent: '26%' },
+    { name: 'Pendidikan', value: 8, color: '#f59e0b', percent: '23%' },
+    { name: 'Hotel', value: 6, color: '#a855f7', percent: '17%' },
+  ],
+  '30_hari': [
+    { name: 'Wisata', value: 26, color: '#2563eb', percent: '36%' },
+    { name: 'Kuliner', value: 18, color: '#16a34a', percent: '25%' },
+    { name: 'Pendidikan', value: 18, color: '#f59e0b', percent: '25%' },
+    { name: 'Hotel', value: 11, color: '#a855f7', percent: '15%' },
+  ],
+  '1_tahun': [
+    { name: 'Wisata', value: 154, color: '#2563eb', percent: '35%' },
+    { name: 'Kuliner', value: 120, color: '#16a34a', percent: '27%' },
+    { name: 'Pendidikan', value: 98, color: '#f59e0b', percent: '22%' },
+    { name: 'Hotel', value: 68, color: '#a855f7', percent: '15%' },
+  ],
+};
 
 const VISITOR_DATA = {
   hari_ini: [
@@ -50,6 +87,20 @@ const VISITOR_DATA = {
     { date: '20 Mei', visitors: 8000 },
     { date: '25 Mei', visitors: 9500 },
     { date: '30 Mei', visitors: 11000 },
+  ],
+  '1_tahun': [
+    { date: 'Jan', visitors: 120000 },
+    { date: 'Feb', visitors: 150000 },
+    { date: 'Mar', visitors: 130000 },
+    { date: 'Apr', visitors: 180000 },
+    { date: 'Mei', visitors: 175000 },
+    { date: 'Jun', visitors: 190000 },
+    { date: 'Jul', visitors: 210000 },
+    { date: 'Ags', visitors: 200000 },
+    { date: 'Sep', visitors: 230000 },
+    { date: 'Okt', visitors: 250000 },
+    { date: 'Nov', visitors: 240000 },
+    { date: 'Des', visitors: 280000 },
   ]
 };
 
@@ -70,17 +121,32 @@ const Sparkline = ({ data, color }: { data: any[], color: string }) => (
 
 export default function AdminDashboard() {
   const { user } = useAuthStore();
-  const [timeFilter, setTimeFilter] = useState<'hari_ini' | '7_hari' | '30_hari'>('7_hari');
+  const [timeFilter, setTimeFilter] = useState<'hari_ini' | '7_hari' | '30_hari' | '1_tahun'>('7_hari');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const filterOptions = {
     hari_ini: 'Hari Ini',
     '7_hari': '7 Hari Terakhir',
-    '30_hari': '30 Hari Terakhir'
+    '30_hari': '30 Hari Terakhir',
+    '1_tahun': '1 Tahun Terakhir'
   };
+
+  const activeCategoryData = CATEGORY_DATA[timeFilter];
+  const totalBerita = activeCategoryData.reduce((acc, item) => acc + item.value, 0);
+  const activeSummaryData = SUMMARY_DATA[timeFilter];
 
   return (
     <div className="space-y-6">
+
+      {/* Header Clean Look */}
+      <div className="flex flex-col gap-1.5 mb-8 mt-2">
+        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+          Dashboard
+        </h1>
+        <p className="text-sm font-medium text-gray-500">
+          Selamat datang kembali! Berikut adalah ringkasan performa portal berita Anda hari ini.
+        </p>
+      </div>
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -167,41 +233,51 @@ export default function AdminDashboard() {
 
       </div>
 
-      {/* Main Content Area */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      {/* Detail Analitik Section Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-10 mb-4 gap-4">
+        <div>
+          <h2 className="text-xl font-bold text-gray-900">Detail Analitik</h2>
+          <p className="text-sm font-medium text-gray-500 mt-1">
+            Data detail pengunjung, ringkasan performa, dan kategori.
+          </p>
+        </div>
+        <div className="relative">
+          <div
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="px-4 py-2 border border-gray-200 bg-white rounded-xl flex items-center gap-3 cursor-pointer hover:bg-gray-50 transition-colors shadow-sm"
+          >
+            <span className="text-sm font-bold text-gray-700">{filterOptions[timeFilter]}</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg" className={`transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}>
+              <path d="M1 1L5 5L9 1" stroke="#4B5563" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
 
-        {/* Visitor Chart (Left Column) */}
-        <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 lg:p-8 border border-gray-100 xl:col-span-2">
+          {isDropdownOpen && (
+            <>
+              <div className="fixed inset-0 z-10" onClick={() => setIsDropdownOpen(false)}></div>
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.1)] py-2 z-20 overflow-hidden">
+                {Object.entries(filterOptions).map(([key, label]) => (
+                  <div
+                    key={key}
+                    onClick={() => { setTimeFilter(key as any); setIsDropdownOpen(false); }}
+                    className={`px-4 py-2.5 text-sm font-bold cursor-pointer transition-colors ${timeFilter === key ? 'text-blue-600 bg-blue-50/50' : 'text-gray-600 hover:bg-gray-50'}`}
+                  >
+                    {label}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Main Content Area */}
+      <div className="grid grid-cols-1 gap-6">
+
+        {/* Visitor Chart (Full Width) */}
+        <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 lg:p-8 border border-gray-100">
           <div className="flex justify-between items-center mb-10">
             <h2 className="text-lg font-extrabold text-gray-900">Grafik Pengunjung</h2>
-            <div className="relative">
-              <div
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="px-3 py-1.5 border border-gray-200 rounded-lg flex items-center gap-2 cursor-pointer hover:bg-gray-50 transition-colors"
-              >
-                <span className="text-xs font-bold text-gray-600">{filterOptions[timeFilter]}</span>
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg" className={`transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}>
-                  <path d="M1 1L5 5L9 1" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-
-              {isDropdownOpen && (
-                <>
-                  <div className="fixed inset-0 z-10" onClick={() => setIsDropdownOpen(false)}></div>
-                  <div className="absolute right-0 top-full mt-1 w-36 bg-white border border-gray-100 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] py-1.5 z-20 overflow-hidden">
-                    {Object.entries(filterOptions).map(([key, label]) => (
-                      <div
-                        key={key}
-                        onClick={() => { setTimeFilter(key as any); setIsDropdownOpen(false); }}
-                        className={`px-4 py-2 text-xs font-bold cursor-pointer transition-colors ${timeFilter === key ? 'text-blue-600 bg-blue-50/50' : 'text-gray-600 hover:bg-gray-50'}`}
-                      >
-                        {label}
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
           </div>
 
           <div className="w-full h-[360px]">
@@ -245,10 +321,14 @@ export default function AdminDashboard() {
             </ResponsiveContainer>
           </div>
         </div>
+      </div>
 
-        {/* Ringkasan Bulan Ini (Right Column) */}
-        <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 lg:p-8 border border-gray-100 flex flex-col">
-          <h2 className="text-lg font-extrabold text-gray-900 mb-6">Ringkasan Bulan Ini</h2>
+      {/* Bottom Section */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+        {/* Ringkasan Statistik (Left Column) */}
+        <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 lg:p-8 border border-gray-100 flex flex-col h-full">
+          <h2 className="text-lg font-extrabold text-gray-900 mb-6">Ringkasan Statistik</h2>
 
           <div className="flex flex-col border border-gray-100 rounded-2xl flex-1 justify-around">
 
@@ -259,7 +339,7 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <div className="text-xs font-bold text-gray-500 mb-1">Total Page View</div>
-                <div className="text-2xl font-extrabold text-gray-900 leading-none">1.200.000</div>
+                <div className="text-2xl font-extrabold text-gray-900 leading-none">{activeSummaryData.pageViews}</div>
               </div>
             </div>
 
@@ -270,7 +350,7 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <div className="text-xs font-bold text-gray-500 mb-1">Total Berita Terbit</div>
-                <div className="text-2xl font-extrabold text-gray-900 leading-none">132</div>
+                <div className="text-2xl font-extrabold text-gray-900 leading-none">{activeSummaryData.totalBerita}</div>
               </div>
             </div>
 
@@ -281,10 +361,61 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <div className="text-xs font-bold text-gray-500 mb-1">User Baru</div>
-                <div className="text-2xl font-extrabold text-gray-900 leading-none">34</div>
+                <div className="text-2xl font-extrabold text-gray-900 leading-none">{activeSummaryData.userBaru}</div>
               </div>
             </div>
 
+          </div>
+        </div>
+
+        {/* Distribusi Kategori (Right Column) */}
+        <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 lg:p-8 border border-gray-100 flex flex-col h-full">
+          <h2 className="text-lg font-extrabold text-gray-900 mb-0">Distribusi Kategori</h2>
+          <div className="flex flex-row items-center justify-center w-full flex-1 mt-6 gap-8">
+            <div className="relative w-[190px] h-[190px] shrink-0">
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none pt-1 z-0">
+                <span className="text-[32px] font-extrabold text-[#1e293b] leading-none mb-1">{totalBerita}</span>
+                <span className="text-[13px] font-semibold text-[#475569]">Berita</span>
+              </div>
+              <div className="relative z-10 w-full h-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={activeCategoryData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={65}
+                      outerRadius={95}
+                      paddingAngle={0}
+                      dataKey="value"
+                      stroke="#ffffff"
+                      strokeWidth={4}
+                    >
+                      {activeCategoryData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
+                      itemStyle={{ fontWeight: 'bold' }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+            <div className="flex flex-col justify-center gap-5 shrink-0 min-w-[130px] pr-2">
+              {activeCategoryData.map((item, index) => (
+                <div key={index} className="flex justify-between items-center w-full gap-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
+                    <span className="text-xs font-bold text-[#1e293b]">{item.name}</span>
+                  </div>
+                  <span className="text-xs font-semibold text-[#334155]">
+                    {item.value} <span className="text-[#64748b]">({item.percent})</span>
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
