@@ -5,6 +5,8 @@ import { Role } from '@/app/types';
 interface AuthUser {
   id: string;
   name: string;
+  email?: string;
+  avatar?: string;
   role: Role;
 }
 
@@ -15,6 +17,7 @@ interface AuthState {
 
   setAuth: (token: string, user: AuthUser) => void;
   setAccessToken: (token: string) => void;
+  updateUser: (data: Partial<AuthUser>) => void;
   logout: () => void;
 }
 
@@ -27,6 +30,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ accessToken: token, user, isAuthenticated: true }),
 
   setAccessToken: (token) => set({ accessToken: token }),
+
+  updateUser: (data) => set((state) => ({ user: state.user ? { ...state.user, ...data } : null })),
 
   logout: () =>
     set({ accessToken: null, user: null, isAuthenticated: false }),
