@@ -19,7 +19,7 @@ const initialData = [
 export default function KelolaPenggunaPage() {
   const [data, setData] = useState(initialData);
   const [search, setSearch] = useState('');
-  
+
   // Modal states
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -38,13 +38,13 @@ export default function KelolaPenggunaPage() {
   // Filter Data
   const isDateInRange = (tanggal: string) => {
     if (!startDate && !endDate) return true;
-    
+
     const [, dateStr] = tanggal.split(' ');
     const [d, m, y] = dateStr.split('-');
     const itemDate = new Date(Number(y), Number(m) - 1, Number(d)).getTime();
-    
+
     const start = startDate ? new Date(startDate).getTime() : -Infinity;
-    
+
     // Set end of day for endDate
     let end = Infinity;
     if (endDate) {
@@ -52,13 +52,13 @@ export default function KelolaPenggunaPage() {
       endD.setHours(23, 59, 59, 999);
       end = endD.getTime();
     }
-    
+
     return itemDate >= start && itemDate <= end;
   };
 
   const filteredData = data.filter((item) => {
     const matchesSearch = item.nama.toLowerCase().includes(search.toLowerCase()) ||
-                          item.email.toLowerCase().includes(search.toLowerCase());
+      item.email.toLowerCase().includes(search.toLowerCase());
     return matchesSearch && isDateInRange(item.tanggal);
   });
 
@@ -92,7 +92,7 @@ export default function KelolaPenggunaPage() {
     }
     setIsDeleteModalOpen(false);
     setIsSuccessModalOpen(true);
-    
+
     // Auto close success modal after 2 seconds
     setTimeout(() => {
       setIsSuccessModalOpen(false);
@@ -109,12 +109,12 @@ export default function KelolaPenggunaPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Kelola Akun Pengguna</h1>
+        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Kelola Akun Pengguna</h1>
       </div>
 
       {/* Toolbar (Search, Filter) - No Add Button */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        
+
         {/* Placeholder div to push the search and date to the right on md screens, if desired.
             Based on the mockup, the search input is on the left since there's no button. */}
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
@@ -134,18 +134,18 @@ export default function KelolaPenggunaPage() {
         {/* Date Filter */}
         <div className="w-full md:w-auto flex flex-col gap-1 relative">
           <span className="text-[10px] font-semibold text-gray-500 uppercase ml-1">Date ▽:</span>
-          <button 
+          <button
             onClick={() => setIsDatePopoverOpen(!isDatePopoverOpen)}
             className="flex items-center justify-between w-full md:w-64 px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
           >
             <div className="flex items-center gap-2">
               <Calendar size={14} className="text-gray-400" />
               <span className="truncate">
-                {startDate && endDate 
-                  ? `${startDate} - ${endDate}` 
+                {startDate && endDate
+                  ? `${startDate} - ${endDate}`
                   : startDate ? `Dari ${startDate}`
-                  : endDate ? `Sampai ${endDate}`
-                  : 'Semua Tanggal'}
+                    : endDate ? `Sampai ${endDate}`
+                      : 'Semua Tanggal'}
               </span>
             </div>
             <span className="text-gray-400 text-[10px]">▼</span>
@@ -155,30 +155,30 @@ export default function KelolaPenggunaPage() {
             <div className="absolute top-full right-0 mt-2 p-3 bg-white border border-gray-200 rounded-xl shadow-lg z-10 w-64 flex flex-col gap-3">
               <div>
                 <label className="block text-xs font-bold text-gray-700 mb-1">Mulai Tanggal</label>
-                <input 
-                  type="date" 
-                  value={startDate} 
-                  onChange={(e) => setStartDate(e.target.value)} 
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
                   className="w-full text-xs p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
               <div>
                 <label className="block text-xs font-bold text-gray-700 mb-1">Sampai Tanggal</label>
-                <input 
-                  type="date" 
-                  value={endDate} 
-                  onChange={(e) => setEndDate(e.target.value)} 
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
                   className="w-full text-xs p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
               <div className="flex justify-between items-center mt-1">
-                <button 
+                <button
                   onClick={() => { setStartDate(''); setEndDate(''); }}
                   className="text-xs text-red-500 font-medium hover:underline"
                 >
                   Reset
                 </button>
-                <button 
+                <button
                   onClick={() => setIsDatePopoverOpen(false)}
                   className="bg-blue-50 text-blue-600 font-semibold text-xs px-4 py-1.5 rounded-lg hover:bg-blue-100 transition-colors"
                 >
@@ -195,15 +195,12 @@ export default function KelolaPenggunaPage() {
       <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="text-xs text-gray-700 bg-gray-50/50 border-b border-gray-200">
+            <thead className="text-sm text-[#152A4A] bg-white border-b border-gray-200">
               <tr>
+                <th className="px-6 py-4 font-bold w-16 text-center">NO.</th>
                 <th className="px-6 py-4 font-bold">Nama Pengguna</th>
                 <th className="px-6 py-4 font-bold text-center">Email</th>
-                <th className="px-6 py-4 font-bold">
-                  <div className="flex items-center gap-1">
-                    Role <span className="text-[10px]">▼</span>
-                  </div>
-                </th>
+                <th className="px-6 py-4 font-bold">Role</th>
                 <th className="px-6 py-4 font-bold">Tanggal Bergabung</th>
                 <th className="px-6 py-4 font-bold text-center">Aksi</th>
               </tr>
@@ -211,15 +208,16 @@ export default function KelolaPenggunaPage() {
             <tbody className="divide-y divide-gray-100">
               {paginatedData.map((item, index) => (
                 <tr key={item.id} className={`hover:bg-gray-50/50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
+                  <td className="px-6 py-4 text-center font-medium text-gray-500">{(currentPage - 1) * itemsPerPage + index + 1}</td>
                   <td className="px-6 py-4 font-medium text-gray-900">{item.nama}</td>
                   <td className="px-6 py-4 text-gray-600 text-center font-medium underline decoration-gray-300 underline-offset-4">{item.email}</td>
                   <td className="px-6 py-4 text-gray-800 font-medium">{item.role}</td>
                   <td className="px-6 py-4 text-gray-600 font-medium">{item.tanggal}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-center gap-3">
-                      <button 
+                      <button
                         onClick={() => handleDeleteClick(item.id)}
-                        className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100" 
+                        className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100"
                         title="Hapus"
                       >
                         <Trash2 size={16} />
@@ -230,7 +228,7 @@ export default function KelolaPenggunaPage() {
               ))}
               {filteredData.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-6 py-10 text-center text-gray-500 font-medium">
+                  <td colSpan={6} className="px-6 py-10 text-center text-gray-500 font-medium">
                     Tidak ada data pengguna ditemukan.
                   </td>
                 </tr>
@@ -238,7 +236,7 @@ export default function KelolaPenggunaPage() {
             </tbody>
           </table>
         </div>
-        
+
         {/* Pagination */}
         <div className="px-6 py-4 border-t border-gray-200 bg-white flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
@@ -253,9 +251,9 @@ export default function KelolaPenggunaPage() {
               <option value={50}>50 baris</option>
             </select>
           </div>
-          
+
           <div className="flex items-center gap-2">
-            <button 
+            <button
               onClick={handlePrevPage}
               disabled={validCurrentPage === 1}
               className="p-1 text-gray-400 hover:text-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -270,7 +268,7 @@ export default function KelolaPenggunaPage() {
                     return (
                       <React.Fragment key={`ellipsis-${page}`}>
                         <span className="px-1">...</span>
-                        <button 
+                        <button
                           onClick={() => handlePageClick(page)}
                           className={`w-6 h-6 rounded-md flex items-center justify-center transition-colors ${page === validCurrentPage ? 'bg-blue-50 text-blue-600 border border-blue-100' : 'hover:bg-gray-100'}`}
                         >
@@ -280,7 +278,7 @@ export default function KelolaPenggunaPage() {
                     );
                   }
                   return (
-                    <button 
+                    <button
                       key={page}
                       onClick={() => handlePageClick(page)}
                       className={`w-6 h-6 rounded-md flex items-center justify-center transition-colors ${page === validCurrentPage ? 'bg-blue-50 text-blue-600 border border-blue-100' : 'hover:bg-gray-100'}`}
@@ -291,7 +289,7 @@ export default function KelolaPenggunaPage() {
                 })
               }
             </div>
-            <button 
+            <button
               onClick={handleNextPage}
               disabled={validCurrentPage === totalPages}
               className="p-1 text-gray-400 hover:text-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -300,13 +298,13 @@ export default function KelolaPenggunaPage() {
             </button>
             <div className="flex items-center gap-2 ml-4 text-xs font-medium text-gray-600">
               <span>Go to</span>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 value={gotoPage}
                 onChange={(e) => setGotoPage(e.target.value)}
                 onKeyDown={handleGotoPage}
-                placeholder={validCurrentPage.toString()} 
-                className="w-10 text-center py-1 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" 
+                placeholder={validCurrentPage.toString()}
+                className="w-10 text-center py-1 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
               />
               <span>Page</span>
             </div>
@@ -319,7 +317,7 @@ export default function KelolaPenggunaPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="p-6 text-center relative">
-              <button 
+              <button
                 onClick={cancelDelete}
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition-colors"
               >
@@ -329,13 +327,13 @@ export default function KelolaPenggunaPage() {
                 Apakah Anda Yakin<br />Ingin Menghapus?
               </h3>
               <div className="flex items-center justify-center gap-4">
-                <button 
+                <button
                   onClick={confirmDelete}
                   className="px-8 py-2 bg-[#69c77e] hover:bg-[#5db471] text-white text-sm font-bold rounded-lg shadow-sm transition-colors"
                 >
                   Ya
                 </button>
-                <button 
+                <button
                   onClick={cancelDelete}
                   className="px-8 py-2 bg-[#ef6e6e] hover:bg-[#d96464] text-white text-sm font-bold rounded-lg shadow-sm transition-colors"
                 >
