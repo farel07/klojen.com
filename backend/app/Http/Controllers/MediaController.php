@@ -35,4 +35,25 @@ class MediaController extends Controller
             'data'   => $media,
         ], 201);
     }
+    /**
+     * DELETE /api/media/{id}
+     * Menghapus media dan file fisiknya
+     */
+    public function destroy(string $id): JsonResponse
+    {
+        try {
+            $this->mediaService->deleteMedia($id);
+
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Media berhasil dihapus',
+            ]);
+        } catch (\Exception $e) {
+            $statusCode = $e->getCode() === 404 ? 404 : 500;
+            return response()->json([
+                'status'  => 'error',
+                'message' => $e->getMessage(),
+            ], $statusCode);
+        }
+    }
 }
