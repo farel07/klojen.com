@@ -15,6 +15,7 @@ import {
   Plus,
   CheckCircle,
   AlertCircle,
+  ChevronDown,
 } from 'lucide-react';
 import {
   BarChart,
@@ -28,17 +29,18 @@ import {
   Pie,
   Cell,
   Legend,
+  LabelList,
 } from 'recharts';
 
 // ─── Mock Data ───────────────────────────────────────────────────────────────
 
-const MONTHLY_DATA = [
-  { month: 'Jan', berita: 8 },
-  { month: 'Feb', berita: 12 },
-  { month: 'Mar', berita: 9 },
-  { month: 'Apr', berita: 15 },
-  { month: 'Mei', berita: 18 },
-  { month: 'Jun', berita: 22 },
+const YEARLY_DATA = [
+  { year: '2020', berita: 28 },
+  { year: '2021', berita: 35 },
+  { year: '2022', berita: 48 },
+  { year: '2023', berita: 61 },
+  { year: '2024', berita: 72 },
+  { year: '2025', berita: 84 },
 ];
 
 const CATEGORY_DATA = [
@@ -93,21 +95,19 @@ function StatCard({
   label,
   value,
   icon: Icon,
-  color,
+  iconColor = "text-blue-500"
 }: {
   label: string;
   value: number | string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
-  color: string;
+  icon: React.ComponentType<{ size?: number; className?: string; strokeWidth?: number }>;
+  iconColor?: string;
 }) {
   return (
-    <div className="bg-white rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] p-6 flex items-center gap-5 hover:-translate-y-1 transition-transform duration-300 cursor-default">
-      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${color}`}>
-        <Icon size={24} className="text-white" />
-      </div>
-      <div>
-        <div className="text-3xl font-bold text-[#2563eb] leading-none mb-1">{value}</div>
-        <div className="text-sm font-semibold text-gray-700">{label}</div>
+    <div className="bg-white rounded-[16px] shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-gray-100 py-6 px-4 flex items-center justify-center gap-5 hover:-translate-y-1 transition-transform duration-300">
+      <Icon size={46} className={`${iconColor} shrink-0`} strokeWidth={1.5} />
+      <div className="flex flex-col items-center justify-center">
+        <div className="text-[44px] font-bold text-blue-600 leading-none tracking-tight mb-1">{value}</div>
+        <div className="text-[13px] font-bold text-black">{label}</div>
       </div>
     </div>
   );
@@ -140,129 +140,94 @@ function EditorDashboardView() {
   const role = user?.role as Role | undefined;
   const isEditorOrAbove = role ? canPublish(role) : false;
 
-  const totalThisYear = MONTHLY_DATA.reduce((s, d) => s + d.berita, 0);
+  const totalThisYear = YEARLY_DATA.reduce((s, d) => s + d.berita, 0);
 
   return (
-    <div className="space-y-6">
-      {/* Page header */}
-      <div className="flex items-center justify-between pt-2">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Selamat datang, {user?.name?.split(' ')[0] ?? 'Jurnalis'} 👋
-          </h1>
-          <p className="text-sm text-gray-400 mt-0.5">
-            Ini adalah ringkasan aktivitas redaksi Klojen hari ini.
-          </p>
-        </div>
-        <Link
-          href="/cms/artikel/baru"
-          id="btn-tulis-berita-dashboard"
-          className="
-            flex items-center gap-2 px-5 py-2.5
-            bg-gradient-to-r from-blue-500 to-blue-700
-            text-white text-sm font-semibold rounded-xl shadow-md
-            hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200
-          "
-        >
-          <Plus size={16} />
-          Tulis Berita
-        </Link>
-      </div>
+    <div className="space-y-6 pt-4">
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <StatCard
-          label="Berita Publish"
-          value={31}
-          icon={CheckCircle}
-          color="bg-gradient-to-br from-blue-500 to-blue-700"
-        />
-        <StatCard
-          label="Draft"
-          value={45}
-          icon={FileText}
-          color="bg-gradient-to-br from-orange-400 to-orange-600"
-        />
-        <StatCard
-          label="Kategori Aktif"
-          value={4}
-          icon={LayoutGrid}
-          color="bg-gradient-to-br from-purple-500 to-purple-700"
-        />
-        <StatCard
-          label="Media Tersimpan"
-          value={372}
-          icon={ImageIcon}
-          color="bg-gradient-to-br from-emerald-500 to-emerald-700"
-        />
+        <StatCard label="Berita Publish" value={31} icon={FileText} iconColor="text-blue-500" />
+        <StatCard label="Draft" value={45} icon={Clock} iconColor="text-orange-500" />
+        <StatCard label="Kategori Aktif" value={4} icon={LayoutGrid} iconColor="text-purple-500" />
+        <StatCard label="Media Tersimpan" value={372} icon={ImageIcon} iconColor="text-emerald-500" />
       </div>
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
         {/* Bar Chart Panel */}
-        <div className="bg-white rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] p-6 md:p-8 lg:col-span-2 flex flex-col">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
+        <div className="bg-white rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] p-6 md:p-8 lg:col-span-2 flex flex-col border border-gray-100">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8">
             <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-0.5">
+              <h2 className="text-[22px] font-bold text-black mb-1">
                 Statistik Penulisan Berita
               </h2>
-              <p className="text-sm text-gray-400 font-medium">
+              <p className="text-[15px] font-bold text-[#b5b5b5]">
                 Lihat perkembangan jumlah berita yang kamu tulis.
               </p>
             </div>
-            <button className="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-100 transition-colors shrink-0">
+            <div className="flex items-center px-4 py-2 bg-white border border-[#cdcdcd] rounded-sm text-sm font-bold text-black shrink-0">
               Tahun 2025
-              <TrendingUp size={14} />
-            </button>
+            </div>
           </div>
 
           {/* Summary box */}
-          <div className="inline-flex mb-6">
-            <div className="bg-[#f9f9f9] border border-gray-100 rounded-xl p-4 flex items-center gap-6">
+          <div className="inline-flex mb-8">
+            <div className="bg-white border border-[#cdcdcd] p-4 flex items-center justify-between gap-10 min-w-[200px]">
               <div>
-                <div className="text-xs text-gray-400 font-medium mb-1">Total berita tahun ini</div>
-                <div className="text-4xl font-bold text-[#2563eb] leading-none">{totalThisYear}</div>
+                <div className="text-[10px] font-bold text-[#868686] mb-1">Total berita tahun ini</div>
+                <div className="text-[44px] font-bold text-blue-600 leading-none tracking-tight">84</div>
               </div>
-              <FileText size={32} className="text-blue-200" />
+              <FileText size={28} className="text-blue-600" strokeWidth={2.5} />
             </div>
           </div>
 
           {/* Bar Chart */}
-          <div className="flex-1 min-h-[220px]">
-            <ResponsiveContainer width="100%" height={220}>
-              <BarChart data={MONTHLY_DATA} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+          <div className="flex-1 min-h-[260px] relative">
+            <ResponsiveContainer width="100%" height={260}>
+              <BarChart data={YEARLY_DATA} margin={{ top: 25, right: 10, left: -25, bottom: 0 }} barCategoryGap="30%">
+                <defs>
+                  <linearGradient id="colorBerita" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#2563eb" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#93c5fd" stopOpacity={0.8}/>
+                  </linearGradient>
+                </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
                 <XAxis
-                  dataKey="month"
-                  tick={{ fontSize: 12, fill: '#9ca3af' }}
+                  dataKey="year"
+                  tick={{ fontSize: 13, fill: '#64748b', fontWeight: 'bold' }}
                   axisLine={false}
                   tickLine={false}
+                  dy={10}
                 />
                 <YAxis
-                  tick={{ fontSize: 12, fill: '#9ca3af' }}
+                  tick={{ fontSize: 12, fill: '#64748b', fontWeight: 'bold' }}
                   axisLine={false}
                   tickLine={false}
+                  dx={-10}
                 />
                 <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(37,99,235,0.06)' }} />
                 <Bar
                   dataKey="berita"
-                  fill="#2563eb"
-                  radius={[8, 8, 0, 0]}
-                  maxBarSize={48}
-                />
+                  radius={[6, 6, 0, 0]}
+                >
+                  {YEARLY_DATA.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={index === YEARLY_DATA.length - 1 ? '#2563eb' : 'url(#colorBerita)'} />
+                  ))}
+                  <LabelList dataKey="berita" position="top" style={{ fill: '#1e3a8a', fontSize: 14, fontWeight: 'bold' }} dy={-10} />
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
 
           {/* Insight Banner */}
-          <div className="mt-5 bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl px-5 py-3 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-              <TrendingUp size={16} className="text-white" />
+          <div className="mt-8 bg-[#f5f8ff] rounded-xl px-6 py-4 flex items-center justify-center gap-4">
+            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
+              <TrendingUp size={20} className="text-white" strokeWidth={2.5} />
             </div>
-            <p className="text-sm text-white font-medium">
-              Jumlah berita bulan ini{' '}
-              <span className="font-bold">meningkat 16,7%</span> dibanding bulan lalu.
+            <p className="text-[15px] text-[#4b5563]">
+              Jumlah berita tahun <span className="font-bold text-[#1e3a8a]">2025</span> meningkat <span className="font-bold text-[#1e3a8a]">16,7%</span> dibanding tahun <span className="font-bold text-[#1e3a8a]">2024</span>.
             </p>
           </div>
         </div>
@@ -312,85 +277,7 @@ function EditorDashboardView() {
         </div>
       </div>
 
-      {/* Recent Articles Table */}
-      <div className="bg-white rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-50">
-          <h2 className="text-lg font-bold text-gray-900">Artikel Terbaru</h2>
-          <Link
-            href="/cms/artikel"
-            className="flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors"
-          >
-            Lihat semua
-            <ArrowRight size={14} />
-          </Link>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-gray-50/60">
-                <th className="text-left px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">
-                  Judul
-                </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide hidden md:table-cell">
-                  Kategori
-                </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">
-                  Status
-                </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide hidden lg:table-cell">
-                  Tanggal
-                </th>
-                <th className="text-right px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">
-                  Aksi
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {RECENT_ARTICLES.map((article) => {
-                const st = STATUS_CONFIG[article.status];
-                return (
-                  <tr
-                    key={article.id}
-                    className="hover:bg-blue-50/30 transition-colors duration-150"
-                  >
-                    <td className="px-6 py-4">
-                      <span className="font-medium text-gray-800 line-clamp-1">
-                        {article.title}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4 hidden md:table-cell">
-                      <span className="text-gray-500">{article.category}</span>
-                    </td>
-                    <td className="px-4 py-4">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${st.className}`}
-                      >
-                        {st.label}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4 hidden lg:table-cell">
-                      <span className="text-gray-400 text-xs">{article.date}</span>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <Link
-                        href={`/cms/artikel/${article.id}`}
-                        className="text-blue-600 hover:text-blue-700 font-medium text-xs hover:underline transition-colors"
-                      >
-                        Edit
-                      </Link>
-                      {isEditorOrAbove && article.status === 'review' && (
-                        <button className="ml-3 text-green-600 hover:text-green-700 font-medium text-xs hover:underline transition-colors">
-                          Publish
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+
 
       {/* Quick Actions (Editor+) */}
       {isEditorOrAbove && (
