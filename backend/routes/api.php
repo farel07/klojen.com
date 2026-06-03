@@ -60,6 +60,7 @@ Route::middleware('auth:api')->group(function () {
 
     // Comments
     Route::post('/comments', [\App\Http\Controllers\CommentController::class, 'store']);
+    Route::delete('/comments/{id}', [\App\Http\Controllers\CommentController::class, 'destroy']);
 });
 
 // ── CMS (requires authentication + role check inside controller) ──────────

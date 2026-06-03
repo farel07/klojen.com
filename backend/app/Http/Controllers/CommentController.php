@@ -87,4 +87,42 @@ class CommentController extends Controller
             ],
         ], 201);
     }
+
+    /**
+     * DELETE /api/comments/{id}
+     */
+    public function destroy(string $id): JsonResponse
+    {
+        $user = auth('api')->user();
+
+        // 1. Validasi Role (Hanya Editor & Admin)
+        if (!in_array($user->role, ['editor', 'admin'])) {
+            return response()->json([
+                'status'  => 'error',
+                'code'    => 403,
+                'error'   => 'FORBIDDEN',
+                'message' => 'Anda tidak memiliki akses untuk menghapus komentar.',
+            ], 403);
+        }
+
+        // 2. SELECT untuk verifikasi komentar ada
+        $comment = Comment::find($id);
+
+        if (!$comment) {
+            return response()->json([
+                'status'  => 'error',
+                'code'    => 404,
+                'error'   => 'COMMENT_NOT_FOUND',
+                'message' => 'Komentar tidak ditemukan.',
+            ], 404);
+        }
+
+        // 3. DELETE permanen
+        $comment->delete();
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Komentar berhasil dihapus secara permanen.',
+        ], 200);
+    }
 }
