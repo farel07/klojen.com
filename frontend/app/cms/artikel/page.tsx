@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import {
   Search,
   Plus,
@@ -14,7 +15,9 @@ import {
   Clock,
   CloudUpload,
   XCircle,
-  Tag
+  Tag,
+  Trash2,
+  X
 } from 'lucide-react';
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
@@ -54,10 +57,18 @@ const MOCK_ARTICLES: MockArticleItem[] = [
   {
     id: '3',
     title: 'Hotel Baru Dekat Alun-Alun Malang Resmi Dibuka',
-    excerpt: 'Hotel dengan konsep modern ini menawarkan lokasi dipusat...',
+    excerpt: 'Hotel dengan konsep modern ini menawarkan lokasi di pusat...',
     category: 'Hotel',
     status: 'draft' as ArticleStatus,
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&q=80',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
+    caption: 'Fasad bangunan hotel baru berkonsep modern minimalis yang berlokasi strategis di dekat kawasan Alun-Alun Kota Malang. (Foto: Klojen.com)',
+    author: 'Budi Santoso',
+    content: `<p>Sebuah hotel baru dengan konsep modern dan minimalis resmi dibuka di kawasan strategis dekat Alun-Alun Kota Malang. Kehadiran hotel ini diharapkan dapat memenuhi tingginya permintaan akomodasi wisata di pusat kota, terutama saat musim liburan tiba.</p>
+<p>Hotel berlantai 12 ini menawarkan 150 kamar dengan berbagai tipe, mulai dari Standard, Deluxe, hingga Premium Suite. Setiap kamar dilengkapi dengan fasilitas modern berstandar internasional, termasuk koneksi internet berkecepatan tinggi, smart TV, dan area kerja yang ergonomis.</p>
+<p>Keunggulan utama hotel ini adalah lokasinya yang sangat strategis. Hanya berjarak 200 meter dari Alun-Alun Kota Malang, tamu dapat dengan mudah menjangkau berbagai pusat kuliner legendaris, kawasan pecinan, dan sentra perbelanjaan legendaris di Kota Malang hanya dengan berjalan kaki.</p>
+<p>"Kami membidik segmen keluarga dan business traveler yang membutuhkan penginapan berkualitas di pusat kota dengan akses mudah ke mana-mana," ujar Manajer Operasional Hotel, Budi Santoso saat acara soft opening, Rabu (27/5/2026).</p>
+<p>Selama masa promosi pembukaan, manajemen memberikan diskon tarif kamar hingga 30 persen bagi tamu yang memesan melalui aplikasi atau website resmi mereka. Promosi ini berlaku hingga akhir bulan depan.</p>`,
+    tags: ['#HotelMalang', '#Wisata', '#AlunAlunMalang', '#PenginapanMalang'],
   },
   {
     id: '4',
@@ -148,12 +159,27 @@ const ITEMS_PER_PAGE = 3;
 
 // ─── Main Page ─────────────────────────────────────────────────────────────────
 
-export default function BankBeritaPage() {
-  const [search, setSearch] = useState('');
+// ─── Main Content ────────────────────────────────────────────────────────────────
+
+function BankBeritaContent() {
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams.get('q') || '';
+  
+  const [articles, setArticles] = useState(MOCK_ARTICLES);
+  const [search, setSearch] = useState(initialSearch);
   const [activeStatus, setActiveStatus] = useState<StatusKey>('semua');
   const [selectedCategory, setSelectedCategory] = useState('Semua Kategori');
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [page, setPage] = useState(1);
+  const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
+
+  // Jika query param 'q' berubah dari Topbar, update state search
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q !== null) {
+      setSearch(q);
+    }
+  }, [searchParams]);
 
   // Reset halaman ke 1 setiap kali filter berubah agar pencarian berlaku di semua data
   useEffect(() => { setPage(1); }, [search, activeStatus, selectedCategory]);
@@ -161,20 +187,20 @@ export default function BankBeritaPage() {
   // Hitung jumlah dinamis dari data yang ada (tanpa filter search/kategori, hanya per status)
   const dynamicCounts = useMemo(() => {
     const counts: Record<string, number> = {
-      semua: MOCK_ARTICLES.length,
+      semua: articles.length,
       published: 0,
       draft: 0,
       scheduled: 0,
       rejected: 0,
     };
-    MOCK_ARTICLES.forEach((a) => {
+    articles.forEach((a) => {
       if (a.status in counts) counts[a.status]++;
     });
     return counts;
-  }, []);
+  }, [articles]);
 
   const filtered = useMemo(() => {
-    return MOCK_ARTICLES.filter((a) => {
+    return articles.filter((a) => {
       const matchSearch =
         a.title.toLowerCase().includes(search.toLowerCase()) ||
         a.excerpt.toLowerCase().includes(search.toLowerCase());
@@ -183,7 +209,7 @@ export default function BankBeritaPage() {
         selectedCategory === 'Semua Kategori' || a.category === selectedCategory;
       return matchSearch && matchStatus && matchCat;
     });
-  }, [search, activeStatus, selectedCategory]);
+  }, [articles, search, activeStatus, selectedCategory]);
 
   const totalItems = filtered.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
@@ -328,25 +354,46 @@ export default function BankBeritaPage() {
                   {/* Aksi */}
                   <td className="py-5 text-center">
                     <div className="flex items-center justify-center gap-2">
-                      {/* Tombol Preview (Eye) — tersedia untuk semua status */}
-                      <Link
-                        href={`/cms/artikel/${article.id}/preview`}
-                        title="Preview berita"
-                        className="text-blue-600 hover:text-blue-800 transition-colors"
-                      >
-                        <Eye size={22} strokeWidth={2.5} />
-                      </Link>
+                      
+                      {article.status === 'draft' && (
+                        <>
+                          <button
+                            onClick={() => setArticleToDelete(article.id)}
+                            title="Hapus draft"
+                            className="text-red-500 hover:text-red-700 transition-colors"
+                          >
+                            <Trash2 size={20} strokeWidth={2.5} />
+                          </button>
+                          <Link
+                            href={`/cms/tulis-berita?id=${article.id}&status=draft&title=${encodeURIComponent(article.title)}&image=${encodeURIComponent(article.image)}&caption=${encodeURIComponent(article.caption ?? '')}&category=${encodeURIComponent(article.category)}&content=${encodeURIComponent(article.content ?? '')}&tags=${encodeURIComponent(JSON.stringify(article.tags ?? []))}`}
+                            title="Edit draft"
+                            className="text-blue-500 hover:text-blue-700 transition-colors"
+                          >
+                            <Edit3 size={20} strokeWidth={2.5} />
+                          </Link>
+                        </>
+                      )}
 
-                      {/* Tombol Edit — hanya untuk artikel rejected */}
                       {article.status === 'rejected' && (
                         <Link
-                          href={`/cms/tulis-berita?id=${article.id}&rejected=true&reason=${encodeURIComponent(article.rejectionReason ?? '')}&title=${encodeURIComponent(article.title)}&image=${encodeURIComponent(article.image)}&caption=${encodeURIComponent(article.caption ?? '')}&category=${encodeURIComponent(article.category)}&content=${encodeURIComponent(article.content ?? '')}&tags=${encodeURIComponent(JSON.stringify(article.tags ?? []))}`}
+                          href={`/cms/tulis-berita?id=${article.id}&rejected=true&status=draft&reason=${encodeURIComponent(article.rejectionReason ?? '')}&title=${encodeURIComponent(article.title)}&image=${encodeURIComponent(article.image)}&caption=${encodeURIComponent(article.caption ?? '')}&category=${encodeURIComponent(article.category)}&content=${encodeURIComponent(article.content ?? '')}&tags=${encodeURIComponent(JSON.stringify(article.tags ?? []))}`}
                           title="Edit berita"
-                          className="text-gray-500 hover:text-gray-700 transition-colors"
+                          className="text-blue-500 hover:text-blue-700 transition-colors"
                         >
                           <Edit3 size={20} strokeWidth={2.5} />
                         </Link>
                       )}
+
+                      {(article.status === 'published' || article.status === 'scheduled') && (
+                        <Link
+                          href={`/cms/artikel/${article.id}/preview`}
+                          title="Preview berita"
+                          className="text-blue-600 hover:text-blue-800 transition-colors"
+                        >
+                          <Eye size={22} strokeWidth={2.5} />
+                        </Link>
+                      )}
+
                     </div>
                   </td>
                 </tr>
@@ -394,6 +441,51 @@ export default function BankBeritaPage() {
         </div>
 
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {articleToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl w-full max-w-sm p-6 relative shadow-2xl animate-in fade-in zoom-in duration-200">
+            <button 
+              onClick={() => setArticleToDelete(null)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors"
+            >
+              <X size={20} strokeWidth={2.5} />
+            </button>
+            <div className="mt-8 mb-8 text-center px-4">
+              <h3 className="text-[18px] font-bold text-[#2A3752] leading-snug">
+                Apakah Anda Yakin Ingin<br />Menghapus?
+              </h3>
+            </div>
+            <div className="flex items-center justify-center gap-4">
+              <button
+                onClick={() => {
+                  setArticles((prev) => prev.filter((a) => a.id !== articleToDelete));
+                  setArticleToDelete(null);
+                }}
+                className="w-24 py-2.5 rounded-lg bg-[#5DD672] text-white font-bold hover:bg-[#4bc760] transition-colors"
+              >
+                Ya
+              </button>
+              <button
+                onClick={() => setArticleToDelete(null)}
+                className="w-24 py-2.5 rounded-lg bg-[#E36666] text-white font-bold hover:bg-[#d65555] transition-colors"
+              >
+                Tidak
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
+  );
+}
+
+export default function BankBeritaPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-gray-500">Memuat...</div>}>
+      <BankBeritaContent />
+    </Suspense>
   );
 }

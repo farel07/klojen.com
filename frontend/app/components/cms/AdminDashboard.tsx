@@ -1,11 +1,14 @@
 'use client';
 
+import { useState } from 'react';
 import { useAuthStore } from '@/stores/authStore';
 import {
   FileText,
-  Clock,
-  User,
+  Users,
+  Megaphone,
   TrendingUp,
+  Eye,
+  UserPlus
 } from 'lucide-react';
 import {
   AreaChart,
@@ -15,136 +18,274 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  LineChart,
+  Line,
+  PieChart,
+  Pie,
+  Cell
 } from 'recharts';
-import Image from 'next/image';
 
 // ─── Mock Data ───────────────────────────────────────────────────────────────
 
-const VISITOR_DATA = [
-  { date: '01 Mei', visitors: 3900 },
-  { date: '04 Mei', visitors: 5200 },
-  { date: '08 Mei', visitors: 6100 },
-  { date: '11 Mei', visitors: 5400 },
-  { date: '14 Mei', visitors: 5000 },
-  { date: '16 Mei', visitors: 6500 },
-  { date: '21 Mei', visitors: 8800 },
-  { date: '24 Mei', visitors: 7800 },
-  { date: '28 Mei', visitors: 5000 },
-  { date: '31 Mei', visitors: 5800 },
-];
+const SUMMARY_DATA = {
+  hari_ini: { pageViews: '12.400', totalBerita: '15', userBaru: '8' },
+  '7_hari': { pageViews: '85.200', totalBerita: '84', userBaru: '45' },
+  '30_hari': { pageViews: '340.500', totalBerita: '320', userBaru: '180' },
+  '1_tahun': { pageViews: '4.200.000', totalBerita: '4.500', userBaru: '2.400' },
+};
 
-const POPULAR_ARTICLES = [
-  {
-    id: '1',
-    title: 'Tahu Walik Cemilan Khas Malang yang Selalu Dicari',
-    image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=100&h=70&fit=crop',
-  },
-  {
-    id: '2',
-    title: 'Coban Rais, Wisata Alam dengan Banyak Spot Foto',
-    image: 'https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?w=100&h=70&fit=crop',
-  },
-  {
-    id: '3',
-    title: 'Grand Mercure Malang Mirama, Hotel Modern di Pusat Kota',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=100&h=70&fit=crop',
-  },
-  {
-    id: '4',
-    title: 'Sego Sambel Cak Uut Pedesnya nampol!',
-    image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=100&h=70&fit=crop',
-  },
-  {
-    id: '5',
-    title: 'Pantai 3 Warna Surga Tersembunyi di Malang',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=100&h=70&fit=crop',
-  },
-];
+const CATEGORY_DATA = {
+  hari_ini: [
+    { name: 'Wisata', value: 4, color: '#2563eb', percent: '40%' },
+    { name: 'Kuliner', value: 3, color: '#16a34a', percent: '30%' },
+    { name: 'Pendidikan', value: 2, color: '#f59e0b', percent: '20%' },
+    { name: 'Hotel', value: 1, color: '#a855f7', percent: '10%' },
+  ],
+  '7_hari': [
+    { name: 'Wisata', value: 12, color: '#2563eb', percent: '34%' },
+    { name: 'Kuliner', value: 9, color: '#16a34a', percent: '26%' },
+    { name: 'Pendidikan', value: 8, color: '#f59e0b', percent: '23%' },
+    { name: 'Hotel', value: 6, color: '#a855f7', percent: '17%' },
+  ],
+  '30_hari': [
+    { name: 'Wisata', value: 26, color: '#2563eb', percent: '36%' },
+    { name: 'Kuliner', value: 18, color: '#16a34a', percent: '25%' },
+    { name: 'Pendidikan', value: 18, color: '#f59e0b', percent: '25%' },
+    { name: 'Hotel', value: 11, color: '#a855f7', percent: '15%' },
+  ],
+  '1_tahun': [
+    { name: 'Wisata', value: 154, color: '#2563eb', percent: '35%' },
+    { name: 'Kuliner', value: 120, color: '#16a34a', percent: '27%' },
+    { name: 'Pendidikan', value: 98, color: '#f59e0b', percent: '22%' },
+    { name: 'Hotel', value: 68, color: '#a855f7', percent: '15%' },
+  ],
+};
+
+const VISITOR_DATA = {
+  hari_ini: [
+    { date: '00:00', visitors: 120 },
+    { date: '04:00', visitors: 80 },
+    { date: '08:00', visitors: 1500 },
+    { date: '12:00', visitors: 4200 },
+    { date: '16:00', visitors: 3800 },
+    { date: '20:00', visitors: 2400 },
+  ],
+  '7_hari': [
+    { date: '14 Mei', visitors: 2800 },
+    { date: '15 Mei', visitors: 5200 },
+    { date: '16 Mei', visitors: 5100 },
+    { date: '17 Mei', visitors: 9000 },
+    { date: '18 Mei', visitors: 10000 },
+    { date: '19 Mei', visitors: 4500 },
+    { date: '20 Mei', visitors: 6200 },
+  ],
+  '30_hari': [
+    { date: '01 Mei', visitors: 4000 },
+    { date: '05 Mei', visitors: 6200 },
+    { date: '10 Mei', visitors: 5100 },
+    { date: '15 Mei', visitors: 12000 },
+    { date: '20 Mei', visitors: 8000 },
+    { date: '25 Mei', visitors: 9500 },
+    { date: '30 Mei', visitors: 11000 },
+  ],
+  '1_tahun': [
+    { date: 'Jan', visitors: 120000 },
+    { date: 'Feb', visitors: 150000 },
+    { date: 'Mar', visitors: 130000 },
+    { date: 'Apr', visitors: 180000 },
+    { date: 'Mei', visitors: 175000 },
+    { date: 'Jun', visitors: 190000 },
+    { date: 'Jul', visitors: 210000 },
+    { date: 'Ags', visitors: 200000 },
+    { date: 'Sep', visitors: 230000 },
+    { date: 'Okt', visitors: 250000 },
+    { date: 'Nov', visitors: 240000 },
+    { date: 'Des', visitors: 280000 },
+  ]
+};
+
+const SPARKLINE_1 = [{ v: 2 }, { v: 3 }, { v: 3.5 }, { v: 5 }, { v: 4 }, { v: 6 }, { v: 8 }];
+const SPARKLINE_2 = [{ v: 4 }, { v: 4.5 }, { v: 4 }, { v: 5.5 }, { v: 5 }, { v: 6.5 }, { v: 7 }];
+const SPARKLINE_3 = [{ v: 3 }, { v: 2 }, { v: 4 }, { v: 3.5 }, { v: 5 }, { v: 4.5 }, { v: 6 }];
+const SPARKLINE_4 = [{ v: 5 }, { v: 4.5 }, { v: 5.5 }, { v: 5 }, { v: 7 }, { v: 6 }, { v: 8 }];
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
+const Sparkline = ({ data, color }: { data: any[], color: string }) => (
+  <ResponsiveContainer width="100%" height="100%">
+    <LineChart data={data}>
+      <Line type="monotone" dataKey="v" stroke={color} strokeWidth={2.5} dot={false} isAnimationActive={false} />
+    </LineChart>
+  </ResponsiveContainer>
+);
+
 export default function AdminDashboard() {
   const { user } = useAuthStore();
+  const [timeFilter, setTimeFilter] = useState<'hari_ini' | '7_hari' | '30_hari' | '1_tahun'>('7_hari');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const filterOptions = {
+    hari_ini: 'Hari Ini',
+    '7_hari': '7 Hari Terakhir',
+    '30_hari': '30 Hari Terakhir',
+    '1_tahun': '1 Tahun Terakhir'
+  };
+
+  const activeCategoryData = CATEGORY_DATA[timeFilter];
+  const totalBerita = activeCategoryData.reduce((acc, item) => acc + item.value, 0);
+  const activeSummaryData = SUMMARY_DATA[timeFilter];
 
   return (
-    <div className="space-y-8">
-      {/* Page Header */}
-      <div>
-        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Dashboard</h1>
+    <div className="space-y-6">
+
+      {/* Header Clean Look */}
+      <div className="flex flex-col gap-1.5 mb-8 mt-2">
+        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+          Dashboard
+        </h1>
+        <p className="text-sm font-medium text-gray-500">
+          Selamat datang kembali! Berikut adalah ringkasan performa portal berita Anda hari ini.
+        </p>
       </div>
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Card 1 */}
-        <div className="bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] p-6 border border-gray-100 flex flex-col justify-between h-[140px]">
-          <div className="flex justify-between items-start">
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Berita</span>
-            <div className="w-10 h-10 rounded-xl bg-[#eef5ff] text-blue-500 flex items-center justify-center">
-              <FileText size={20} />
+
+        {/* Card 1: Total Berita */}
+        <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 border border-gray-100 flex flex-col justify-between h-[150px]">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-[#eff6ff] text-blue-600 flex items-center justify-center shrink-0">
+              <FileText size={24} strokeWidth={1.5} />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-gray-800 mb-0.5">Total Berita</div>
+              <div className="text-3xl font-extrabold text-gray-900 leading-none tracking-tight">1.248</div>
             </div>
           </div>
-          <div>
-            <div className="text-3xl font-extrabold text-gray-900">1.248</div>
-            <div className="flex items-center gap-1 mt-1 text-[10px] font-semibold text-green-500">
-              <TrendingUp size={12} />
-              <span>12.5%</span>
-              <span className="text-gray-400 font-medium">dari periode sebelumnya</span>
+          <div className="flex justify-between items-end mt-4">
+            <div className="flex items-center gap-1.5 text-[11px] font-bold">
+              <TrendingUp size={14} className="text-green-500" />
+              <span className="text-green-500">12.5%</span>
+              <span className="text-gray-500">bulan ini</span>
+            </div>
+            <div className="w-[80px] h-[30px]">
+              <Sparkline data={SPARKLINE_1} color="#3b82f6" />
             </div>
           </div>
         </div>
 
-        {/* Card 2 */}
-        <div className="bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] p-6 border border-gray-100 flex flex-col justify-between h-[140px]">
-          <div className="flex justify-between items-start">
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Berita Hari ini</span>
-            <div className="w-10 h-10 rounded-xl bg-[#eef5ff] text-blue-500 flex items-center justify-center">
-              <FileText size={20} />
+        {/* Card 2: Total User */}
+        <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 border border-gray-100 flex flex-col justify-between h-[150px]">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-[#ecfdf5] text-emerald-500 flex items-center justify-center shrink-0">
+              <Users size={24} strokeWidth={1.5} />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-gray-800 mb-0.5">Total User</div>
+              <div className="text-3xl font-extrabold text-gray-900 leading-none tracking-tight">356</div>
             </div>
           </div>
-          <div>
-            <div className="text-3xl font-extrabold text-gray-900">23</div>
+          <div className="flex justify-between items-end mt-4">
+            <div className="text-[11px] font-bold text-gray-500">Pengguna Terdaftar</div>
+            <div className="w-[80px] h-[30px]">
+              <Sparkline data={SPARKLINE_2} color="#10b981" />
+            </div>
           </div>
         </div>
 
-        {/* Card 3 */}
-        <div className="bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] p-6 border border-gray-100 flex flex-col justify-between h-[140px]">
-          <div className="flex justify-between items-start">
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Draft Berita</span>
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
-              <Clock size={20} />
+        {/* Card 3: Total Berita Hari ini (User requested) */}
+        <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 border border-gray-100 flex flex-col justify-between h-[150px]">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-[#fffbeb] text-amber-500 flex items-center justify-center shrink-0">
+              <FileText size={24} strokeWidth={1.5} />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-gray-800 mb-0.5">Total Berita Hari ini</div>
+              <div className="text-3xl font-extrabold text-gray-900 leading-none tracking-tight">18</div>
             </div>
           </div>
-          <div>
-            <div className="text-3xl font-extrabold text-gray-900">4</div>
+          <div className="flex justify-between items-end mt-4">
+            <div className="text-[11px] font-bold text-gray-500">Artikel</div>
+            <div className="w-[80px] h-[30px]">
+              <Sparkline data={SPARKLINE_3} color="#f59e0b" />
+            </div>
           </div>
         </div>
 
-        {/* Card 4 */}
-        <div className="bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] p-6 border border-gray-100 flex flex-col justify-between h-[140px]">
-          <div className="flex justify-between items-start">
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Pengguna Baru</span>
-            <div className="w-10 h-10 rounded-xl bg-[#eef5ff] text-blue-500 flex items-center justify-center">
-              <User size={20} />
+        {/* Card 4: Iklan Aktif */}
+        <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 border border-gray-100 flex flex-col justify-between h-[150px]">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-[#f5f3ff] text-purple-600 flex items-center justify-center shrink-0">
+              <Megaphone size={24} strokeWidth={1.5} />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-gray-800 mb-0.5">Iklan Aktif</div>
+              <div className="text-3xl font-extrabold text-gray-900 leading-none tracking-tight">12</div>
             </div>
           </div>
-          <div>
-            <div className="text-3xl font-extrabold text-gray-900">10</div>
+          <div className="flex justify-between items-end mt-4">
+            <div className="text-[11px] font-bold text-gray-500">Penempatan</div>
+            <div className="w-[80px] h-[30px]">
+              <Sparkline data={SPARKLINE_4} color="#8b5cf6" />
+            </div>
           </div>
+        </div>
+
+      </div>
+
+      {/* Detail Analitik Section Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-10 mb-4 gap-4">
+        <div>
+          <h2 className="text-xl font-bold text-gray-900">Detail Analitik</h2>
+          <p className="text-sm font-medium text-gray-500 mt-1">
+            Data detail pengunjung, ringkasan performa, dan kategori.
+          </p>
+        </div>
+        <div className="relative">
+          <div
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="px-4 py-2 border border-gray-200 bg-white rounded-xl flex items-center gap-3 cursor-pointer hover:bg-gray-50 transition-colors shadow-sm"
+          >
+            <span className="text-sm font-bold text-gray-700">{filterOptions[timeFilter]}</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg" className={`transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}>
+              <path d="M1 1L5 5L9 1" stroke="#4B5563" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+
+          {isDropdownOpen && (
+            <>
+              <div className="fixed inset-0 z-10" onClick={() => setIsDropdownOpen(false)}></div>
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.1)] py-2 z-20 overflow-hidden">
+                {Object.entries(filterOptions).map(([key, label]) => (
+                  <div
+                    key={key}
+                    onClick={() => { setTimeFilter(key as any); setIsDropdownOpen(false); }}
+                    className={`px-4 py-2.5 text-sm font-bold cursor-pointer transition-colors ${timeFilter === key ? 'text-blue-600 bg-blue-50/50' : 'text-gray-600 hover:bg-gray-50'}`}
+                  >
+                    {label}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6">
 
-        {/* Visitor Chart */}
-        <div className="bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] p-6 md:p-8 border border-gray-100 lg:col-span-2">
-          <h2 className="text-xl font-bold text-gray-900 mb-8">Grafik Pengunjung</h2>
-          <div className="w-full h-[320px]">
+        {/* Visitor Chart (Full Width) */}
+        <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 lg:p-8 border border-gray-100">
+          <div className="flex justify-between items-center mb-10">
+            <h2 className="text-lg font-extrabold text-gray-900">Grafik Pengunjung</h2>
+          </div>
+
+          <div className="w-full h-[360px]">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={VISITOR_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <AreaChart data={VISITOR_DATA[timeFilter]} margin={{ top: 10, right: 10, left: -20, bottom: 5 }}>
                 <defs>
                   <linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.25} />
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.15} />
                     <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                   </linearGradient>
                 </defs>
@@ -153,19 +294,20 @@ export default function AdminDashboard() {
                   dataKey="date"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 11, fill: '#64748b', fontWeight: 500 }}
+                  tick={{ fontSize: 11, fill: '#64748b', fontWeight: 600 }}
                   dy={15}
+                  padding={{ left: 20, right: 20 }}
                 />
                 <YAxis
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 11, fill: '#64748b', fontWeight: 500 }}
+                  tick={{ fontSize: 11, fill: '#64748b', fontWeight: 600 }}
                   tickFormatter={(value) => value === 0 ? '0' : `${value / 1000}k`}
                 />
                 <Tooltip
                   contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)' }}
-                  formatter={(value: any) => [`${value} pengunjung`, 'Total']}
-                  labelStyle={{ color: '#64748b', fontSize: '12px', marginBottom: '4px' }}
+                  formatter={(value: any) => [`${value}`, 'Pengunjung']}
+                  labelStyle={{ color: '#64748b', fontSize: '12px', marginBottom: '4px', fontWeight: 'bold' }}
                 />
                 <Area
                   type="monotone"
@@ -179,27 +321,101 @@ export default function AdminDashboard() {
             </ResponsiveContainer>
           </div>
         </div>
+      </div>
 
-        {/* Popular Articles */}
-        <div className="bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] p-6 md:p-8 border border-gray-100">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Berita Terpopuler</h2>
-          <div className="flex flex-col gap-6">
-            {POPULAR_ARTICLES.map((article) => (
-              <div key={article.id} className="flex gap-4 items-center group cursor-pointer">
-                <div className="w-24 h-16 shrink-0 rounded-lg overflow-hidden bg-gray-100 relative shadow-sm">
-                  <Image
-                    src={article.image}
-                    alt={article.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                    unoptimized
-                  />
-                </div>
-                <h3 className="font-bold text-xs text-gray-900 leading-snug line-clamp-3 group-hover:text-blue-600 transition-colors">
-                  {article.title}
-                </h3>
+      {/* Bottom Section */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+        {/* Ringkasan Statistik (Left Column) */}
+        <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 lg:p-8 border border-gray-100 flex flex-col h-full">
+          <h2 className="text-lg font-extrabold text-gray-900 mb-6">Ringkasan Statistik</h2>
+
+          <div className="flex flex-col border border-gray-100 rounded-2xl flex-1 justify-around">
+
+            {/* Item 1 */}
+            <div className="flex items-center gap-5 p-6 border-b border-gray-100">
+              <div className="w-14 h-14 rounded-full bg-[#eff6ff] text-blue-600 flex items-center justify-center shrink-0">
+                <Eye size={24} strokeWidth={2} />
               </div>
-            ))}
+              <div>
+                <div className="text-xs font-bold text-gray-500 mb-1">Total Page View</div>
+                <div className="text-2xl font-extrabold text-gray-900 leading-none">{activeSummaryData.pageViews}</div>
+              </div>
+            </div>
+
+            {/* Item 2 */}
+            <div className="flex items-center gap-5 p-6 border-b border-gray-100">
+              <div className="w-14 h-14 rounded-full bg-[#ecfdf5] text-emerald-500 flex items-center justify-center shrink-0">
+                <FileText size={24} strokeWidth={2} />
+              </div>
+              <div>
+                <div className="text-xs font-bold text-gray-500 mb-1">Total Berita Terbit</div>
+                <div className="text-2xl font-extrabold text-gray-900 leading-none">{activeSummaryData.totalBerita}</div>
+              </div>
+            </div>
+
+            {/* Item 3 */}
+            <div className="flex items-center gap-5 p-6">
+              <div className="w-14 h-14 rounded-full bg-[#fffbeb] text-amber-500 flex items-center justify-center shrink-0">
+                <UserPlus size={24} strokeWidth={2} />
+              </div>
+              <div>
+                <div className="text-xs font-bold text-gray-500 mb-1">User Baru</div>
+                <div className="text-2xl font-extrabold text-gray-900 leading-none">{activeSummaryData.userBaru}</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Distribusi Kategori (Right Column) */}
+        <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 lg:p-8 border border-gray-100 flex flex-col h-full">
+          <h2 className="text-lg font-extrabold text-gray-900 mb-0">Distribusi Kategori</h2>
+          <div className="flex flex-row items-center justify-center w-full flex-1 mt-6 gap-8">
+            <div className="relative w-[190px] h-[190px] shrink-0">
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none pt-1 z-0">
+                <span className="text-[32px] font-extrabold text-[#1e293b] leading-none mb-1">{totalBerita}</span>
+                <span className="text-[13px] font-semibold text-[#475569]">Berita</span>
+              </div>
+              <div className="relative z-10 w-full h-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={activeCategoryData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={65}
+                      outerRadius={95}
+                      paddingAngle={0}
+                      dataKey="value"
+                      stroke="#ffffff"
+                      strokeWidth={4}
+                    >
+                      {activeCategoryData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
+                      itemStyle={{ fontWeight: 'bold' }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+            <div className="flex flex-col justify-center gap-5 shrink-0 min-w-[130px] pr-2">
+              {activeCategoryData.map((item, index) => (
+                <div key={index} className="flex justify-between items-center w-full gap-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
+                    <span className="text-xs font-bold text-[#1e293b]">{item.name}</span>
+                  </div>
+                  <span className="text-xs font-semibold text-[#334155]">
+                    {item.value} <span className="text-[#64748b]">({item.percent})</span>
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

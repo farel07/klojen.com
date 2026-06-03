@@ -2,14 +2,19 @@
 
 import { use } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Eye, Clock, CheckCircle2, CloudUpload, XCircle } from 'lucide-react';
+import {
+  ArrowLeft,
+  Search,
+  XCircle,
+  Calendar,
+} from 'lucide-react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
+import { useAuthStore } from '@/stores/authStore';
 
 dayjs.locale('id');
 
-// ─── Mock Data (sama dengan bank berita) ──────────────────────────────────────
-// Nantinya ini diganti dengan fetch ke API menggunakan article.id
+// ─── Mock Data ────────────────────────────────────────────────────────────────
 
 type ArticleStatus = 'published' | 'draft' | 'scheduled' | 'rejected';
 
@@ -32,19 +37,15 @@ const MOCK_ARTICLES: MockArticleItem[] = [
   {
     id: '1',
     title: 'Wisata Gunung Bromo Via Malang Semakin Diminati Wisatawan',
-    excerpt: 'Jumlah kunjungan wisatawa...',
+    excerpt: 'Jumlah kunjungan wisatawan...',
     category: 'Wisata',
     status: 'published',
     image: 'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=800&q=80',
     author: 'Ahmad Fauzi',
     publishedAt: '2026-05-20',
     content: `<p>Wisata Gunung Bromo yang diakses melalui jalur Malang semakin diminati wisatawan lokal maupun mancanegara. Berdasarkan data terbaru dari Balai Besar Taman Nasional Bromo Tengger Semeru (BB-TNBTS), jumlah kunjungan melalui pintu masuk Malang meningkat signifikan.</p>
-
 <p>Keindahan lautan pasir dan panorama matahari terbit dari puncak Penanjakan menjadi daya tarik utama yang membuat wisatawan terus berdatangan. Jalur via Malang menawarkan pengalaman perjalanan yang lebih beragam dengan melewati kawasan pedesaan yang asri.</p>
-
-<p>"Kami mencatat peningkatan sekitar 35% dibanding tahun lalu untuk kunjungan melalui jalur Malang," ujar Kepala BB-TNBTS, Sukoco, dalam keterangan resminya.</p>
-
-<p>Pihak pengelola pun terus melakukan pembenahan fasilitas untuk meningkatkan kenyamanan pengunjung, mulai dari perbaikan jalan menuju kawasan wisata hingga penambahan spot foto yang instagramable.</p>`,
+<p>"Kami mencatat peningkatan sekitar 35% dibanding tahun lalu untuk kunjungan melalui jalur Malang," ujar Kepala BB-TNBTS dalam keterangan resminya.</p>`,
     tags: ['#GunungBromo', '#WisataMalang', '#Jatim'],
   },
   {
@@ -56,23 +57,19 @@ const MOCK_ARTICLES: MockArticleItem[] = [
     image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&q=80',
     author: 'Siti Rahayu',
     publishedAt: '2026-05-22',
-    content: `<p>Sejumlah SMA di Kota Malang mulai menerapkan sistem kelas digital secara penuh pada semester genap tahun ajaran 2025/2026. Program ini merupakan bagian dari transformasi digital pendidikan yang dicanangkan oleh Dinas Pendidikan Kota Malang.</p>
-
-<p>Dengan sistem kelas digital, seluruh materi pembelajaran, tugas, dan ujian dilakukan secara daring menggunakan platform Learning Management System (LMS) yang dikembangkan khusus untuk kebutuhan lokal.</p>
-
-<p>"Siswa sangat antusias dengan sistem baru ini. Mereka bisa mengakses materi kapan saja dan di mana saja," kata Kepala SMAN 1 Malang, Drs. Hendra Kusuma, M.Pd.</p>`,
+    content: `<p>Sejumlah SMA di Kota Malang mulai menerapkan sistem kelas digital secara penuh pada semester genap tahun ajaran 2025/2026.</p>
+<p>Dengan sistem kelas digital, seluruh materi pembelajaran, tugas, dan ujian dilakukan secara daring menggunakan platform Learning Management System (LMS) yang dikembangkan khusus untuk kebutuhan lokal.</p>`,
     tags: ['#PendidikanDigital', '#Malang', '#SMA'],
   },
   {
     id: '3',
     title: 'Hotel Baru Dekat Alun-Alun Malang Resmi Dibuka',
-    excerpt: 'Hotel dengan konsep modern ini menawarkan lokasi dipusat...',
+    excerpt: 'Hotel dengan konsep modern ini menawarkan lokasi di pusat...',
     category: 'Hotel',
     status: 'draft',
     image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
     author: 'Budi Santoso',
     content: `<p>Sebuah hotel baru dengan konsep modern dan minimalis resmi dibuka di kawasan strategis dekat Alun-Alun Kota Malang. Hotel berlantai 12 ini menawarkan 150 kamar dengan berbagai tipe, mulai dari Standard hingga Suite.</p>
-
 <p>Keunggulan utama hotel ini adalah lokasinya yang sangat strategis, hanya 200 meter dari Alun-Alun Kota Malang dan berjarak jalan kaki ke berbagai pusat kuliner dan perbelanjaan.</p>`,
     tags: ['#HotelMalang', '#Wisata', '#AlunAlunMalang'],
   },
@@ -84,9 +81,9 @@ const MOCK_ARTICLES: MockArticleItem[] = [
     status: 'scheduled',
     image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=800&q=80',
     author: 'Dewi Kartika',
-    content: `<p>Bakso President yang berlokasi di Jalan Batanghari, Malang, semakin populer di kalangan wisatawan yang berkunjung ke Kota Malang. Cita rasa khas dengan kuah yang gurih dan bakso yang kenyal menjadi daya tarik utamanya.</p>
-
-<p>Porsi jumbo dengan harga terjangkau membuat bakso legendaris ini selalu ramai dikunjungi, terutama pada akhir pekan dan hari libur. Antrian panjang menjadi pemandangan biasa di depan gerai yang sudah berdiri sejak tahun 1977 ini.</p>`,
+    publishedAt: '2026-05-25',
+    content: `<p>Bakso President yang berlokasi di Jalan Batanghari, Malang, semakin populer di kalangan wisatawan yang berkunjung ke Kota Malang.</p>
+<p>Porsi jumbo dengan harga terjangkau membuat bakso legendaris ini selalu ramai dikunjungi, terutama pada akhir pekan dan hari libur.</p>`,
     tags: ['#KulinerMalang', '#Bakso', '#WisataKuliner'],
   },
   {
@@ -96,60 +93,46 @@ const MOCK_ARTICLES: MockArticleItem[] = [
     category: 'Wisata',
     status: 'rejected',
     image: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&q=80',
-    caption: 'Ribuan pengunjung memadati kawasan Jatim Park 3 di Kota Batu saat libur panjang akhir Mei 2026. (Foto: Dokumentasi Jatim Park Group)',
-    content: `Jatim Park 3 yang berlokasi di Kota Batu, Jawa Timur, kembali dipadati ribuan pengunjung selama libur panjang akhir Mei 2026. Wahana wisata keluarga ini menjadi salah satu destinasi favorit warga Jawa Timur dan sekitarnya untuk menghabiskan waktu liburan bersama keluarga.
-
-Pada hari puncak libur, Sabtu (24/5/2026), manajemen Jatim Park 3 mencatat lebih dari 8.000 pengunjung yang memasuki kawasan wisata. Angka ini merupakan salah satu rekor kunjungan tertinggi sepanjang tahun 2026.
-
-"Kami menyiapkan operasional ekstra dengan menambah staf dan memperpanjang jam operasional hingga pukul 20.00 WIB selama periode libur," ujar Humas Jatim Park Group, Arini Setyawati, Sabtu (24/5/2026).`,
+    caption: 'Ribuan pengunjung memadati kawasan Jatim Park 3 di Kota Batu saat libur panjang akhir Mei 2026.',
+    content: `<p>Jatim Park 3 yang berlokasi di Kota Batu, Jawa Timur, kembali dipadati ribuan pengunjung selama libur panjang akhir Mei 2026.</p>`,
     author: 'Rizky Pratama',
-    tags: ['#JatimPark', '#WisataBatu', '#LiburPanjang', '#Keluarga'],
+    tags: ['#JatimPark', '#WisataBatu', '#LiburPanjang'],
     rejectionReason: 'Konten tidak sesuai dengan pedoman editorial. Judul kurang informatif dan isi berita perlu dilengkapi dengan data pendukung yang valid.',
   },
 ];
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// Popular sidebar articles (static mock)
+const POPULAR_ARTICLES = [
+  {
+    id: 'p1',
+    title: 'Tahu Walik Cemilan Khas Malang yang Selalu Dicari',
+    image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=200&q=80',
+    date: '26 Mei 2026',
+  },
+  {
+    id: 'p2',
+    title: 'Sempol Ayam, Jajanan Murah yang Bikin Nagih',
+    image: 'https://images.unsplash.com/photo-1555126634-323283e090fa?w=200&q=80',
+    date: '26 Mei 2026',
+  },
+  {
+    id: 'p3',
+    title: 'Sego Sambel Cak Uut Pedesnya nampol!',
+    image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=200&q=80',
+    date: '25 Mei 2026',
+  },
+  {
+    id: 'p4',
+    title: 'Bakso Bakar Malang Tetap Jadi Buruan Wisatawan',
+    image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=200&q=80',
+    date: '25 Mei 2026',
+  },
+];
 
 function formatDate(dateStr?: string) {
-  if (!dateStr) return dayjs().format('D MMMM YYYY');
+  if (!dateStr) return dayjs().format('D MMMM YYYY, HH:mm[WIB]');
   return dayjs(dateStr).format('D MMMM YYYY');
 }
-
-const STATUS_CONFIG: Record<ArticleStatus, { label: string; color: string; bg: string; icon: React.ReactNode }> = {
-  published: {
-    label: 'Dipublikasi',
-    color: 'text-emerald-700',
-    bg: 'bg-emerald-50 border-emerald-200',
-    icon: <CheckCircle2 size={14} />,
-  },
-  draft: {
-    label: 'Draft',
-    color: 'text-cyan-700',
-    bg: 'bg-cyan-50 border-cyan-200',
-    icon: <Clock size={14} />,
-  },
-  scheduled: {
-    label: 'Publish Terjadwal',
-    color: 'text-violet-700',
-    bg: 'bg-violet-50 border-violet-200',
-    icon: <CloudUpload size={14} />,
-  },
-  rejected: {
-    label: 'Ditolak',
-    color: 'text-red-700',
-    bg: 'bg-red-50 border-red-200',
-    icon: <XCircle size={14} />,
-  },
-};
-
-const CATEGORY_COLOR: Record<string, string> = {
-  Wisata:     'bg-blue-100 text-blue-700',
-  Pendidikan: 'bg-yellow-100 text-yellow-700',
-  Hotel:      'bg-purple-100 text-purple-700',
-  Kuliner:    'bg-green-100 text-green-700',
-};
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -157,11 +140,12 @@ interface Props {
 
 export default function PreviewBeritaPage({ params }: Props) {
   const { id } = use(params);
+  const { user } = useAuthStore();
   const article = MOCK_ARTICLES.find((a) => a.id === id);
 
   if (!article) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-500 text-lg mb-4">Artikel tidak ditemukan.</p>
           <Link
@@ -176,132 +160,263 @@ export default function PreviewBeritaPage({ params }: Props) {
     );
   }
 
-  const statusConf = STATUS_CONFIG[article.status];
+  const authorInitial = (article.author ?? 'J').charAt(0).toUpperCase();
 
   return (
-    <div className="min-h-full pb-16 bg-white rounded-tl-3xl">
+    <div className="min-h-screen bg-white font-sans">
 
-      {/* ─── Preview Banner ─── */}
-      <div className="sticky top-0 z-40 bg-amber-400 text-amber-900 px-6 py-2.5 flex items-center justify-between shadow-md">
-        <div className="flex items-center gap-2 font-bold text-sm">
-          <Eye size={16} />
-          <span>MODE PREVIEW — Artikel ini belum dipublikasikan ke publik</span>
-        </div>
-        <Link
-          href="/cms/artikel"
-          className="flex items-center gap-1.5 text-xs font-bold bg-amber-900/10 hover:bg-amber-900/20 px-3 py-1.5 rounded-full transition-colors"
-        >
-          <ArrowLeft size={13} />
-          Kembali ke Bank Berita
-        </Link>
-      </div>
 
-      {/* ─── Article Content ─── */}
-      <div className="max-w-4xl mx-auto px-6 py-10">
 
-        {/* Status + Kategori */}
-        <div className="flex flex-wrap items-center gap-3 mb-6">
-          <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold ${statusConf.bg} ${statusConf.color}`}>
-            {statusConf.icon}
-            {statusConf.label}
-          </span>
-          <span className={`inline-flex px-3 py-1.5 rounded-full text-xs font-extrabold ${CATEGORY_COLOR[article.category] ?? 'bg-gray-100 text-gray-600'}`}>
-            {article.category}
-          </span>
-        </div>
+      {/* ── Main Content ────────────────────────────────────────────────────────── */}
+      <section className="py-8 bg-white">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-        {/* Rejection notice */}
-        {article.status === 'rejected' && article.rejectionReason && (
-          <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-8 flex gap-3">
-            <XCircle size={18} className="text-red-500 shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm font-bold text-red-700 mb-1">Alasan Penolakan</p>
-              <p className="text-sm text-red-600">{article.rejectionReason}</p>
+          {/* ── Left: Article ───────────────────────────────────────────────────── */}
+          <div className="lg:col-span-2 border border-gray-200 bg-white p-6 md:p-10">
+
+            {/* Rejection notice */}
+            {article.status === 'rejected' && article.rejectionReason && (
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex gap-3">
+                <XCircle size={18} className="text-red-500 shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-bold text-red-700 mb-1">Alasan Penolakan</p>
+                  <p className="text-sm text-red-600">{article.rejectionReason}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Title */}
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+              {article.title}
+            </h1>
+
+            {/* Scheduled Badge */}
+            {article.status === 'scheduled' && article.publishedAt && (
+              <div className="inline-flex items-center gap-2 bg-blue-50/80 px-3.5 py-2 rounded-lg mb-6 border border-blue-100">
+                <Calendar size={16} className="text-blue-500" />
+                <span className="text-[13px]">
+                  <span className="font-bold text-blue-600">Akan dipublikasikan pada </span>
+                  <span className="font-bold text-gray-800">{dayjs(article.publishedAt).format('D MMMM YYYY')}, 10:00WIB</span>
+                </span>
+              </div>
+            )}
+
+
+
+            {/* Author Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
+              {/* Source */}
+              <div className="flex items-center gap-2.5 mr-auto">
+                {/* Logo Klojen Placeholder (Like MalangPedia in image) */}
+                <div className="w-6 h-6 bg-[#00A3FF] rounded-[5px] flex items-center justify-center shrink-0">
+                  <div className="w-3 h-3 bg-white rounded-sm"></div>
+                </div>
+                <span className="font-extrabold text-gray-900 text-[15px] tracking-tight">Klojen.com</span>
+              </div>
+
+              {/* Writer & Editor Pill Box */}
+              <div className="flex items-center rounded-[20px] border border-gray-200/80 px-1.5 py-1 bg-white shadow-sm">
+                
+                {/* Writer */}
+                <div className="flex items-center gap-2.5 px-3 py-1">
+                  <div className="w-7 h-7 rounded-full bg-blue-50 overflow-hidden shrink-0">
+                    <img src={`https://ui-avatars.com/api/?name=${article.author ?? 'Jurnalis'}&background=fce7f3&color=be185d`} alt="Author" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[9px] text-gray-400 font-semibold leading-tight">Penulis</span>
+                    <span className="text-[11px] font-extrabold text-gray-800 leading-tight my-[1px]">{article.author ?? 'Jurnalis'}</span>
+                    <span className="text-[8px] text-gray-400 font-medium leading-tight">Redaksi klojen.com</span>
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div className="w-px h-7 bg-gray-200 mx-1"></div>
+
+                {/* Editor */}
+                <div className="flex items-center gap-2.5 px-3 py-1">
+                  <div className="w-7 h-7 rounded-full bg-emerald-50 overflow-hidden shrink-0">
+                    <img src={`https://ui-avatars.com/api/?name=Tim+Editor&background=e0f2fe&color=0369a1`} alt="Editor" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[9px] text-gray-400 font-semibold leading-tight">Editor</span>
+                    <span className="text-[11px] font-extrabold text-gray-800 leading-tight my-[1px]">Tim Editor</span>
+                    <span className="text-[8px] text-gray-400 font-medium leading-tight">Redaksi klojen.com</span>
+                  </div>
+                </div>
+
+              </div>
             </div>
-          </div>
-        )}
 
-        {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
-          {article.title}
-        </h1>
-
-        {/* Author + Date */}
-        <div className="flex items-center justify-between mb-8 pb-6 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm uppercase">
-              {(article.author ?? 'J').charAt(0)}
-            </div>
-            <div>
-              <p className="text-sm font-bold text-gray-800">{article.author ?? 'Jurnalis'}</p>
-              <p className="text-xs text-gray-400">{formatDate(article.publishedAt)}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Featured Image */}
-        <figure className="mb-8">
-          <div className="relative w-full rounded-2xl overflow-hidden bg-gray-100">
+            {/* Featured Image */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={article.image}
               alt={article.title}
-              className="w-full h-[300px] md:h-[460px] object-cover"
+              className="w-full h-auto rounded-lg mb-3 object-cover max-h-[460px]"
             />
-          </div>
-          {article.caption && (
-            <figcaption className="text-xs text-gray-400 mt-3 text-center italic">
-              {article.caption}
-            </figcaption>
-          )}
-        </figure>
+            {article.caption ? (
+              <p className="text-sm text-gray-400 mb-8">{article.caption}</p>
+            ) : (
+              <p className="text-sm text-gray-400 mb-8">
+                {article.title}. (Foto: Klojen.com)
+              </p>
+            )}
 
-        {/* Content */}
-        {article.content ? (
-          <div
-            className="prose prose-lg max-w-none text-gray-800 leading-relaxed mb-10"
-            dangerouslySetInnerHTML={{ __html: article.content.replace(/\n/g, '<br/>') }}
-          />
-        ) : (
-          <div className="bg-gray-50 border border-dashed border-gray-200 rounded-xl p-10 text-center mb-10">
-            <p className="text-gray-400 text-sm">Konten artikel belum tersedia.</p>
-          </div>
-        )}
+            {/* Content */}
+            {article.content ? (
+              <div
+                className="text-gray-800 leading-relaxed space-y-6 mb-10 text-base md:text-lg"
+                dangerouslySetInnerHTML={{ __html: article.content }}
+              />
+            ) : (
+              <div className="bg-gray-50 border border-dashed border-gray-200 rounded-xl p-10 text-center mb-10">
+                <p className="text-gray-400 text-sm">Konten artikel belum tersedia.</p>
+              </div>
+            )}
 
-        {/* Tags */}
-        {article.tags && article.tags.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2 mb-10">
-            <span className="text-gray-500 font-medium text-sm mr-2">Tag :</span>
-            {article.tags.map((tag) => (
-              <span
-                key={tag}
-                className="bg-gray-100 text-gray-600 font-medium px-4 py-1.5 rounded-full text-sm"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+            {/* Tags */}
+            {article.tags && article.tags.length > 0 && (
+              <div className="flex items-center flex-wrap gap-3 mb-8">
+                <span className="text-gray-400 text-sm mr-2">Tag :</span>
+                {article.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="bg-gray-200 text-gray-600 px-4 py-1.5 rounded-full text-sm hover:bg-gray-300 cursor-pointer transition-colors"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+              </div>
+            )}
 
-        {/* Footer actions */}
-        <div className="border-t border-gray-100 pt-8 flex flex-wrap items-center gap-3">
-          <Link
-            href="/cms/artikel"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-            <ArrowLeft size={15} />
-            Kembali ke Bank Berita
-          </Link>
-          {article.status !== 'published' && (
-            <Link
-              href={`/cms/tulis-berita?id=${article.id}`}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors"
-            >
-              Edit Artikel
-            </Link>
-          )}
+            {/* Share */}
+            <div className="flex items-center space-x-4 mb-10 pb-8 border-b border-gray-200">
+              <span className="text-gray-400 text-sm">Bagikan Artikel ini :</span>
+              <div className="flex items-center gap-3">
+                {/* Facebook */}
+                <button className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center hover:opacity-80 transition-opacity">
+                  <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </button>
+                {/* Twitter/X */}
+                <button className="w-8 h-8 rounded-full bg-sky-400 flex items-center justify-center hover:opacity-80 transition-opacity">
+                  <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.766l7.73-8.835L1.254 2.25H8.08l4.259 5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </button>
+                {/* WhatsApp */}
+                <button className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center hover:opacity-80 transition-opacity">
+                  <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </button>
+                    {/* Copy Link */}
+                    <button className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:opacity-80 transition-opacity">
+                      <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+                    </button>
+                  </div>
+                </div>
+
+
+              </div>
+
+              {/* ── Right: Sidebar ──────────────────────────────────────────────────── */}
+              <div className="lg:col-span-1">
+                <div className="border border-gray-200 bg-white p-6 rounded-xl sticky top-16">
+                  <h2 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide">
+                    TERPOPULER MINGGU INI
+                  </h2>
+
+                  <div className="space-y-6">
+                    {POPULAR_ARTICLES.map((item, index) => (
+                      <a
+                        key={item.id}
+                        href="#"
+                        className={`flex space-x-4 items-start hover:opacity-80 transition-opacity group ${
+                          index < POPULAR_ARTICLES.length - 1 ? 'pb-6 border-b border-gray-100' : ''
+                        }`}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-28 h-20 object-cover rounded-lg shrink-0"
+                        />
+                        <div className="flex-1">
+                          <h3 className="font-bold text-gray-900 text-sm mb-2 leading-snug group-hover:text-blue-600 transition-colors">
+                            {item.title}
+                          </h3>
+                          <p className="text-xs text-gray-400">{item.date}</p>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          {/* ── Footer ─────────────────────────────────────────────────────────────── */}
+          <footer className="bg-[#0f172a] text-white pt-16 pb-12 mt-12">
+            <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+              {/* Brand */}
+              <div>
+                <div className="flex items-center space-x-2 mb-8">
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                    <span className="text-blue-700 font-bold text-sm">K</span>
+                  </div>
+                  <span className="font-bold text-2xl">Klojen</span>
+                </div>
+                <p className="text-slate-400 mb-4">Connect With Us</p>
+                <div className="flex space-x-4 mb-8">
+                  {['TikTok', 'IG', 'FB', 'TW'].map((s) => (
+                    <a key={s} href="#" className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center hover:bg-slate-600 transition-colors">
+                      <span className="text-white text-xs font-bold">{s.charAt(0)}</span>
+                    </a>
+                  ))}
+                </div>
+                <p className="text-slate-400 text-sm">Media Kolaborasi Indonesia</p>
+                <p className="text-slate-400 text-sm mt-2">
+                  &copy; 2026 PT. Ketik Media Siber All Rights Reserved.
+                </p>
+              </div>
+
+              {/* Kategori */}
+              <div>
+                <h4 className="text-emerald-500 font-bold mb-6 tracking-wider">KATEGORI</h4>
+                <ul className="space-y-4">
+                  {['Kuliner', 'Wisata', 'Pendidikan', 'Hotel'].map((cat) => (
+                    <li key={cat}>
+                      <a href="#" className="text-white hover:text-emerald-400 transition-colors">{cat}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Informasi */}
+              <div>
+                <h4 className="text-emerald-500 font-bold mb-6 tracking-wider">INFORMASI</h4>
+                <ul className="space-y-4">
+                  {['Redaksi', 'Tentang Kami', 'Verifikasi Dewan Pers', 'Pedoman Media Siber dan Kode Perilaku'].map((item) => (
+                    <li key={item}>
+                      <a href="#" className="text-white hover:text-emerald-400 transition-colors">{item}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Legal */}
+              <div>
+                <h4 className="text-emerald-500 font-bold mb-6 tracking-wider opacity-0 hidden lg:block">LINKS</h4>
+                <ul className="space-y-4">
+                  {['Disclaimer', 'Privacy & Policy', 'Terms of Service', 'Karier'].map((item) => (
+                    <li key={item}>
+                      <a href="#" className="text-white hover:text-emerald-400 transition-colors">{item}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+            </div>
+          </footer>
+
         </div>
-      </div>
-    </div>
-  );
-}
+      );
+    }

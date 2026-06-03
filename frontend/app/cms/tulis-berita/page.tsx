@@ -41,18 +41,20 @@ export default function TulisBeritaPage() {
   const role = user?.role as Role | undefined;
   const isEditorOrAbove = role ? canPublish(role) : false;
 
-  // Deteksi apakah ini edit artikel yang ditolak
+  // Deteksi apakah ini edit artikel (bisa ditolak atau draf)
   const articleId = searchParams.get('id');
   const isRejected = searchParams.get('rejected') === 'true';
+  const isEdit = !!articleId; // True jika ada ID di URL
+
   const rejectionReason = searchParams.get('reason') ?? 'Tidak ada catatan dari reviewer.';
   const [showRejectionBanner, setShowRejectionBanner] = useState(true);
 
-  // Ambil data artikel dari URL params untuk pre-fill form
-  const prefillTitle      = isRejected ? (searchParams.get('title') ?? '')   : '';
-  const prefillContentRaw = isRejected ? (searchParams.get('content') ?? '') : '';
-  const prefillImage      = isRejected ? (searchParams.get('image') ?? '')   : '';
-  const prefillCaption    = isRejected ? (searchParams.get('caption') ?? '') : '';
-  const prefillTagsRaw    = isRejected ? (searchParams.get('tags') ?? '[]')  : '[]';
+  // Ambil data artikel dari URL params untuk pre-fill form (baik draf maupun rejected)
+  const prefillTitle      = isEdit ? (searchParams.get('title') ?? '')   : '';
+  const prefillContentRaw = isEdit ? (searchParams.get('content') ?? '') : '';
+  const prefillImage      = isEdit ? (searchParams.get('image') ?? '')   : '';
+  const prefillCaption    = isEdit ? (searchParams.get('caption') ?? '') : '';
+  const prefillTagsRaw    = isEdit ? (searchParams.get('tags') ?? '[]')  : '[]';
 
   // Konversi plain text (paragraf dipisah \n\n) ke HTML <p> agar tampil di editor
   const prefillContent = prefillContentRaw
@@ -75,7 +77,10 @@ export default function TulisBeritaPage() {
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
   const [tags, setTags] = useState<string[]>(prefillTags.length > 0 ? prefillTags : ['#KetikPedia']);
   const [tagInput, setTagInput] = useState('');
-  const [status, setStatus] = useState('published');
+  
+  const prefillStatus = searchParams.get('status') ?? 'published';
+  const [status, setStatus] = useState(prefillStatus);
+  
   const [isSaving, setIsSaving] = useState(false);
   const [statusOpen, setStatusOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
