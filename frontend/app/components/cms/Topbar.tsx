@@ -77,23 +77,8 @@ export default function Topbar({ onToggle }: TopbarProps) {
   return (
     <header className="flex items-center justify-between px-6 md:px-8 py-4 bg-transparent z-10 w-full gap-4">
       
-      {/* Left/Center: Search Bar */}
-      {(!pathname.startsWith('/cms/profil') && !pathname.startsWith('/cms/reset-password')) ? (
-        <div className="flex-1 max-w-xl hidden md:block">
-          <div className="relative group">
-            <input 
-              type="text" 
-              placeholder="Cari Sesuatu..." 
-              className="w-full pl-5 pr-12 py-3 bg-white border border-gray-100 rounded-full text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transition-all shadow-sm"
-            />
-            <button className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-blue-500 hover:text-blue-600 transition-colors">
-              <Search size={18} />
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="flex-1 max-w-xl hidden md:block"></div>
-      )}
+      {/* Spacer (menggantikan search bar yang dihapus) */}
+      <div className="flex-1 max-w-xl hidden md:block"></div>
 
       <div className="flex-1 md:hidden"></div> {/* Spacer for mobile */}
 
