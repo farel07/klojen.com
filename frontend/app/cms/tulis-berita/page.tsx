@@ -28,8 +28,13 @@ import {
   Eye,
   Edit3,
   Calendar,
+  Crop,
+  ArrowLeft,
+  ArrowRight
 } from 'lucide-react';
 import RichTextEditor from '@/app/components/cms/RichTextEditor';
+import Cropper from 'react-easy-crop';
+import getCroppedImg from '@/utils/cropImage';
 import { useAuthStore } from '@/stores/authStore';
 import { canPublish } from '@/app/constants/roles';
 import { Role } from '@/app/types';
@@ -235,7 +240,9 @@ export default function TulisBeritaPage() {
   const [title,      setTitle]      = useState(prefillTitle);
   const [content,    setContent]    = useState(prefillContent);
   const [photos,     setPhotos]     = useState<PhotoItem[]>(
-    prefillImage ? [{ url: prefillImage, caption: prefillCaption, watermark: false }] : []
+    prefillImage && prefillImage !== 'undefined' && prefillImage !== 'null'
+      ? [{ url: prefillImage, caption: prefillCaption, watermark: false }] 
+      : []
   );
   const [isDragging, setIsDragging] = useState(false);
   const prefillStatus = searchParams.get('status') ?? 'draft';
@@ -274,6 +281,35 @@ export default function TulisBeritaPage() {
   const [scheduleDate, setScheduleDate] = useState('');
   const [scheduleTime, setScheduleTime] = useState('');
 
+  // Crop State
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [isCropModalOpen, setIsCropModalOpen] = useState(false);
+  const [cropTargetIndex, setCropTargetIndex] = useState<number | null>(null);
+
+  const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  const handleCropSave = async () => {
+    if (cropTargetIndex === null || !croppedAreaPixels) return;
+    try {
+      const croppedImage = await getCroppedImg(
+        photos[cropTargetIndex].url,
+        croppedAreaPixels,
+        0
+      );
+      setPhotos((prev) => 
+        prev.map((p, idx) => idx === cropTargetIndex ? { ...p, url: croppedImage } : p)
+      );
+      setIsCropModalOpen(false);
+    } catch (e) {
+      console.error(e);
+      alert('Gagal melakukan crop gambar');
+    }
+  };
+
   // ── Tag handlers ──
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if ((e.key === 'Enter' || e.key === ',') && tagInput.trim()) {
@@ -308,6 +344,24 @@ export default function TulisBeritaPage() {
     setPhotos((prev) => prev.map((p, idx) => idx === i ? { ...p, caption: cap } : p));
   const toggleWatermark = (i: number) =>
     setPhotos((prev) => prev.map((p, idx) => idx === i ? { ...p, watermark: !p.watermark } : p));
+
+  const movePhotoLeft = (index: number) => {
+    if (index === 0) return;
+    setPhotos((prev) => {
+      const newPhotos = [...prev];
+      [newPhotos[index - 1], newPhotos[index]] = [newPhotos[index], newPhotos[index - 1]];
+      return newPhotos;
+    });
+  };
+
+  const movePhotoRight = (index: number) => {
+    if (index === photos.length - 1) return;
+    setPhotos((prev) => {
+      const newPhotos = [...prev];
+      [newPhotos[index + 1], newPhotos[index]] = [newPhotos[index], newPhotos[index + 1]];
+      return newPhotos;
+    });
+  };
 
   const handleMediaSelect = (item: MediaItem) => {
     if (mediaModalTarget === 'add') {
@@ -533,21 +587,55 @@ export default function TulisBeritaPage() {
             <div className="flex flex-col gap-5 mb-4">
               {photos.map((photo, index) => (
                 <div key={index} className="bg-white border-2 border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-                  <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50/60">
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50/60 flex-wrap gap-2">
                     <span className="text-sm font-semibold text-gray-600">Foto {index + 1}</span>
-                    <button
-                      type="button"
-                      onClick={() => removePhoto(index)}
-                      className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-red-500 transition-colors font-medium"
-                    >
-                      <X size={13} /> Hapus
-                    </button>
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => movePhotoLeft(index)}
+                        disabled={index === 0}
+                        className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-blue-500 transition-colors font-medium disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        <ArrowLeft size={13} /> Geser Kiri
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => movePhotoRight(index)}
+                        disabled={index === photos.length - 1}
+                        className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-blue-500 transition-colors font-medium disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        Geser Kanan <ArrowRight size={13} />
+                      </button>
+                      <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setCropTargetIndex(index);
+                          setIsCropModalOpen(true);
+                        }}
+                        className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-blue-500 transition-colors font-medium"
+                      >
+                        <Crop size={13} /> Crop / Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => removePhoto(index)}
+                        className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-red-500 transition-colors font-medium"
+                      >
+                        <X size={13} /> Hapus
+                      </button>
+                    </div>
                   </div>
                   <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-2">
                       <div className="relative rounded-xl overflow-hidden border border-gray-100 shadow-sm aspect-video bg-gray-50">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={photo.url} alt={`Foto ${index + 1}`} className="w-full h-full object-cover" />
+                        <img 
+                          src={photo.url} 
+                          alt={`Foto ${index + 1}`} 
+                          className="w-full h-full object-cover" 
+                          onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=800&q=80'; }}
+                        />
                         {photo.watermark && (
                           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                             <span
@@ -852,6 +940,70 @@ export default function TulisBeritaPage() {
           onClose={() => setShowMediaModal(false)}
           onSelect={handleMediaSelect}
         />
+      )}
+
+      {/* Crop Modal */}
+      {isCropModalOpen && cropTargetIndex !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden flex flex-col h-[80vh]">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+              <h2 className="text-lg font-bold text-gray-700 flex items-center gap-2">
+                <Crop size={20} className="text-blue-500" />
+                Edit / Crop Foto
+              </h2>
+              <button
+                onClick={() => setIsCropModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 hover:text-gray-700 transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <div className="relative flex-1 bg-gray-900 w-full">
+              <Cropper
+                image={photos[cropTargetIndex]?.url}
+                crop={crop}
+                zoom={zoom}
+                aspect={16 / 9}
+                onCropChange={setCrop}
+                onCropComplete={onCropComplete}
+                onZoomChange={setZoom}
+              />
+            </div>
+            <div className="p-6 border-t border-gray-100 flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-600">Zoom</label>
+                <input
+                  type="range"
+                  value={zoom}
+                  min={1}
+                  max={3}
+                  step={0.1}
+                  aria-labelledby="Zoom"
+                  onChange={(e) => {
+                    setZoom(Number(e.target.value))
+                  }}
+                  className="w-full"
+                />
+              </div>
+              <div className="flex justify-end gap-3 mt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsCropModalOpen(false)}
+                  className="px-6 py-2.5 bg-gray-100 text-gray-600 font-bold rounded-xl hover:bg-gray-200 transition-colors text-sm"
+                >
+                  Batal
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCropSave}
+                  className="px-6 py-2.5 bg-blue-500 text-white font-bold rounded-xl hover:bg-blue-600 transition-colors shadow-sm flex items-center gap-2 text-sm"
+                >
+                  <Save size={16} /> Simpan Crop
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
