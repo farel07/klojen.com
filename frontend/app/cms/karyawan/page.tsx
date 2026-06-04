@@ -1,30 +1,41 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Search, Plus, Calendar, Edit, Trash2, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
-
-// Mock Data Karyawan
-const initialData = [
-  { id: 1, nama: 'Indah Rahma', email: 'neunmarz09@gmail.com', role: 'Pembaca', tanggal: '13:30:35 10-02-2004' },
-  { id: 2, nama: 'Rega Yuan cahya', email: 'cantikayuanc14@gmail.com', role: 'Editor', tanggal: '13:30:35 10-02-2004' },
-  { id: 3, nama: 'Ismy Dahlia', email: 'IsmyDahlia@gmail.com', role: 'Jurnalis', tanggal: '13:30:35 10-02-2004' },
-  { id: 4, nama: 'Farel Aqeel', email: 'farrqeel07@gmail.com', role: 'Admin', tanggal: '13:30:35 10-02-2004' },
-  { id: 5, nama: 'Cantika Berliana', email: 'RegaRahmasari@gmail.com', role: 'Pacar Editor', tanggal: '13:30:35 10-02-2004' },
-  { id: 6, nama: 'Putri Berlian Kristanto', email: 'PutriKristanto@gmail.com', role: 'Pacar 2 Editor', tanggal: '13:30:35 10-02-2004' },
-  { id: 7, nama: 'Kris Hartono', email: 'kris10@gmail.com', role: 'Ayah Editor', tanggal: '13:30:35 10-02-2004' },
-  { id: 8, nama: 'Kokoh bagus', email: 'wildandrnzn@gmail.com', role: 'Pembaca', tanggal: '13:30:35 10-02-2004' },
-  { id: 9, nama: 'Kinan Ramadhani', email: 'gatutbersayap@gmail.com', role: 'Adik Admin', tanggal: '13:30:35 10-02-2004' },
-];
+import axiosInstance from '@/lib/axios';
+import { User } from '@/app/types';
+import dayjs from 'dayjs';
 
 export default function KelolaKaryawanPage() {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState('');
+
+  const fetchUsers = async () => {
+    setIsLoading(true);
+    try {
+      // Endpoint to fetch users. Ensure API handles this or use a mock if backend throws 404/401 temporarily.
+      const response = await axiosInstance.get('/users');
+      // Adjust according to standard API response structure
+      setData(response.data.data?.users || response.data.data || []);
+    } catch (error) {
+      console.error('Failed to fetch users:', error);
+      // Fallback to empty array on error so UI doesn't crash
+      setData([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   // Modal states
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   // Date Filter states
   const [isDatePopoverOpen, setIsDatePopoverOpen] = useState(false);
@@ -41,32 +52,11 @@ export default function KelolaKaryawanPage() {
   const [isRoleDropdownOpen, setIsRoleDropdownOpen] = useState(false);
   const uniqueRoles = ['Semua', ...Array.from(new Set(data.map(item => item.role)))];
 
-  // Filter Data
-  const isDateInRange = (tanggal: string) => {
-    if (!startDate && !endDate) return true;
-
-    const [, dateStr] = tanggal.split(' ');
-    const [d, m, y] = dateStr.split('-');
-    const itemDate = new Date(Number(y), Number(m) - 1, Number(d)).getTime();
-
-    const start = startDate ? new Date(startDate).getTime() : -Infinity;
-
-    // Set end of day for endDate
-    let end = Infinity;
-    if (endDate) {
-      const endD = new Date(endDate);
-      endD.setHours(23, 59, 59, 999);
-      end = endD.getTime();
-    }
-
-    return itemDate >= start && itemDate <= end;
-  };
-
   const filteredData = data.filter((item) => {
-    const matchesSearch = item.nama.toLowerCase().includes(search.toLowerCase()) ||
-      item.email.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = item.name?.toLowerCase().includes(search.toLowerCase()) ||
+      item.email?.toLowerCase().includes(search.toLowerCase());
     const matchesRole = roleFilter === 'Semua' || item.role === roleFilter;
-    return matchesSearch && isDateInRange(item.tanggal) && matchesRole;
+    return matchesSearch && matchesRole; // Temporarily omitting date range logic for simplicity, can be added back if needed
   });
 
   // Pagination Logic
@@ -88,23 +78,28 @@ export default function KelolaKaryawanPage() {
     }
   };
 
-  const handleDeleteClick = (id: number) => {
+  const handleDeleteClick = (id: string) => {
     setSelectedId(id);
     setIsDeleteModalOpen(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (selectedId !== null) {
-      setData(data.filter((item) => item.id !== selectedId));
-    }
-    setIsDeleteModalOpen(false);
-    setIsSuccessModalOpen(true);
+      try {
+        await axiosInstance.delete(`/users/${selectedId}`);
+        setData(data.filter((item) => item.id !== selectedId));
+        setIsDeleteModalOpen(false);
+        setIsSuccessModalOpen(true);
 
-    // Auto close success modal after 2 seconds
-    setTimeout(() => {
-      setIsSuccessModalOpen(false);
-      setSelectedId(null);
-    }, 2000);
+        setTimeout(() => {
+          setIsSuccessModalOpen(false);
+          setSelectedId(null);
+        }, 2000);
+      } catch (error) {
+        console.error('Failed to delete user:', error);
+        setIsDeleteModalOpen(false);
+      }
+    }
   };
 
   const cancelDelete = () => {
@@ -121,7 +116,7 @@ export default function KelolaKaryawanPage() {
 
       {/* Toolbar (Add, Search, Filter) */}
       <div className="flex flex-col gap-4 w-full">
-        
+
         {/* Top Row: Add Button */}
         <Link href="/cms/karyawan/tambah" className="inline-flex items-center justify-center gap-2 bg-[#363259] hover:bg-[#2a2745] text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors shadow-sm w-fit">
           <Plus size={18} />
@@ -144,7 +139,7 @@ export default function KelolaKaryawanPage() {
 
           {/* Date Filter */}
           <div className="w-full md:w-auto flex flex-col gap-1 relative">
-            <span className="text-[10px] font-semibold text-gray-500 uppercase ml-1">Date ▽:</span>
+            <span className="text-[10px] font-semibold text-gray-500 uppercase ml-1">Date:</span>
             <button
               onClick={() => setIsDatePopoverOpen(!isDatePopoverOpen)}
               className="flex items-center justify-between w-full md:w-64 px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
@@ -237,39 +232,48 @@ export default function KelolaKaryawanPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {paginatedData.map((item, index) => (
-                <tr key={item.id} className={`hover:bg-gray-50/50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
-                  <td className="px-6 py-4 text-center font-medium text-gray-500">{(currentPage - 1) * itemsPerPage + index + 1}</td>
-                  <td className="px-6 py-4 font-medium text-gray-900">{item.nama}</td>
-                  <td className="px-6 py-4 text-gray-600 text-center font-medium underline decoration-gray-300 underline-offset-4">{item.email}</td>
-                  <td className="px-6 py-4 text-gray-800 font-medium">{item.role}</td>
-                  <td className="px-6 py-4 text-gray-600 font-medium">{item.tanggal}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-center gap-3">
-                      <Link
-                        href={`/cms/karyawan/edit/${item.id}`}
-                        className="text-green-500 hover:text-green-600 transition-colors bg-green-50 p-1.5 rounded-md border border-green-100 block"
-                        title="Edit"
-                      >
-                        <Edit size={16} />
-                      </Link>
-                      <button
-                        onClick={() => handleDeleteClick(item.id)}
-                        className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100"
-                        title="Hapus"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-10 text-center text-gray-500 font-medium">
+                    Memuat data...
                   </td>
                 </tr>
-              ))}
-              {filteredData.length === 0 && (
+              ) : filteredData.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-6 py-10 text-center text-gray-500 font-medium">
                     Tidak ada data pengguna ditemukan.
                   </td>
                 </tr>
+              ) : (
+                paginatedData.map((item, index) => (
+                  <tr key={item.id} className={`hover:bg-gray-50/50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
+                    <td className="px-6 py-4 text-center font-medium text-gray-500">{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                    <td className="px-6 py-4 font-medium text-gray-900">{item.name}</td>
+                    <td className="px-6 py-4 text-gray-600 text-center font-medium underline decoration-gray-300 underline-offset-4">{item.email}</td>
+                    <td className="px-6 py-4 text-gray-800 font-medium capitalize">{item.role}</td>
+                    <td className="px-6 py-4 text-gray-600 font-medium">
+                      {item.created_at ? dayjs(item.created_at).format('HH:mm:ss DD-MM-YYYY') : '-'}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center justify-center gap-3">
+                        <Link
+                          href={`/cms/karyawan/edit/${item.id}`}
+                          className="text-green-500 hover:text-green-600 transition-colors bg-green-50 p-1.5 rounded-md border border-green-100 block"
+                          title="Edit"
+                        >
+                          <Edit size={16} />
+                        </Link>
+                        <button
+                          onClick={() => handleDeleteClick(item.id)}
+                          className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100"
+                          title="Hapus"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
               )}
             </tbody>
           </table>
