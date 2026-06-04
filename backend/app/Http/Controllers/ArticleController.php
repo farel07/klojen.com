@@ -54,7 +54,7 @@ class ArticleController extends Controller
      */
     public function index(\Illuminate\Http\Request $request): JsonResponse
     {
-        $params = $request->only(['category', 'tag', 'featured', 'page', 'limit']);
+        $params = $request->only(['search', 'category', 'tag', 'featured', 'page', 'limit']);
         
         $client = $request->header('X-Client', 'public');
         

@@ -18,6 +18,10 @@ use Illuminate\Support\Str;
  */
 class CmsArticleService
 {
+    public function __construct(
+        protected SearchService $searchService
+    ) {}
+
     // ── Slug Helpers ─────────────────────────────────────────────────────────
 
     /**
@@ -147,7 +151,10 @@ class CmsArticleService
             'created_at'       => $now,
         ]);
 
-        // ── 5. Return payload ─────────────────────────────────────────────────
+        // ── 5. Trigger Reindex Search Indexes ─────────────────────────────────
+        $this->searchService->reindexArticle($articleId);
+
+        // ── 6. Return payload ─────────────────────────────────────────────────
         return [
             'id'                 => $articleId,
             'author_id'          => $authorId,
@@ -253,7 +260,10 @@ class CmsArticleService
             }
         });
 
-        // ── 5. Return payload data artikel yang sudah diupdate ────────────────
+        // ── 5. Trigger Reindex Search Indexes ─────────────────────────────────
+        $this->searchService->reindexArticle($id);
+
+        // ── 6. Return payload data artikel yang sudah diupdate ────────────────
         $updatedArticle = DB::table('articles')->where('id', $id)->first();
         $tagIds = DB::table('article_tags')->where('article_id', $id)->pluck('tag_id')->toArray();
 
@@ -357,6 +367,9 @@ class CmsArticleService
 
         $updatedArticle = DB::table('articles')->where('id', $id)->first();
         $tagIds = DB::table('article_tags')->where('article_id', $id)->pluck('tag_id')->toArray();
+
+        // ── 5. Trigger Reindex Search Indexes ─────────────────────────────────
+        $this->searchService->reindexArticle($id);
 
         return [
             'id'                 => $updatedArticle->id,
