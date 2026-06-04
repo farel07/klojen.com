@@ -279,27 +279,6 @@ function EditorDashboardView() {
 
 
 
-      {/* Quick Actions (Editor+) */}
-      {isEditorOrAbove && (
-        <div className="bg-white rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <AlertCircle size={16} className="text-yellow-500" />
-            <h2 className="text-base font-bold text-gray-900">Menunggu Review</h2>
-            <span className="ml-auto bg-yellow-100 text-yellow-700 text-xs font-bold px-2 py-0.5 rounded-full">
-              2 artikel
-            </span>
-          </div>
-          <p className="text-sm text-gray-400 mb-4">
-            Ada artikel dari jurnalis yang menunggu persetujuan Anda.
-          </p>
-          <Link
-            href="/cms/artikel?status=review"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors"
-          >
-            Tinjau sekarang <ArrowRight size={14} />
-          </Link>
-        </div>
-      )}
     </div>
   );
 }
