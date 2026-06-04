@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Calendar, Trash2, X, CheckCircle2, ChevronLeft, ChevronRight, PlusCircle, Edit } from 'lucide-react';
+import { Calendar, Trash2, X, CheckCircle2, ChevronLeft, ChevronRight, Plus, Edit, Search } from 'lucide-react';
 import Link from 'next/link';
 
 // Mock Data Iklan
@@ -14,6 +14,7 @@ const initialData = [
 
 export default function KelolaIklanPage() {
   const [data, setData] = useState(initialData);
+  const [searchQuery, setSearchQuery] = useState('');
   
   // Modal states
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -58,7 +59,8 @@ export default function KelolaIklanPage() {
     const passDate = isDateInRange(item.berakhir);
     const passPosisi = filterPosisi ? item.posisi === filterPosisi : true;
     const passStatus = filterStatus ? item.status === filterStatus : true;
-    return passDate && passPosisi && passStatus;
+    const passSearch = item.nama.toLowerCase().includes(searchQuery.toLowerCase());
+    return passDate && passPosisi && passStatus && passSearch;
   });
 
   // Pagination Logic
@@ -107,39 +109,52 @@ export default function KelolaIklanPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Kelola Iklan</h1>
+        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Kelola Iklan</h1>
       </div>
 
       {/* Toolbar */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 w-full">
         
         {/* Tambah Iklan Button */}
         <Link 
           href="/cms/iklan/tambah" 
-          className="flex items-center gap-2 bg-[#2d2c49] hover:bg-[#1a1930] text-white px-5 py-2.5 rounded-[10px] font-medium transition-colors shadow-sm text-sm"
+          className="inline-flex items-center justify-center gap-2 bg-[#363259] hover:bg-[#2a2745] text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors shadow-sm w-fit"
         >
-          <PlusCircle size={18} />
+          <Plus size={18} />
           Tambah Iklan
         </Link>
 
-        {/* Date Filter */}
-        <div className="w-full md:w-auto flex flex-col gap-1 relative">
-          <button 
-            onClick={() => setIsDatePopoverOpen(!isDatePopoverOpen)}
-            className="flex items-center justify-between w-full md:w-[220px] px-3 py-2 bg-white border border-gray-200 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
-          >
-            <div className="flex items-center gap-2">
-              <Calendar size={14} className="text-gray-400" />
-              <span className="truncate">
-                {startDate && endDate 
-                  ? `${startDate} - ${endDate}` 
-                  : startDate ? `Dari ${startDate}`
-                  : endDate ? `Sampai ${endDate}`
-                  : '01 Mei 2024 - 31 Mei 2024'}
-              </span>
-            </div>
-            <span className="text-gray-900 text-[10px]">▼</span>
-          </button>
+        <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+          {/* Search Box */}
+          <div className="relative w-full md:w-[300px]">
+            <input
+              type="text"
+              placeholder="Cari Iklan..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-4 pr-10 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
+            />
+            <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+          </div>
+
+          {/* Date Filter */}
+          <div className="w-full md:w-auto flex flex-col gap-1 relative">
+            <button 
+              onClick={() => setIsDatePopoverOpen(!isDatePopoverOpen)}
+              className="flex items-center justify-between w-full md:w-[220px] px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
+            >
+              <div className="flex items-center gap-2">
+                <Calendar size={16} className="text-gray-400" />
+                <span className="truncate">
+                  {startDate && endDate 
+                    ? `${startDate} - ${endDate}` 
+                    : startDate ? `Dari ${startDate}`
+                    : endDate ? `Sampai ${endDate}`
+                    : 'Filter Tanggal'}
+                </span>
+              </div>
+              <span className="text-gray-500 text-[10px]">▼</span>
+            </button>
 
           {isDatePopoverOpen && (
             <div className="absolute top-full right-0 mt-2 p-3 bg-white border border-gray-200 rounded-xl shadow-lg z-10 w-64 flex flex-col gap-3">
@@ -177,17 +192,17 @@ export default function KelolaIklanPage() {
               </div>
             </div>
           )}
+          </div>
         </div>
-
       </div>
 
       {/* Table */}
       <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="text-sm text-gray-900 bg-white border-b border-gray-200">
+            <thead className="text-sm text-[#152A4A] bg-white border-b border-gray-200">
               <tr>
-                <th className="px-6 py-4 font-bold w-16">NO.</th>
+                <th className="px-6 py-4 font-bold w-16 text-center">NO.</th>
                 <th className="px-6 py-4 font-bold">Nama Iklan</th>
                 <th className="px-6 py-4 font-bold relative">
                   <button 
@@ -226,31 +241,34 @@ export default function KelolaIklanPage() {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {paginatedData.map((item, index) => {
-                const isNonAktif = item.status === 'Nonaktif';
-                const rowTextColor = isNonAktif ? 'text-[#ef6e6e]' : 'text-gray-900';
-                
                 return (
-                  <tr key={item.id} className={`transition-colors ${index % 2 === 0 ? 'bg-[#f4f4f4]' : 'bg-white'}`}>
-                    <td className={`px-6 py-4 font-bold ${rowTextColor}`}>{index + 1}.</td>
-                    <td className={`px-6 py-4 font-medium ${rowTextColor}`}>{item.nama}</td>
-                    <td className={`px-6 py-4 font-medium ${rowTextColor}`}>{item.posisi}</td>
-                    <td className={`px-6 py-4 font-medium ${rowTextColor}`}>{item.status}</td>
-                    <td className={`px-6 py-4 font-medium ${rowTextColor}`}>{item.berakhir}</td>
+                  <tr key={item.id} className={`hover:bg-gray-50/50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
+                    <td className="px-6 py-4 text-center font-medium text-gray-500">{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                    <td className="px-6 py-4 font-medium text-gray-900">{item.nama}</td>
+                    <td className="px-6 py-4 font-medium text-gray-600">{item.posisi}</td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center justify-center gap-4">
+                      <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                        item.status === 'Aktif' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
+                      }`}>
+                        {item.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 font-medium text-gray-600">{item.berakhir}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center justify-center gap-3">
                         <Link
                           href={`/cms/iklan/${item.id}/edit`}
-                          className="text-[#69c77e] hover:text-[#5db471] transition-colors"
+                          className="text-green-500 hover:text-green-600 transition-colors bg-green-50 p-1.5 rounded-md border border-green-100 block"
                           title="Edit"
                         >
-                          <Edit size={20} />
+                          <Edit size={16} />
                         </Link>
                         <button 
                           onClick={() => handleDeleteClick(item.id)}
-                          className="text-[#ef6e6e] hover:text-[#d96464] transition-colors" 
+                          className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100 block" 
                           title="Hapus"
                         >
-                          <Trash2 size={20} />
+                          <Trash2 size={16} />
                         </button>
                       </div>
                     </td>
@@ -258,17 +276,13 @@ export default function KelolaIklanPage() {
                 );
               })}
               
-              {/* Fill remaining empty rows to match the mockup's visual spacing */}
-              {[...Array(Math.max(0, itemsPerPage - paginatedData.length))].map((_, idx) => (
-                 <tr key={`empty-${idx}`} className={(paginatedData.length + idx) % 2 === 0 ? 'bg-[#f4f4f4]' : 'bg-white'}>
-                    <td className="px-6 py-5">&nbsp;</td>
-                    <td className="px-6 py-5">&nbsp;</td>
-                    <td className="px-6 py-5">&nbsp;</td>
-                    <td className="px-6 py-5">&nbsp;</td>
-                    <td className="px-6 py-5">&nbsp;</td>
-                    <td className="px-6 py-5">&nbsp;</td>
-                 </tr>
-              ))}
+              {filteredData.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-6 py-10 text-center text-gray-500 font-medium">
+                    Tidak ada iklan ditemukan.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
