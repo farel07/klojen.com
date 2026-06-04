@@ -262,16 +262,37 @@ export default function TulisBeritaPage() {
   const [isSaving,   setIsSaving]   = useState(false);
   const [rejectReasonInput, setRejectReasonInput] = useState('');
 
-  // Status options dynamic based on prefillStatus
-  const statusOptions = prefillStatus === 'review' ? [
-    { value: 'published', label: 'Publish Sekarang',  dot: 'bg-green-500' },
-    { value: 'scheduled', label: 'Publish Terjadwal', dot: 'bg-blue-500'  },
-    { value: 'rejected',  label: 'Reject',            dot: 'bg-red-500'   },
-  ] : prefillStatus === 'draft' ? [
-    { value: 'review',    label: 'Submit', dot: 'bg-green-500' },
-    { value: 'draft',     label: 'Draft',  dot: 'bg-gray-400'  },
-  ] : BASE_STATUS_OPTIONS;
-
+  // Status options dynamic based on role and prefillStatus
+  let statusOptions = BASE_STATUS_OPTIONS;
+  
+  if (isEditorOrAbove) {
+    if (prefillStatus === 'review') {
+      statusOptions = [
+        { value: 'published', label: 'Publish Sekarang',  dot: 'bg-green-500' },
+        { value: 'scheduled', label: 'Publish Terjadwal', dot: 'bg-blue-500'  },
+        { value: 'rejected',  label: 'Reject',            dot: 'bg-red-500'   },
+      ];
+    } else {
+      statusOptions = [
+        { value: 'published', label: 'Publish Sekarang',  dot: 'bg-green-500' },
+        { value: 'scheduled', label: 'Publish Terjadwal', dot: 'bg-blue-500'  },
+        { value: 'draft',     label: 'Simpan Draft',      dot: 'bg-gray-400'  },
+      ];
+    }
+  } else {
+    // Journalist
+    if (prefillStatus === 'rejected') {
+      statusOptions = [
+        { value: 'review',    label: 'Ajukan Ulang', dot: 'bg-green-500' },
+        { value: 'draft',     label: 'Simpan Draft', dot: 'bg-gray-400'  },
+      ];
+    } else {
+      statusOptions = [
+        { value: 'review',    label: 'Ajukan Review', dot: 'bg-green-500' },
+        { value: 'draft',     label: 'Simpan Draft',  dot: 'bg-gray-400'  },
+      ];
+    }
+  }
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Media modal
@@ -407,14 +428,18 @@ export default function TulisBeritaPage() {
   };
 
   const handleSimpan = async () => {
-    if (status === 'scheduled') {
+    // Pastikan status yang dikirim valid sesuai role
+    const selectedStatus = statusOptions.find((s) => s.value === status) ?? statusOptions[0];
+    const finalStatus = selectedStatus.value;
+
+    if (finalStatus === 'scheduled') {
       if (!scheduleDate || !scheduleTime) {
         alert('Pilih tanggal dan jam terlebih dahulu');
         return;
       }
     }
 
-    if (status === 'rejected') {
+    if (finalStatus === 'rejected') {
       if (!rejectReasonInput.trim()) {
         alert('Mohon isi alasan penolakan terlebih dahulu');
         return;
@@ -429,8 +454,8 @@ export default function TulisBeritaPage() {
       const existing = localStorage.getItem('mock_status_overrides');
       const overrides = existing ? JSON.parse(existing) : {};
       overrides[articleId] = {
-        status,
-        reason: status === 'rejected' ? rejectReasonInput : undefined
+        status: finalStatus,
+        reason: finalStatus === 'rejected' ? rejectReasonInput : undefined
       };
       localStorage.setItem('mock_status_overrides', JSON.stringify(overrides));
     } else {
@@ -462,7 +487,7 @@ export default function TulisBeritaPage() {
         title: title || 'Berita Tanpa Judul',
         excerpt: content ? content.replace(/<[^>]+>/g, '').substring(0, 60) + '...' : 'Belum ada konten',
         category: kanal || 'Belum Dikategorikan',
-        status: status,
+        status: finalStatus,
         image: imageToSave,
         author: user?.name || 'Jurnalis',
         content: content,
