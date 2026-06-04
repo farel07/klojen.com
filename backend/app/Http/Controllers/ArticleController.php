@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Services\ArticleService;
 use Illuminate\Http\JsonResponse;
 
@@ -82,6 +83,53 @@ class ArticleController extends Controller
         return response()->json([
             'status' => 'success',
             'data'   => $result,
+        ]);
+    }
+
+    /**
+     * GET /api/articles/sitemap
+     * Mengembalikan semua artikel published untuk keperluan sitemap utama.
+     * Hanya field yang diperlukan: slug, published_at, updated_at.
+     */
+    public function sitemap(): JsonResponse
+    {
+        $articles = Article::where('status', 'published')
+            ->select(['slug', 'published_at', 'updated_at'])
+            ->orderByDesc('published_at')
+            ->get()
+            ->map(fn(Article $a) => [
+                'slug'         => $a->slug,
+                'published_at' => $a->published_at?->toIso8601String(),
+                'updated_at'   => $a->updated_at?->toIso8601String(),
+            ]);
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $articles,
+        ]);
+    }
+
+    /**
+     * GET /api/articles/news-sitemap
+     * Mengembalikan artikel published dalam 48 jam terakhir untuk Google News Sitemap.
+     * Google News hanya menerima artikel maksimal 2 hari ke belakang.
+     */
+    public function newsSitemap(): JsonResponse
+    {
+        $articles = Article::where('status', 'published')
+            ->where('published_at', '>=', now()->subHours(48))
+            ->select(['slug', 'title', 'published_at'])
+            ->orderByDesc('published_at')
+            ->get()
+            ->map(fn(Article $a) => [
+                'slug'         => $a->slug,
+                'title'        => $a->title,
+                'published_at' => $a->published_at?->toIso8601String(),
+            ]);
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $articles,
         ]);
     }
 }

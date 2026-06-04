@@ -46,8 +46,11 @@ Route::get('/tags', [TagController::class, 'index']);
 
 // ── Articles ──────────────────────────────────────────────────────────────────
 Route::get('/articles',                  [ArticleController::class, 'index']);
+Route::get('/articles/sitemap',          [ArticleController::class, 'sitemap']);
+Route::get('/articles/news-sitemap',     [ArticleController::class, 'newsSitemap']);
 Route::get('/articles/{slug}',           [ArticleController::class, 'show']);
 Route::get('/articles/{id}/comments',    [ArticleController::class, 'comments']);
+
 
 // ── Bookmarks & Media (requires authentication) ───────────────────────────────────────
 Route::middleware('auth:api')->group(function () {
