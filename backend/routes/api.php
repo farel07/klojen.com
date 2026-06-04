@@ -57,6 +57,10 @@ Route::middleware('auth:api')->group(function () {
     // Media
     Route::post('/media/upload', [\App\Http\Controllers\MediaController::class, 'upload']);
     Route::delete('/media/{id}', [\App\Http\Controllers\MediaController::class, 'destroy']);
+
+    // Comments
+    Route::post('/comments', [\App\Http\Controllers\CommentController::class, 'store']);
+    Route::delete('/comments/{id}', [\App\Http\Controllers\CommentController::class, 'destroy']);
 });
 
 // ── CMS (requires authentication + role check inside controller) ──────────

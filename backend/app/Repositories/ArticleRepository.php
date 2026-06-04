@@ -80,6 +80,13 @@ class ArticleRepository implements ArticleRepositoryInterface
     {
         $query = $this->baseQuery();
 
+        // Filter search (Fulltext MATCH AGAINST)
+        if (! empty($params['search'])) {
+            $query->join('search_indexes', 'articles.id', '=', 'search_indexes.article_id')
+                  ->whereRaw('MATCH(search_indexes.search_vector) AGAINST(? IN BOOLEAN MODE)', [$params['search']])
+                  ->select('articles.*');
+        }
+
         // Filter status (default: published)
         $status = $params['status'] ?? 'published';
         if ($status !== 'all') {

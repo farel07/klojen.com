@@ -65,6 +65,11 @@ class Article extends Model
         return $this->hasMany(Media::class, 'article_id');
     }
 
+    public function searchIndex(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(SearchIndex::class, 'article_id');
+    }
+
     // ── Scopes ───────────────────────────────────────────────────────────────
 
     public function scopePublished($query)
