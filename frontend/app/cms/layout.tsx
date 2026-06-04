@@ -54,9 +54,11 @@ export default function CmsLayout({ children }: { children: React.ReactNode }) {
       <Sidebar collapsed={collapsed} onToggle={() => setCollapsed((v) => !v)} />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden">
+      <div className="flex-1 flex flex-col h-full min-h-0">
         {/* Topbar */}
-        <Topbar onToggle={() => setCollapsed((v) => !v)} />
+        <div className="relative z-50 shrink-0">
+          <Topbar onToggle={() => setCollapsed((v) => !v)} />
+        </div>
 
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto px-6 md:px-10 pb-10">
