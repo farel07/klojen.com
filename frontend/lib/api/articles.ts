@@ -24,11 +24,11 @@ export const createArticle = (data: {
   title: string;
   content: string;
   category_id: string;
-  tags?: string[];
+  tag_ids?: string[];
   featured_image_url?: string;
 }) =>
   axiosInstance.post<ApiSuccess<{ id: string; slug: string; status: ArticleStatus }>>(
-    '/articles',
+    '/cms/articles',
     data,
   );
 
@@ -42,7 +42,19 @@ export const updateArticleStatus = (
 ) =>
   axiosInstance.patch<
     ApiSuccess<{ id: string; status: ArticleStatus; published_at?: string }>
-  >(`/articles/${id}/status`, data);
+  >(`/cms/articles/${id}/status`, data);
+
+export const updateArticle = (
+  id: string,
+  data: {
+    title?: string;
+    content?: string;
+    category_id?: string;
+    tag_ids?: string[];
+    featured_image_url?: string;
+  }
+) =>
+  axiosInstance.put<ApiSuccess<Article>>(`/cms/articles/${id}`, data);
 
 // ── KOMENTAR ─────────────────────────────────────────────────────────────────
 

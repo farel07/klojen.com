@@ -27,6 +27,9 @@ import RichTextEditor from '@/app/components/cms/RichTextEditor';
 import { useAuthStore } from '@/stores/authStore';
 import { canPublish } from '@/app/constants/roles';
 import { Role } from '@/app/types';
+import { createArticle, updateArticleStatus, updateArticle } from '@/lib/api/articles';
+import { getCategories } from '@/lib/api/categories';
+import { uploadMedia } from '@/lib/api/media';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -43,12 +46,6 @@ const KANAL_OPTIONS = [
   { value: 'Hotel',      label: 'Hotel',      icon: <Building2 size={14} /> },
 ];
 
-const PENEMPATAN_OPTIONS = [
-  { value: 'regular',    label: 'Regular'    },
-  { value: 'headline',   label: 'Headline'   },
-  { value: 'adv-show',   label: 'Adv-Show'  },
-  { value: 'adv-hidden', label: 'Adv-Hidden' },
-];
 
 const MAX_PHOTOS = 3;
 
@@ -197,6 +194,10 @@ export default function TulisBeritaPage() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isEditorOrAbove = role ? canPublish(role) : false;
 
+  const allowedStatusOptions = isEditorOrAbove
+    ? STATUS_OPTIONS
+    : STATUS_OPTIONS.filter((opt) => opt.value === 'draft' || opt.value === 'review');
+
   // Deteksi edit
   const articleId  = searchParams.get('id');
   const isRejected = searchParams.get('rejected') === 'true';
@@ -229,9 +230,9 @@ export default function TulisBeritaPage() {
   const [tags,       setTags]       = useState<string[]>(prefillTags.length > 0 ? prefillTags : ['#KetikPedia']);
   const [tagInput,   setTagInput]   = useState('');
   const [kanal,      setKanal]      = useState('');
-  const [penempatan, setPenempatan] = useState('regular');
 
-  const prefillStatus = searchParams.get('status') ?? 'published';
+  const defaultStatusForRole = isEditorOrAbove ? 'published' : 'draft';
+  const prefillStatus = searchParams.get('status') ?? defaultStatusForRole;
   const [status,     setStatus]     = useState(prefillStatus);
   const [statusOpen, setStatusOpen] = useState(false);
   const [isSaving,   setIsSaving]   = useState(false);
@@ -289,14 +290,69 @@ export default function TulisBeritaPage() {
   };
 
   const handleSimpan = async () => {
+    if (!title || !content || !kanal) {
+      alert('Mohon lengkapi judul, isi berita, dan kanal.');
+      return;
+    }
+
     setIsSaving(true);
-    await new Promise((r) => setTimeout(r, 900));
-    setIsSaving(false);
-    router.push('/cms/artikel');
+    try {
+      const { data: catRes } = await getCategories();
+      const cat = catRes.data.find((c) => c.name.toLowerCase() === kanal.toLowerCase());
+      if (!cat) {
+        alert('Kategori ' + kanal + ' tidak ditemukan di server.');
+        setIsSaving(false);
+        return;
+      }
+
+      let featured_image_url = photos[0]?.url;
+      const isBlob = featured_image_url?.startsWith('blob:');
+
+      const payload = {
+        title,
+        content,
+        category_id: cat.id,
+        featured_image_url: isBlob ? undefined : featured_image_url,
+      };
+
+      const res = await createArticle(payload);
+      const newArticleId = res.data.data.id;
+
+      if (isBlob && featured_image_url) {
+        try {
+          const blobResponse = await fetch(featured_image_url);
+          const blob = await blobResponse.blob();
+          const formData = new FormData();
+          formData.append('image', blob, 'image.jpg');
+          formData.append('article_id', newArticleId);
+          formData.append('alt_text', photos[0]?.caption || title);
+          
+          const uploadRes = await uploadMedia(formData);
+          const uploadedUrl = uploadRes.data.data.file_url;
+          
+          await updateArticle(newArticleId, { featured_image_url: uploadedUrl });
+        } catch (uploadError) {
+          console.error("Gagal upload gambar:", uploadError);
+          // Tetap lanjut karena artikel sudah berhasil dibuat
+        }
+      }
+
+      if (status !== 'draft') {
+        await updateArticleStatus(newArticleId, { status: status as any });
+      }
+
+      alert('Berita berhasil disimpan!');
+      router.push('/cms/artikel');
+    } catch (error: any) {
+      console.error(error);
+      alert(error?.response?.data?.message || 'Gagal menyimpan berita');
+    } finally {
+      setIsSaving(false);
+    }
   };
   const handleBatal = () => router.push('/cms/artikel');
 
-  const selectedStatus = STATUS_OPTIONS.find((s) => s.value === status) ?? STATUS_OPTIONS[0];
+  const selectedStatus = allowedStatusOptions.find((s) => s.value === status) ?? allowedStatusOptions[0];
   const canAddPhoto    = photos.length < MAX_PHOTOS;
 
   return (
@@ -565,32 +621,6 @@ export default function TulisBeritaPage() {
           <p className="text-xs text-gray-400 mt-2 px-1">Pilih kanal yang sesuai dengan topik berita</p>
         </StepRow>
 
-        {/* ─── Step 6: Kategori Penempatan ─── */}
-        <StepRow icon={<Tag size={22} className="text-blue-500" />}>
-          <h2 className="text-lg font-bold text-gray-700 mb-3">Kategori Penempatan</h2>
-          <div className="flex flex-wrap gap-3">
-            {PENEMPATAN_OPTIONS.map((opt) => (
-              <button
-                key={opt.value}
-                type="button"
-                onClick={() => setPenempatan(opt.value)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl border-2 text-sm font-semibold transition-all duration-200 ${
-                  penempatan === opt.value
-                    ? 'border-blue-500 bg-blue-50 text-blue-600 shadow-sm'
-                    : 'border-gray-100 bg-white text-gray-600 hover:border-blue-200 hover:bg-blue-50/20'
-                }`}
-              >
-                {penempatan === opt.value && (
-                  <span className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                    <Check size={10} className="text-white" />
-                  </span>
-                )}
-                {opt.label}
-              </button>
-            ))}
-          </div>
-          <p className="text-xs text-gray-400 mt-2 px-1">Tentukan penempatan berita di halaman utama</p>
-        </StepRow>
 
         {/* ─── Step 7: Status ─── */}
         <StepRow icon={<Send size={22} className="text-blue-500" />} isLast>
@@ -608,7 +638,7 @@ export default function TulisBeritaPage() {
             </button>
             {statusOpen && (
               <div className="mt-2 bg-white border border-gray-100 rounded-2xl shadow-xl overflow-hidden">
-                {STATUS_OPTIONS.map((opt) => (
+                {allowedStatusOptions.map((opt) => (
                   <button
                     key={opt.value}
                     type="button"

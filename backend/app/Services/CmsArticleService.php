@@ -298,7 +298,7 @@ class CmsArticleService
      */
     public function updateStatus(string $id, int $userId, string $userRole, string $status, ?string $scheduledAt = null): array
     {
-        if (! in_array($userRole, ['editor', 'admin'])) {
+        if (! in_array($userRole, ['journalist', 'editor', 'admin'])) {
             throw new \RuntimeException('FORBIDDEN_ROLE', 403);
         }
 
@@ -306,6 +306,15 @@ class CmsArticleService
 
         if (! $article) {
             throw new \RuntimeException('ARTICLE_NOT_FOUND', 404);
+        }
+
+        if ($userRole === 'journalist') {
+            if ($article->author_id !== $userId) {
+                throw new \RuntimeException('FORBIDDEN_OWNERSHIP', 403);
+            }
+            if (! in_array($status, ['draft', 'review'])) {
+                throw new \RuntimeException('INVALID_STATUS_TRANSITION', 400);
+            }
         }
 
         // BR-05: Artikel yang sudah published hanya bisa diubah ke archived

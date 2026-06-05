@@ -203,12 +203,12 @@ class CmsArticleController extends Controller
         /** @var \App\Models\User $user */
         $user = auth('api')->user();
 
-        if (! in_array($user->role, ['editor', 'admin'])) {
+        if (! in_array($user->role, ['journalist', 'editor', 'admin'])) {
             return response()->json([
                 'status'  => 'error',
                 'code'    => 403,
                 'error'   => 'FORBIDDEN_ROLE',
-                'message' => 'Hanya editor dan admin yang dapat mengubah status artikel.',
+                'message' => 'Hanya journalist, editor, dan admin yang dapat mengubah status artikel.',
             ], 403);
         }
 
