@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Type,
@@ -30,7 +30,8 @@ import {
   Calendar,
   Crop,
   ArrowLeft,
-  ArrowRight
+  ArrowRight,
+  RefreshCw
 } from 'lucide-react';
 import RichTextEditor from '@/app/components/cms/RichTextEditor';
 import Cropper from 'react-easy-crop';
@@ -38,7 +39,9 @@ import getCroppedImg from '@/utils/cropImage';
 import { useAuthStore } from '@/stores/authStore';
 import { canPublish } from '@/app/constants/roles';
 import { Role } from '@/app/types';
-import { createArticle, updateArticleStatus, updateArticle } from '@/lib/api/articles';
+import { createArticle, updateArticleStatus,  updateArticle,
+  getCmsArticleById,
+} from '@/lib/api/articles';
 import { getCategories } from '@/lib/api/categories';
 import { uploadMedia } from '@/lib/api/media';
 
@@ -252,12 +255,67 @@ export default function TulisBeritaPage() {
       : (prefillStatus === 'draft' ? [] : ['#KetikPedia'])
   );
   const [tagInput,   setTagInput]   = useState('');
-  const [kanal,      setKanal]      = useState('');
+  const [kanal,      setKanal]      = useState(prefillCategory);
 
   const [status,     setStatus]     = useState(prefillStatus);
   const [statusOpen, setStatusOpen] = useState(false);
   const [isSaving,   setIsSaving]   = useState(false);
   const [rejectReasonInput, setRejectReasonInput] = useState('');
+  const [isLoadingArticle, setIsLoadingArticle] = useState(!!articleId);
+  const [editorKey, setEditorKey] = useState(0); // increment to remount editor
+  const [articleStatus, setArticleStatus] = useState<string>(prefillStatus); // actual status from API
+
+  // Fetch article if editing
+  useEffect(() => {
+    if (!articleId) return;
+    
+    const fetchArticle = async () => {
+      try {
+        setIsLoadingArticle(true);
+        const res = await getCmsArticleById(articleId);
+        const data = res.data.data as any;
+        
+        // Set semua field dari API — tidak ada kondisi "if" agar state selalu terupdate
+        setTitle(data.title ?? '');
+        setContent(data.content ?? '');
+        
+        // Bangun photos: featured_image_url + semua media dari tabel media
+        const allPhotos: {url: string; caption: string; watermark: boolean}[] = [];
+        if (data.featured_image_url) {
+          allPhotos.push({ url: data.featured_image_url, caption: '', watermark: false });
+        }
+        if (data.media && Array.isArray(data.media)) {
+          for (const m of data.media) {
+            // Hindari duplikasi jika featured_image_url sama dengan salah satu media
+            if (m.file_url && m.file_url !== data.featured_image_url) {
+              allPhotos.push({ url: m.file_url, caption: m.alt_text || '', watermark: false });
+            }
+          }
+        }
+        setPhotos(allPhotos);
+
+        // Tags: tambahkan # jika belum ada
+        if (data.tags && Array.isArray(data.tags) && data.tags.length > 0) {
+          const normalizedTags = data.tags.map((t: string) => t.startsWith('#') ? t : `#${t}`);
+          setTags(normalizedTags);
+        }
+
+        if (data.category_name) setKanal(data.category_name);
+        if (data.status) {
+          setStatus(data.status);
+          setArticleStatus(data.status);
+        }
+        setEditorKey(k => k + 1); // remount RichTextEditor with fresh content
+        
+      } catch (err) {
+        console.error('Failed to fetch article details:', err);
+      } finally {
+        setIsLoadingArticle(false);
+      }
+    };
+    
+    fetchArticle();
+  }, [articleId]);
 
   // Status options dynamic based on role and prefillStatus
   let statusOptions = BASE_STATUS_OPTIONS;
@@ -424,14 +482,20 @@ export default function TulisBeritaPage() {
     router.push('/cms/artikel');
   };
 
-  const handleSimpan = async () => {
+    const handleSimpan = async () => {
+    const selectedStatus = statusOptions.find((s) => s.value === status) ?? statusOptions[0];
+    const finalStatus = selectedStatus.value;
+
+    // Kanal selalu wajib karena category_id NOT NULL di database
     if (!title || !content || !kanal) {
-      alert('Mohon lengkapi judul, isi berita, dan kanal.');
+      alert('Mohon lengkapi judul, isi berita, dan pilih kanal terlebih dahulu.');
       return;
     }
 
-    const selectedStatus = statusOptions.find((s) => s.value === status) ?? statusOptions[0];
-    const finalStatus = selectedStatus.value;
+    if (finalStatus !== 'draft' && !kanal) {
+      alert('Pilih kanal terlebih dahulu sebelum mengajukan berita.');
+      return;
+    }
 
     if (finalStatus === 'scheduled') {
       if (!scheduleDate || !scheduleTime) {
@@ -449,6 +513,7 @@ export default function TulisBeritaPage() {
 
     setIsSaving(true);
     try {
+      // Resolve category_id dari nama kanal
       const { data: catRes } = await getCategories();
       const cat = catRes.data.find((c) => c.name.toLowerCase() === kanal.toLowerCase());
       if (!cat) {
@@ -462,36 +527,55 @@ export default function TulisBeritaPage() {
       
       let newArticleId = articleId;
 
-      const payload = {
+      const payload: Record<string, any> = {
         title,
         content,
         category_id: cat.id,
+        tags, // Include tags array
         featured_image_url: isBlob ? undefined : featured_image_url,
       };
 
       if (!articleId) {
-        const res = await createArticle(payload);
+        const res = await createArticle(payload as any);
         newArticleId = res.data.data.id;
       } else {
         await updateArticle(articleId, payload);
       }
 
-      if (isBlob && featured_image_url) {
-        try {
-          const blobResponse = await fetch(featured_image_url);
-          const blob = await blobResponse.blob();
-          const formData = new FormData();
-          formData.append('image', blob, 'image.jpg');
-          formData.append('article_id', newArticleId as string);
-          formData.append('alt_text', photos[0]?.caption || title);
-          
-          const uploadRes = await uploadMedia(formData);
-          const uploadedUrl = uploadRes.data.data.file_url;
-          
-          await updateArticle(newArticleId as string, { featured_image_url: uploadedUrl });
-        } catch (uploadError) {
-          console.error("Gagal upload gambar:", uploadError);
+      // Upload all photos that are blobs (newly added)
+      let updatedFeaturedImageUrl: string | null = null;
+
+      for (let i = 0; i < photos.length; i++) {
+        const photo = photos[i];
+        if (photo.url.startsWith('blob:')) {
+          try {
+            const blobResponse = await fetch(photo.url);
+            const blob = await blobResponse.blob();
+            const formData = new FormData();
+            formData.append('image', blob, 'image.jpg');
+            formData.append('article_id', newArticleId as string);
+            formData.append('alt_text', photo.caption || title);
+            
+            const uploadRes = await uploadMedia(formData);
+            const uploadedUrl = uploadRes.data.data.file_url;
+            
+            if (i === 0) {
+              updatedFeaturedImageUrl = uploadedUrl;
+            }
+          } catch (uploadError) {
+            console.error(`Gagal upload gambar ke-${i + 1}:`, uploadError);
+          }
+        } else {
+           if (i === 0 && isBlob) {
+               // Should not happen, but just in case
+               updatedFeaturedImageUrl = photo.url;
+           }
         }
+      }
+
+      // If the first photo was uploaded, update the article's featured_image_url
+      if (updatedFeaturedImageUrl) {
+        await updateArticle(newArticleId as string, { featured_image_url: updatedFeaturedImageUrl });
       }
 
       if (finalStatus !== 'draft') {
@@ -521,7 +605,13 @@ export default function TulisBeritaPage() {
   const canAddPhoto    = photos.length < MAX_PHOTOS;
 
   return (
-    <div className="min-h-full pb-16">
+    <div className="flex bg-[#f8f9fa] min-h-screen pb-20 relative">
+      {isLoadingArticle && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/80">
+          <RefreshCw className="animate-spin text-blue-500 w-10 h-10" />
+        </div>
+      )}
+      <div className="flex-1 px-4 sm:px-8 py-6 mx-auto w-full max-w-7xl">
       {/* Page Header */}
       <div className="mb-6 pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -532,7 +622,7 @@ export default function TulisBeritaPage() {
         </div>
 
         <div className="flex items-center gap-3 ml-auto">
-        {prefillStatus !== 'draft' && (
+        {(articleStatus !== 'draft' || !isEdit) && articleId && (
           <button
             type="button"
             onClick={() => { if(articleId) window.open(`/cms/artikel/${articleId}/preview`, '_blank'); }}
@@ -542,7 +632,7 @@ export default function TulisBeritaPage() {
           </button>
         )}
 
-        {prefillStatus === 'review' && (
+        {articleStatus === 'review' && (
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -614,7 +704,7 @@ export default function TulisBeritaPage() {
         <StepRow icon={<FileText size={22} className="text-blue-500" />}>
           <h2 className="text-lg font-bold text-gray-700 mb-3">Isi Berita</h2>
           <div className="shadow-sm border-2 border-gray-100 rounded-2xl overflow-hidden">
-            <RichTextEditor value={content} onChange={setContent} placeholder="Tulis isi berita di sini..." minHeight={280} />
+            <RichTextEditor key={editorKey} value={content} onChange={setContent} placeholder="Tulis isi berita di sini..." minHeight={280} />
           </div>
         </StepRow>
 
@@ -830,15 +920,13 @@ export default function TulisBeritaPage() {
                 key={opt.value}
                 type="button"
                 onClick={() => setKanal(opt.value)}
-                disabled={prefillStatus === 'draft'}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl border-2 text-sm font-semibold transition-all duration-200 ${
-                  prefillStatus === 'draft' ? 'opacity-50 cursor-not-allowed border-gray-100 bg-gray-50 text-gray-400' :
                   kanal === opt.value
                     ? 'border-blue-500 bg-blue-50 text-blue-600 shadow-sm'
                     : 'border-gray-100 bg-white text-gray-600 hover:border-blue-200 hover:bg-blue-50/20'
                 }`}
               >
-                {kanal === opt.value && prefillStatus !== 'draft'
+                {kanal === opt.value
                   ? <span className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center"><Check size={10} className="text-white" /></span>
                   : <span className="text-gray-400">{opt.icon}</span>
                 }
@@ -1019,6 +1107,7 @@ export default function TulisBeritaPage() {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 }

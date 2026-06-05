@@ -17,6 +17,12 @@ export const getArticles = (params?: {
     { params },
   );
 
+export const getCmsArticles = () =>
+  axiosInstance.get<ApiSuccess<Article[]>>('/cms/articles');
+
+export const getCmsArticleById = (id: string) =>
+  axiosInstance.get<ApiSuccess<Article>>(`/cms/articles/${id}`);
+
 export const getArticleBySlug = (slug: string) =>
   axiosInstance.get<ApiSuccess<Article>>(`/articles/${slug}`);
 
@@ -24,7 +30,7 @@ export const createArticle = (data: {
   title: string;
   content: string;
   category_id: string;
-  tag_ids?: string[];
+  tags?: string[];
   featured_image_url?: string;
 }) =>
   axiosInstance.post<ApiSuccess<{ id: string; slug: string; status: ArticleStatus }>>(
@@ -50,7 +56,7 @@ export const updateArticle = (
     title?: string;
     content?: string;
     category_id?: string;
-    tag_ids?: string[];
+    tags?: string[];
     featured_image_url?: string;
   }
 ) =>

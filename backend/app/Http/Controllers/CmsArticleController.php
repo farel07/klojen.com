@@ -20,6 +20,58 @@ class CmsArticleController extends Controller
     ) {}
 
     /**
+     * GET /api/cms/articles
+     *
+     * List artikel CMS. 
+     * Journalist: hanya artikel miliknya.
+     * Editor/Admin: semua artikel.
+     */
+    public function index(Request $request): JsonResponse
+    {
+        /** @var \App\Models\User $user */
+        $user = auth('api')->user();
+
+        if (! in_array($user->role, ['journalist', 'editor', 'admin'])) {
+            return response()->json([
+                'status'  => 'error',
+                'code'    => 403,
+                'error'   => 'FORBIDDEN_ROLE',
+                'message' => 'Akses ditolak.',
+            ], 403);
+        }
+
+        $articles = $this->cmsArticleService->getCmsArticles($user);
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $articles,
+        ]);
+    }
+
+    /**
+     * GET /api/cms/articles/{id}
+     */
+    public function show(string $id): JsonResponse
+    {
+        /** @var \App\Models\User $user */
+        $user = auth('api')->user();
+
+        $article = $this->cmsArticleService->getCmsArticleById($id, $user);
+
+        if (! $article) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Artikel tidak ditemukan atau akses ditolak.',
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $article,
+        ]);
+    }
+
+    /**
      * POST /api/cms/articles
      *
      * Buat artikel baru. Status otomatis = draft.
@@ -85,8 +137,8 @@ class CmsArticleController extends Controller
             'slug'                => 'nullable|string|max:600|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
             'excerpt'             => 'nullable|string|max:1000',
             'featured_image_url'  => 'nullable|url|max:2048',
-            'tag_ids'             => 'nullable|array',
-            'tag_ids.*'           => 'string|exists:tags,id',
+            'tags'                => 'nullable|array',
+            'tags.*'              => 'string|max:100',
             'change_note'         => 'nullable|string|max:500',
         ]);
 
@@ -145,8 +197,8 @@ class CmsArticleController extends Controller
             'slug'                => 'nullable|string|max:600|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
             'excerpt'             => 'nullable|string|max:1000',
             'featured_image_url'  => 'nullable|url|max:2048',
-            'tag_ids'             => 'nullable|array',
-            'tag_ids.*'           => 'string|exists:tags,id',
+            'tags'                => 'nullable|array',
+            'tags.*'              => 'string|max:100',
             'change_note'         => 'nullable|string|max:500',
         ]);
 

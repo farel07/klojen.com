@@ -65,8 +65,14 @@ Route::middleware('auth:api')->group(function () {
 
 // ── CMS (requires authentication + role check inside controller) ──────────
 Route::middleware('auth:api')->prefix('cms')->group(function () {
+    // GET /api/cms/articles — List artikel CMS (journalist / editor / admin)
+    Route::get('/articles', [CmsArticleController::class, 'index']);
+
     // POST /api/cms/articles  — Buat artikel baru (journalist / editor / admin)
     Route::post('/articles', [CmsArticleController::class, 'store']);
+
+    // GET /api/cms/articles/{id} — Get detail artikel
+    Route::get('/articles/{id}', [CmsArticleController::class, 'show']);
 
     // PUT /api/cms/articles/{id} — Update artikel (journalist / editor / admin)
     Route::put('/articles/{id}', [CmsArticleController::class, 'update']);

@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useAuthStore } from '@/stores/authStore';
 import {
   Search,
   Plus,
@@ -22,6 +23,7 @@ import {
   UserCircle2,
   Calendar,
 } from 'lucide-react';
+import { getCmsArticles } from '@/lib/api/articles';
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
 
@@ -261,7 +263,11 @@ function BankBeritaContent() {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('q') || '';
   
-  const [articles, setArticles] = useState(MOCK_ARTICLES);
+  const { user } = useAuthStore();
+  const role = user?.role;
+
+  const [articles, setArticles] = useState<MockArticleItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState(initialSearch);
   const [activeStatus, setActiveStatus] = useState<StatusKey>('semua');
   const [selectedCategory, setSelectedCategory] = useState('Semua Kategori');
@@ -278,62 +284,83 @@ function BankBeritaContent() {
   }, [searchParams]);
 
   useEffect(() => {
-    let currentArticles = [...MOCK_ARTICLES];
-
-    // 1. Load New Articles
-    const newArticlesRaw = localStorage.getItem('mock_new_articles');
-    if (newArticlesRaw) {
-      try {
-        const newArticles = JSON.parse(newArticlesRaw);
-        currentArticles = [...newArticles, ...currentArticles];
-      } catch (e) {
-        console.error('Failed to parse mock new articles', e);
-      }
+    if (role === 'editor') {
+      setActiveStatus('review');
     }
+  }, [role]);
 
-    // 2. Apply on_progress overrides
-    const onProgressRaw = localStorage.getItem('mock_on_progress_ids');
-    if (onProgressRaw) {
+  useEffect(() => {
+    const fetchArticles = async () => {
       try {
-        const overrides = JSON.parse(onProgressRaw);
-        currentArticles = currentArticles.map(a => {
-          const found = overrides.find((o: any) => o.id === a.id);
-          if (found) {
-            return { ...a, status: 'on_progress', lockedBy: found.lockedBy };
+        setIsLoading(true);
+        const res = await getCmsArticles();
+        const apiData = res.data.data;
+        
+        // Map API data to frontend format
+        let mappedArticles: MockArticleItem[] = apiData.map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          excerpt: item.excerpt || (item.content ? item.content.replace(/<[^>]+>/g, '').substring(0, 60) + '...' : ''),
+          category: item.category_name || 'Uncategorized',
+          status: item.status as ArticleStatus,
+          image: item.featured_image_url || 'https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=800&q=80',
+          caption: '',
+          content: item.content,
+          tags: item.tags || [],
+          author: item.author_name || 'Jurnalis',
+          publishedAt: item.published_at,
+        }));
+
+        // Apply local overrides for UI mock testing (if any)
+        const onProgressRaw = localStorage.getItem('mock_on_progress_ids');
+        if (onProgressRaw) {
+          try {
+            const overrides = JSON.parse(onProgressRaw);
+            mappedArticles = mappedArticles.map(a => {
+              const found = overrides.find((o: any) => o.id === a.id);
+              if (found) {
+                return { ...a, status: 'on_progress', lockedBy: found.lockedBy };
+              }
+              return a;
+            });
+          } catch (e) {
+            console.error('Failed to parse mock on_progress overrides', e);
           }
-          return a;
-        });
-      } catch (e) {
-        console.error('Failed to parse mock on_progress overrides', e);
-      }
-    }
+        }
 
-    // 3. Apply status and rejection overrides
-    const statusOverrideRaw = localStorage.getItem('mock_status_overrides');
-    if (statusOverrideRaw) {
-      try {
-        const overrides = JSON.parse(statusOverrideRaw);
-        currentArticles = currentArticles.map(a => {
-          if (overrides[a.id]) {
-            const over = overrides[a.id];
-            if (typeof over === 'string') {
-              return { ...a, status: over as ArticleStatus };
-            } else {
-              return { 
-                ...a, 
-                status: over.status, 
-                rejectionReason: over.reason || a.rejectionReason 
-              };
-            }
+        const statusOverrideRaw = localStorage.getItem('mock_status_overrides');
+        if (statusOverrideRaw) {
+          try {
+            const overrides = JSON.parse(statusOverrideRaw);
+            mappedArticles = mappedArticles.map(a => {
+              if (overrides[a.id]) {
+                const over = overrides[a.id];
+                if (typeof over === 'string') {
+                  return { ...a, status: over as ArticleStatus };
+                } else {
+                  return { 
+                    ...a, 
+                    status: over.status, 
+                    rejectionReason: over.reason || a.rejectionReason 
+                  };
+                }
+              }
+              return a;
+            });
+          } catch (e) {
+            console.error('Failed to parse mock status overrides', e);
           }
-          return a;
-        });
-      } catch (e) {
-        console.error('Failed to parse mock status overrides', e);
-      }
-    }
+        }
 
-    setArticles(currentArticles);
+        setArticles(mappedArticles);
+      } catch (err) {
+        console.error("Gagal mengambil data artikel:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchArticles();
   }, []);
 
   // Reset halaman ke 1 setiap kali filter berubah agar pencarian berlaku di semua data
@@ -381,6 +408,11 @@ function BankBeritaContent() {
 
   return (
     <div className="min-h-full pb-16 bg-white rounded-tl-3xl p-6 sm:p-8">
+      {isLoading && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/80">
+          <RefreshCw className="animate-spin text-blue-500 w-10 h-10" />
+        </div>
+      )}
       
       {/* ─── Filter Section ─── */}
       <div className="border border-gray-200 rounded-xl p-4 sm:p-6 mb-6">
@@ -523,7 +555,7 @@ function BankBeritaContent() {
                             <Trash2 size={20} strokeWidth={2.5} />
                           </button>
                           <Link
-                            href={`/cms/tulis-berita?id=${article.id}&status=draft&title=${encodeURIComponent(article.title)}&image=${encodeURIComponent(article.image)}&caption=${encodeURIComponent(article.caption ?? '')}&category=${encodeURIComponent(article.category)}&content=${encodeURIComponent(article.content ?? '')}&tags=${encodeURIComponent(JSON.stringify(article.tags ?? []))}`}
+                            href={`/cms/tulis-berita?id=${article.id}`}
                             title="Edit draft"
                             className="text-blue-500 hover:text-blue-700 transition-colors"
                           >
@@ -534,7 +566,7 @@ function BankBeritaContent() {
 
                       {article.status === 'rejected' && (
                         <Link
-                          href={`/cms/tulis-berita?id=${article.id}&rejected=true&status=draft&reason=${encodeURIComponent(article.rejectionReason ?? '')}&title=${encodeURIComponent(article.title)}&image=${encodeURIComponent(article.image)}&caption=${encodeURIComponent(article.caption ?? '')}&category=${encodeURIComponent(article.category)}&content=${encodeURIComponent(article.content ?? '')}&tags=${encodeURIComponent(JSON.stringify(article.tags ?? []))}`}
+                          href={`/cms/tulis-berita?id=${article.id}&rejected=true&reason=${encodeURIComponent(article.rejectionReason ?? '')}`}
                           title="Edit berita"
                           className="text-blue-500 hover:text-blue-700 transition-colors"
                         >
@@ -544,7 +576,7 @@ function BankBeritaContent() {
 
                       {article.status === 'review' && (
                         <Link
-                          href={`/cms/tulis-berita?id=${article.id}&status=review&title=${encodeURIComponent(article.title)}&image=${encodeURIComponent(article.image)}&caption=${encodeURIComponent(article.caption ?? '')}&category=${encodeURIComponent(article.category)}&content=${encodeURIComponent(article.content ?? '')}&tags=${encodeURIComponent(JSON.stringify(article.tags ?? []))}`}
+                          href={`/cms/tulis-berita?id=${article.id}`}
                           title="Edit berita"
                           className="text-blue-500 hover:text-blue-700 transition-colors"
                         >
