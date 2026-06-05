@@ -9,7 +9,6 @@ import {
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
-  FileText,
   Home,
   ClipboardList,
   Hash,
@@ -58,11 +57,10 @@ const NAV_BY_ROLE: Record<Role, NavItem[]> = {
   ],
 
   editor: [
-    { label: 'Dashboard', href: '/cms/dashboard', icon: LayoutDashboard, roles: ['editor'] },
-    { label: 'Media Tersimpan', href: '/cms/media', icon: Images, roles: ['editor'] },
-    { label: 'Bank Berita', href: '/cms/artikel', icon: Newspaper, roles: ['editor'] },
-    { label: 'Tulis Berita', href: '/cms/tulis-berita', icon: PenLine, roles: ['editor'], isAction: true },
-    { label: 'Draf Berita', href: '/cms/artikel?status=draft', icon: FileText, roles: ['editor'], isAction: true },
+    { label: 'Dashboard',      href: '/cms/dashboard',    icon: LayoutDashboard, roles: ['editor'] },
+    { label: 'Media Tersimpan', href: '/cms/media',        icon: Images,          roles: ['editor'] },
+    { label: 'Bank Berita',    href: '/cms/artikel',       icon: Newspaper,       roles: ['editor'] },
+    { label: 'Tulis Berita',   href: '/cms/tulis-berita',  icon: PenLine,         roles: ['editor'], isAction: true },
   ],
 
   admin: [
