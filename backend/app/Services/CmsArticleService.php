@@ -89,11 +89,27 @@ class CmsArticleService
             $query->where('author_id', $user->id);
         } elseif ($user->role === 'editor') {
             $query->where(function ($q) use ($user) {
-                $q->where('author_id', $user->id) // Semua artikel buatan editor ini (termasuk draft miliknya)
-                  ->orWhere('status', 'review')   // Semua artikel yang sedang diajukan (review) dari siapapun
+                // 1. Artikel milik editor sendiri (semua status termasuk draftnya sendiri)
+                $q->where('author_id', $user->id)
+                  // 2. Artikel dari jurnalis yang sedang dalam status review
                   ->orWhere(function ($q2) use ($user) {
-                      $q2->where('status', 'published')
-                         ->where('published_by', $user->id); // Artikel yang diterbitkan oleh editor ini
+                      $q2->where('status', 'review')
+                         ->where('author_id', '!=', $user->id);
+                  })
+                  // 3. Artikel scheduled yang dijadwalkan oleh editor ini
+                  ->orWhere(function ($q3) use ($user) {
+                      $q3->where('status', 'scheduled')
+                         ->whereExists(function ($sub) use ($user) {
+                             $sub->select(\Illuminate\Support\Facades\DB::raw(1))
+                                 ->from('scheduled_articles')
+                                 ->whereColumn('scheduled_articles.article_id', 'articles.id')
+                                 ->where('scheduled_articles.scheduled_by', $user->id);
+                         });
+                  })
+                  // 4. Artikel yang di-publish oleh editor ini
+                  ->orWhere(function ($q4) use ($user) {
+                      $q4->whereIn('status', ['published', 'archived'])
+                         ->where('published_by', $user->id);
                   });
             });
         }
@@ -462,6 +478,11 @@ class CmsArticleService
 
             if ($status === 'published' && $article->status !== 'published') {
                 $updateData['published_at'] = $now;
+                $updateData['published_by'] = $userId;
+            }
+
+            // Saat di-schedule, catat siapa yang schedule sebagai "akan diterbitkan oleh"
+            if ($status === 'scheduled') {
                 $updateData['published_by'] = $userId;
             }
 
