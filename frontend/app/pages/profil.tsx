@@ -62,12 +62,19 @@ export default function ProfilPage() {
   // Success messages
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
   // ── Guard: Redirect if not authenticated ──
   useEffect(() => {
+    if (!hydrated) return;
     if (!isAuthenticated) {
       router.replace("/login");
     }
-  }, [isAuthenticated, router]);
+  }, [hydrated, isAuthenticated, router]);
 
   // ── Fetch Profile on Mount ──
   const fetchProfile = async () => {
