@@ -26,34 +26,35 @@ class BookmarkService
             return [];
         }
 
-        $data       = $this->berandaRepository->getAllRawData();
-        $articles   = collect($data['articles'])->keyBy('id');
-        $users      = collect($data['users'])->keyBy('id');
-        $categories = collect($data['categories']);
-        $tags       = collect($data['tags'])->keyBy('id');
+        $articleIds = $rows->pluck('article_id')->toArray();
+        $articles = \App\Models\Article::with(['category', 'author'])
+            ->whereIn('id', $articleIds)
+            ->get()
+            ->keyBy('id');
 
         return $rows
-            ->map(function ($row) use ($articles, $users, $categories, $tags): ?array {
+            ->map(function ($row) use ($articles): ?array {
                 $article = $articles->get($row->article_id);
                 if (!$article) return null;
-
-                $author   = $users->get($article['author_id']);
-                $category = $categories->firstWhere('id', $article['category_id']);
 
                 return [
                     'id'         => $row->id,
                     'created_at' => $row->created_at,
                     'article'    => [
-                        'id'                 => $article['id'],
-                        'title'              => $article['title'],
-                        'slug'               => $article['slug'],
-                        'excerpt'            => $article['excerpt'] ?? null,
-                        'featured_image_url' => $article['featured_image_url'],
-                        'published_at'       => $article['published_at'],
-                        'category'           => $category,
-                        'author'             => $author ? [
-                            'id'   => $author['id'],
-                            'name' => $author['name'],
+                        'id'                 => $article->id,
+                        'title'              => $article->title,
+                        'slug'               => $article->slug,
+                        'excerpt'            => $article->excerpt,
+                        'featured_image_url' => $article->featured_image_url,
+                        'published_at'       => $article->published_at ? $article->published_at->toIso8601String() : null,
+                        'category'           => $article->category ? [
+                            'id'   => $article->category->id,
+                            'name' => $article->category->name,
+                            'slug' => $article->category->slug,
+                        ] : null,
+                        'author'             => $article->author ? [
+                            'id'   => $article->author->id,
+                            'name' => $article->author->name,
                         ] : null,
                     ],
                 ];
