@@ -87,6 +87,15 @@ class CmsArticleService
 
         if ($user->role === 'journalist') {
             $query->where('author_id', $user->id);
+        } elseif ($user->role === 'editor') {
+            $query->where(function ($q) use ($user) {
+                $q->where('author_id', $user->id) // Semua artikel buatan editor ini (termasuk draft miliknya)
+                  ->orWhere('status', 'review')   // Semua artikel yang sedang diajukan (review) dari siapapun
+                  ->orWhere(function ($q2) use ($user) {
+                      $q2->where('status', 'published')
+                         ->where('published_by', $user->id); // Artikel yang diterbitkan oleh editor ini
+                  });
+            });
         }
 
         $articles = $query->get();

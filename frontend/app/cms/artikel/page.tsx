@@ -43,6 +43,7 @@ interface MockArticleItem {
   author?: string;
   lockedBy?: string;
   publishedAt?: string;
+  publisherName?: string;
 }
 
 const MOCK_ARTICLES: MockArticleItem[] = [
@@ -309,6 +310,7 @@ function BankBeritaContent() {
           tags: item.tags || [],
           author: item.author_name || 'Jurnalis',
           publishedAt: item.published_at,
+          publisherName: item.publisher_name,
         }));
 
         // Apply local overrides for UI mock testing (if any)
@@ -538,7 +540,14 @@ function BankBeritaContent() {
 
                   {/* Status */}
                   <td className="py-5 text-center">
-                    <StatusBadge status={article.status} />
+                    <div className="flex flex-col items-center gap-1">
+                      <StatusBadge status={article.status} />
+                      {article.status === 'published' && article.publisherName && (
+                        <span className="text-[10px] font-medium text-gray-500">
+                          oleh {article.publisherName}
+                        </span>
+                      )}
+                    </div>
                   </td>
 
                   {/* Aksi */}
