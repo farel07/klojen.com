@@ -36,6 +36,8 @@ interface MockArticleItem {
   rejectionReason?: string;
   author?: string;
   publishedAt?: string;
+  publisherName?: string;
+  lockedBy?: string;
 }
 
 const MOCK_ARTICLES: MockArticleItem[] = [
@@ -203,7 +205,7 @@ export default function PreviewBeritaPage({ params }: Props) {
     const fetchArticle = async () => {
       try {
         const res = await getCmsArticleById(id);
-        const item = res.data.data;
+        const item: any = res.data.data;
         setArticle({
           id: item.id,
           title: item.title,

@@ -454,13 +454,13 @@ export default function TulisBeritaPage() {
     setIsSaving(true);
     await new Promise((r) => setTimeout(r, 900));
     setIsSaving(false);
-    
+    if (articleId) {
       try {
         await lockArticle(articleId);
       } catch (err) {
         console.error("Gagal menandai on progress:", err);
       }
-    
+    }
     router.push('/cms/artikel');
   };
 
