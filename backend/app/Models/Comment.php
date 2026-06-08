@@ -24,6 +24,10 @@ class Comment extends Model
         'status',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = null;
 
