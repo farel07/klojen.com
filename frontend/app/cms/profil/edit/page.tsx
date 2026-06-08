@@ -6,6 +6,9 @@ import { User, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import axiosInstance from '@/lib/axios';
+import Cropper from 'react-easy-crop';
+import 'react-easy-crop/react-easy-crop.css';
+import { getCroppedImgFile } from '@/utils/cropImage';
 
 export default function EditProfilPage() {
   const { user, updateUser } = useAuthStore();
@@ -16,15 +19,43 @@ export default function EditProfilPage() {
   const [avatar, setAvatar] = useState(user?.avatar || '');
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
+  // Cropper states
+  const [selectedImage, setSelectedImage] = useState('');
+  const [showCropper, setShowCropper] = useState(false);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setAvatarFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setAvatar(reader.result as string);
+        setSelectedImage(reader.result as string);
+        setShowCropper(true);
       };
       reader.readAsDataURL(file);
+      e.target.value = ''; // Reset input
+    }
+  };
+
+  const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const applyCrop = async () => {
+    try {
+      if (!selectedImage || !croppedAreaPixels) return;
+      const croppedFile = await getCroppedImgFile(selectedImage, croppedAreaPixels, 0);
+      if (croppedFile) {
+        setAvatarFile(croppedFile);
+        setAvatar(URL.createObjectURL(croppedFile));
+      }
+      setShowCropper(false);
+      setSelectedImage('');
+    } catch (e) {
+      console.error(e);
+      alert('Gagal memotong gambar');
     }
   };
 
@@ -59,6 +90,65 @@ export default function EditProfilPage() {
 
   return (
     <div className="p-6 md:p-8 max-w-5xl mx-auto w-full">
+      
+      {/* Cropper Modal */}
+      {showCropper && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
+            <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+              <h3 className="text-lg font-bold text-gray-800">Sesuaikan Foto Profile</h3>
+            </div>
+            
+            <div className="relative w-full h-80 bg-gray-900">
+              <Cropper
+                image={selectedImage}
+                crop={crop}
+                zoom={zoom}
+                aspect={1}
+                cropShape="round"
+                showGrid={false}
+                onCropChange={setCrop}
+                onCropComplete={onCropComplete}
+                onZoomChange={setZoom}
+              />
+            </div>
+            
+            <div className="p-5 border-t border-gray-100 flex flex-col gap-5 bg-white">
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-bold text-gray-500 w-12">Zoom</span>
+                <input 
+                  type="range" 
+                  value={zoom} 
+                  min={1} 
+                  max={3} 
+                  step={0.1}
+                  aria-labelledby="Zoom"
+                  onChange={(e) => setZoom(Number(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                />
+              </div>
+              
+              <div className="flex justify-end gap-3 mt-2">
+                <button 
+                  onClick={() => {
+                    setShowCropper(false);
+                    setSelectedImage('');
+                  }}
+                  className="px-5 py-2.5 rounded-lg border border-gray-200 text-gray-600 font-bold hover:bg-gray-50 text-sm transition-colors"
+                >
+                  Batal
+                </button>
+                <button 
+                  onClick={applyCrop}
+                  className="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-sm transition-colors"
+                >
+                  Terapkan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm font-bold text-gray-400 mb-2">
