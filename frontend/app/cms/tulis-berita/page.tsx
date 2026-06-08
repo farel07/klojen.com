@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Type,
@@ -20,17 +20,34 @@ import {
   BookOpen,
   Building2,
   Check,
+  Save,
+  Trash2,
+  AlertCircle,
   Newspaper,
   Tag,
+  Eye,
+  Edit3,
+  Calendar,
+  Crop,
+  ArrowLeft,
+  ArrowRight,
+  RefreshCw
 } from 'lucide-react';
 import RichTextEditor from '@/app/components/cms/RichTextEditor';
+import Cropper from 'react-easy-crop';
+import getCroppedImg from '@/utils/cropImage';
 import { useAuthStore } from '@/stores/authStore';
 import { canPublish } from '@/app/constants/roles';
 import { Role } from '@/app/types';
+import { createArticle, updateArticleStatus,  updateArticle,
+  getCmsArticleById,
+} from '@/lib/api/articles';
+import { getCategories } from '@/lib/api/categories';
+import { uploadMedia } from '@/lib/api/media';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const STATUS_OPTIONS = [
+const BASE_STATUS_OPTIONS = [
   { value: 'published', label: 'Submit', dot: 'bg-green-500'  },
   { value: 'draft',     label: 'Draft',  dot: 'bg-gray-400'   },
   { value: 'review',    label: 'Review', dot: 'bg-yellow-400' },
@@ -43,12 +60,6 @@ const KANAL_OPTIONS = [
   { value: 'Hotel',      label: 'Hotel',      icon: <Building2 size={14} /> },
 ];
 
-const PENEMPATAN_OPTIONS = [
-  { value: 'regular',    label: 'Regular'    },
-  { value: 'headline',   label: 'Headline'   },
-  { value: 'adv-show',   label: 'Adv-Show'  },
-  { value: 'adv-hidden', label: 'Adv-Hidden' },
-];
 
 const MAX_PHOTOS = 3;
 
@@ -197,6 +208,7 @@ export default function TulisBeritaPage() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isEditorOrAbove = role ? canPublish(role) : false;
 
+
   // Deteksi edit
   const articleId  = searchParams.get('id');
   const isRejected = searchParams.get('rejected') === 'true';
@@ -211,10 +223,16 @@ export default function TulisBeritaPage() {
   const prefillImage      = isEdit ? (searchParams.get('image')   ?? '') : '';
   const prefillCaption    = isEdit ? (searchParams.get('caption') ?? '') : '';
   const prefillTagsRaw    = isEdit ? (searchParams.get('tags')    ?? '[]') : '[]';
+  const prefillCategory   = isEdit ? (searchParams.get('category') ?? '') : '';
+  const prefillPenempatan = isEdit ? (searchParams.get('penempatan') ?? 'regular') : 'regular';
 
+  // Format HTML untuk konten (Jika dari mock data sudah ada <p> biarkan, jika belum split)
   const prefillContent = prefillContentRaw
-    ? prefillContentRaw.split(/\n\n+/).map((p) => `<p>${p.trim()}</p>`).join('')
+    ? prefillContentRaw.includes('<p>') 
+      ? prefillContentRaw
+      : prefillContentRaw.split(/\n\n+/).map((p) => `<p>${p.trim()}</p>`).join('')
     : '';
+
   const prefillTags: string[] = (() => {
     try { return JSON.parse(prefillTagsRaw); } catch { return []; }
   })();
@@ -223,24 +241,150 @@ export default function TulisBeritaPage() {
   const [title,      setTitle]      = useState(prefillTitle);
   const [content,    setContent]    = useState(prefillContent);
   const [photos,     setPhotos]     = useState<PhotoItem[]>(
-    prefillImage ? [{ url: prefillImage, caption: prefillCaption, watermark: false }] : []
+    prefillImage && prefillImage !== 'undefined' && prefillImage !== 'null'
+      ? [{ url: prefillImage, caption: prefillCaption, watermark: false }] 
+      : []
   );
   const [isDragging, setIsDragging] = useState(false);
-  const [tags,       setTags]       = useState<string[]>(prefillTags.length > 0 ? prefillTags : ['#KetikPedia']);
-  const [tagInput,   setTagInput]   = useState('');
-  const [kanal,      setKanal]      = useState('');
-  const [penempatan, setPenempatan] = useState('regular');
+  const defaultStatusForRole = isEditorOrAbove ? 'published' : 'draft';
+  const prefillStatus = searchParams.get('status') ?? defaultStatusForRole;
 
-  const prefillStatus = searchParams.get('status') ?? 'published';
+  const [tags,       setTags]       = useState<string[]>(
+    prefillTags.length > 0 
+      ? prefillTags 
+      : (prefillStatus === 'draft' ? [] : ['#KetikPedia'])
+  );
+  const [tagInput,   setTagInput]   = useState('');
+  const [kanal,      setKanal]      = useState(prefillCategory);
+
   const [status,     setStatus]     = useState(prefillStatus);
   const [statusOpen, setStatusOpen] = useState(false);
   const [isSaving,   setIsSaving]   = useState(false);
+  const [rejectReasonInput, setRejectReasonInput] = useState('');
+  const [isLoadingArticle, setIsLoadingArticle] = useState(!!articleId);
+  const [editorKey, setEditorKey] = useState(0); // increment to remount editor
+  const [articleStatus, setArticleStatus] = useState<string>(prefillStatus); // actual status from API
 
+  // Fetch article if editing
+  useEffect(() => {
+    if (!articleId) return;
+    
+    const fetchArticle = async () => {
+      try {
+        setIsLoadingArticle(true);
+        const res = await getCmsArticleById(articleId);
+        const data = res.data.data as any;
+        
+        // Set semua field dari API — tidak ada kondisi "if" agar state selalu terupdate
+        setTitle(data.title ?? '');
+        setContent(data.content ?? '');
+        
+        // Bangun photos: featured_image_url + semua media dari tabel media
+        const allPhotos: {url: string; caption: string; watermark: boolean}[] = [];
+        if (data.featured_image_url) {
+          allPhotos.push({ url: data.featured_image_url, caption: '', watermark: false });
+        }
+        if (data.media && Array.isArray(data.media)) {
+          for (const m of data.media) {
+            // Hindari duplikasi jika featured_image_url sama dengan salah satu media
+            if (m.file_url && m.file_url !== data.featured_image_url) {
+              allPhotos.push({ url: m.file_url, caption: m.alt_text || '', watermark: false });
+            }
+          }
+        }
+        setPhotos(allPhotos);
+
+        // Tags: tambahkan # jika belum ada
+        if (data.tags && Array.isArray(data.tags) && data.tags.length > 0) {
+          const normalizedTags = data.tags.map((t: string) => t.startsWith('#') ? t : `#${t}`);
+          setTags(normalizedTags);
+        }
+
+        if (data.category_name) setKanal(data.category_name);
+        if (data.status) {
+          setStatus(data.status);
+          setArticleStatus(data.status);
+        }
+        setEditorKey(k => k + 1); // remount RichTextEditor with fresh content
+        
+      } catch (err) {
+        console.error('Failed to fetch article details:', err);
+      } finally {
+        setIsLoadingArticle(false);
+      }
+    };
+    
+    fetchArticle();
+  }, [articleId]);
+
+  // Status options dynamic based on role and prefillStatus
+  let statusOptions = BASE_STATUS_OPTIONS;
+  
+  if (isEditorOrAbove) {
+    if (prefillStatus === 'review') {
+      statusOptions = [
+        { value: 'published', label: 'Publish Sekarang',  dot: 'bg-green-500' },
+        { value: 'scheduled', label: 'Publish Terjadwal', dot: 'bg-blue-500'  },
+        { value: 'rejected',  label: 'Reject',            dot: 'bg-red-500'   },
+      ];
+    } else {
+      statusOptions = [
+        { value: 'published', label: 'Publish Sekarang',  dot: 'bg-green-500' },
+        { value: 'scheduled', label: 'Publish Terjadwal', dot: 'bg-blue-500'  },
+        { value: 'draft',     label: 'Simpan Draft',      dot: 'bg-gray-400'  },
+      ];
+    }
+  } else {
+    // Journalist
+    if (prefillStatus === 'rejected') {
+      statusOptions = [
+        { value: 'review',    label: 'Ajukan Ulang', dot: 'bg-green-500' },
+        { value: 'draft',     label: 'Simpan Draft', dot: 'bg-gray-400'  },
+      ];
+    } else {
+      statusOptions = [
+        { value: 'review',    label: 'Ajukan Review', dot: 'bg-green-500' },
+        { value: 'draft',     label: 'Simpan Draft',  dot: 'bg-gray-400'  },
+      ];
+    }
+  }
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Media modal
   const [showMediaModal,   setShowMediaModal]   = useState(false);
   const [mediaModalTarget, setMediaModalTarget] = useState<'add' | number>('add');
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [scheduleDate, setScheduleDate] = useState('');
+  const [scheduleTime, setScheduleTime] = useState('');
+
+  // Crop State
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [isCropModalOpen, setIsCropModalOpen] = useState(false);
+  const [cropTargetIndex, setCropTargetIndex] = useState<number | null>(null);
+
+  const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  const handleCropSave = async () => {
+    if (cropTargetIndex === null || !croppedAreaPixels) return;
+    try {
+      const croppedImage = await getCroppedImg(
+        photos[cropTargetIndex].url,
+        croppedAreaPixels,
+        0
+      );
+      setPhotos((prev) => 
+        prev.map((p, idx) => idx === cropTargetIndex ? { ...p, url: croppedImage } : p)
+      );
+      setIsCropModalOpen(false);
+    } catch (e) {
+      console.error(e);
+      alert('Gagal melakukan crop gambar');
+    }
+  };
 
   // ── Tag handlers ──
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -277,6 +421,24 @@ export default function TulisBeritaPage() {
   const toggleWatermark = (i: number) =>
     setPhotos((prev) => prev.map((p, idx) => idx === i ? { ...p, watermark: !p.watermark } : p));
 
+  const movePhotoLeft = (index: number) => {
+    if (index === 0) return;
+    setPhotos((prev) => {
+      const newPhotos = [...prev];
+      [newPhotos[index - 1], newPhotos[index]] = [newPhotos[index], newPhotos[index - 1]];
+      return newPhotos;
+    });
+  };
+
+  const movePhotoRight = (index: number) => {
+    if (index === photos.length - 1) return;
+    setPhotos((prev) => {
+      const newPhotos = [...prev];
+      [newPhotos[index + 1], newPhotos[index]] = [newPhotos[index], newPhotos[index + 1]];
+      return newPhotos;
+    });
+  };
+
   const handleMediaSelect = (item: MediaItem) => {
     if (mediaModalTarget === 'add') {
       if (photos.length < MAX_PHOTOS)
@@ -288,25 +450,201 @@ export default function TulisBeritaPage() {
     }
   };
 
-  const handleSimpan = async () => {
+  const handleTandaiOnProgress = async () => {
     setIsSaving(true);
     await new Promise((r) => setTimeout(r, 900));
     setIsSaving(false);
+    
+    if (articleId) {
+      const existing = localStorage.getItem('mock_on_progress_ids');
+      const overrides = existing ? JSON.parse(existing) : [];
+      if (!overrides.find((o: any) => o.id === articleId)) {
+        overrides.push({ id: articleId, lockedBy: user?.name || 'Jurnalis' });
+        localStorage.setItem('mock_on_progress_ids', JSON.stringify(overrides));
+      }
+    }
+    
     router.push('/cms/artikel');
+  };
+
+  const handleReject = async () => {
+    setIsSaving(true);
+    await new Promise((r) => setTimeout(r, 900));
+    setIsSaving(false);
+
+    if (articleId) {
+      const existing = localStorage.getItem('mock_status_overrides');
+      const overrides = existing ? JSON.parse(existing) : {};
+      overrides[articleId] = 'rejected';
+      localStorage.setItem('mock_status_overrides', JSON.stringify(overrides));
+    }
+
+    router.push('/cms/artikel');
+  };
+
+    const handleSimpan = async () => {
+    const selectedStatus = statusOptions.find((s) => s.value === status) ?? statusOptions[0];
+    const finalStatus = selectedStatus.value;
+
+    // Kanal selalu wajib karena category_id NOT NULL di database
+    if (!title || !content || !kanal) {
+      alert('Mohon lengkapi judul, isi berita, dan pilih kanal terlebih dahulu.');
+      return;
+    }
+
+    if (finalStatus !== 'draft' && !kanal) {
+      alert('Pilih kanal terlebih dahulu sebelum mengajukan berita.');
+      return;
+    }
+
+    if (finalStatus === 'scheduled') {
+      if (!scheduleDate || !scheduleTime) {
+        alert('Pilih tanggal dan jam terlebih dahulu');
+        return;
+      }
+    }
+
+    if (finalStatus === 'rejected') {
+      if (!rejectReasonInput.trim()) {
+        alert('Mohon isi alasan penolakan terlebih dahulu');
+        return;
+      }
+    }
+
+    setIsSaving(true);
+    try {
+      // Resolve category_id dari nama kanal
+      const { data: catRes } = await getCategories();
+      const cat = catRes.data.find((c) => c.name.toLowerCase() === kanal.toLowerCase());
+      if (!cat) {
+        alert('Kategori ' + kanal + ' tidak ditemukan di server.');
+        setIsSaving(false);
+        return;
+      }
+
+      let featured_image_url = photos[0]?.url;
+      const isBlob = featured_image_url?.startsWith('blob:');
+      
+      let newArticleId = articleId;
+
+      const payload: Record<string, any> = {
+        title,
+        content,
+        category_id: cat.id,
+        tags, // Include tags array
+        featured_image_url: isBlob ? undefined : featured_image_url,
+      };
+
+      if (!articleId) {
+        const res = await createArticle(payload as any);
+        newArticleId = res.data.data.id;
+      } else {
+        await updateArticle(articleId, payload);
+      }
+
+      // Upload all photos that are blobs (newly added)
+      let updatedFeaturedImageUrl: string | null = null;
+
+      for (let i = 0; i < photos.length; i++) {
+        const photo = photos[i];
+        if (photo.url.startsWith('blob:')) {
+          try {
+            const blobResponse = await fetch(photo.url);
+            const blob = await blobResponse.blob();
+            const formData = new FormData();
+            formData.append('image', blob, 'image.jpg');
+            formData.append('article_id', newArticleId as string);
+            formData.append('alt_text', photo.caption || title);
+            
+            const uploadRes = await uploadMedia(formData);
+            const uploadedUrl = uploadRes.data.data.file_url;
+            
+            if (i === 0) {
+              updatedFeaturedImageUrl = uploadedUrl;
+            }
+          } catch (uploadError) {
+            console.error(`Gagal upload gambar ke-${i + 1}:`, uploadError);
+          }
+        } else {
+           if (i === 0 && isBlob) {
+               // Should not happen, but just in case
+               updatedFeaturedImageUrl = photo.url;
+           }
+        }
+      }
+
+      // If the first photo was uploaded, update the article's featured_image_url
+      if (updatedFeaturedImageUrl) {
+        await updateArticle(newArticleId as string, { featured_image_url: updatedFeaturedImageUrl });
+      }
+
+      if (finalStatus !== 'draft') {
+        const statusPayload: any = { status: finalStatus };
+        if (finalStatus === 'scheduled') {
+          statusPayload.scheduled_at = `${scheduleDate} ${scheduleTime}:00`;
+        }
+        if (finalStatus === 'rejected') {
+          statusPayload.status = 'draft';
+          statusPayload.change_note = rejectReasonInput;
+        }
+        await updateArticleStatus(newArticleId as string, statusPayload);
+      }
+
+      alert('Berita berhasil disimpan!');
+      router.push('/cms/artikel');
+    } catch (error: any) {
+      console.error(error);
+      alert(error?.response?.data?.message || 'Gagal menyimpan berita');
+    } finally {
+      setIsSaving(false);
+    }
   };
   const handleBatal = () => router.push('/cms/artikel');
 
-  const selectedStatus = STATUS_OPTIONS.find((s) => s.value === status) ?? STATUS_OPTIONS[0];
+  const selectedStatus = statusOptions.find((s) => s.value === status) ?? statusOptions[0];
   const canAddPhoto    = photos.length < MAX_PHOTOS;
 
   return (
-    <div className="min-h-full pb-16">
+    <div className="flex bg-[#f8f9fa] min-h-screen pb-20 relative">
+      {isLoadingArticle && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/80">
+          <RefreshCw className="animate-spin text-blue-500 w-10 h-10" />
+        </div>
+      )}
+      <div className="flex-1 px-4 sm:px-8 py-6 mx-auto w-full max-w-7xl">
       {/* Page Header */}
-      <div className="mb-6 pt-2">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-1">
-          {isRejected || isEdit ? 'Edit Berita' : 'Buat Berita Baru'}
-        </h1>
-        <p className="text-gray-400 font-medium text-sm">Isi informasi berita secara lengkap dan benar</p>
+      <div className="mb-6 pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-1">
+            {isRejected || isEdit ? 'Edit Berita' : 'Buat Berita Baru'}
+          </h1>
+          <p className="text-gray-400 font-medium text-sm">Isi informasi berita secara lengkap dan benar</p>
+        </div>
+
+        <div className="flex items-center gap-3 ml-auto">
+        {(articleStatus !== 'draft' || !isEdit) && articleId && (
+          <button
+            type="button"
+            onClick={() => { if(articleId) window.open(`/cms/artikel/${articleId}/preview`, '_blank'); }}
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#0088cc] hover:bg-[#0077b3] text-white text-sm font-bold rounded-md transition-colors shadow-sm"
+          >
+            <Eye size={16} /> Preview Berita
+          </button>
+        )}
+
+        {articleStatus === 'review' && (
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleTandaiOnProgress}
+              disabled={isSaving}
+              className="flex items-center gap-1.5 px-4 py-2.5 bg-[#ff9933] hover:bg-[#e68a2e] text-white text-sm font-bold rounded-md transition-colors shadow-sm"
+            >
+              <Edit3 size={16} /> Tandai On Progress
+            </button>
+          </div>
+        )}
+        </div>
       </div>
 
       {/* ─── Rejection Banner ─── */}
@@ -366,7 +704,7 @@ export default function TulisBeritaPage() {
         <StepRow icon={<FileText size={22} className="text-blue-500" />}>
           <h2 className="text-lg font-bold text-gray-700 mb-3">Isi Berita</h2>
           <div className="shadow-sm border-2 border-gray-100 rounded-2xl overflow-hidden">
-            <RichTextEditor value={content} onChange={setContent} placeholder="Tulis isi berita di sini..." minHeight={280} />
+            <RichTextEditor key={editorKey} value={content} onChange={setContent} placeholder="Tulis isi berita di sini..." minHeight={280} />
           </div>
         </StepRow>
 
@@ -381,21 +719,55 @@ export default function TulisBeritaPage() {
             <div className="flex flex-col gap-5 mb-4">
               {photos.map((photo, index) => (
                 <div key={index} className="bg-white border-2 border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-                  <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50/60">
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50/60 flex-wrap gap-2">
                     <span className="text-sm font-semibold text-gray-600">Foto {index + 1}</span>
-                    <button
-                      type="button"
-                      onClick={() => removePhoto(index)}
-                      className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-red-500 transition-colors font-medium"
-                    >
-                      <X size={13} /> Hapus
-                    </button>
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => movePhotoLeft(index)}
+                        disabled={index === 0}
+                        className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-blue-500 transition-colors font-medium disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        <ArrowLeft size={13} /> Geser Kiri
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => movePhotoRight(index)}
+                        disabled={index === photos.length - 1}
+                        className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-blue-500 transition-colors font-medium disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        Geser Kanan <ArrowRight size={13} />
+                      </button>
+                      <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setCropTargetIndex(index);
+                          setIsCropModalOpen(true);
+                        }}
+                        className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-blue-500 transition-colors font-medium"
+                      >
+                        <Crop size={13} /> Crop / Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => removePhoto(index)}
+                        className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-red-500 transition-colors font-medium"
+                      >
+                        <X size={13} /> Hapus
+                      </button>
+                    </div>
                   </div>
                   <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-2">
                       <div className="relative rounded-xl overflow-hidden border border-gray-100 shadow-sm aspect-video bg-gray-50">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={photo.url} alt={`Foto ${index + 1}`} className="w-full h-full object-cover" />
+                        <img 
+                          src={photo.url} 
+                          alt={`Foto ${index + 1}`} 
+                          className="w-full h-full object-cover" 
+                          onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=800&q=80'; }}
+                        />
                         {photo.watermark && (
                           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                             <span
@@ -565,32 +937,6 @@ export default function TulisBeritaPage() {
           <p className="text-xs text-gray-400 mt-2 px-1">Pilih kanal yang sesuai dengan topik berita</p>
         </StepRow>
 
-        {/* ─── Step 6: Kategori Penempatan ─── */}
-        <StepRow icon={<Tag size={22} className="text-blue-500" />}>
-          <h2 className="text-lg font-bold text-gray-700 mb-3">Kategori Penempatan</h2>
-          <div className="flex flex-wrap gap-3">
-            {PENEMPATAN_OPTIONS.map((opt) => (
-              <button
-                key={opt.value}
-                type="button"
-                onClick={() => setPenempatan(opt.value)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl border-2 text-sm font-semibold transition-all duration-200 ${
-                  penempatan === opt.value
-                    ? 'border-blue-500 bg-blue-50 text-blue-600 shadow-sm'
-                    : 'border-gray-100 bg-white text-gray-600 hover:border-blue-200 hover:bg-blue-50/20'
-                }`}
-              >
-                {penempatan === opt.value && (
-                  <span className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                    <Check size={10} className="text-white" />
-                  </span>
-                )}
-                {opt.label}
-              </button>
-            ))}
-          </div>
-          <p className="text-xs text-gray-400 mt-2 px-1">Tentukan penempatan berita di halaman utama</p>
-        </StepRow>
 
         {/* ─── Step 7: Status ─── */}
         <StepRow icon={<Send size={22} className="text-blue-500" />} isLast>
@@ -608,11 +954,14 @@ export default function TulisBeritaPage() {
             </button>
             {statusOpen && (
               <div className="mt-2 bg-white border border-gray-100 rounded-2xl shadow-xl overflow-hidden">
-                {STATUS_OPTIONS.map((opt) => (
+                {statusOptions.map((opt) => (
                   <button
                     key={opt.value}
                     type="button"
-                    onClick={() => { setStatus(opt.value); setStatusOpen(false); }}
+                    onClick={() => { 
+                      setStatus(opt.value); 
+                      setStatusOpen(false); 
+                    }}
                     className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium hover:bg-blue-50 transition-colors text-left ${
                       status === opt.value ? 'text-blue-600 bg-blue-50/60' : 'text-gray-700'
                     }`}
@@ -621,6 +970,43 @@ export default function TulisBeritaPage() {
                     {opt.label}
                   </button>
                 ))}
+              </div>
+            )}
+            
+            {status === 'scheduled' && (
+              <div className="mt-4 p-4 border border-blue-100 bg-blue-50/30 rounded-2xl flex flex-col gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-bold text-gray-600">Tanggal Publish</label>
+                  <input 
+                    type="date" 
+                    value={scheduleDate}
+                    onChange={(e) => setScheduleDate(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg outline-none focus:border-blue-400 text-sm" 
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-bold text-gray-600">Jam Publish</label>
+                  <input 
+                    type="time" 
+                    value={scheduleTime}
+                    onChange={(e) => setScheduleTime(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg outline-none focus:border-blue-400 text-sm" 
+                  />
+                </div>
+              </div>
+            )}
+            
+            {status === 'rejected' && (
+              <div className="mt-4 p-4 border border-red-100 bg-red-50/30 rounded-2xl flex flex-col gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-bold text-gray-600">Alasan Penolakan</label>
+                  <textarea 
+                    value={rejectReasonInput}
+                    onChange={(e) => setRejectReasonInput(e.target.value)}
+                    placeholder="Tuliskan alasan mengapa artikel ini ditolak..."
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg outline-none focus:border-red-400 text-sm min-h-[80px] resize-none" 
+                  />
+                </div>
               </div>
             )}
           </div>
@@ -657,6 +1043,71 @@ export default function TulisBeritaPage() {
           onSelect={handleMediaSelect}
         />
       )}
+
+      {/* Crop Modal */}
+      {isCropModalOpen && cropTargetIndex !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden flex flex-col h-[80vh]">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+              <h2 className="text-lg font-bold text-gray-700 flex items-center gap-2">
+                <Crop size={20} className="text-blue-500" />
+                Edit / Crop Foto
+              </h2>
+              <button
+                onClick={() => setIsCropModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 hover:text-gray-700 transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <div className="relative flex-1 bg-gray-900 w-full">
+              <Cropper
+                image={photos[cropTargetIndex]?.url}
+                crop={crop}
+                zoom={zoom}
+                aspect={16 / 9}
+                onCropChange={setCrop}
+                onCropComplete={onCropComplete}
+                onZoomChange={setZoom}
+              />
+            </div>
+            <div className="p-6 border-t border-gray-100 flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-600">Zoom</label>
+                <input
+                  type="range"
+                  value={zoom}
+                  min={1}
+                  max={3}
+                  step={0.1}
+                  aria-labelledby="Zoom"
+                  onChange={(e) => {
+                    setZoom(Number(e.target.value))
+                  }}
+                  className="w-full"
+                />
+              </div>
+              <div className="flex justify-end gap-3 mt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsCropModalOpen(false)}
+                  className="px-6 py-2.5 bg-gray-100 text-gray-600 font-bold rounded-xl hover:bg-gray-200 transition-colors text-sm"
+                >
+                  Batal
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCropSave}
+                  className="px-6 py-2.5 bg-blue-500 text-white font-bold rounded-xl hover:bg-blue-600 transition-colors shadow-sm flex items-center gap-2 text-sm"
+                >
+                  <Save size={16} /> Simpan Crop
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
     </div>
   );
 }

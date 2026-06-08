@@ -7,6 +7,8 @@ import {
   Search,
   XCircle,
   Calendar,
+  Clock,
+  RefreshCw,
 } from 'lucide-react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
@@ -16,7 +18,7 @@ dayjs.locale('id');
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
 
-type ArticleStatus = 'published' | 'draft' | 'scheduled' | 'rejected';
+type ArticleStatus = 'published' | 'draft' | 'review' | 'on_progress' | 'rejected' | 'scheduled';
 
 interface MockArticleItem {
   id: string;
@@ -71,20 +73,70 @@ const MOCK_ARTICLES: MockArticleItem[] = [
     author: 'Budi Santoso',
     content: `<p>Sebuah hotel baru dengan konsep modern dan minimalis resmi dibuka di kawasan strategis dekat Alun-Alun Kota Malang. Hotel berlantai 12 ini menawarkan 150 kamar dengan berbagai tipe, mulai dari Standard hingga Suite.</p>
 <p>Keunggulan utama hotel ini adalah lokasinya yang sangat strategis, hanya 200 meter dari Alun-Alun Kota Malang dan berjarak jalan kaki ke berbagai pusat kuliner dan perbelanjaan.</p>`,
-    tags: ['#HotelMalang', '#Wisata', '#AlunAlunMalang'],
   },
   {
     id: '4',
     title: 'Bakso President Malang Jadi Favorit Wisatawan',
-    excerpt: 'Cita rasa khas dan porsi jumbo membuat Bakso...',
+    excerpt: 'Cita rasa khas dan porsi jumbo membuat Bakso President selalu ramai dikunjungi...',
     category: 'Kuliner',
-    status: 'scheduled',
+    status: 'review' as ArticleStatus,
     image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=800&q=80',
+    caption: 'Sajian Bakso President Malang yang terkenal dengan ukurannya yang jumbo dan cita rasa khas. (Foto: Klojen.com)',
     author: 'Dewi Kartika',
-    publishedAt: '2026-05-25',
-    content: `<p>Bakso President yang berlokasi di Jalan Batanghari, Malang, semakin populer di kalangan wisatawan yang berkunjung ke Kota Malang.</p>
-<p>Porsi jumbo dengan harga terjangkau membuat bakso legendaris ini selalu ramai dikunjungi, terutama pada akhir pekan dan hari libur.</p>`,
-    tags: ['#KulinerMalang', '#Bakso', '#WisataKuliner'],
+    publishedAt: '2026-05-28',
+    content: `<p>Bakso President yang berlokasi di Jalan Batanghari No. 5, Kota Malang, semakin populer di kalangan wisatawan yang berkunjung ke kota ini. Warung bakso legendaris yang telah berdiri sejak tahun 1977 ini selalu ramai dikunjungi, bahkan pada hari kerja sekalipun.</p><p>Ciri khas Bakso President adalah ukuran baksonya yang jumbo, hampir seukuran kepalan tangan orang dewasa. Daging sapi segar berkualitas tinggi dipilih setiap hari untuk menjaga cita rasa yang konsisten. Harga yang ditawarkan pun terjangkau, mulai dari Rp 25.000 hingga Rp 45.000 per porsi.</p><p>"Kami tidak berubah sejak tahun 1977. Resep yang sama, kualitas yang sama," ujar Hendra, cucu pendiri Bakso President, saat ditemui Klojen.com. "Itulah mengapa pelanggan kami selalu kembali."</p><p>Pada akhir pekan, antrean pengunjung bisa mencapai 30 menit. Bakso President kini juga menyediakan layanan pemesanan online untuk mengakomodasi pelanggan yang tidak ingin mengantri.</p>`,
+    tags: ['#BaksoPresident', '#KulinerMalang', '#WisataKuliner', '#BaksoMalang'],
+  },
+  {
+    id: '4b',
+    title: 'Sate Gabug, Sensasi Sate Khas Malang yang Unik',
+    excerpt: 'Sajian sate dengan bumbu kacang gurih khas Kota Malang yang wajib dicoba...',
+    category: 'Kuliner',
+    status: 'on_progress' as ArticleStatus,
+    image: 'https://images.unsplash.com/photo-1555126634-323283e090fa?w=800&q=80',
+    caption: 'Sate Gabug Malang dengan bumbu kacang khas yang menggugah selera. (Foto: Klojen.com)',
+    author: 'Farel Alfara',
+    publishedAt: '2026-05-29',
+    content: `<p>Sate Gabug adalah salah satu kuliner khas Kota Malang yang jarang diketahui wisatawan dari luar kota. Berbeda dari sate pada umumnya, Sate Gabug menggunakan daging yang digabungkan antara ayam dan kambing muda dengan bumbu kacang gurih yang khas.</p><p>Warung Sate Gabug Pak Kumis di Jalan Soekarno-Hatta menjadi salah satu tempat yang paling legendaris untuk menikmati sajian ini. Sejak berdiri pada tahun 1985, warung ini telah melayani ribuan pelanggan setia dan wisatawan yang sengaja datang untuk mencicipi kelezatannya.</p><p>"Rahasianya ada di bumbu kacang kami yang diracik sendiri menggunakan kacang tanah pilihan dan rempah-rempah khusus," jelas Pak Kumis, sang pemilik warung. Setiap tusuk sate dibakar di atas arang kelapa sehingga menghasilkan aroma khas yang menggugah selera.</p>`,
+    tags: ['#SateGabug', '#KulinerMalang', '#SateMalang', '#Wisata'],
+  },
+  {
+    id: '4c',
+    title: 'Pantai Balekambang Malang Selatan, Surga Tersembunyi yang Memukau',
+    excerpt: 'Keindahan pura di atas batu karang tengah laut menjadikan Pantai Balekambang destinasi wisata unik...',
+    category: 'Wisata',
+    status: 'review' as ArticleStatus,
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80',
+    caption: 'Pemandangan Pantai Balekambang dengan pura khas Bali di atas batu karang yang menjadi ikon wisata Malang Selatan. (Foto: Klojen.com)',
+    author: 'Ahmad Fauzi',
+    publishedAt: '2026-05-30',
+    content: `<p>Pantai Balekambang yang terletak di Kecamatan Bantur, Kabupaten Malang, menyimpan pesona alam yang tak kalah memukau dengan pantai-pantai terkenal di Pulau Bali. Keunikan utama pantai ini adalah keberadaan pura Hindu yang berdiri kokoh di atas batu karang di tengah laut, menjadikannya pemandangan yang sangat ikonik.</p><p>Pantai berpasir cokelat keemasan ini membentang sepanjang sekitar 2 kilometer dengan deburan ombak yang cukup besar dari Samudra Hindia. Meski demikian, terdapat beberapa titik yang relatif aman untuk bermain air, terutama di sekitar muara sungai kecil yang mengalir membelah pantai.</p><p>"Balekambang adalah permata tersembunyi Malang yang masih perlu lebih banyak promosi," ujar Kepala Dinas Pariwisata Kabupaten Malang, Slamet Riyadi, kepada Klojen.com. Pemerintah daerah terus berbenah dengan menambah fasilitas penunjang seperti toilet umum, area parkir yang lebih luas, dan warung kuliner.</p><p>Untuk menuju Pantai Balekambang, pengunjung dapat menempuh perjalanan sekitar 65 kilometer dari pusat Kota Malang melalui Kepanjen. Akses jalan menuju pantai kini semakin baik dengan adanya perbaikan infrastruktur jalan yang dilakukan sepanjang tahun 2025.</p>`,
+    tags: ['#PantaiBalekambang', '#WisataMalang', '#PantaiMalang', '#WisataAlamJatim'],
+  },
+  {
+    id: '7',
+    title: 'Cafe Baru di Kayutangan Tawarkan Sensasi Kopi Vintage',
+    excerpt: 'Kawasan Kayutangan Heritage kembali diramaikan dengan hadirnya cafe baru bernuansa tempo dulu...',
+    category: 'Kuliner',
+    status: 'review' as ArticleStatus,
+    image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80',
+    caption: 'Suasana klasik di cafe baru kawasan Kayutangan Heritage. (Foto: Klojen.com)',
+    author: 'Rina Wijaya',
+    content: `<p>Kawasan Kayutangan Heritage di Kota Malang kembali menjadi primadona bagi pecinta kopi dengan dibukanya sebuah cafe berkonsep vintage. Cafe bernama "Kopi Kenangan Masa" ini menawarkan pengalaman menikmati kopi lokal dengan suasana layaknya berada di tahun 1930-an.</p><p>Pemilik cafe merenovasi sebuah bangunan kolonial tanpa merubah fasad aslinya, hanya menambahkan furnitur antik dan pencahayaan hangat. Menu andalan mereka adalah Kopi Tubruk Nusantara dan Roti Bakar Kaya yang dibuat dengan resep warisan keluarga.</p>`,
+    tags: ['#Kayutangan', '#KopiMalang', '#CafeMalang', '#Kuliner'],
+  },
+  {
+    id: '4d',
+    title: 'Hotel Tugu Malang, Pesona Sejarah dan Kemewahan yang Menyatu',
+    excerpt: 'Menginap di Hotel Tugu Malang memberikan pengalaman layaknya berada di museum hidup dengan koleksi barang antik...',
+    category: 'Hotel',
+    status: 'review' as ArticleStatus,
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
+    caption: 'Suasana lobi Hotel Tugu Malang yang dipenuhi dengan koleksi barang antik bernilai sejarah tinggi. (Foto: Klojen.com)',
+    author: 'Budi Santoso',
+    publishedAt: '2026-05-30',
+    content: `<p>Bagi wisatawan yang mencari pengalaman menginap unik dan tak terlupakan di Kota Malang, Hotel Tugu adalah jawabannya. Berlokasi strategis tepat di jantung kota, menghadap Monumen Tugu dan Balai Kota Malang, hotel bintang lima ini menawarkan lebih dari sekadar kemewahan.</p><p>Memasuki lobi Hotel Tugu layaknya melangkah ke masa lalu. Ribuan koleksi barang antik peninggalan sejarah dari berbagai penjuru Nusantara dan Asia dipamerkan dengan apik di setiap sudut hotel. "Kami ingin tamu tidak hanya sekadar menginap, tetapi juga merasakan dan mempelajari kekayaan budaya Indonesia," ungkap General Manager Hotel Tugu Malang.</p><p>Setiap kamar di Hotel Tugu didesain dengan tema yang berbeda-beda, terinspirasi dari tokoh-tokoh sejarah atau budaya tertentu. Fasilitas modern seperti kolam renang, spa tradisional, dan restoran dengan menu fine dining melengkapi kenyamanan para tamu.</p><p>Dengan perpaduan sempurna antara warisan sejarah, arsitektur kolonial yang indah, dan layanan kelas dunia, Hotel Tugu Malang tetap menjadi pilihan utama bagi wisatawan domestik maupun mancanegara yang mengutamakan kualitas dan pengalaman berkesan.</p>`,
+    tags: ['#HotelTugu', '#HotelMalang', '#WisataSejarah', '#PenginapanMalang'],
   },
   {
     id: '5',
@@ -168,38 +220,21 @@ export default function PreviewBeritaPage({ params }: Props) {
 
 
       {/* ── Main Content ────────────────────────────────────────────────────────── */}
+      {article.status === 'scheduled' && article.publishedAt && (
+        <div className="bg-blue-50 border-b border-blue-100 text-blue-700 py-3 px-4 text-center font-semibold text-sm flex items-center justify-center gap-2">
+          <Calendar size={16} /> Akan dipublikasikan pada {dayjs(article.publishedAt).format('D MMMM YYYY, HH:mm')} WIB
+        </div>
+      )}
       <section className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
 
           {/* ── Left: Article ───────────────────────────────────────────────────── */}
           <div className="lg:col-span-2 border border-gray-200 bg-white p-6 md:p-10">
 
-            {/* Rejection notice */}
-            {article.status === 'rejected' && article.rejectionReason && (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex gap-3">
-                <XCircle size={18} className="text-red-500 shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-sm font-bold text-red-700 mb-1">Alasan Penolakan</p>
-                  <p className="text-sm text-red-600">{article.rejectionReason}</p>
-                </div>
-              </div>
-            )}
-
             {/* Title */}
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
               {article.title}
             </h1>
-
-            {/* Scheduled Badge */}
-            {article.status === 'scheduled' && article.publishedAt && (
-              <div className="inline-flex items-center gap-2 bg-blue-50/80 px-3.5 py-2 rounded-lg mb-6 border border-blue-100">
-                <Calendar size={16} className="text-blue-500" />
-                <span className="text-[13px]">
-                  <span className="font-bold text-blue-600">Akan dipublikasikan pada </span>
-                  <span className="font-bold text-gray-800">{dayjs(article.publishedAt).format('D MMMM YYYY')}, 10:00WIB</span>
-                </span>
-              </div>
-            )}
 
 
 

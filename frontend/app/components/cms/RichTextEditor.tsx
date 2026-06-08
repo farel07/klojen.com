@@ -65,6 +65,19 @@ export default function RichTextEditor({
     }
   }, []);
 
+  // Sync when value changes externally (e.g. fetched from API)
+  useEffect(() => {
+    if (editorRef.current && !isFirstRender.current) {
+      // Only update if the current innerHTML differs (avoid cursor jump on normal typing)
+      if (editorRef.current.innerHTML !== value) {
+        editorRef.current.innerHTML = value || '';
+        const text = editorRef.current.innerText || '';
+        setCharCount(text.length);
+        setIsEmpty(text.trim() === '');
+      }
+    }
+  }, [value]);
+
   const execCommand = (command: FormatCommand, val?: string) => {
     editorRef.current?.focus();
     document.execCommand(command, false, val);

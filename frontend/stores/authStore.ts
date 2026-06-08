@@ -21,21 +21,30 @@ interface AuthState {
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  accessToken: null,
-  user: null,
-  isAuthenticated: false,
+import { persist } from 'zustand/middleware';
 
-  setAuth: (token, user) =>
-    set({ accessToken: token, user, isAuthenticated: true }),
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      accessToken: null,
+      user: null,
+      isAuthenticated: false,
 
-  setAccessToken: (token) => set({ accessToken: token }),
+      setAuth: (token, user) =>
+        set({ accessToken: token, user, isAuthenticated: true }),
 
-  updateUser: (data) => set((state) => ({ user: state.user ? { ...state.user, ...data } : null })),
+      setAccessToken: (token) => set({ accessToken: token }),
 
-  logout: () =>
-    set({ accessToken: null, user: null, isAuthenticated: false }),
-}));
+      updateUser: (data) => set((state) => ({ user: state.user ? { ...state.user, ...data } : null })),
+
+      logout: () =>
+        set({ accessToken: null, user: null, isAuthenticated: false }),
+    }),
+    {
+      name: 'auth-storage',
+    }
+  )
+);
 
 // Helper untuk diakses di luar komponen (misal: axios interceptor)
 export const getAccessToken = () => useAuthStore.getState().accessToken;

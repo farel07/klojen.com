@@ -78,6 +78,124 @@ class CmsArticleService
     // ── Create ───────────────────────────────────────────────────────────────
 
     /**
+     * Get CMS Articles
+     */
+    public function getCmsArticles(\App\Models\User $user): array
+    {
+        $query = \App\Models\Article::with(['category', 'author', 'publisher', 'tags'])
+            ->orderBy('created_at', 'desc');
+
+        if ($user->role === 'journalist') {
+            $query->where('author_id', $user->id);
+        } elseif ($user->role === 'editor') {
+            $query->where(function ($q) use ($user) {
+                // 1. Artikel milik editor sendiri (semua status termasuk draftnya sendiri)
+                $q->where('author_id', $user->id)
+                  // 2. Artikel dari jurnalis yang sedang dalam status review
+                  ->orWhere(function ($q2) use ($user) {
+                      $q2->where('status', 'review')
+                         ->where('author_id', '!=', $user->id);
+                  })
+                  // 3. Artikel scheduled yang dijadwalkan oleh editor ini
+                  ->orWhere(function ($q3) use ($user) {
+                      $q3->where('status', 'scheduled')
+                         ->whereExists(function ($sub) use ($user) {
+                             $sub->select(\Illuminate\Support\Facades\DB::raw(1))
+                                 ->from('scheduled_articles')
+                                 ->whereColumn('scheduled_articles.article_id', 'articles.id')
+                                 ->where('scheduled_articles.scheduled_by', $user->id);
+                         });
+                  })
+                  // 4. Artikel yang di-publish oleh editor ini
+                  ->orWhere(function ($q4) use ($user) {
+                      $q4->whereIn('status', ['published', 'archived'])
+                         ->where('published_by', $user->id);
+                  });
+            });
+        }
+
+        $articles = $query->get();
+
+        return $articles->map(function ($article) {
+            return [
+                'id'                 => $article->id,
+                'author_id'          => $article->author_id,
+                'author_name'        => $article->author ? $article->author->name : null,
+                'category_id'        => $article->category_id,
+                'category_name'      => $article->category ? $article->category->name : null,
+                'title'              => $article->title,
+                'slug'               => $article->slug,
+                'excerpt'            => $article->excerpt,
+                'content'            => $article->content,
+                'featured_image_url' => $article->featured_image_url,
+                'status'             => $article->status,
+                'is_featured'        => (bool) $article->is_featured,
+                'view_count'         => $article->view_count,
+                'tags'               => $article->tags->pluck('name')->toArray(),
+                'published_at'       => $article->published_at,
+                'published_by'       => $article->published_by,
+                'publisher_name'     => $article->publisher ? $article->publisher->name : null,
+                'created_at'         => $article->created_at,
+                'updated_at'         => $article->updated_at,
+            ];
+        })->toArray();
+    }
+
+    /**
+     * Get single CMS Article
+     */
+    public function getCmsArticleById(string $id, \App\Models\User $user): ?array
+    {
+        $query = \App\Models\Article::with(['category', 'author', 'publisher', 'tags', 'media'])
+            ->where('id', $id);
+
+        if ($user->role === 'journalist') {
+            $query->where('author_id', $user->id);
+        }
+
+        $article = $query->first();
+
+        if (! $article) {
+            return null;
+        }
+
+        // Media: semua gambar dari tabel `media` yang terkait artikel ini
+        $mediaItems = $article->media->where('media_type', 'image')->map(function ($m) {
+            return [
+                'id'       => $m->id,
+                'file_url' => $m->file_url,
+                'alt_text' => $m->alt_text,
+            ];
+        })->values()->toArray();
+
+        // Tags: ambil nama tag (sudah dengan/tanpa # sesuai DB)
+        $tagNames = $article->tags->pluck('name')->toArray();
+
+        return [
+            'id'                 => $article->id,
+            'author_id'          => $article->author_id,
+            'author_name'        => $article->author ? $article->author->name : null,
+            'category_id'        => $article->category_id,
+            'category_name'      => $article->category ? $article->category->name : null,
+            'title'              => $article->title,
+            'slug'               => $article->slug,
+            'excerpt'            => $article->excerpt,
+            'content'            => $article->content,
+            'featured_image_url' => $article->featured_image_url,
+            'media'              => $mediaItems,
+            'status'             => $article->status,
+            'is_featured'        => (bool) $article->is_featured,
+            'view_count'         => $article->view_count,
+            'tags'               => $tagNames,
+            'published_at'       => $article->published_at,
+            'published_by'       => $article->published_by,
+            'publisher_name'     => $article->publisher ? $article->publisher->name : null,
+            'created_at'         => $article->created_at,
+            'updated_at'         => $article->updated_at,
+        ];
+    }
+
+    /**
      * Buat artikel baru dengan status draft.
      *
      * @param  int    $authorId  ID user (auto-increment) penulis artikel
@@ -107,8 +225,6 @@ class CmsArticleService
 
         $articleId = (string) Str::uuid();
         $now       = now();
-        $tagIds    = $data['tag_ids'] ?? [];
-
         // ── 2. INSERT articles (status = draft) ───────────────────────────────
         DB::table('articles')->insert([
             'id'                 => $articleId,
@@ -127,7 +243,8 @@ class CmsArticleService
             'updated_at'         => $now,
         ]);
 
-        // ── 3. INSERT article_tags (batch) ────────────────────────────────────
+        // ── 3. Handle Tags (Create if missing) ───────────────────────────────
+        $tagIds = $this->processTags($data['tags'] ?? []);
         if (! empty($tagIds)) {
             DB::table('article_tags')->insert(
                 array_map(
@@ -166,9 +283,10 @@ class CmsArticleService
             'status'             => 'draft',
             'is_featured'        => false,
             'view_count'         => 0,
-            'tag_ids'            => $tagIds,
+            'tags'               => $data['tags'] ?? [],
             'published_at'       => null,
-            'created_at'         => $now->toISOString(),
+            'published_by'       => null,
+            'created_at'         => $now->toIso8601String(),
         ];
     }
 
@@ -241,19 +359,20 @@ class CmsArticleService
                 ]);
 
             // ── 4. UPDATE article_tags ─────────────────────────────────────────
-            if (isset($data['tag_ids'])) {
+            if (isset($data['tags'])) {
+                $tagIds = $this->processTags($data['tags']);
                 // Hapus semua tag lama
                 DB::table('article_tags')->where('article_id', $id)->delete();
 
                 // Insert tag baru
-                if (! empty($data['tag_ids'])) {
+                if (! empty($tagIds)) {
                     DB::table('article_tags')->insert(
                         array_map(
                             fn(string $tagId) => [
                                 'article_id' => $id,
                                 'tag_id'     => $tagId,
                             ],
-                            $data['tag_ids']
+                            $tagIds
                         )
                     );
                 }
@@ -280,6 +399,7 @@ class CmsArticleService
             'view_count'         => $updatedArticle->view_count,
             'tag_ids'            => $tagIds,
             'published_at'       => $updatedArticle->published_at,
+            'published_by'       => $updatedArticle->published_by,
             'created_at'         => $updatedArticle->created_at,
             'updated_at'         => $updatedArticle->updated_at,
         ];
@@ -298,7 +418,7 @@ class CmsArticleService
      */
     public function updateStatus(string $id, int $userId, string $userRole, string $status, ?string $scheduledAt = null): array
     {
-        if (! in_array($userRole, ['editor', 'admin'])) {
+        if (! in_array($userRole, ['journalist', 'editor', 'admin'])) {
             throw new \RuntimeException('FORBIDDEN_ROLE', 403);
         }
 
@@ -306,6 +426,15 @@ class CmsArticleService
 
         if (! $article) {
             throw new \RuntimeException('ARTICLE_NOT_FOUND', 404);
+        }
+
+        if ($userRole === 'journalist') {
+            if ($article->author_id !== $userId) {
+                throw new \RuntimeException('FORBIDDEN_OWNERSHIP', 403);
+            }
+            if (! in_array($status, ['draft', 'review'])) {
+                throw new \RuntimeException('INVALID_STATUS_TRANSITION', 400);
+            }
         }
 
         // BR-05: Artikel yang sudah published hanya bisa diubah ke archived
@@ -349,6 +478,12 @@ class CmsArticleService
 
             if ($status === 'published' && $article->status !== 'published') {
                 $updateData['published_at'] = $now;
+                $updateData['published_by'] = $userId;
+            }
+
+            // Saat di-schedule, catat siapa yang schedule sebagai "akan diterbitkan oleh"
+            if ($status === 'scheduled') {
+                $updateData['published_by'] = $userId;
             }
 
             DB::table('articles')->where('id', $id)->update($updateData);
@@ -384,8 +519,37 @@ class CmsArticleService
             'view_count'         => $updatedArticle->view_count,
             'tag_ids'            => $tagIds,
             'published_at'       => $updatedArticle->published_at,
+            'published_by'       => $updatedArticle->published_by,
             'created_at'         => $updatedArticle->created_at,
             'updated_at'         => $updatedArticle->updated_at,
         ];
+    }
+
+    /**
+     * Process tag names: convert to UUIDs, creating them if they don't exist.
+     *
+     * @param array $tagNames Array of tag names (e.g. ['#Wisata', 'Kuliner'])
+     * @return array Array of tag UUIDs
+     */
+    private function processTags(array $tagNames): array
+    {
+        $tagIds = [];
+        foreach ($tagNames as $name) {
+            $name = trim($name);
+            if (empty($name)) continue;
+
+            $slug = Str::slug($name);
+            if (empty($slug)) {
+                $slug = strtolower(str_replace(' ', '-', $name)); // fallback for non-latin
+            }
+
+            $tag = \App\Models\Tag::firstOrCreate(
+                ['slug' => $slug],
+                ['name' => $name, 'id' => (string) Str::uuid()]
+            );
+
+            $tagIds[] = $tag->id;
+        }
+        return array_unique($tagIds);
     }
 }

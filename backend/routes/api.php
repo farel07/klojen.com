@@ -48,6 +48,7 @@ Route::get('/tags', [TagController::class, 'index']);
 Route::get('/articles',                  [ArticleController::class, 'index']);
 Route::get('/articles/{slug}',           [ArticleController::class, 'show']);
 Route::get('/articles/{id}/comments',    [ArticleController::class, 'comments']);
+Route::middleware('auth:api')->post('/articles/{id}/comments', [\App\Http\Controllers\CommentController::class, 'storeForArticle']);
 
 // ── Bookmarks & Media (requires authentication) ───────────────────────────────────────
 Route::middleware('auth:api')->group(function () {
@@ -63,16 +64,27 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/comments/{id}', [\App\Http\Controllers\CommentController::class, 'destroy']);
 });
 
+use App\Http\Controllers\CmsCommentController;
+
 // ── CMS (requires authentication + role check inside controller) ──────────
 Route::middleware('auth:api')->prefix('cms')->group(function () {
+    // GET /api/cms/articles — List artikel CMS (journalist / editor / admin)
+    Route::get('/articles', [CmsArticleController::class, 'index']);
+
     // POST /api/cms/articles  — Buat artikel baru (journalist / editor / admin)
     Route::post('/articles', [CmsArticleController::class, 'store']);
+
+    // GET /api/cms/articles/{id} — Get detail artikel
+    Route::get('/articles/{id}', [CmsArticleController::class, 'show']);
 
     // PUT /api/cms/articles/{id} — Update artikel (journalist / editor / admin)
     Route::put('/articles/{id}', [CmsArticleController::class, 'update']);
 
     // PATCH /api/cms/articles/{id}/status — Update status artikel (editor / admin)
     Route::patch('/articles/{id}/status', [CmsArticleController::class, 'updateStatus']);
+
+    // GET /api/cms/comments — Ambil semua komentar untuk moderasi (editor / admin)
+    Route::get('/comments', [CmsCommentController::class, 'index']);
 });
 
 // ── Users (admin only) ────────────────────────────────────────────────────────
