@@ -21,6 +21,8 @@ interface LoginResponse {
   user: {
     id: string;
     name: string;
+    email: string;
+    avatar_url?: string;
     role: 'reader' | 'journalist' | 'editor' | 'admin';
   };
 }
@@ -49,7 +51,7 @@ export default function Login() {
       const { access_token, refresh_token, user } = res.data.data;
 
       // Simpan access_token ke Zustand (memory), refresh_token ke localStorage
-      setAuth(access_token, { id: user.id, name: user.name, role: user.role });
+      setAuth(access_token, { id: user.id, name: user.name, email: user.email, avatar: user.avatar_url, role: user.role });
       saveRefreshToken(refresh_token);
 
       // Redirect berdasarkan role (docs 2.3)

@@ -71,8 +71,8 @@ export default function ProfilPage() {
                   <Mail className="text-blue-600" size={20} strokeWidth={2.5} />
                   <span className="text-[#a0aab5] font-bold">Email</span>
                 </div>
-                {/* Menampilkan email dari authStore jika ada, fallback ke ismy@gmail.com */}
-                <span className="text-gray-700 font-bold text-[17px]">{(user as any)?.email || 'ismy@gmail.com'}</span>
+                {/* Menampilkan email dari authStore jika ada */}
+                <span className="text-gray-700 font-bold text-[17px]">{user?.email || '-'}</span>
               </div>
             </div>
 
