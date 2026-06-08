@@ -15,7 +15,7 @@ export default function EditProfilPage() {
   const router = useRouter();
 
   const [name, setName] = useState(user?.name || '');
-  const [email, setEmail] = useState((user as any)?.email || 'ismy@gmail.com');
+  const [email, setEmail] = useState(user?.email || '');
   const [avatar, setAvatar] = useState(user?.avatar || '');
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 

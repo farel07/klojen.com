@@ -120,6 +120,12 @@ export default function Topbar({ onToggle }: TopbarProps) {
         {/* Dropdown Menu */}
         {isDropdownOpen && (
           <div className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50 overflow-hidden transform opacity-100 scale-100 transition-all duration-200">
+            {/* User Info Header in Dropdown */}
+            <div className="px-4 py-3 border-b border-gray-100 mb-1 bg-gray-50/50">
+              <p className="text-sm font-bold text-gray-900 truncate">{user?.name ?? 'Pengguna'}</p>
+              <p className="text-xs font-medium text-gray-500 truncate mt-0.5">{user?.email || '-'}</p>
+            </div>
+            
             <Link 
               href="/cms/profil" 
               className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50 transition-colors"
