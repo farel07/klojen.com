@@ -82,7 +82,7 @@ class CmsArticleService
      */
     public function getCmsArticles(\App\Models\User $user): array
     {
-        $query = \App\Models\Article::with(['category', 'author', 'publisher', 'tags'])
+        $query = \App\Models\Article::with(['category', 'author', 'publisher', 'tags', 'locker'])
             ->orderBy('created_at', 'desc');
 
         if ($user->role === 'journalist') {
@@ -135,6 +135,8 @@ class CmsArticleService
                 'published_at'       => $article->published_at,
                 'published_by'       => $article->published_by,
                 'publisher_name'     => $article->publisher ? $article->publisher->name : null,
+                'locked_by'          => $article->locked_by,
+                'locked_by_name'     => $article->locker ? $article->locker->name : null,
                 'created_at'         => $article->created_at,
                 'updated_at'         => $article->updated_at,
             ];
@@ -146,7 +148,7 @@ class CmsArticleService
      */
     public function getCmsArticleById(string $id, \App\Models\User $user): ?array
     {
-        $query = \App\Models\Article::with(['category', 'author', 'publisher', 'tags', 'media'])
+        $query = \App\Models\Article::with(['category', 'author', 'publisher', 'tags', 'media', 'locker'])
             ->where('id', $id);
 
         if ($user->role === 'journalist') {
@@ -190,6 +192,8 @@ class CmsArticleService
             'published_at'       => $article->published_at,
             'published_by'       => $article->published_by,
             'publisher_name'     => $article->publisher ? $article->publisher->name : null,
+            'locked_by'          => $article->locked_by,
+            'locked_by_name'     => $article->locker ? $article->locker->name : null,
             'created_at'         => $article->created_at,
             'updated_at'         => $article->updated_at,
         ];
@@ -229,7 +233,7 @@ class CmsArticleService
         DB::table('articles')->insert([
             'id'                 => $articleId,
             'author_id'          => $authorId,
-            'category_id'        => $data['category_id'],
+            'category_id'        => $data['category_id'] ?? null,
             'title'              => $data['title'],
             'slug'               => $slug,
             'excerpt'            => $data['excerpt'] ?? null,
@@ -275,7 +279,7 @@ class CmsArticleService
         return [
             'id'                 => $articleId,
             'author_id'          => $authorId,
-            'category_id'        => $data['category_id'],
+            'category_id'        => $data['category_id'] ?? null,
             'title'              => $data['title'],
             'slug'               => $slug,
             'excerpt'            => $data['excerpt'] ?? null,
@@ -310,10 +314,20 @@ class CmsArticleService
             throw new \RuntimeException('ARTICLE_NOT_FOUND', 404);
         }
 
-        // ── Validasi Ownership ────────────────────────────────────────────────
+        // ── Validasi Ownership & Lock ───────────────────────────────────────────
         // Journalist hanya boleh edit artikel miliknya sendiri
-        if ($userRole === 'journalist' && $article->author_id !== $userId) {
-            throw new \RuntimeException('FORBIDDEN_OWNERSHIP', 403);
+        if ($userRole === 'journalist') {
+            if ($article->author_id !== $userId) {
+                throw new \RuntimeException('FORBIDDEN_OWNERSHIP', 403);
+            }
+            if (in_array($article->status, ['review', 'scheduled', 'published'])) {
+                throw new \RuntimeException('FORBIDDEN_STATUS', 403);
+            }
+        }
+
+        // Editor tidak bisa mengedit jika sedang di-lock oleh editor lain
+        if ($userRole === 'editor' && $article->locked_by && $article->locked_by !== $userId) {
+            throw new \RuntimeException('LOCKED_BY_OTHER', 403);
         }
 
         // ── 1. Tentukan slug (jika berubah/diisi manual) ──────────────────────
@@ -432,9 +446,17 @@ class CmsArticleService
             if ($article->author_id !== $userId) {
                 throw new \RuntimeException('FORBIDDEN_OWNERSHIP', 403);
             }
+            // Jika status sekarang sudah review/scheduled/published, jurnalis tidak bisa merubah statusnya lagi
+            if (in_array($article->status, ['review', 'scheduled', 'published'])) {
+                throw new \RuntimeException('FORBIDDEN_STATUS', 403);
+            }
             if (! in_array($status, ['draft', 'review'])) {
                 throw new \RuntimeException('INVALID_STATUS_TRANSITION', 400);
             }
+        }
+
+        if ($userRole === 'editor' && $article->locked_by && $article->locked_by !== $userId) {
+            throw new \RuntimeException('LOCKED_BY_OTHER', 403);
         }
 
         // BR-05: Artikel yang sudah published hanya bisa diubah ke archived
@@ -473,6 +495,7 @@ class CmsArticleService
 
             $updateData = [
                 'status'     => $status,
+                'locked_by'  => null,
                 'updated_at' => $now,
             ];
 
@@ -523,6 +546,42 @@ class CmsArticleService
             'created_at'         => $updatedArticle->created_at,
             'updated_at'         => $updatedArticle->updated_at,
         ];
+    }
+
+    public function lockArticle(string $id, int $userId, string $userRole): void
+    {
+        if ($userRole !== 'editor') {
+            throw new \RuntimeException('FORBIDDEN_ROLE', 403);
+        }
+
+        $article = DB::table('articles')->where('id', $id)->first();
+        if (! $article) {
+            throw new \RuntimeException('ARTICLE_NOT_FOUND', 404);
+        }
+
+        if ($article->locked_by && $article->locked_by !== $userId) {
+            throw new \RuntimeException('LOCKED_BY_OTHER', 403);
+        }
+
+        DB::table('articles')->where('id', $id)->update(['locked_by' => $userId]);
+    }
+
+    public function unlockArticle(string $id, int $userId, string $userRole): void
+    {
+        if ($userRole !== 'editor') {
+            throw new \RuntimeException('FORBIDDEN_ROLE', 403);
+        }
+
+        $article = DB::table('articles')->where('id', $id)->first();
+        if (! $article) {
+            throw new \RuntimeException('ARTICLE_NOT_FOUND', 404);
+        }
+
+        if ($article->locked_by && $article->locked_by !== $userId) {
+            throw new \RuntimeException('LOCKED_BY_OTHER', 403);
+        }
+
+        DB::table('articles')->where('id', $id)->update(['locked_by' => null]);
     }
 
     /**

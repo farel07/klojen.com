@@ -40,7 +40,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { canPublish } from '@/app/constants/roles';
 import { Role } from '@/app/types';
 import { createArticle, updateArticleStatus,  updateArticle,
-  getCmsArticleById,
+  getCmsArticleById, lockArticle, unlockArticle
 } from '@/lib/api/articles';
 import { getCategories } from '@/lib/api/categories';
 import { uploadMedia } from '@/lib/api/media';
@@ -455,14 +455,11 @@ export default function TulisBeritaPage() {
     await new Promise((r) => setTimeout(r, 900));
     setIsSaving(false);
     
-    if (articleId) {
-      const existing = localStorage.getItem('mock_on_progress_ids');
-      const overrides = existing ? JSON.parse(existing) : [];
-      if (!overrides.find((o: any) => o.id === articleId)) {
-        overrides.push({ id: articleId, lockedBy: user?.name || 'Jurnalis' });
-        localStorage.setItem('mock_on_progress_ids', JSON.stringify(overrides));
+      try {
+        await lockArticle(articleId);
+      } catch (err) {
+        console.error("Gagal menandai on progress:", err);
       }
-    }
     
     router.push('/cms/artikel');
   };
@@ -486,13 +483,15 @@ export default function TulisBeritaPage() {
     const selectedStatus = statusOptions.find((s) => s.value === status) ?? statusOptions[0];
     const finalStatus = selectedStatus.value;
 
-    // Kanal selalu wajib karena category_id NOT NULL di database
-    if (!title || !content || !kanal) {
-      alert('Mohon lengkapi judul, isi berita, dan pilih kanal terlebih dahulu.');
+    // Kanal wajib untuk editor/admin
+    const isKanalRequired = user?.role === 'editor' || user?.role === 'admin';
+
+    if (!title || !content || (isKanalRequired && !kanal)) {
+      alert('Mohon lengkapi judul, isi berita' + (isKanalRequired ? ', dan pilih kanal' : '') + ' terlebih dahulu.');
       return;
     }
 
-    if (finalStatus !== 'draft' && !kanal) {
+    if (finalStatus !== 'draft' && isKanalRequired && !kanal) {
       alert('Pilih kanal terlebih dahulu sebelum mengajukan berita.');
       return;
     }
@@ -513,13 +512,17 @@ export default function TulisBeritaPage() {
 
     setIsSaving(true);
     try {
-      // Resolve category_id dari nama kanal
-      const { data: catRes } = await getCategories();
-      const cat = catRes.data.find((c) => c.name.toLowerCase() === kanal.toLowerCase());
-      if (!cat) {
-        alert('Kategori ' + kanal + ' tidak ditemukan di server.');
-        setIsSaving(false);
-        return;
+      // Resolve category_id dari nama kanal (hanya jika kanal dipilih)
+      let categoryId = undefined;
+      if (kanal) {
+        const { data: catRes } = await getCategories();
+        const cat = catRes.data.find((c) => c.name.toLowerCase() === kanal.toLowerCase());
+        if (!cat) {
+          alert('Kategori ' + kanal + ' tidak ditemukan di server.');
+          setIsSaving(false);
+          return;
+        }
+        categoryId = cat.id;
       }
 
       let featured_image_url = photos[0]?.url;
@@ -530,7 +533,7 @@ export default function TulisBeritaPage() {
       const payload: Record<string, any> = {
         title,
         content,
-        category_id: cat.id,
+        category_id: categoryId,
         tags, // Include tags array
         featured_image_url: isBlob ? undefined : featured_image_url,
       };
@@ -912,30 +915,32 @@ export default function TulisBeritaPage() {
         </StepRow>
 
         {/* ─── Step 5: Kanal — tombol inline ─── */}
-        <StepRow icon={<Newspaper size={22} className="text-blue-500" />}>
-          <h2 className="text-lg font-bold text-gray-700 mb-3">Kanal</h2>
-          <div className="flex flex-wrap gap-3">
-            {KANAL_OPTIONS.map((opt) => (
-              <button
-                key={opt.value}
-                type="button"
-                onClick={() => setKanal(opt.value)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl border-2 text-sm font-semibold transition-all duration-200 ${
-                  kanal === opt.value
-                    ? 'border-blue-500 bg-blue-50 text-blue-600 shadow-sm'
-                    : 'border-gray-100 bg-white text-gray-600 hover:border-blue-200 hover:bg-blue-50/20'
-                }`}
-              >
-                {kanal === opt.value
-                  ? <span className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center"><Check size={10} className="text-white" /></span>
-                  : <span className="text-gray-400">{opt.icon}</span>
-                }
-                {opt.label}
-              </button>
-            ))}
-          </div>
-          <p className="text-xs text-gray-400 mt-2 px-1">Pilih kanal yang sesuai dengan topik berita</p>
-        </StepRow>
+        {(user?.role === 'editor' || user?.role === 'admin') && (
+          <StepRow icon={<Newspaper size={22} className="text-blue-500" />}>
+            <h2 className="text-lg font-bold text-gray-700 mb-3">Kanal</h2>
+            <div className="flex flex-wrap gap-3">
+              {KANAL_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => setKanal(opt.value)}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl border-2 text-sm font-semibold transition-all duration-200 ${
+                    kanal === opt.value
+                      ? 'border-blue-500 bg-blue-50 text-blue-600 shadow-sm'
+                      : 'border-gray-100 bg-white text-gray-600 hover:border-blue-200 hover:bg-blue-50/20'
+                  }`}
+                >
+                  {kanal === opt.value
+                    ? <span className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center"><Check size={10} className="text-white" /></span>
+                    : <span className="text-gray-400">{opt.icon}</span>
+                  }
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-gray-400 mt-2 px-1">Pilih kanal yang sesuai dengan topik berita</p>
+          </StepRow>
+        )}
 
 
         {/* ─── Step 7: Status ─── */}
