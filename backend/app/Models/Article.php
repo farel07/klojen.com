@@ -46,6 +46,11 @@ class Article extends Model
         return $this->belongsTo(User::class, 'author_id');
     }
 
+    public function locker(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'locked_by');
+    }
+
     public function publisher(): BelongsTo
     {
         return $this->belongsTo(User::class, 'published_by');

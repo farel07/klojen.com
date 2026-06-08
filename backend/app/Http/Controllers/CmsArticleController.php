@@ -133,7 +133,7 @@ class CmsArticleController extends Controller
         $validated = $request->validate([
             'title'               => 'required|string|max:500',
             'content'             => 'required|string',
-            'category_id'         => 'required|string|exists:categories,id',
+            'category_id'         => 'nullable|string|exists:categories,id',
             'slug'                => 'nullable|string|max:600|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
             'excerpt'             => 'nullable|string|max:1000',
             'featured_image_url'  => 'nullable|url|max:2048',
@@ -193,7 +193,7 @@ class CmsArticleController extends Controller
         $validated = $request->validate([
             'title'               => 'sometimes|required|string|max:500',
             'content'             => 'sometimes|required|string',
-            'category_id'         => 'sometimes|required|string|exists:categories,id',
+            'category_id'         => 'nullable|string|exists:categories,id',
             'slug'                => 'nullable|string|max:600|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
             'excerpt'             => 'nullable|string|max:1000',
             'featured_image_url'  => 'nullable|url|max:2048',
@@ -228,6 +228,14 @@ class CmsArticleController extends Controller
                     'error'   => 'SLUG_ALREADY_EXISTS',
                     'message' => 'Slug yang Anda masukkan sudah digunakan artikel lain.',
                 ], 409);
+            }
+            if ($e->getMessage() === 'FORBIDDEN_STATUS') {
+                return response()->json([
+                    'status'  => 'error',
+                    'code'    => 403,
+                    'error'   => 'FORBIDDEN_STATUS',
+                    'message' => 'Anda tidak diizinkan mengubah artikel yang sedang direview, dijadwalkan, atau dipublikasikan.',
+                ], 403);
             }
 
             return response()->json([
@@ -315,5 +323,58 @@ class CmsArticleController extends Controller
             'status' => 'success',
             'data'   => $article,
         ], 200);
+    }
+
+    public function lock(string $id): JsonResponse
+    {
+        $user = auth('api')->user();
+        try {
+            $this->cmsArticleService->lockArticle($id, $user->id, $user->role);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Artikel berhasil ditandai on progress.',
+            ]);
+        } catch (\RuntimeException $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    public function unlock(string $id): JsonResponse
+    {
+        $user = auth('api')->user();
+        try {
+            $this->cmsArticleService->unlockArticle($id, $user->id, $user->role);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Tanda on progress berhasil dilepas.',
+            ]);
+        } catch (\RuntimeException $e) {
+            return $this->handleException($e);
+        }
+    }
+
+    private function handleException(\RuntimeException $e): JsonResponse
+    {
+        $map = [
+            'FORBIDDEN_ROLE' => [403, 'Anda tidak memiliki akses.'],
+            'ARTICLE_NOT_FOUND' => [404, 'Artikel tidak ditemukan.'],
+            'LOCKED_BY_OTHER' => [403, 'Artikel sedang dikerjakan oleh editor lain.'],
+        ];
+
+        if (isset($map[$e->getMessage()])) {
+            return response()->json([
+                'status' => 'error',
+                'code' => $map[$e->getMessage()][0],
+                'error' => $e->getMessage(),
+                'message' => $map[$e->getMessage()][1],
+            ], $map[$e->getMessage()][0]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'code' => 500,
+            'error' => 'INTERNAL_ERROR',
+            'message' => $e->getMessage(),
+        ], 500);
     }
 }
