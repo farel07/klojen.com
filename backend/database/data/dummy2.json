@@ -180,14 +180,6 @@
             "media_type": "image",
             "alt_text": "Pemberian Beasiswa Pemkot Malang",
             "created_at": "2026-05-24T20:30:00Z"
-        },
-        {
-            "article_id": "art-123",
-            "file_url": "http://localhost:8000/storage/media/eVzNhGp5Qu4hGx7qQscvgk0gjYqsMycptSmmebln.jpg",
-            "media_type": "image",
-            "alt_text": "gambar uji coba",
-            "id": "med-6a1813cb1ea94",
-            "created_at": "2026-05-28T10:07:07Z"
         }
     ]
 }
