@@ -64,6 +64,8 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/comments/{id}', [\App\Http\Controllers\CommentController::class, 'destroy']);
 });
 
+use App\Http\Controllers\CmsCommentController;
+
 // ── CMS (requires authentication + role check inside controller) ──────────
 Route::middleware('auth:api')->prefix('cms')->group(function () {
     // GET /api/cms/articles — List artikel CMS (journalist / editor / admin)
@@ -80,6 +82,9 @@ Route::middleware('auth:api')->prefix('cms')->group(function () {
 
     // PATCH /api/cms/articles/{id}/status — Update status artikel (editor / admin)
     Route::patch('/articles/{id}/status', [CmsArticleController::class, 'updateStatus']);
+
+    // GET /api/cms/comments — Ambil semua komentar untuk moderasi (editor / admin)
+    Route::get('/comments', [CmsCommentController::class, 'index']);
 });
 
 // ── Users (admin only) ────────────────────────────────────────────────────────
