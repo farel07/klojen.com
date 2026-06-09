@@ -91,6 +91,9 @@ Route::middleware('auth:api')->prefix('cms')->group(function () {
 
     // GET /api/cms/comments — Ambil semua komentar untuk moderasi (editor / admin)
     Route::get('/comments', [CmsCommentController::class, 'index']);
+
+    // GET /api/cms/statistics — Dashboard statistics
+    Route::get('/statistics', [\App\Http\Controllers\CmsDashboardController::class, 'index']);
 });
 
 // ── Users (admin only) ────────────────────────────────────────────────────────
