@@ -56,9 +56,13 @@ function AuthButton({ mobile = false, onClose }: AuthButtonProps) {
         return (
             <div className="flex flex-col gap-1 mt-2 border-t border-black/10 pt-4">
                 <div className="flex items-center gap-3 px-4 py-2 mb-1">
-                    <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-sm font-bold uppercase flex-shrink-0">
-                        {user?.name?.charAt(0) ?? "?"}
-                    </div>
+                    {user?.avatar ? (
+                        <img src={user.avatar} alt="Profile" className="w-8 h-8 rounded-full object-cover flex-shrink-0 shadow-sm" />
+                    ) : (
+                        <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-sm font-bold uppercase flex-shrink-0 shadow-sm">
+                            {user?.name?.charAt(0) ?? "?"}
+                        </div>
+                    )}
                     <span className="text-sm font-semibold text-black">{user?.name}</span>
                 </div>
                 <Link href="/profil" onClick={onClose} className="text-black/80 font-medium hover:text-black transition-colors px-4 py-2 text-sm">
@@ -84,9 +88,13 @@ function AuthButton({ mobile = false, onClose }: AuthButtonProps) {
                 onClick={() => setDropdownOpen((v) => !v)}
                 className="flex items-center gap-2 bg-white border border-black/10 rounded-full px-3 py-1.5 shadow-sm hover:shadow-md transition-all duration-200"
             >
-                <div className="w-7 h-7 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold uppercase">
-                    {user?.name?.charAt(0) ?? "?"}
-                </div>
+                {user?.avatar ? (
+                    <img src={user.avatar} alt="Profile" className="w-7 h-7 rounded-full object-cover shadow-sm" />
+                ) : (
+                    <div className="w-7 h-7 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold uppercase shadow-sm">
+                        {user?.name?.charAt(0) ?? "?"}
+                    </div>
+                )}
                 <span className="text-sm font-semibold text-black max-w-[100px] truncate">
                     Hi, {user?.name?.split(" ")[0]}
                 </span>

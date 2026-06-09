@@ -62,6 +62,12 @@ export const updateArticle = (
 ) =>
   axiosInstance.put<ApiSuccess<Article>>(`/cms/articles/${id}`, data);
 
+export const lockArticle = (id: string) =>
+  axiosInstance.post<ApiSuccess<null>>(`/cms/articles/${id}/lock`);
+
+export const unlockArticle = (id: string) =>
+  axiosInstance.post<ApiSuccess<null>>(`/cms/articles/${id}/unlock`);
+
 // ── KOMENTAR ─────────────────────────────────────────────────────────────────
 
 export const getComments = (articleId: string) =>

@@ -23,6 +23,9 @@ import {
 import { useAuthStore } from "@/stores/authStore";
 import axiosInstance from "@/lib/axios";
 import { ApiError, ApiSuccess } from "@/app/types";
+import Cropper from 'react-easy-crop';
+import 'react-easy-crop/react-easy-crop.css';
+import { getCroppedImgFile } from '@/utils/cropImage';
 import {
   profileSchema,
   changePasswordSchema,
@@ -53,6 +56,13 @@ export default function ProfilPage() {
   // Avatar upload states
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+
+  // Cropper states
+  const [showCropper, setShowCropper] = useState(false);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [selectedImageSrc, setSelectedImageSrc] = useState("");
 
   // Password visibility
   const [showCurrentPass, setShowCurrentPass] = useState(false);
@@ -134,9 +144,33 @@ export default function ProfilPage() {
         });
         return;
       }
-      setSelectedFile(file);
-      const previewUrl = URL.createObjectURL(file);
-      setAvatarPreview(previewUrl);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImageSrc(reader.result as string);
+        setShowCropper(true);
+      };
+      reader.readAsDataURL(file);
+      e.target.value = '';
+    }
+  };
+
+  const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const applyCrop = async () => {
+    try {
+      if (!selectedImageSrc || !croppedAreaPixels) return;
+      const croppedFile = await getCroppedImgFile(selectedImageSrc, croppedAreaPixels, 0);
+      if (croppedFile) {
+        setSelectedFile(croppedFile);
+        setAvatarPreview(URL.createObjectURL(croppedFile));
+      }
+      setShowCropper(false);
+      setSelectedImageSrc('');
+    } catch (e) {
+      console.error(e);
+      alert('Gagal memotong gambar');
     }
   };
 
@@ -620,6 +654,65 @@ export default function ProfilPage() {
         ) : null}
 
       </div>
+
+      {/* ── CROPPER MODAL ── */}
+      {showCropper && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl relative animate-scale-up">
+            <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+              <h3 className="text-lg font-bold text-gray-800">Sesuaikan Foto Profile</h3>
+            </div>
+            
+            <div className="relative w-full h-80 bg-gray-900">
+              <Cropper
+                image={selectedImageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={1}
+                cropShape="round"
+                showGrid={false}
+                onCropChange={setCrop}
+                onCropComplete={onCropComplete}
+                onZoomChange={setZoom}
+              />
+            </div>
+            
+            <div className="p-5 border-t border-gray-100 flex flex-col gap-5 bg-white">
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-bold text-gray-500 w-12">Zoom</span>
+                <input 
+                  type="range" 
+                  value={zoom} 
+                  min={1} 
+                  max={3} 
+                  step={0.1}
+                  aria-labelledby="Zoom"
+                  onChange={(e) => setZoom(Number(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                />
+              </div>
+              
+              <div className="flex justify-end gap-3 mt-2">
+                <button 
+                  onClick={() => {
+                    setShowCropper(false);
+                    setSelectedImageSrc('');
+                  }}
+                  className="px-5 py-2.5 rounded-lg border border-gray-200 text-gray-600 font-bold hover:bg-gray-50 text-sm transition-colors"
+                >
+                  Batal
+                </button>
+                <button 
+                  onClick={applyCrop}
+                  className="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-sm transition-colors"
+                >
+                  Terapkan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── CHANGE PASSWORD MODAL ── */}
       {isPasswordModalOpen && (

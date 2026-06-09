@@ -42,6 +42,7 @@ interface MockArticleItem {
   rejectionReason?: string;
   author?: string;
   lockedBy?: string;
+  lockedById?: number;
   publishedAt?: string;
   publisherName?: string;
 }
@@ -302,8 +303,10 @@ function BankBeritaContent() {
           id: item.id,
           title: item.title,
           excerpt: item.excerpt || (item.content ? item.content.replace(/<[^>]+>/g, '').substring(0, 60) + '...' : ''),
-          category: item.category_name || 'Uncategorized',
-          status: item.status as ArticleStatus,
+          category: item.category_name || 'Belum Ditentukan',
+          status: (item.status === 'review' && item.locked_by) ? 'on_progress' : (item.status as ArticleStatus),
+          lockedBy: item.locked_by_name,
+          lockedById: item.locked_by,
           image: item.featured_image_url || 'https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=800&q=80',
           caption: '',
           content: item.content,
@@ -312,23 +315,6 @@ function BankBeritaContent() {
           publishedAt: item.published_at,
           publisherName: item.publisher_name,
         }));
-
-        // Apply local overrides for UI mock testing (if any)
-        const onProgressRaw = localStorage.getItem('mock_on_progress_ids');
-        if (onProgressRaw) {
-          try {
-            const overrides = JSON.parse(onProgressRaw);
-            mappedArticles = mappedArticles.map(a => {
-              const found = overrides.find((o: any) => o.id === a.id);
-              if (found) {
-                return { ...a, status: 'on_progress', lockedBy: found.lockedBy };
-              }
-              return a;
-            });
-          } catch (e) {
-            console.error('Failed to parse mock on_progress overrides', e);
-          }
-        }
 
         const statusOverrideRaw = localStorage.getItem('mock_status_overrides');
         if (statusOverrideRaw) {
@@ -583,7 +569,7 @@ function BankBeritaContent() {
                         </Link>
                       )}
 
-                      {article.status === 'review' && (
+                      {article.status === 'review' && role !== 'journalist' && (
                         <Link
                           href={`/cms/tulis-berita?id=${article.id}`}
                           title="Edit berita"
@@ -594,13 +580,24 @@ function BankBeritaContent() {
                       )}
 
                       {article.status === 'on_progress' && article.lockedBy && (
-                        <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 bg-gray-100 px-3 py-1.5 rounded-full whitespace-nowrap">
-                          <UserCircle2 size={14} className="text-gray-400" />
-                          <span>Diedit oleh {article.lockedBy}</span>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 bg-gray-100 px-3 py-1.5 rounded-full whitespace-nowrap">
+                            <UserCircle2 size={14} className="text-gray-400" />
+                            <span>Diedit oleh {article.lockedBy}</span>
+                          </div>
+                          {article.lockedById === user?.id && (
+                            <Link
+                              href={`/cms/tulis-berita?id=${article.id}`}
+                              title="Lanjutkan edit berita"
+                              className="text-blue-500 hover:text-blue-700 transition-colors ml-1"
+                            >
+                              <Edit3 size={20} strokeWidth={2.5} />
+                            </Link>
+                          )}
                         </div>
                       )}
 
-                      {article.status === 'published' && (
+                      {['published', 'review', 'on_progress', 'scheduled'].includes(article.status) && (
                         <Link
                           href={`/cms/artikel/${article.id}/preview`}
                           title="Preview berita"

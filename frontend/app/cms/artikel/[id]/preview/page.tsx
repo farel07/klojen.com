@@ -1,6 +1,6 @@
 'use client';
 
-import { use } from 'react';
+import { use, useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -9,10 +9,13 @@ import {
   Calendar,
   Clock,
   RefreshCw,
+  Check,
+  Edit3,
 } from 'lucide-react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import { useAuthStore } from '@/stores/authStore';
+import { getCmsArticleById } from '@/lib/api/articles';
 
 dayjs.locale('id');
 
@@ -33,6 +36,8 @@ interface MockArticleItem {
   rejectionReason?: string;
   author?: string;
   publishedAt?: string;
+  publisherName?: string;
+  lockedBy?: string;
 }
 
 const MOCK_ARTICLES: MockArticleItem[] = [
@@ -193,7 +198,40 @@ interface Props {
 export default function PreviewBeritaPage({ params }: Props) {
   const { id } = use(params);
   const { user } = useAuthStore();
-  const article = MOCK_ARTICLES.find((a) => a.id === id);
+  const [article, setArticle] = useState<MockArticleItem | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        const res = await getCmsArticleById(id);
+        const item: any = res.data.data;
+        setArticle({
+          id: item.id,
+          title: item.title,
+          excerpt: item.excerpt || '',
+          category: item.category_name || 'Belum Ditentukan',
+          status: item.locked_by && item.status === 'review' ? 'on_progress' : (item.status as ArticleStatus),
+          image: item.featured_image_url || 'https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=800&q=80',
+          content: item.content,
+          tags: item.tags || [],
+          author: item.author_name || 'Jurnalis',
+          publishedAt: item.published_at,
+          publisherName: item.publisher_name,
+          lockedBy: item.locked_by_name,
+        });
+      } catch (err) {
+        console.error('Failed to fetch article', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchArticle();
+  }, [id]);
+
+  if (loading) {
+    return <div className="min-h-screen bg-white flex items-center justify-center">Loading...</div>;
+  }
 
   if (!article) {
     return (
@@ -223,6 +261,22 @@ export default function PreviewBeritaPage({ params }: Props) {
       {article.status === 'scheduled' && article.publishedAt && (
         <div className="bg-blue-50 border-b border-blue-100 text-blue-700 py-3 px-4 text-center font-semibold text-sm flex items-center justify-center gap-2">
           <Calendar size={16} /> Akan dipublikasikan pada {dayjs(article.publishedAt).format('D MMMM YYYY, HH:mm')} WIB
+        </div>
+      )}
+      {article.status === 'published' && (
+        <div className="bg-green-50 border-b border-green-100 text-green-700 py-3 px-4 text-center font-semibold text-sm flex items-center justify-center gap-2">
+          <Check size={16} /> Artikel ini telah dipublikasikan
+          {article.publishedAt && ` pada ${dayjs(article.publishedAt).format('D MMMM YYYY, HH:mm')} WIB`}
+        </div>
+      )}
+      {article.status === 'review' && (
+        <div className="bg-yellow-50 border-b border-yellow-100 text-yellow-700 py-3 px-4 text-center font-semibold text-sm flex items-center justify-center gap-2">
+          <Clock size={16} /> Menunggu Review Editor
+        </div>
+      )}
+      {article.status === 'on_progress' && (
+        <div className="bg-purple-50 border-b border-purple-100 text-purple-700 py-3 px-4 text-center font-semibold text-sm flex items-center justify-center gap-2">
+          <Edit3 size={16} /> Sedang diedit oleh Editor (On Progress)
         </div>
       )}
       <section className="py-8 bg-white">
@@ -270,11 +324,13 @@ export default function PreviewBeritaPage({ params }: Props) {
                 {/* Editor */}
                 <div className="flex items-center gap-2.5 px-3 py-1">
                   <div className="w-7 h-7 rounded-full bg-emerald-50 overflow-hidden shrink-0">
-                    <img src={`https://ui-avatars.com/api/?name=Tim+Editor&background=e0f2fe&color=0369a1`} alt="Editor" className="w-full h-full object-cover" />
+                    <img src={`https://ui-avatars.com/api/?name=${article.status === 'on_progress' && article.lockedBy ? article.lockedBy : (article.publisherName ?? 'Tim+Editor')}&background=e0f2fe&color=0369a1`} alt="Editor" className="w-full h-full object-cover" />
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[9px] text-gray-400 font-semibold leading-tight">Editor</span>
-                    <span className="text-[11px] font-extrabold text-gray-800 leading-tight my-[1px]">Tim Editor</span>
+                    <span className="text-[11px] font-extrabold text-gray-800 leading-tight my-[1px]">
+                      {article.status === 'on_progress' && article.lockedBy ? article.lockedBy : (article.publisherName ?? 'Tim Editor')}
+                    </span>
                     <span className="text-[8px] text-gray-400 font-medium leading-tight">Redaksi klojen.com</span>
                   </div>
                 </div>

@@ -83,8 +83,17 @@ Route::middleware('auth:api')->prefix('cms')->group(function () {
     // PATCH /api/cms/articles/{id}/status — Update status artikel (editor / admin)
     Route::patch('/articles/{id}/status', [CmsArticleController::class, 'updateStatus']);
 
+    // POST /api/cms/articles/{id}/lock - Tandai on progress (editor)
+    Route::post('/articles/{id}/lock', [CmsArticleController::class, 'lock']);
+
+    // POST /api/cms/articles/{id}/unlock - Lepas tanda on progress (editor)
+    Route::post('/articles/{id}/unlock', [CmsArticleController::class, 'unlock']);
+
     // GET /api/cms/comments — Ambil semua komentar untuk moderasi (editor / admin)
     Route::get('/comments', [CmsCommentController::class, 'index']);
+
+    // GET /api/cms/statistics — Dashboard statistics
+    Route::get('/statistics', [\App\Http\Controllers\CmsDashboardController::class, 'index']);
 });
 
 // ── Users (admin only) ────────────────────────────────────────────────────────
