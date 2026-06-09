@@ -18,3 +18,6 @@ interface CategoriesResponse {
  */
 export const getCategories = () =>
   axiosInstance.get<CategoriesResponse>('/categories');
+
+export const deleteCategory = (id: string) =>
+  axiosInstance.delete(`/categories/${id}`);

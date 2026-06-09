@@ -3,21 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Plus, Edit, Trash2, X, CheckCircle2, Tag as TagIcon, LayoutGrid, Search, ChevronLeft, ChevronRight } from 'lucide-react';
-
-// Mock Data
-const initialCategories = [
-  { id: 1, nama: 'Pendidikan', gambar: '', jumlahArtikel: 120 },
-  { id: 2, nama: 'Kuliner', gambar: '', jumlahArtikel: 120 },
-  { id: 3, nama: 'Wisata', gambar: '', jumlahArtikel: 120 },
-  { id: 4, nama: 'Hotel', gambar: '', jumlahArtikel: 120 },
-];
-
-const initialTags = [
-  { id: 1, nama: 'Berita Terkini', jumlahArtikel: 45 },
-  { id: 2, nama: 'Teknologi', jumlahArtikel: 30 },
-  { id: 3, nama: 'Kesehatan', jumlahArtikel: 25 },
-  { id: 4, nama: 'Olahraga', jumlahArtikel: 60 },
-];
+import { getCategories, deleteCategory } from '@/lib/api/categories';
+import { getTags, deleteTag } from '@/lib/api/tags';
 
 export default function KategoriTagPage() {
   const [activeTab, setActiveTab] = useState<'kategori' | 'tag'>('kategori');
@@ -34,30 +21,29 @@ export default function KategoriTagPage() {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fungsi untuk mengambil data (Siap disambungkan ke API backend)
+  // Fungsi untuk mengambil data (Disambungkan ke API backend)
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      // TODO: Ganti dengan fetch API yang sebenarnya (misal: await axios.get('/api/kategori'))
-      
-      // Simulasi delay jaringan (mock API)
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const [categoriesRes, tagsRes] = await Promise.all([
+        getCategories(),
+        getTags()
+      ]);
 
-      const existingCats = localStorage.getItem('dummyCategories');
-      if (existingCats) {
-        setCategories(JSON.parse(existingCats));
-      } else {
-        setCategories(initialCategories);
-        localStorage.setItem('dummyCategories', JSON.stringify(initialCategories));
-      }
+      const fetchedCategories = categoriesRes.data.data.map((cat: any) => ({
+        id: cat.id,
+        nama: cat.name,
+        gambar: '', 
+        jumlahArtikel: 0 
+      }));
+      setCategories(fetchedCategories);
 
-      const existingTags = localStorage.getItem('dummyTags');
-      if (existingTags) {
-        setTags(JSON.parse(existingTags));
-      } else {
-        setTags(initialTags);
-        localStorage.setItem('dummyTags', JSON.stringify(initialTags));
-      }
+      const fetchedTags = tagsRes.data.data.map((tag: any) => ({
+        id: tag.id,
+        nama: tag.name,
+        jumlahArtikel: 0
+      }));
+      setTags(fetchedTags);
     } catch (error) {
       console.error("Gagal mengambil data:", error);
     } finally {
@@ -72,34 +58,25 @@ export default function KategoriTagPage() {
   // Modal states for delete confirmation
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<string | number | null>(null);
   const [deleteType, setDeleteType] = useState<'kategori' | 'tag' | null>(null);
 
-  const handleDeleteClick = (id: number, type: 'kategori' | 'tag') => {
+  const handleDeleteClick = (id: string | number, type: 'kategori' | 'tag') => {
     setSelectedId(id);
     setDeleteType(type);
     setIsDeleteModalOpen(true);
   };
 
-  // Fungsi untuk menghapus data (Siap disambungkan ke API backend)
+  // Fungsi untuk menghapus data (Disambungkan ke API backend)
   const confirmDelete = async () => {
     if (selectedId !== null && deleteType !== null) {
       try {
-        // TODO: Ganti dengan fetch API Delete yang sebenarnya 
-        // misal: await axios.delete(`/api/${deleteType}/${selectedId}`);
-
-        // Simulasi proses delete di server
-        await new Promise(resolve => setTimeout(resolve, 400));
-
-        // Update state lokal setelah server berhasil menghapus
         if (deleteType === 'kategori') {
-          const newCats = categories.filter((item) => item.id !== selectedId);
-          setCategories(newCats);
-          localStorage.setItem('dummyCategories', JSON.stringify(newCats));
+          await deleteCategory(String(selectedId));
+          setCategories(categories.filter((item) => item.id !== selectedId));
         } else {
-          const newTags = tags.filter((item) => item.id !== selectedId);
-          setTags(newTags);
-          localStorage.setItem('dummyTags', JSON.stringify(newTags));
+          await deleteTag(String(selectedId));
+          setTags(tags.filter((item) => item.id !== selectedId));
         }
 
         setIsDeleteModalOpen(false);
