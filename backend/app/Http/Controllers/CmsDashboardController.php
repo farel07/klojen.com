@@ -24,14 +24,41 @@ class CmsDashboardController extends Controller
 
     private function getEditorStats($user)
     {
+        $baseQuery = function($q) use ($user) {
+            if ($user->role === 'journalist') {
+                $q->where('author_id', $user->id);
+            } elseif ($user->role === 'editor') {
+                $q->where(function ($q1) use ($user) {
+                    $q1->where('author_id', $user->id)
+                       ->orWhere(function ($q2) use ($user) {
+                           $q2->where('status', 'review')
+                              ->where('author_id', '!=', $user->id);
+                       })
+                       ->orWhere(function ($q3) use ($user) {
+                           $q3->where('status', 'scheduled')
+                              ->whereExists(function ($sub) use ($user) {
+                                  $sub->select(DB::raw(1))
+                                      ->from('scheduled_articles')
+                                      ->whereColumn('scheduled_articles.article_id', 'articles.id')
+                                      ->where('scheduled_articles.scheduled_by', $user->id);
+                              });
+                       })
+                       ->orWhere(function ($q4) use ($user) {
+                           $q4->whereIn('status', ['published', 'archived'])
+                              ->where('published_by', $user->id);
+                       });
+                });
+            }
+        };
+
         // 1. Stat Cards
-        $beritaPublish = Article::where('author_id', $user->id)->where('status', 'published')->count();
-        $draft = Article::where('author_id', $user->id)->where('status', 'draft')->count();
-        $kategoriAktif = Article::where('author_id', $user->id)->distinct('category_id')->count('category_id');
+        $beritaPublish = Article::where($baseQuery)->where('status', 'published')->count();
+        $draft = Article::where($baseQuery)->where('status', 'draft')->count();
+        $kategoriAktif = Article::where($baseQuery)->distinct('category_id')->count('category_id');
         $mediaTersimpan = 0; // Mock or count if we have media model with user_id
 
         // 2. Yearly Data
-        $yearlyDataRaw = Article::where('author_id', $user->id)
+        $yearlyDataRaw = Article::where($baseQuery)
             ->select(DB::raw('YEAR(created_at) as year'), DB::raw('count(*) as berita'))
             ->groupBy('year')
             ->orderBy('year', 'asc')
@@ -50,7 +77,7 @@ class CmsDashboardController extends Controller
         }
 
         // 3. Category Data
-        $categoryDataRaw = Article::where('author_id', $user->id)
+        $categoryDataRaw = Article::where($baseQuery)
             ->join('categories', 'articles.category_id', '=', 'categories.id')
             ->select('categories.name', DB::raw('count(*) as value'))
             ->groupBy('categories.id', 'categories.name')
