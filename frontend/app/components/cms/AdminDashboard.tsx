@@ -115,6 +115,13 @@ export default function AdminDashboard() {
     totalBeritaHariIni: 0,
     iklanAktif: 12
   });
+  const [sparklines, setSparklines] = useState({
+    totalBerita: SPARKLINE_1,
+    totalUser: SPARKLINE_2,
+    beritaHariIni: SPARKLINE_3,
+    iklanAktif: SPARKLINE_4
+  });
+  const [visitorData, setVisitorData] = useState(VISITOR_DATA);
 
   useEffect(() => {
     axiosInstance.get('/cms/statistics')
@@ -123,6 +130,8 @@ export default function AdminDashboard() {
         if (data.summaryData) setSummaryData(data.summaryData);
         if (data.categoryData) setCategoryData(data.categoryData);
         if (data.topCards) setTopCards(data.topCards);
+        if (data.sparklines) setSparklines(data.sparklines);
+        if (data.visitorData) setVisitorData(data.visitorData);
       })
       .catch(err => {
         console.error('Failed to load admin stats:', err);
@@ -174,7 +183,7 @@ export default function AdminDashboard() {
               <span className="text-gray-500">bulan ini</span>
             </div>
             <div className="w-[80px] h-[30px]">
-              <Sparkline data={SPARKLINE_1} color="#3b82f6" />
+              <Sparkline data={sparklines.totalBerita} color="#3b82f6" />
             </div>
           </div>
         </div>
@@ -193,7 +202,7 @@ export default function AdminDashboard() {
           <div className="flex justify-between items-end mt-4">
             <div className="text-[11px] font-bold text-gray-500">Pengguna Terdaftar</div>
             <div className="w-[80px] h-[30px]">
-              <Sparkline data={SPARKLINE_2} color="#10b981" />
+              <Sparkline data={sparklines.totalUser} color="#10b981" />
             </div>
           </div>
         </div>
@@ -212,7 +221,7 @@ export default function AdminDashboard() {
           <div className="flex justify-between items-end mt-4">
             <div className="text-[11px] font-bold text-gray-500">Artikel</div>
             <div className="w-[80px] h-[30px]">
-              <Sparkline data={SPARKLINE_3} color="#f59e0b" />
+              <Sparkline data={sparklines.beritaHariIni} color="#f59e0b" />
             </div>
           </div>
         </div>
@@ -231,7 +240,7 @@ export default function AdminDashboard() {
           <div className="flex justify-between items-end mt-4">
             <div className="text-[11px] font-bold text-gray-500">Penempatan</div>
             <div className="w-[80px] h-[30px]">
-              <Sparkline data={SPARKLINE_4} color="#8b5cf6" />
+              <Sparkline data={sparklines.iklanAktif} color="#8b5cf6" />
             </div>
           </div>
         </div>
@@ -287,7 +296,7 @@ export default function AdminDashboard() {
 
           <div className="w-full h-[360px]">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={VISITOR_DATA[timeFilter]} margin={{ top: 10, right: 10, left: -20, bottom: 5 }}>
+              <AreaChart data={visitorData[timeFilter]} margin={{ top: 10, right: 10, left: -20, bottom: 5 }}>
                 <defs>
                   <linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.15} />
