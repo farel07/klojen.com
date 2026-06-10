@@ -165,17 +165,98 @@ class CmsDashboardController extends Controller
             $categoryData[$key] = $catList;
         }
 
+        // Generate sparkline data
+        $sparklines = [
+            'totalBerita' => [],
+            'totalUser' => [],
+            'beritaHariIni' => [],
+            'iklanAktif' => [
+                ['v' => 5], ['v' => 4.5], ['v' => 5.5], ['v' => 5], ['v' => 7], ['v' => 6], ['v' => 8]
+            ]
+        ];
+
+        // 7 days trend
+        for ($i = 6; $i >= 0; $i--) {
+            $dateStart = now()->subDays($i)->startOfDay();
+            $dateEnd = now()->subDays($i)->endOfDay();
+            
+            $beritaCount = Article::whereBetween('created_at', [$dateStart, $dateEnd])->count();
+            $userCount = User::whereBetween('created_at', [$dateStart, $dateEnd])->count();
+            
+            $sparklines['totalBerita'][] = ['v' => $beritaCount];
+            $sparklines['totalUser'][] = ['v' => $userCount];
+        }
+
+        // Today trend (divided into 7 parts)
+        $todayStart = now()->startOfDay();
+        for ($i = 0; $i < 7; $i++) {
+            $periodStart = $todayStart->copy()->addHours($i * 3);
+            $periodEnd = $periodStart->copy()->addHours(3);
+            
+            if ($periodStart > now()) {
+                $sparklines['beritaHariIni'][] = ['v' => 0];
+            } else {
+                $count = Article::whereBetween('created_at', [$periodStart, $periodEnd])->count();
+                $sparklines['beritaHariIni'][] = ['v' => $count];
+            }
+        }
+
+        // Generate Visitor Data (Mock dynamic)
+        $visitorData = [
+            'hari_ini' => [],
+            '7_hari' => [],
+            '30_hari' => [],
+            '1_tahun' => []
+        ];
+
+        // hari_ini: 6 points, every 4 hours
+        for ($i = 0; $i < 6; $i++) {
+            $hour = str_pad($i * 4, 2, '0', STR_PAD_LEFT) . ':00';
+            $visitorData['hari_ini'][] = [
+                'date' => $hour,
+                'visitors' => rand(100, 5000)
+            ];
+        }
+
+        // 7_hari: 7 points, daily
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i)->translatedFormat('d M');
+            $visitorData['7_hari'][] = [
+                'date' => $date,
+                'visitors' => rand(3000, 12000)
+            ];
+        }
+
+        // 30_hari: 7 points, every 4-5 days
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i * 4)->translatedFormat('d M');
+            $visitorData['30_hari'][] = [
+                'date' => $date,
+                'visitors' => rand(4000, 15000)
+            ];
+        }
+
+        // 1_tahun: 12 points, monthly
+        for ($i = 11; $i >= 0; $i--) {
+            $date = now()->subMonths($i)->translatedFormat('M');
+            $visitorData['1_tahun'][] = [
+                'date' => $date,
+                'visitors' => rand(100000, 300000)
+            ];
+        }
+
         return response()->json([
             'role' => 'admin',
             'summaryData' => $summaryData,
             'categoryData' => $categoryData,
-            // Provide overall stats for the 4 top cards
             'topCards' => [
                 'totalBerita' => Article::count(),
                 'totalUser' => User::count(),
                 'totalBeritaHariIni' => Article::where('created_at', '>=', $filters['hari_ini'])->count(),
                 'iklanAktif' => 12 // mock
-            ]
+            ],
+            'sparklines' => $sparklines,
+            'visitorData' => $visitorData
         ]);
     }
 }
