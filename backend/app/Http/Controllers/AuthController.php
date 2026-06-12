@@ -103,9 +103,11 @@ class AuthController extends Controller
                 'refresh_token' => $validated['refresh_token'],
                 'expires_in'    => $result['expires_in'],
                 'user'          => [
-                    'id'   => $result['user']->id,
-                    'name' => $result['user']->name,
-                    'role' => $result['user']->role,
+                    'id'        => $result['user']->id,
+                    'name'      => $result['user']->name,
+                    'email'     => $result['user']->email,
+                    'avatar_url'=> $result['user']->avatar_url,
+                    'role'      => $result['user']->role,
                 ],
             ],
         ]);

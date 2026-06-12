@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/stores/authStore';
 import { User, Mail } from 'lucide-react';
 import Link from 'next/link';
@@ -14,10 +14,40 @@ export default function EditProfilPage() {
   const { user, updateUser } = useAuthStore();
   const router = useRouter();
 
-  const [name, setName] = useState(user?.name || '');
-  const [email, setEmail] = useState(user?.email || '');
-  const [avatar, setAvatar] = useState(user?.avatar || '');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [avatar, setAvatar] = useState('');
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
+
+  // Hydrate dari Zustand dan /auth/me untuk pastikan email selalu terisi
+  useEffect(() => {
+    const loadUser = async () => {
+      // Coba dari store dulu
+      if (user?.email) {
+        setName(user.name || '');
+        setEmail(user.email);
+        setAvatar(user.avatar || '');
+        return;
+      }
+      // Fallback: fetch dari /auth/me jika email di store kosong
+      try {
+        const res = await axiosInstance.get('/auth/me');
+        const data = res.data?.data;
+        if (data) {
+          setName(data.name || '');
+          setEmail(data.email || '');
+          setAvatar(data.avatar_url || '');
+          updateUser({ name: data.name, email: data.email, avatar: data.avatar_url });
+        }
+      } catch {
+        // Gunakan apa yang ada di store meski email kosong
+        setName(user?.name || '');
+        setEmail(user?.email || '');
+        setAvatar(user?.avatar || '');
+      }
+    };
+    loadUser();
+  }, []);
 
   // Cropper states
   const [selectedImage, setSelectedImage] = useState('');
@@ -63,7 +93,7 @@ export default function EditProfilPage() {
     try {
       const formData = new FormData();
       formData.append('name', name);
-      formData.append('email', email);
+      formData.append('email', email || user?.email || '');  // fallback jika state belum terisi
       if (avatarFile) {
         formData.append('avatar', avatarFile);
       }

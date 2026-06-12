@@ -35,9 +35,11 @@ interface MockArticleItem {
   tags?: string[];
   rejectionReason?: string;
   author?: string;
-  publishedAt?: string;
   publisherName?: string;
   lockedBy?: string;
+  authorAvatarUrl?: string;
+  publisherAvatarUrl?: string;
+  lockedByAvatarUrl?: string;
 }
 
 const MOCK_ARTICLES: MockArticleItem[] = [
@@ -191,9 +193,12 @@ export default function PreviewBeritaPage({ params }: Props) {
           content: item.content,
           tags: item.tags || [],
           author: item.author_name || 'Jurnalis',
+          authorAvatarUrl: item.author_avatar_url,
           publishedAt: item.published_at,
           publisherName: item.publisher_name,
+          publisherAvatarUrl: item.publisher_avatar_url,
           lockedBy: item.locked_by_name,
+          lockedByAvatarUrl: item.locked_by_avatar_url,
         });
       } catch (err) {
         console.error('Failed to fetch article', err);
@@ -284,7 +289,7 @@ export default function PreviewBeritaPage({ params }: Props) {
                 {/* Writer */}
                 <div className="flex items-center gap-2.5 px-3 py-1">
                   <div className="w-7 h-7 rounded-full bg-blue-50 overflow-hidden shrink-0">
-                    <img src={`https://ui-avatars.com/api/?name=${article.author ?? 'Jurnalis'}&background=fce7f3&color=be185d`} alt="Author" className="w-full h-full object-cover" />
+                    <img src={article.authorAvatarUrl || `https://ui-avatars.com/api/?name=${article.author ?? 'Jurnalis'}&background=fce7f3&color=be185d`} alt="Author" className="w-full h-full object-cover" />
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[9px] text-gray-400 font-semibold leading-tight">Penulis</span>
@@ -299,7 +304,7 @@ export default function PreviewBeritaPage({ params }: Props) {
                 {/* Editor */}
                 <div className="flex items-center gap-2.5 px-3 py-1">
                   <div className="w-7 h-7 rounded-full bg-emerald-50 overflow-hidden shrink-0">
-                    <img src={`https://ui-avatars.com/api/?name=${article.status === 'on_progress' && article.lockedBy ? article.lockedBy : (article.publisherName ?? 'Tim+Editor')}&background=e0f2fe&color=0369a1`} alt="Editor" className="w-full h-full object-cover" />
+                    <img src={(article.status === 'on_progress' && article.lockedBy ? article.lockedByAvatarUrl : article.publisherAvatarUrl) || `https://ui-avatars.com/api/?name=${article.status === 'on_progress' && article.lockedBy ? article.lockedBy : (article.publisherName ?? 'Tim+Editor')}&background=e0f2fe&color=0369a1`} alt="Editor" className="w-full h-full object-cover" />
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[9px] text-gray-400 font-semibold leading-tight">Editor</span>
