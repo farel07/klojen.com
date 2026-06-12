@@ -493,13 +493,38 @@ export default function DetailArtikel({ slug }: DetailArtikelProps) {
                 {article.title}
               </h1>
 
-              {/* Author + View Count */}
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm uppercase">
-                    {article.author.name.charAt(0)}
+              {/* Author, Editor + View Count */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                {/* Writer & Editor Pill Box */}
+                <div className="flex items-center rounded-[20px] border border-gray-200/80 px-1.5 py-1 bg-white shadow-sm w-max">
+                  {/* Writer */}
+                  <div className="flex items-center gap-2.5 px-3 py-1">
+                    <div className="w-8 h-8 rounded-full bg-blue-50 overflow-hidden shrink-0">
+                      <img src={article.author?.avatar_url || `https://ui-avatars.com/api/?name=${article.author.name}&background=fce7f3&color=be185d`} alt="Author" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[10px] text-gray-400 font-semibold leading-tight">Penulis</span>
+                      <span className="text-xs font-extrabold text-gray-800 leading-tight my-[1px]">{article.author.name}</span>
+                    </div>
                   </div>
-                  <span className="font-bold text-gray-900">{article.author.name}</span>
+
+                  {article.editor && (
+                    <>
+                      {/* Divider */}
+                      <div className="w-px h-7 bg-gray-200 mx-1"></div>
+
+                      {/* Editor */}
+                      <div className="flex items-center gap-2.5 px-3 py-1">
+                        <div className="w-8 h-8 rounded-full bg-emerald-50 overflow-hidden shrink-0">
+                          <img src={article.editor.avatar_url || `https://ui-avatars.com/api/?name=${article.editor.name}&background=e0f2fe&color=0369a1`} alt="Editor" className="w-full h-full object-cover" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-[10px] text-gray-400 font-semibold leading-tight">Editor</span>
+                          <span className="text-xs font-extrabold text-gray-800 leading-tight my-[1px]">{article.editor.name}</span>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
                 <span className="text-xs text-gray-400 flex items-center space-x-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

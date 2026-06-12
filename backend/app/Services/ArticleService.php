@@ -84,8 +84,14 @@ class ArticleService
             'view_count'         => $article->view_count,
             'published_at'       => $article->published_at?->toIso8601String(),
             'author'             => $article->author ? [
-                'id'   => $article->author->id,
-                'name' => $article->author->name,
+                'id'         => $article->author->id,
+                'name'       => $article->author->name,
+                'avatar_url' => $article->author->avatar_url,
+            ] : null,
+            'editor'             => $article->publisher ? [
+                'id'         => $article->publisher->id,
+                'name'       => $article->publisher->name,
+                'avatar_url' => $article->publisher->avatar_url,
             ] : null,
             'category'           => $article->category ? [
                 'id'   => $article->category->id,

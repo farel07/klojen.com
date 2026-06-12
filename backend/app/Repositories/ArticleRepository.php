@@ -16,7 +16,7 @@ class ArticleRepository implements ArticleRepositoryInterface
      */
     private function baseQuery(): Builder
     {
-        return Article::with(['author:id,name', 'category:id,name,slug', 'tags:id,name,slug', 'media']);
+        return Article::with(['author:id,name,avatar_url', 'publisher:id,name,avatar_url', 'category:id,name,slug', 'tags:id,name,slug', 'media']);
     }
 
     /**
@@ -63,7 +63,8 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function findBySlug(string $slug): ?Article
     {
         return Article::with([
-                'author:id,name',
+                'author:id,name,avatar_url',
+                'publisher:id,name,avatar_url',
                 'category:id,name,slug',
                 'tags:id,name,slug',
                 'media',
