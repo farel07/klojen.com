@@ -3,18 +3,22 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Repositories\Contracts\PasswordResetTokenRepositoryInterface;
 use App\Repositories\Contracts\RefreshTokenRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Mail\ResetPasswordMail;
 use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 class AuthService
 {
     public function __construct(
-        protected UserRepositoryInterface         $userRepository,
-        protected RefreshTokenRepositoryInterface $refreshTokenRepository,
+        protected UserRepositoryInterface                $userRepository,
+        protected RefreshTokenRepositoryInterface        $refreshTokenRepository,
+        protected PasswordResetTokenRepositoryInterface  $passwordResetTokenRepository,
     ) {}
 
     // ── Register ─────────────────────────────────────────────────────────────
@@ -143,5 +147,76 @@ class AuthService
         } catch (\Exception) {
             // Token mungkin sudah expired, tetap lanjutkan logout
         }
+    }
+
+    // ── Forgot Password ───────────────────────────────────────────────────────
+
+    /**
+     * Kirim email berisi link reset password.
+     * Selalu return void tanpa error (hindari user enumeration).
+     */
+    public function forgotPassword(string $email): void
+    {
+        $user = $this->userRepository->findByEmail($email);
+
+        // Jika email tidak terdaftar, diam saja (anti user enumeration)
+        if (!$user) {
+            return;
+        }
+
+        // Generate raw token & simpan hash-nya ke DB
+        $rawToken  = Str::random(64);
+        $tokenHash = hash('sha256', $rawToken);
+
+        $this->passwordResetTokenRepository->create($email, $tokenHash);
+
+        // Bentuk URL reset untuk frontend
+        $resetUrl = rtrim(config('app.frontend_url'), '/') . '/reset-password'
+            . '?token=' . $rawToken
+            . '&email=' . urlencode($email);
+
+        // Kirim email
+        Mail::to($email)->send(new ResetPasswordMail($user->name, $resetUrl));
+    }
+
+    // ── Reset Password ────────────────────────────────────────────────────────
+
+    /**
+     * Validasi token & reset password user.
+     *
+     * @throws \RuntimeException
+     */
+    public function resetPassword(string $email, string $rawToken, string $newPassword): void
+    {
+        $record = $this->passwordResetTokenRepository->findByEmail($email);
+
+        if (!$record) {
+            throw new \RuntimeException('Token tidak valid atau sudah digunakan.', 422);
+        }
+
+        // Bandingkan hash
+        if (!hash_equals($record->token, hash('sha256', $rawToken))) {
+            throw new \RuntimeException('Token tidak valid atau sudah digunakan.', 422);
+        }
+
+        if ($record->isExpired()) {
+            $this->passwordResetTokenRepository->deleteByEmail($email);
+            throw new \RuntimeException('Token sudah kedaluwarsa. Silakan minta reset password baru.', 422);
+        }
+
+        $user = $this->userRepository->findByEmail($email);
+
+        if (!$user) {
+            throw new \RuntimeException('Akun tidak ditemukan.', 404);
+        }
+
+        // Update password
+        $user->update(['password' => $newPassword]);
+
+        // Hapus token (one-time use)
+        $this->passwordResetTokenRepository->deleteByEmail($email);
+
+        // Revoke semua refresh token (paksa login ulang)
+        $this->refreshTokenRepository->revokeAllForUser($user->id);
     }
 }
