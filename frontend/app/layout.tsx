@@ -32,12 +32,21 @@ export const metadata: Metadata = {
     description:
       "Portal berita khusus Kota Malang yang berfokus pada pendidikan, kuliner, wisata, dan hotel.",
     url: "/",
+    images: [
+      {
+        url: "/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "Klojen — Portal Berita Kota Malang",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Klojen | Portal Berita Kota Malang",
     description:
       "Portal berita khusus Kota Malang yang berfokus pada pendidikan, kuliner, wisata, dan hotel.",
+    images: ["/og-default.png"],
   },
   robots: {
     index: true,

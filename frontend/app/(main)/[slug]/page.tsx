@@ -128,7 +128,7 @@ function NewsArticleJsonLd({ article, slug }: { article: ArticleForSeo; slug: st
       url: siteUrl,
       logo: {
         "@type": "ImageObject",
-        url: `${siteUrl}/logo.png`,
+        url: `${siteUrl}/images/logo.png`,
       },
     },
     ...(article.featured_image_url && {

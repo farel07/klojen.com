@@ -13,6 +13,10 @@ export default function robots(): MetadataRoute.Robots {
           "/cms/",
           "/login",
           "/register",
+          "/lupa-password",
+          "/reset-password",
+          "/bookmark",
+          "/profil",
           "/api/",
           "/*?*", // URL dengan query string (kecuali /cari yang sudah di-allow via canonical)
         ],
@@ -21,7 +25,7 @@ export default function robots(): MetadataRoute.Robots {
         // Izinkan Googlebot mengakses semua halaman publik tanpa batasan
         userAgent: "Googlebot",
         allow: "/",
-        disallow: ["/cms/", "/login", "/register", "/api/"],
+        disallow: ["/cms/", "/login", "/register", "/lupa-password", "/reset-password", "/bookmark", "/profil", "/api/"],
       },
     ],
     sitemap: [
