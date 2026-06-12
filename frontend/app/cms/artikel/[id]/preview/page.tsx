@@ -40,6 +40,7 @@ interface MockArticleItem {
   authorAvatarUrl?: string;
   publisherAvatarUrl?: string;
   lockedByAvatarUrl?: string;
+  publishedAt?: string;
 }
 
 const MOCK_ARTICLES: MockArticleItem[] = [
