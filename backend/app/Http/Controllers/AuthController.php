@@ -225,4 +225,57 @@ class AuthController extends Controller
             'message' => 'Password berhasil diubah.',
         ]);
     }
+
+    // ── POST /auth/forgot-password ───────────────────────────────────────
+
+    /**
+     * Kirim link reset password ke email user.
+     * Selalu return 200 (anti user enumeration).
+     */
+    public function forgotPassword(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'email' => 'required|string|email',
+        ]);
+
+        $this->authService->forgotPassword($validated['email']);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Jika email Anda terdaftar, kami telah mengirimkan link reset password. Periksa inbox Anda.',
+        ]);
+    }
+
+    // ── POST /auth/reset-password ─────────────────────────────────────────
+
+    /**
+     * Reset password menggunakan token dari email.
+     */
+    public function resetPassword(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'email'                 => 'required|string|email',
+            'token'                 => 'required|string',
+            'password'              => 'required|string|min:8',
+            'password_confirmation' => 'required|string|same:password',
+        ]);
+
+        try {
+            $this->authService->resetPassword(
+                $validated['email'],
+                $validated['token'],
+                $validated['password'],
+            );
+        } catch (\RuntimeException $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => $e->getMessage(),
+            ], $e->getCode() ?: 422);
+        }
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Password berhasil direset. Silakan login dengan password baru Anda.',
+        ]);
+    }
 }
