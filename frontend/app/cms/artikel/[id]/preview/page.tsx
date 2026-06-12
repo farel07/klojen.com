@@ -158,33 +158,8 @@ const MOCK_ARTICLES: MockArticleItem[] = [
   },
 ];
 
-// Popular sidebar articles (static mock)
-const POPULAR_ARTICLES = [
-  {
-    id: 'p1',
-    title: 'Tahu Walik Cemilan Khas Malang yang Selalu Dicari',
-    image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=200&q=80',
-    date: '26 Mei 2026',
-  },
-  {
-    id: 'p2',
-    title: 'Sempol Ayam, Jajanan Murah yang Bikin Nagih',
-    image: 'https://images.unsplash.com/photo-1555126634-323283e090fa?w=200&q=80',
-    date: '26 Mei 2026',
-  },
-  {
-    id: 'p3',
-    title: 'Sego Sambel Cak Uut Pedesnya nampol!',
-    image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=200&q=80',
-    date: '25 Mei 2026',
-  },
-  {
-    id: 'p4',
-    title: 'Bakso Bakar Malang Tetap Jadi Buruan Wisatawan',
-    image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=200&q=80',
-    date: '25 Mei 2026',
-  },
-];
+
+
 
 function formatDate(dateStr?: string) {
   if (!dateStr) return dayjs().format('D MMMM YYYY, HH:mm[WIB]');
@@ -280,10 +255,10 @@ export default function PreviewBeritaPage({ params }: Props) {
         </div>
       )}
       <section className="py-8 bg-white">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="max-w-4xl mx-auto px-4">
 
-          {/* ── Left: Article ───────────────────────────────────────────────────── */}
-          <div className="lg:col-span-2 border border-gray-200 bg-white p-6 md:p-10">
+          {/* ── Article ─────────────────────────────────────────────────────────── */}
+          <div className="border border-gray-200 bg-white p-6 md:p-10">
 
             {/* Title */}
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
@@ -403,111 +378,10 @@ export default function PreviewBeritaPage({ params }: Props) {
                   </div>
                 </div>
 
-
-              </div>
-
-              {/* ── Right: Sidebar ──────────────────────────────────────────────────── */}
-              <div className="lg:col-span-1">
-                <div className="border border-gray-200 bg-white p-6 rounded-xl sticky top-16">
-                  <h2 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide">
-                    TERPOPULER MINGGU INI
-                  </h2>
-
-                  <div className="space-y-6">
-                    {POPULAR_ARTICLES.map((item, index) => (
-                      <a
-                        key={item.id}
-                        href="#"
-                        className={`flex space-x-4 items-start hover:opacity-80 transition-opacity group ${
-                          index < POPULAR_ARTICLES.length - 1 ? 'pb-6 border-b border-gray-100' : ''
-                        }`}
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-28 h-20 object-cover rounded-lg shrink-0"
-                        />
-                        <div className="flex-1">
-                          <h3 className="font-bold text-gray-900 text-sm mb-2 leading-snug group-hover:text-blue-600 transition-colors">
-                            {item.title}
-                          </h3>
-                          <p className="text-xs text-gray-400">{item.date}</p>
-                        </div>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </section>
-
-          {/* ── Footer ─────────────────────────────────────────────────────────────── */}
-          <footer className="bg-[#0f172a] text-white pt-16 pb-12 mt-12">
-            <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-
-              {/* Brand */}
-              <div>
-                <div className="flex items-center space-x-2 mb-8">
-                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                    <span className="text-blue-700 font-bold text-sm">K</span>
-                  </div>
-                  <span className="font-bold text-2xl">Klojen</span>
-                </div>
-                <p className="text-slate-400 mb-4">Connect With Us</p>
-                <div className="flex space-x-4 mb-8">
-                  {['TikTok', 'IG', 'FB', 'TW'].map((s) => (
-                    <a key={s} href="#" className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center hover:bg-slate-600 transition-colors">
-                      <span className="text-white text-xs font-bold">{s.charAt(0)}</span>
-                    </a>
-                  ))}
-                </div>
-                <p className="text-slate-400 text-sm">Media Kolaborasi Indonesia</p>
-                <p className="text-slate-400 text-sm mt-2">
-                  &copy; 2026 PT. Ketik Media Siber All Rights Reserved.
-                </p>
-              </div>
-
-              {/* Kategori */}
-              <div>
-                <h4 className="text-emerald-500 font-bold mb-6 tracking-wider">KATEGORI</h4>
-                <ul className="space-y-4">
-                  {['Kuliner', 'Wisata', 'Pendidikan', 'Hotel'].map((cat) => (
-                    <li key={cat}>
-                      <a href="#" className="text-white hover:text-emerald-400 transition-colors">{cat}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Informasi */}
-              <div>
-                <h4 className="text-emerald-500 font-bold mb-6 tracking-wider">INFORMASI</h4>
-                <ul className="space-y-4">
-                  {['Redaksi', 'Tentang Kami', 'Verifikasi Dewan Pers', 'Pedoman Media Siber dan Kode Perilaku'].map((item) => (
-                    <li key={item}>
-                      <a href="#" className="text-white hover:text-emerald-400 transition-colors">{item}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Legal */}
-              <div>
-                <h4 className="text-emerald-500 font-bold mb-6 tracking-wider opacity-0 hidden lg:block">LINKS</h4>
-                <ul className="space-y-4">
-                  {['Disclaimer', 'Privacy & Policy', 'Terms of Service', 'Karier'].map((item) => (
-                    <li key={item}>
-                      <a href="#" className="text-white hover:text-emerald-400 transition-colors">{item}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-            </div>
-          </footer>
-
+          </div>
         </div>
-      );
-    }
+      </section>
+
+    </div>
+  );
+}
