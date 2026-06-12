@@ -27,6 +27,7 @@ class Article extends Model
         'is_featured',
         'view_count',
         'published_at',
+        'published_by',
     ];
 
     protected function casts(): array
@@ -43,6 +44,16 @@ class Article extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function locker(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'locked_by');
+    }
+
+    public function publisher(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'published_by');
     }
 
     public function category(): BelongsTo

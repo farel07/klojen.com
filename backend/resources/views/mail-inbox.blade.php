@@ -261,6 +261,7 @@
             <div class="preview-body">
                 <iframe id="previewFrame"
                         srcdoc="{!! htmlspecialchars($emails[0]['body'], ENT_QUOTES, 'UTF-8') !!}"
+                        sandbox="allow-popups allow-same-origin allow-scripts"
                         onload="this.style.height = this.contentDocument.body.scrollHeight + 48 + 'px'">
                 </iframe>
             </div>

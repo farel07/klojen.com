@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useAuthStore } from '@/stores/authStore';
 import {
   Search,
   Plus,
@@ -17,12 +18,16 @@ import {
   XCircle,
   Tag,
   Trash2,
-  X
+  X,
+  RefreshCw,
+  UserCircle2,
+  Calendar,
 } from 'lucide-react';
+import { getCmsArticles } from '@/lib/api/articles';
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
 
-type ArticleStatus = 'published' | 'draft' | 'scheduled' | 'rejected';
+type ArticleStatus = 'published' | 'draft' | 'review' | 'on_progress' | 'rejected' | 'scheduled';
 
 interface MockArticleItem {
   id: string;
@@ -36,7 +41,10 @@ interface MockArticleItem {
   tags?: string[];
   rejectionReason?: string;
   author?: string;
+  lockedBy?: string;
+  lockedById?: number;
   publishedAt?: string;
+  publisherName?: string;
 }
 
 const MOCK_ARTICLES: MockArticleItem[] = [
@@ -70,15 +78,62 @@ const MOCK_ARTICLES: MockArticleItem[] = [
 <p>Keunggulan utama hotel ini adalah lokasinya yang sangat strategis. Hanya berjarak 200 meter dari Alun-Alun Kota Malang, tamu dapat dengan mudah menjangkau berbagai pusat kuliner legendaris, kawasan pecinan, dan sentra perbelanjaan legendaris di Kota Malang hanya dengan berjalan kaki.</p>
 <p>"Kami membidik segmen keluarga dan business traveler yang membutuhkan penginapan berkualitas di pusat kota dengan akses mudah ke mana-mana," ujar Manajer Operasional Hotel, Budi Santoso saat acara soft opening, Rabu (27/5/2026).</p>
 <p>Selama masa promosi pembukaan, manajemen memberikan diskon tarif kamar hingga 30 persen bagi tamu yang memesan melalui aplikasi atau website resmi mereka. Promosi ini berlaku hingga akhir bulan depan.</p>`,
-    tags: ['#HotelMalang', '#Wisata', '#AlunAlunMalang', '#PenginapanMalang'],
+  },
+  {
+    id: '3b',
+    title: 'Festival Kuliner Malang 2026 Hadirkan 200 Stand Makanan',
+    excerpt: 'Festival kuliner tahunan Kota Malang kembali digelar dengan skala lebih besar...',
+    category: 'Kuliner',
+    status: 'draft' as ArticleStatus,
+    image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80',
+    caption: 'Suasana meriah Festival Kuliner Malang 2026 di area Alun-Alun Kota. (Foto: Klojen.com)',
+    author: 'Siti Rahayu',
+    content: `<p>Festival Kuliner Malang 2026 resmi dibuka pada Sabtu, 25 Mei 2026, di kawasan Alun-Alun Kota Malang. Festival tahunan yang sudah memasuki tahun ke-8 ini menghadirkan lebih dari 200 stand makanan dari berbagai penjuru Jawa Timur.</p><p>Berbagai sajian kuliner khas Malang tersedia, mulai dari bakso legendaris, cwie mie, tahu campur, hingga jajanan kekinian yang tengah viral di media sosial. Ribuan pengunjung memadati arena festival sejak pintu dibuka pukul 10.00 WIB.</p><p>"Tahun ini kami menargetkan 50.000 pengunjung selama tiga hari penyelenggaraan," ujar Ketua Panitia Festival, Budi Hartono, saat pembukaan. Festival berlangsung hingga 27 Mei 2026 dengan berbagai pertunjukan seni budaya sebagai hiburan tambahan.</p>`,
   },
   {
     id: '4',
     title: 'Bakso President Malang Jadi Favorit Wisatawan',
-    excerpt: 'Cita rasa khas dan porsi jumbo membuat Bakso...',
+    excerpt: 'Cita rasa khas dan porsi jumbo membuat Bakso President selalu ramai dikunjungi...',
     category: 'Kuliner',
-    status: 'scheduled' as ArticleStatus,
-    image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=200&q=80',
+    status: 'review' as ArticleStatus,
+    image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=800&q=80',
+    caption: 'Sajian Bakso President Malang yang terkenal dengan ukurannya yang jumbo dan cita rasa khas. (Foto: Klojen.com)',
+    author: 'Dewi Kartika',
+    content: `<p>Bakso President yang berlokasi di Jalan Batanghari No. 5, Kota Malang, semakin populer di kalangan wisatawan yang berkunjung ke kota ini. Warung bakso legendaris yang telah berdiri sejak tahun 1977 ini selalu ramai dikunjungi, bahkan pada hari kerja sekalipun.</p><p>Ciri khas Bakso President adalah ukuran baksonya yang jumbo, hampir seukuran kepalan tangan orang dewasa. Daging sapi segar berkualitas tinggi dipilih setiap hari untuk menjaga cita rasa yang konsisten. Harga yang ditawarkan pun terjangkau, mulai dari Rp 25.000 hingga Rp 45.000 per porsi.</p><p>"Kami tidak berubah sejak tahun 1977. Resep yang sama, kualitas yang sama," ujar Hendra, cucu pendiri Bakso President, saat ditemui Klojen.com. "Itulah mengapa pelanggan kami selalu kembali."</p><p>Pada akhir pekan, antrean pengunjung bisa mencapai 30 menit. Bakso President kini juga menyediakan layanan pemesanan online untuk mengakomodasi pelanggan yang tidak ingin mengantri.</p>`,
+    tags: ['#BaksoPresident', '#KulinerMalang', '#WisataKuliner', '#BaksoMalang'],
+  },
+  {
+    id: '4c',
+    title: 'Pantai Balekambang Malang Selatan, Surga Tersembunyi yang Memukau',
+    excerpt: 'Keindahan pura di atas batu karang tengah laut menjadikan Pantai Balekambang destinasi wisata unik...',
+    category: 'Wisata',
+    status: 'review' as ArticleStatus,
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80',
+    caption: 'Pemandangan Pantai Balekambang dengan pura khas Bali di atas batu karang yang menjadi ikon wisata Malang Selatan. (Foto: Klojen.com)',
+    author: 'Ahmad Fauzi',
+    content: `<p>Pantai Balekambang yang terletak di Kecamatan Bantur, Kabupaten Malang, menyimpan pesona alam yang tak kalah memukau dengan pantai-pantai terkenal di Pulau Bali. Keunikan utama pantai ini adalah keberadaan pura Hindu yang berdiri kokoh di atas batu karang di tengah laut, menjadikannya pemandangan yang sangat ikonik.</p><p>Pantai berpasir cokelat keemasan ini membentang sepanjang sekitar 2 kilometer dengan deburan ombak yang cukup besar dari Samudra Hindia. Meski demikian, terdapat beberapa titik yang relatif aman untuk bermain air, terutama di sekitar muara sungai kecil yang mengalir membelah pantai.</p><p>"Balekambang adalah permata tersembunyi Malang yang masih perlu lebih banyak promosi," ujar Kepala Dinas Pariwisata Kabupaten Malang, Slamet Riyadi, kepada Klojen.com. Pemerintah daerah terus berbenah dengan menambah fasilitas penunjang seperti toilet umum, area parkir yang lebih luas, dan warung kuliner.</p><p>Untuk menuju Pantai Balekambang, pengunjung dapat menempuh perjalanan sekitar 65 kilometer dari pusat Kota Malang melalui Kepanjen. Akses jalan menuju pantai kini semakin baik dengan adanya perbaikan infrastruktur jalan yang dilakukan sepanjang tahun 2025.</p>`,
+    tags: ['#PantaiBalekambang', '#WisataMalang', '#PantaiMalang', '#WisataAlamJatim'],
+  },
+  {
+    id: '4d',
+    title: 'Hotel Tugu Malang, Pesona Sejarah dan Kemewahan yang Menyatu',
+    excerpt: 'Menginap di Hotel Tugu Malang memberikan pengalaman layaknya berada di museum hidup dengan koleksi barang antik...',
+    category: 'Hotel',
+    status: 'review' as ArticleStatus,
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
+    caption: 'Suasana lobi Hotel Tugu Malang yang dipenuhi dengan koleksi barang antik bernilai sejarah tinggi. (Foto: Klojen.com)',
+    author: 'Budi Santoso',
+    content: `<p>Bagi wisatawan yang mencari pengalaman menginap unik dan tak terlupakan di Kota Malang, Hotel Tugu adalah jawabannya. Berlokasi strategis tepat di jantung kota, menghadap Monumen Tugu dan Balai Kota Malang, hotel bintang lima ini menawarkan lebih dari sekadar kemewahan.</p><p>Memasuki lobi Hotel Tugu layaknya melangkah ke masa lalu. Ribuan koleksi barang antik peninggalan sejarah dari berbagai penjuru Nusantara dan Asia dipamerkan dengan apik di setiap sudut hotel. "Kami ingin tamu tidak hanya sekadar menginap, tetapi juga merasakan dan mempelajari kekayaan budaya Indonesia," ungkap General Manager Hotel Tugu Malang.</p><p>Setiap kamar di Hotel Tugu didesain dengan tema yang berbeda-beda, terinspirasi dari tokoh-tokoh sejarah atau budaya tertentu. Fasilitas modern seperti kolam renang, spa tradisional, dan restoran dengan menu fine dining melengkapi kenyamanan para tamu.</p><p>Dengan perpaduan sempurna antara warisan sejarah, arsitektur kolonial yang indah, dan layanan kelas dunia, Hotel Tugu Malang tetap menjadi pilihan utama bagi wisatawan domestik maupun mancanegara yang mengutamakan kualitas dan pengalaman berkesan.</p>`,
+    tags: ['#HotelTugu', '#HotelMalang', '#WisataSejarah', '#PenginapanMalang'],
+  },
+  {
+    id: '4b',
+    title: 'Sate Gabug, Sensasi Sate Khas Malang yang Unik',
+    excerpt: 'Sajian sate dengan bumbu kacang gurih khas Kota Malang yang wajib dicoba wisatawan...',
+    category: 'Kuliner',
+    status: 'on_progress' as ArticleStatus,
+    image: 'https://images.unsplash.com/photo-1555126634-323283e090fa?w=200&q=80',
+    lockedBy: 'Farel Alfara',
   },
   {
     id: '5',
@@ -100,6 +155,31 @@ Untuk menghindari kepadatan, manajemen mengimbau pengunjung untuk memesan tiket 
     tags: ['#JatimPark', '#WisataBatu', '#LiburPanjang', '#Keluarga'],
     rejectionReason: 'Konten tidak sesuai dengan pedoman editorial. Judul kurang informatif dan isi berita perlu dilengkapi dengan data pendukung yang valid.',
   },
+  {
+    id: '7',
+    title: 'Cafe Baru di Kayutangan Tawarkan Sensasi Kopi Vintage',
+    excerpt: 'Kawasan Kayutangan Heritage kembali diramaikan dengan hadirnya cafe baru bernuansa tempo dulu...',
+    category: 'Kuliner',
+    status: 'review' as ArticleStatus,
+    image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80',
+    caption: 'Suasana klasik di cafe baru kawasan Kayutangan Heritage. (Foto: Klojen.com)',
+    author: 'Rina Wijaya',
+    content: `<p>Kawasan Kayutangan Heritage di Kota Malang kembali menjadi primadona bagi pecinta kopi dengan dibukanya sebuah cafe berkonsep vintage. Cafe bernama "Kopi Kenangan Masa" ini menawarkan pengalaman menikmati kopi lokal dengan suasana layaknya berada di tahun 1930-an.</p><p>Pemilik cafe merenovasi sebuah bangunan kolonial tanpa merubah fasad aslinya, hanya menambahkan furnitur antik dan pencahayaan hangat. Menu andalan mereka adalah Kopi Tubruk Nusantara dan Roti Bakar Kaya yang dibuat dengan resep warisan keluarga.</p>`,
+    tags: ['#Kayutangan', '#KopiMalang', '#CafeMalang', '#Kuliner'],
+  },
+  {
+    id: '6',
+    title: 'Acara Puncak Malang Night Run 2026 Siap Digelar',
+    excerpt: 'Ribuan pelari dari berbagai kota siap meramaikan event lari malam hari...',
+    category: 'Wisata',
+    status: 'scheduled' as ArticleStatus,
+    image: 'https://images.unsplash.com/photo-1502224562085-639556652f33?w=800&q=80',
+    caption: 'Ilustrasi peserta lari pada malam hari. (Foto: Unsplash)',
+    author: 'Farel Alfara',
+    publishedAt: '2026-06-15 19:00',
+    content: `<p>Ajang lari malam hari "Malang Night Run 2026" siap digelar pada akhir pekan ini. Diperkirakan lebih dari 5.000 pelari dari berbagai kota akan meramaikan acara tahunan yang melintasi ikon-ikon sejarah Kota Malang.</p><p>Rute sepanjang 10 kilometer telah disiapkan, dimulai dari Balai Kota Malang dan berakhir di kawasan Ijen Boulevard.</p>`,
+    tags: ['#MalangNightRun', '#EventMalang', '#LariMalam'],
+  },
 ];
 
 const CATEGORIES = ['Semua Kategori', 'Wisata', 'Pendidikan', 'Kuliner', 'Hotel'];
@@ -107,11 +187,13 @@ const CATEGORIES = ['Semua Kategori', 'Wisata', 'Pendidikan', 'Kuliner', 'Hotel'
 type StatusKey = ArticleStatus | 'semua';
 
 const STATUS_TABS: { label: string; value: StatusKey; countKey: string }[] = [
-  { label: 'Semua', value: 'semua', countKey: 'semua' },
-  { label: 'Dipublikasi', value: 'published', countKey: 'published' },
-  { label: 'Draft', value: 'draft', countKey: 'draft' },
-  { label: 'Publish Terjadwal', value: 'scheduled', countKey: 'scheduled' },
-  { label: 'Ditolak', value: 'rejected', countKey: 'rejected' },
+  { label: 'Semua',        value: 'semua',       countKey: 'semua'       },
+  { label: 'Dipublikasi',  value: 'published',   countKey: 'published'   },
+  { label: 'Terjadwal',    value: 'scheduled',   countKey: 'scheduled'   },
+  { label: 'Draft',        value: 'draft',       countKey: 'draft'       },
+  { label: 'Review',       value: 'review',      countKey: 'review'      },
+  { label: 'On Progress',  value: 'on_progress', countKey: 'on_progress' },
+  { label: 'Ditolak',      value: 'rejected',    countKey: 'rejected'    },
 ];
 
 const CATEGORY_BADGE: Record<string, string> = {
@@ -138,11 +220,19 @@ function StatusBadge({ status }: { status: ArticleStatus }) {
       </span>
     );
   }
-  if (status === 'scheduled') {
+  if (status === 'review') {
     return (
       <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6A5ACD]">
-        Publish Terjadwal
-        <CloudUpload size={14} className="text-[#6A5ACD]" />
+        Review
+        <Clock size={14} className="text-[#6A5ACD]" />
+      </span>
+    );
+  }
+  if (status === 'on_progress') {
+    return (
+      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#D97706]">
+        On Progress
+        <RefreshCw size={14} className="text-[#D97706] animate-spin" />
       </span>
     );
   }
@@ -151,6 +241,14 @@ function StatusBadge({ status }: { status: ArticleStatus }) {
       <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#DC143C]">
         Ditolak
         <XCircle size={14} className="text-[#DC143C]" />
+      </span>
+    );
+  }
+  if (status === 'scheduled') {
+    return (
+      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600">
+        Terjadwal
+        <Calendar size={14} className="text-blue-600" />
       </span>
     );
   }
@@ -167,7 +265,11 @@ function BankBeritaContent() {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('q') || '';
   
-  const [articles, setArticles] = useState(MOCK_ARTICLES);
+  const { user } = useAuthStore();
+  const role = user?.role;
+
+  const [articles, setArticles] = useState<MockArticleItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState(initialSearch);
   const [activeStatus, setActiveStatus] = useState<StatusKey>('semua');
   const [selectedCategory, setSelectedCategory] = useState('Semua Kategori');
@@ -183,6 +285,72 @@ function BankBeritaContent() {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    if (role === 'editor') {
+      setActiveStatus('review');
+    }
+  }, [role]);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        setIsLoading(true);
+        const res = await getCmsArticles();
+        const apiData = res.data.data;
+        
+        // Map API data to frontend format
+        let mappedArticles: MockArticleItem[] = apiData.map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          excerpt: item.excerpt || (item.content ? item.content.replace(/<[^>]+>/g, '').substring(0, 60) + '...' : ''),
+          category: item.category_name || 'Belum Ditentukan',
+          status: (item.status === 'review' && item.locked_by) ? 'on_progress' : (item.status as ArticleStatus),
+          lockedBy: item.locked_by_name,
+          lockedById: item.locked_by,
+          image: item.featured_image_url || 'https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=800&q=80',
+          caption: '',
+          content: item.content,
+          tags: item.tags || [],
+          author: item.author_name || 'Jurnalis',
+          publishedAt: item.published_at,
+          publisherName: item.publisher_name,
+        }));
+
+        const statusOverrideRaw = localStorage.getItem('mock_status_overrides');
+        if (statusOverrideRaw) {
+          try {
+            const overrides = JSON.parse(statusOverrideRaw);
+            mappedArticles = mappedArticles.map(a => {
+              if (overrides[a.id]) {
+                const over = overrides[a.id];
+                if (typeof over === 'string') {
+                  return { ...a, status: over as ArticleStatus };
+                } else {
+                  return { 
+                    ...a, 
+                    status: over.status, 
+                    rejectionReason: over.reason || a.rejectionReason 
+                  };
+                }
+              }
+              return a;
+            });
+          } catch (e) {
+            console.error('Failed to parse mock status overrides', e);
+          }
+        }
+
+        setArticles(mappedArticles);
+      } catch (err) {
+        console.error("Gagal mengambil data artikel:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
   // Reset halaman ke 1 setiap kali filter berubah agar pencarian berlaku di semua data
   useEffect(() => { setPage(1); }, [search, activeStatus, selectedCategory]);
 
@@ -192,8 +360,10 @@ function BankBeritaContent() {
       semua: articles.length,
       published: 0,
       draft: 0,
-      scheduled: 0,
+      review: 0,
+      on_progress: 0,
       rejected: 0,
+      scheduled: 0,
     };
     articles.forEach((a) => {
       if (a.status in counts) counts[a.status]++;
@@ -226,6 +396,11 @@ function BankBeritaContent() {
 
   return (
     <div className="min-h-full pb-16 bg-white rounded-tl-3xl p-6 sm:p-8">
+      {isLoading && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/80">
+          <RefreshCw className="animate-spin text-blue-500 w-10 h-10" />
+        </div>
+      )}
       
       {/* ─── Filter Section ─── */}
       <div className="border border-gray-200 rounded-xl p-4 sm:p-6 mb-6">
@@ -328,6 +503,7 @@ function BankBeritaContent() {
                       <img
                         src={article.image}
                         alt="Thumbnail"
+                        onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=800&q=80'; }}
                         className="w-28 h-20 object-cover rounded-md border border-gray-100 shrink-0"
                       />
                       <div className="flex flex-col pt-1">
@@ -350,7 +526,14 @@ function BankBeritaContent() {
 
                   {/* Status */}
                   <td className="py-5 text-center">
-                    <StatusBadge status={article.status} />
+                    <div className="flex flex-col items-center gap-1">
+                      <StatusBadge status={article.status} />
+                      {article.status === 'published' && article.publisherName && (
+                        <span className="text-[10px] font-medium text-gray-500">
+                          oleh {article.publisherName}
+                        </span>
+                      )}
+                    </div>
                   </td>
 
                   {/* Aksi */}
@@ -367,7 +550,7 @@ function BankBeritaContent() {
                             <Trash2 size={20} strokeWidth={2.5} />
                           </button>
                           <Link
-                            href={`/cms/tulis-berita?id=${article.id}&status=draft&title=${encodeURIComponent(article.title)}&image=${encodeURIComponent(article.image)}&caption=${encodeURIComponent(article.caption ?? '')}&category=${encodeURIComponent(article.category)}&content=${encodeURIComponent(article.content ?? '')}&tags=${encodeURIComponent(JSON.stringify(article.tags ?? []))}`}
+                            href={`/cms/tulis-berita?id=${article.id}`}
                             title="Edit draft"
                             className="text-blue-500 hover:text-blue-700 transition-colors"
                           >
@@ -378,7 +561,7 @@ function BankBeritaContent() {
 
                       {article.status === 'rejected' && (
                         <Link
-                          href={`/cms/tulis-berita?id=${article.id}&rejected=true&status=draft&reason=${encodeURIComponent(article.rejectionReason ?? '')}&title=${encodeURIComponent(article.title)}&image=${encodeURIComponent(article.image)}&caption=${encodeURIComponent(article.caption ?? '')}&category=${encodeURIComponent(article.category)}&content=${encodeURIComponent(article.content ?? '')}&tags=${encodeURIComponent(JSON.stringify(article.tags ?? []))}`}
+                          href={`/cms/tulis-berita?id=${article.id}&rejected=true&reason=${encodeURIComponent(article.rejectionReason ?? '')}`}
                           title="Edit berita"
                           className="text-blue-500 hover:text-blue-700 transition-colors"
                         >
@@ -386,7 +569,35 @@ function BankBeritaContent() {
                         </Link>
                       )}
 
-                      {(article.status === 'published' || article.status === 'scheduled') && (
+                      {article.status === 'review' && role !== 'journalist' && (
+                        <Link
+                          href={`/cms/tulis-berita?id=${article.id}`}
+                          title="Edit berita"
+                          className="text-blue-500 hover:text-blue-700 transition-colors"
+                        >
+                          <Edit3 size={20} strokeWidth={2.5} />
+                        </Link>
+                      )}
+
+                      {article.status === 'on_progress' && article.lockedBy && (
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 bg-gray-100 px-3 py-1.5 rounded-full whitespace-nowrap">
+                            <UserCircle2 size={14} className="text-gray-400" />
+                            <span>Diedit oleh {article.lockedBy}</span>
+                          </div>
+                          {article.lockedById === user?.id && (
+                            <Link
+                              href={`/cms/tulis-berita?id=${article.id}`}
+                              title="Lanjutkan edit berita"
+                              className="text-blue-500 hover:text-blue-700 transition-colors ml-1"
+                            >
+                              <Edit3 size={20} strokeWidth={2.5} />
+                            </Link>
+                          )}
+                        </div>
+                      )}
+
+                      {['published', 'review', 'on_progress', 'scheduled'].includes(article.status) && (
                         <Link
                           href={`/cms/artikel/${article.id}/preview`}
                           title="Preview berita"

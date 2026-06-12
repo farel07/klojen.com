@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CheckCircle2, ChevronDown } from 'lucide-react';
+import axiosInstance from '@/lib/axios';
 
 export default function TambahKaryawanPage() {
   const router = useRouter();
@@ -15,19 +16,38 @@ export default function TambahKaryawanPage() {
     email: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API call
-    setIsSuccessModalOpen(true);
+    setIsSubmitting(true);
+    setErrorMessage('');
     
-    // Auto redirect after showing success modal
-    setTimeout(() => {
-      setIsSuccessModalOpen(false);
-      router.push('/cms/karyawan');
-    }, 4000);
+    try {
+      await axiosInstance.post('/users', {
+        name: formData.nama,
+        email: formData.email,
+        role: formData.role.toLowerCase(),
+        password: 'password', // Usually a default password is set or the user sets it
+      });
+      setIsSuccessModalOpen(true);
+      
+      // Auto redirect after showing success modal
+      setTimeout(() => {
+        setIsSuccessModalOpen(false);
+        router.push('/cms/karyawan');
+      }, 2000);
+    } catch (error: any) {
+      console.error('Failed to create user:', error);
+      setErrorMessage(error.response?.data?.message || error.response?.data?.error || 'Gagal membuat akun karyawan.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setErrorMessage('');
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -95,13 +115,20 @@ export default function TambahKaryawanPage() {
             />
           </div>
 
+          {errorMessage && (
+            <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm font-medium">
+              {errorMessage}
+            </div>
+          )}
+
           {/* Submit Button */}
           <div className="flex justify-end pt-4">
             <button
               type="submit"
-              className="bg-[#363259] hover:bg-[#2a2745] text-white px-8 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm"
+              disabled={isSubmitting}
+              className="bg-[#363259] hover:bg-[#2a2745] disabled:bg-gray-400 text-white px-8 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2"
             >
-              Buat Akun
+              {isSubmitting ? 'Menyimpan...' : 'Buat Akun'}
             </button>
           </div>
         </form>

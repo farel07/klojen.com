@@ -13,6 +13,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  avatar_url?: string;
   role: Role;
   is_active: boolean;
   created_at: string;
@@ -49,7 +50,8 @@ export interface Article {
   view_count: number;
   category: Category;
   tags: Tag[];
-  author: Pick<User, 'id' | 'name'>;
+  author: Pick<User, 'id' | 'name' | 'avatar_url'>;
+  editor?: Pick<User, 'id' | 'name' | 'avatar_url'> | null;
   media: Media[];
   published_at: string | null;
   created_at: string;

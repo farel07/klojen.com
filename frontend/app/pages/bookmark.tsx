@@ -51,12 +51,19 @@ export default function BookmarkPage() {
   const [removingId, setRemovingId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
   // ── Guard: redirect ke login jika belum auth ──────────────────────────────
   useEffect(() => {
+    if (!hydrated) return;
     if (!isAuthenticated) {
       router.replace("/login");
     }
-  }, [isAuthenticated, router]);
+  }, [hydrated, isAuthenticated, router]);
 
   // ── Fetch bookmarks ───────────────────────────────────────────────────────
   useEffect(() => {

@@ -21,6 +21,8 @@ interface LoginResponse {
   user: {
     id: string;
     name: string;
+    email: string;
+    avatar_url?: string;
     role: 'reader' | 'journalist' | 'editor' | 'admin';
   };
 }
@@ -49,7 +51,7 @@ export default function Login() {
       const { access_token, refresh_token, user } = res.data.data;
 
       // Simpan access_token ke Zustand (memory), refresh_token ke localStorage
-      setAuth(access_token, { id: user.id, name: user.name, role: user.role });
+      setAuth(access_token, { id: user.id, name: user.name, email: user.email, avatar: user.avatar_url, role: user.role });
       saveRefreshToken(refresh_token);
 
       // Redirect berdasarkan role (docs 2.3)
@@ -69,7 +71,7 @@ export default function Login() {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-slate-900 p-4 sm:p-8 font-sans">
+    <section className="min-h-screen flex items-center justify-center bg-[linear-gradient(to_bottom,#0F172A_30%,#FFFFFF_100%)] p-4 sm:p-8 font-sans">
       <div className="flex flex-col md:flex-row w-full max-w-[1100px] bg-white rounded-3xl shadow-2xl overflow-hidden min-h-[600px]">
 
         <div className="w-full md:w-1/2 p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
@@ -174,15 +176,16 @@ export default function Login() {
         </div>
 
         {/* Visual Kanan */}
-        <div className="hidden md:flex md:w-1/2 relative bg-slate-950 flex-col justify-between p-12">
-          <img src="" alt="Background" className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay" />
+        <div className="hidden md:flex md:w-1/2 relative flex-col justify-between p-12">
+          <img src="/images/login.jpg" alt="Background" className="absolute inset-0 w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black/30"></div>
           <div className="relative z-10 flex justify-end">
-            <span className="text-white text-2xl font-bold tracking-wider">
-              Klojen<span className="text-blue-500">.</span>
+            <span className="text-white text-3xl font-bold tracking-wider drop-shadow-md">
+              Klojen.com
             </span>
           </div>
           <div className="relative z-10 flex justify-end mt-auto">
-            <h1 className="text-white text-4xl lg:text-5xl font-bold text-right leading-tight max-w-md">
+            <h1 className="text-white text-4xl lg:text-5xl font-bold text-right leading-tight max-w-md drop-shadow-lg">
               Temukan Cerita di Setiap Sudut Malang
             </h1>
           </div>

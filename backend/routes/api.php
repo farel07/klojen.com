@@ -22,9 +22,11 @@ Route::get('/ping', function () {
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
 Route::prefix('auth')->group(function () {
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login',    [AuthController::class, 'login']);
-    Route::post('/refresh',  [AuthController::class, 'refresh']);
+    Route::post('/register',        [AuthController::class, 'register']);
+    Route::post('/login',           [AuthController::class, 'login']);
+    Route::post('/refresh',         [AuthController::class, 'refresh']);
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('/reset-password',  [AuthController::class, 'resetPassword']);
 
     // Endpoint yang memerlukan access_token valid
     Route::middleware('auth:api')->group(function () {
@@ -50,6 +52,7 @@ Route::get('/articles/sitemap',          [ArticleController::class, 'sitemap']);
 Route::get('/articles/news-sitemap',     [ArticleController::class, 'newsSitemap']);
 Route::get('/articles/{slug}',           [ArticleController::class, 'show']);
 Route::get('/articles/{id}/comments',    [ArticleController::class, 'comments']);
+Route::middleware('auth:api')->post('/articles/{id}/comments', [\App\Http\Controllers\CommentController::class, 'storeForArticle']);
 
 
 // ── Bookmarks & Media (requires authentication) ───────────────────────────────────────
@@ -66,16 +69,36 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/comments/{id}', [\App\Http\Controllers\CommentController::class, 'destroy']);
 });
 
+use App\Http\Controllers\CmsCommentController;
+
 // ── CMS (requires authentication + role check inside controller) ──────────
 Route::middleware('auth:api')->prefix('cms')->group(function () {
+    // GET /api/cms/articles — List artikel CMS (journalist / editor / admin)
+    Route::get('/articles', [CmsArticleController::class, 'index']);
+
     // POST /api/cms/articles  — Buat artikel baru (journalist / editor / admin)
     Route::post('/articles', [CmsArticleController::class, 'store']);
+
+    // GET /api/cms/articles/{id} — Get detail artikel
+    Route::get('/articles/{id}', [CmsArticleController::class, 'show']);
 
     // PUT /api/cms/articles/{id} — Update artikel (journalist / editor / admin)
     Route::put('/articles/{id}', [CmsArticleController::class, 'update']);
 
     // PATCH /api/cms/articles/{id}/status — Update status artikel (editor / admin)
     Route::patch('/articles/{id}/status', [CmsArticleController::class, 'updateStatus']);
+
+    // POST /api/cms/articles/{id}/lock - Tandai on progress (editor)
+    Route::post('/articles/{id}/lock', [CmsArticleController::class, 'lock']);
+
+    // POST /api/cms/articles/{id}/unlock - Lepas tanda on progress (editor)
+    Route::post('/articles/{id}/unlock', [CmsArticleController::class, 'unlock']);
+
+    // GET /api/cms/comments — Ambil semua komentar untuk moderasi (editor / admin)
+    Route::get('/comments', [CmsCommentController::class, 'index']);
+
+    // GET /api/cms/statistics — Dashboard statistics
+    Route::get('/statistics', [\App\Http\Controllers\CmsDashboardController::class, 'index']);
 });
 
 // ── Users (admin only) ────────────────────────────────────────────────────────

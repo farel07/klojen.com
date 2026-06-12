@@ -4,13 +4,17 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CheckCircle2, ChevronDown } from 'lucide-react';
+import axiosInstance from '@/lib/axios';
 
 export default function EditKaryawanPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initial state kosong, akan diisi dari "database" (mock)
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // Initial state kosong, akan diisi dari "database"
   const [formData, setFormData] = useState({
     nama: '',
     role: '',
@@ -18,30 +22,49 @@ export default function EditKaryawanPage({ params }: { params: { id: string } })
   });
 
   useEffect(() => {
-    // Simulasi pengambilan data dari backend berdasarkan ID
-    // Misalnya axios.get(`/api/users/${params.id}`)
-    const timer = setTimeout(() => {
-      setFormData({
-        nama: 'Indah Rahma', // Data tiruan sesuai baris pertama tabel
-        role: 'Pembaca',
-        email: 'neunmarz09@gmail.com',
-      });
-      setIsLoading(false);
-    }, 500); // loading effect 0.5s
-
-    return () => clearTimeout(timer);
+    const fetchUser = async () => {
+      try {
+        const response = await axiosInstance.get(`/users/${params.id}`);
+        const user = response.data.data;
+        setFormData({
+          nama: user.name,
+          role: user.role.charAt(0).toUpperCase() + user.role.slice(1), // Capitalize
+          email: user.email,
+        });
+      } catch (error: any) {
+        console.error('Failed to fetch user:', error);
+        setErrorMessage('Gagal memuat data pengguna.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchUser();
   }, [params.id]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API update call
-    setIsSuccessModalOpen(true);
+    setIsSubmitting(true);
+    setErrorMessage('');
     
-    // Auto redirect after showing success modal
-    setTimeout(() => {
-      setIsSuccessModalOpen(false);
-      router.push('/cms/karyawan');
-    }, 2000); // 2 detik karena tidak ada instruksi email di edit
+    try {
+      await axiosInstance.patch(`/users/${params.id}`, {
+        name: formData.nama,
+        email: formData.email,
+        role: formData.role.toLowerCase(),
+      });
+      setIsSuccessModalOpen(true);
+      
+      // Auto redirect after showing success modal
+      setTimeout(() => {
+        setIsSuccessModalOpen(false);
+        router.push('/cms/karyawan');
+      }, 2000);
+    } catch (error: any) {
+      console.error('Failed to update user:', error);
+      setErrorMessage(error.response?.data?.message || error.response?.data?.error || 'Gagal memperbarui akun karyawan.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -119,13 +142,20 @@ export default function EditKaryawanPage({ params }: { params: { id: string } })
               />
             </div>
 
+            {errorMessage && (
+              <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm font-medium">
+                {errorMessage}
+              </div>
+            )}
+
             {/* Submit Button */}
             <div className="flex justify-end pt-4">
               <button
                 type="submit"
-                className="bg-[#363259] hover:bg-[#2a2745] text-white px-8 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm"
+                disabled={isSubmitting}
+                className="bg-[#363259] hover:bg-[#2a2745] disabled:bg-gray-400 text-white px-8 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2"
               >
-                Simpan Perubahan
+                {isSubmitting ? 'Menyimpan...' : 'Simpan Perubahan'}
               </button>
             </div>
           </form>

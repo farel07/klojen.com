@@ -28,12 +28,12 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
           ApiSuccess<{
             access_token: string;
             refresh_token: string;
-            user: { id: string; name: string; role: 'reader' | 'journalist' | 'editor' | 'admin' };
+            user: { id: string; name: string; email: string; avatar_url?: string; role: 'reader' | 'journalist' | 'editor' | 'admin' };
           }>
         >('/auth/refresh', { refresh_token: refreshToken });
 
         const { access_token, refresh_token, user } = res.data.data;
-        setAuth(access_token, { id: user.id, name: user.name, role: user.role });
+        setAuth(access_token, { id: user.id, name: user.name, email: user.email, avatar: user.avatar_url, role: user.role });
         if (refresh_token) saveRefreshToken(refresh_token);
       } catch {
         // Refresh gagal (token expired/revoked) — biarkan user guest

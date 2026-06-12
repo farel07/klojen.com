@@ -82,10 +82,19 @@ class CommentController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data'   => [
-                'comment' => $comment->load('user:id,name')
-            ],
+            'data'   => $comment->load('user:id,name'),
         ], 201);
+    }
+
+    /**
+     * POST /api/articles/{id}/comments
+     * Shortcut endpoint - article_id diambil dari URL
+     */
+    public function storeForArticle(Request $request, string $id): JsonResponse
+    {
+        // Inject article_id dari URL ke request agar bisa diproses store()
+        $request->merge(['article_id' => $id]);
+        return $this->store($request);
     }
 
     /**

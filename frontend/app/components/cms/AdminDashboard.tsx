@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/stores/authStore';
+import axiosInstance from '@/lib/axios';
 import {
   FileText,
   Users,
@@ -27,38 +28,20 @@ import {
 
 // ─── Mock Data ───────────────────────────────────────────────────────────────
 
-const SUMMARY_DATA = {
-  hari_ini: { pageViews: '12.400', totalBerita: '15', userBaru: '8' },
-  '7_hari': { pageViews: '85.200', totalBerita: '84', userBaru: '45' },
-  '30_hari': { pageViews: '340.500', totalBerita: '320', userBaru: '180' },
-  '1_tahun': { pageViews: '4.200.000', totalBerita: '4.500', userBaru: '2.400' },
+// ─── Initial Mock Data For Types ─────────────────────────────────────────────
+
+const INITIAL_SUMMARY_DATA: Record<string, any> = {
+  hari_ini: { pageViews: '0', totalBerita: '0', userBaru: '0' },
+  '7_hari': { pageViews: '0', totalBerita: '0', userBaru: '0' },
+  '30_hari': { pageViews: '0', totalBerita: '0', userBaru: '0' },
+  '1_tahun': { pageViews: '0', totalBerita: '0', userBaru: '0' },
 };
 
-const CATEGORY_DATA = {
-  hari_ini: [
-    { name: 'Wisata', value: 4, color: '#2563eb', percent: '40%' },
-    { name: 'Kuliner', value: 3, color: '#16a34a', percent: '30%' },
-    { name: 'Pendidikan', value: 2, color: '#f59e0b', percent: '20%' },
-    { name: 'Hotel', value: 1, color: '#a855f7', percent: '10%' },
-  ],
-  '7_hari': [
-    { name: 'Wisata', value: 12, color: '#2563eb', percent: '34%' },
-    { name: 'Kuliner', value: 9, color: '#16a34a', percent: '26%' },
-    { name: 'Pendidikan', value: 8, color: '#f59e0b', percent: '23%' },
-    { name: 'Hotel', value: 6, color: '#a855f7', percent: '17%' },
-  ],
-  '30_hari': [
-    { name: 'Wisata', value: 26, color: '#2563eb', percent: '36%' },
-    { name: 'Kuliner', value: 18, color: '#16a34a', percent: '25%' },
-    { name: 'Pendidikan', value: 18, color: '#f59e0b', percent: '25%' },
-    { name: 'Hotel', value: 11, color: '#a855f7', percent: '15%' },
-  ],
-  '1_tahun': [
-    { name: 'Wisata', value: 154, color: '#2563eb', percent: '35%' },
-    { name: 'Kuliner', value: 120, color: '#16a34a', percent: '27%' },
-    { name: 'Pendidikan', value: 98, color: '#f59e0b', percent: '22%' },
-    { name: 'Hotel', value: 68, color: '#a855f7', percent: '15%' },
-  ],
+const INITIAL_CATEGORY_DATA: Record<string, any[]> = {
+  hari_ini: [],
+  '7_hari': [],
+  '30_hari': [],
+  '1_tahun': [],
 };
 
 const VISITOR_DATA = {
@@ -124,6 +107,37 @@ export default function AdminDashboard() {
   const [timeFilter, setTimeFilter] = useState<'hari_ini' | '7_hari' | '30_hari' | '1_tahun'>('7_hari');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const [summaryData, setSummaryData] = useState(INITIAL_SUMMARY_DATA);
+  const [categoryData, setCategoryData] = useState(INITIAL_CATEGORY_DATA);
+  const [topCards, setTopCards] = useState({
+    totalBerita: 0,
+    totalUser: 0,
+    totalBeritaHariIni: 0,
+    iklanAktif: 12
+  });
+  const [sparklines, setSparklines] = useState({
+    totalBerita: SPARKLINE_1,
+    totalUser: SPARKLINE_2,
+    beritaHariIni: SPARKLINE_3,
+    iklanAktif: SPARKLINE_4
+  });
+  const [visitorData, setVisitorData] = useState(VISITOR_DATA);
+
+  useEffect(() => {
+    axiosInstance.get('/cms/statistics')
+      .then(res => {
+        const data = res.data;
+        if (data.summaryData) setSummaryData(data.summaryData);
+        if (data.categoryData) setCategoryData(data.categoryData);
+        if (data.topCards) setTopCards(data.topCards);
+        if (data.sparklines) setSparklines(data.sparklines);
+        if (data.visitorData) setVisitorData(data.visitorData);
+      })
+      .catch(err => {
+        console.error('Failed to load admin stats:', err);
+      });
+  }, []);
+
   const filterOptions = {
     hari_ini: 'Hari Ini',
     '7_hari': '7 Hari Terakhir',
@@ -131,9 +145,9 @@ export default function AdminDashboard() {
     '1_tahun': '1 Tahun Terakhir'
   };
 
-  const activeCategoryData = CATEGORY_DATA[timeFilter];
-  const totalBerita = activeCategoryData.reduce((acc, item) => acc + item.value, 0);
-  const activeSummaryData = SUMMARY_DATA[timeFilter];
+  const activeCategoryData = categoryData[timeFilter] || [];
+  const totalBerita = activeCategoryData.reduce((acc: any, item: any) => acc + item.value, 0);
+  const activeSummaryData = summaryData[timeFilter] || INITIAL_SUMMARY_DATA[timeFilter];
 
   return (
     <div className="space-y-6">
@@ -159,7 +173,7 @@ export default function AdminDashboard() {
             </div>
             <div>
               <div className="text-xs font-bold text-gray-800 mb-0.5">Total Berita</div>
-              <div className="text-3xl font-extrabold text-gray-900 leading-none tracking-tight">1.248</div>
+              <div className="text-3xl font-extrabold text-gray-900 leading-none tracking-tight">{topCards.totalBerita}</div>
             </div>
           </div>
           <div className="flex justify-between items-end mt-4">
@@ -169,7 +183,7 @@ export default function AdminDashboard() {
               <span className="text-gray-500">bulan ini</span>
             </div>
             <div className="w-[80px] h-[30px]">
-              <Sparkline data={SPARKLINE_1} color="#3b82f6" />
+              <Sparkline data={sparklines.totalBerita} color="#3b82f6" />
             </div>
           </div>
         </div>
@@ -182,13 +196,13 @@ export default function AdminDashboard() {
             </div>
             <div>
               <div className="text-xs font-bold text-gray-800 mb-0.5">Total User</div>
-              <div className="text-3xl font-extrabold text-gray-900 leading-none tracking-tight">356</div>
+              <div className="text-3xl font-extrabold text-gray-900 leading-none tracking-tight">{topCards.totalUser}</div>
             </div>
           </div>
           <div className="flex justify-between items-end mt-4">
             <div className="text-[11px] font-bold text-gray-500">Pengguna Terdaftar</div>
             <div className="w-[80px] h-[30px]">
-              <Sparkline data={SPARKLINE_2} color="#10b981" />
+              <Sparkline data={sparklines.totalUser} color="#10b981" />
             </div>
           </div>
         </div>
@@ -201,13 +215,13 @@ export default function AdminDashboard() {
             </div>
             <div>
               <div className="text-xs font-bold text-gray-800 mb-0.5">Total Berita Hari ini</div>
-              <div className="text-3xl font-extrabold text-gray-900 leading-none tracking-tight">18</div>
+              <div className="text-3xl font-extrabold text-gray-900 leading-none tracking-tight">{topCards.totalBeritaHariIni}</div>
             </div>
           </div>
           <div className="flex justify-between items-end mt-4">
             <div className="text-[11px] font-bold text-gray-500">Artikel</div>
             <div className="w-[80px] h-[30px]">
-              <Sparkline data={SPARKLINE_3} color="#f59e0b" />
+              <Sparkline data={sparklines.beritaHariIni} color="#f59e0b" />
             </div>
           </div>
         </div>
@@ -220,13 +234,13 @@ export default function AdminDashboard() {
             </div>
             <div>
               <div className="text-xs font-bold text-gray-800 mb-0.5">Iklan Aktif</div>
-              <div className="text-3xl font-extrabold text-gray-900 leading-none tracking-tight">12</div>
+              <div className="text-3xl font-extrabold text-gray-900 leading-none tracking-tight">{topCards.iklanAktif}</div>
             </div>
           </div>
           <div className="flex justify-between items-end mt-4">
             <div className="text-[11px] font-bold text-gray-500">Penempatan</div>
             <div className="w-[80px] h-[30px]">
-              <Sparkline data={SPARKLINE_4} color="#8b5cf6" />
+              <Sparkline data={sparklines.iklanAktif} color="#8b5cf6" />
             </div>
           </div>
         </div>
@@ -282,7 +296,7 @@ export default function AdminDashboard() {
 
           <div className="w-full h-[360px]">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={VISITOR_DATA[timeFilter]} margin={{ top: 10, right: 10, left: -20, bottom: 5 }}>
+              <AreaChart data={visitorData[timeFilter]} margin={{ top: 10, right: 10, left: -20, bottom: 5 }}>
                 <defs>
                   <linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.15} />

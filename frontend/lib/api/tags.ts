@@ -14,3 +14,5 @@ interface TagsResponse {
  */
 export const getTags = () =>
   axiosInstance.get<TagsResponse>('/tags');
+
+export const deleteTag = (id: string) => axiosInstance.delete(`/tags/${id}`);

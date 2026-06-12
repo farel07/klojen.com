@@ -78,3 +78,23 @@ export const changePasswordSchema = z
   });
 
 export type ChangePasswordFormValues = z.infer<typeof changePasswordSchema>;
+
+// Forgot Password Schema
+export const forgotPasswordSchema = z.object({
+  email: z.string().email('Format email tidak valid'),
+});
+
+export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
+
+// Reset Password Schema
+export const resetPasswordSchema = z
+  .object({
+    password: z.string().min(8, 'Password minimal 8 karakter'),
+    password_confirmation: z.string().min(1, 'Konfirmasi password wajib diisi'),
+  })
+  .refine((data) => data.password === data.password_confirmation, {
+    message: 'Konfirmasi password tidak cocok',
+    path: ['password_confirmation'],
+  });
+
+export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;

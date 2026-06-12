@@ -5,6 +5,8 @@ import { canPublish } from '@/app/constants/roles';
 import { Role } from '@/app/types';
 import Link from 'next/link';
 import AdminDashboard from '@/app/components/cms/AdminDashboard';
+import axiosInstance from '@/lib/axios';
+import { useEffect, useState } from 'react';
 import {
   FileText,
   Clock,
@@ -32,23 +34,7 @@ import {
   LabelList,
 } from 'recharts';
 
-// ─── Mock Data ───────────────────────────────────────────────────────────────
-
-const YEARLY_DATA = [
-  { year: '2020', berita: 28 },
-  { year: '2021', berita: 35 },
-  { year: '2022', berita: 48 },
-  { year: '2023', berita: 61 },
-  { year: '2024', berita: 72 },
-  { year: '2025', berita: 84 },
-];
-
-const CATEGORY_DATA = [
-  { name: 'Wisata', value: 21, color: '#7c3aed' },
-  { name: 'Kuliner', value: 21, color: '#2563eb' },
-  { name: 'Pendidikan', value: 21, color: '#f59e0b' },
-  { name: 'Hotel', value: 21, color: '#10b981' },
-];
+// ─── Sub-components ───────────────────────────────────────────────────────────
 
 const RECENT_ARTICLES = [
   {
@@ -140,17 +126,40 @@ function EditorDashboardView() {
   const role = user?.role as Role | undefined;
   const isEditorOrAbove = role ? canPublish(role) : false;
 
-  const totalThisYear = YEARLY_DATA.reduce((s, d) => s + d.berita, 0);
+  const [yearlyData, setYearlyData] = useState<any[]>([]);
+  const [categoryData, setCategoryData] = useState<any[]>([]);
+  const [statCards, setStatCards] = useState({
+    beritaPublish: 0,
+    draft: 0,
+    kategoriAktif: 0,
+    mediaTersimpan: 0
+  });
+
+  useEffect(() => {
+    axiosInstance.get('/cms/statistics')
+      .then(res => {
+        const data = res.data;
+        setYearlyData(data.yearlyData || []);
+        setCategoryData(data.categoryData || []);
+        setStatCards(data.statCards || { beritaPublish: 0, draft: 0, kategoriAktif: 0, mediaTersimpan: 0 });
+      })
+      .catch(err => {
+        console.error('Failed to load stats:', err);
+      });
+  }, []);
+
+  const totalThisYear = yearlyData.reduce((s, d) => s + d.berita, 0);
+  const currentYear = new Date().getFullYear();
 
   return (
     <div className="space-y-6 pt-4">
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <StatCard label="Berita Publish" value={31} icon={FileText} iconColor="text-blue-500" />
-        <StatCard label="Draft" value={45} icon={Clock} iconColor="text-orange-500" />
-        <StatCard label="Kategori Aktif" value={4} icon={LayoutGrid} iconColor="text-purple-500" />
-        <StatCard label="Media Tersimpan" value={372} icon={ImageIcon} iconColor="text-emerald-500" />
+        <StatCard label="Berita Publish" value={statCards.beritaPublish} icon={FileText} iconColor="text-blue-500" />
+        <StatCard label="Draft" value={statCards.draft} icon={Clock} iconColor="text-orange-500" />
+        <StatCard label="Kategori Aktif" value={statCards.kategoriAktif} icon={LayoutGrid} iconColor="text-purple-500" />
+        <StatCard label="Media Tersimpan" value={statCards.mediaTersimpan} icon={ImageIcon} iconColor="text-emerald-500" />
       </div>
 
       {/* Charts Row */}
@@ -168,7 +177,7 @@ function EditorDashboardView() {
               </p>
             </div>
             <div className="flex items-center px-4 py-2 bg-white border border-[#cdcdcd] rounded-sm text-sm font-bold text-black shrink-0">
-              Tahun 2025
+              Tahun {currentYear}
             </div>
           </div>
 
@@ -177,7 +186,7 @@ function EditorDashboardView() {
             <div className="bg-white border border-[#cdcdcd] p-4 flex items-center justify-between gap-10 min-w-[200px]">
               <div>
                 <div className="text-[10px] font-bold text-[#868686] mb-1">Total berita tahun ini</div>
-                <div className="text-[44px] font-bold text-blue-600 leading-none tracking-tight">84</div>
+                <div className="text-[44px] font-bold text-blue-600 leading-none tracking-tight">{totalThisYear}</div>
               </div>
               <FileText size={28} className="text-blue-600" strokeWidth={2.5} />
             </div>
@@ -186,7 +195,7 @@ function EditorDashboardView() {
           {/* Bar Chart */}
           <div className="flex-1 min-h-[260px] relative">
             <ResponsiveContainer width="100%" height={260}>
-              <BarChart data={YEARLY_DATA} margin={{ top: 25, right: 10, left: -25, bottom: 0 }} barCategoryGap="30%">
+              <BarChart data={yearlyData} margin={{ top: 25, right: 10, left: -25, bottom: 0 }} barCategoryGap="30%">
                 <defs>
                   <linearGradient id="colorBerita" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#2563eb" stopOpacity={0.8}/>
@@ -212,8 +221,8 @@ function EditorDashboardView() {
                   dataKey="berita"
                   radius={[6, 6, 0, 0]}
                 >
-                  {YEARLY_DATA.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index === YEARLY_DATA.length - 1 ? '#2563eb' : 'url(#colorBerita)'} />
+                  {yearlyData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={index === yearlyData.length - 1 ? '#2563eb' : 'url(#colorBerita)'} />
                   ))}
                   <LabelList dataKey="berita" position="top" style={{ fill: '#1e3a8a', fontSize: 14, fontWeight: 'bold' }} dy={-10} />
                 </Bar>
@@ -227,7 +236,7 @@ function EditorDashboardView() {
               <TrendingUp size={20} className="text-white" strokeWidth={2.5} />
             </div>
             <p className="text-[15px] text-[#4b5563]">
-              Jumlah berita tahun <span className="font-bold text-[#1e3a8a]">2025</span> meningkat <span className="font-bold text-[#1e3a8a]">16,7%</span> dibanding tahun <span className="font-bold text-[#1e3a8a]">2024</span>.
+              Terus tingkatkan produktivitas menulismu di tahun <span className="font-bold text-[#1e3a8a]">{currentYear}</span>!
             </p>
           </div>
         </div>
@@ -241,7 +250,7 @@ function EditorDashboardView() {
             <ResponsiveContainer width="100%" height={280}>
               <PieChart>
                 <Pie
-                  data={CATEGORY_DATA}
+                  data={categoryData}
                   cx="50%"
                   cy="45%"
                   innerRadius={70}
@@ -249,7 +258,7 @@ function EditorDashboardView() {
                   paddingAngle={3}
                   dataKey="value"
                 >
-                  {CATEGORY_DATA.map((entry, index) => (
+                  {categoryData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
@@ -258,7 +267,7 @@ function EditorDashboardView() {
                   iconSize={8}
                   formatter={(value, entry: any) => (
                     <span className="text-xs text-gray-600 font-medium">
-                      {value} {entry.payload.value} (25%)
+                      {value} {entry.payload.value}
                     </span>
                   )}
                 />
@@ -279,27 +288,6 @@ function EditorDashboardView() {
 
 
 
-      {/* Quick Actions (Editor+) */}
-      {isEditorOrAbove && (
-        <div className="bg-white rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <AlertCircle size={16} className="text-yellow-500" />
-            <h2 className="text-base font-bold text-gray-900">Menunggu Review</h2>
-            <span className="ml-auto bg-yellow-100 text-yellow-700 text-xs font-bold px-2 py-0.5 rounded-full">
-              2 artikel
-            </span>
-          </div>
-          <p className="text-sm text-gray-400 mb-4">
-            Ada artikel dari jurnalis yang menunggu persetujuan Anda.
-          </p>
-          <Link
-            href="/cms/artikel?status=review"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors"
-          >
-            Tinjau sekarang <ArrowRight size={14} />
-          </Link>
-        </div>
-      )}
     </div>
   );
 }
