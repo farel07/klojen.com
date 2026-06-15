@@ -23,7 +23,7 @@ import {
   UserCircle2,
   Calendar,
 } from 'lucide-react';
-import { getCmsArticles } from '@/lib/api/articles';
+import { getCmsArticles, deleteArticle } from '@/lib/api/articles';
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
 
@@ -672,8 +672,16 @@ function BankBeritaContent() {
             </div>
             <div className="flex items-center justify-center gap-4">
               <button
-                onClick={() => {
-                  setArticles((prev) => prev.filter((a) => a.id !== articleToDelete));
+                onClick={async () => {
+                  if (articleToDelete) {
+                    try {
+                      await deleteArticle(articleToDelete);
+                      setArticles((prev) => prev.filter((a) => a.id !== articleToDelete));
+                    } catch (error) {
+                      console.error("Gagal menghapus artikel:", error);
+                      alert("Gagal menghapus artikel");
+                    }
+                  }
                   setArticleToDelete(null);
                 }}
                 className="w-24 py-2.5 rounded-lg bg-[#5DD672] text-white font-bold hover:bg-[#4bc760] transition-colors"

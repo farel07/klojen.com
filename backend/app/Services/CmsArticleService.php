@@ -590,6 +590,39 @@ class CmsArticleService
         DB::table('articles')->where('id', $id)->update(['locked_by' => null]);
     }
 
+    public function deleteArticle(string $id, int $userId, string $userRole): void
+    {
+        if (! in_array($userRole, ['journalist', 'editor', 'admin'])) {
+            throw new \RuntimeException('FORBIDDEN_ROLE', 403);
+        }
+
+        $article = DB::table('articles')->where('id', $id)->first();
+        if (! $article) {
+            throw new \RuntimeException('ARTICLE_NOT_FOUND', 404);
+        }
+
+        if ($userRole === 'journalist') {
+            if ($article->author_id !== $userId) {
+                throw new \RuntimeException('FORBIDDEN_OWNERSHIP', 403);
+            }
+        }
+
+        if (! in_array($article->status, ['draft'])) {
+            throw new \RuntimeException('FORBIDDEN_STATUS', 403);
+        }
+
+        DB::transaction(function () use ($id) {
+            DB::table('article_tags')->where('article_id', $id)->delete();
+            DB::table('article_revisions')->where('article_id', $id)->delete();
+            DB::table('scheduled_articles')->where('article_id', $id)->delete();
+            DB::table('bookmarks')->where('article_id', $id)->delete();
+            DB::table('comments')->where('article_id', $id)->delete();
+            DB::table('articles')->where('id', $id)->delete();
+        });
+
+        $this->searchService->deleteIndex($id);
+    }
+
     /**
      * Process tag names: convert to UUIDs, creating them if they don't exist.
      *

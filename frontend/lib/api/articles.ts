@@ -62,6 +62,9 @@ export const updateArticle = (
 ) =>
   axiosInstance.put<ApiSuccess<Article>>(`/cms/articles/${id}`, data);
 
+export const deleteArticle = (id: string) =>
+  axiosInstance.delete<ApiSuccess<null>>(`/cms/articles/${id}`);
+
 export const lockArticle = (id: string) =>
   axiosInstance.post<ApiSuccess<null>>(`/cms/articles/${id}/lock`);
 

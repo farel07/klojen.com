@@ -85,6 +85,9 @@ Route::middleware('auth:api')->prefix('cms')->group(function () {
     // PUT /api/cms/articles/{id} — Update artikel (journalist / editor / admin)
     Route::put('/articles/{id}', [CmsArticleController::class, 'update']);
 
+    // DELETE /api/cms/articles/{id} — Hapus artikel (hanya untuk draft)
+    Route::delete('/articles/{id}', [CmsArticleController::class, 'destroy']);
+
     // PATCH /api/cms/articles/{id}/status — Update status artikel (editor / admin)
     Route::patch('/articles/{id}/status', [CmsArticleController::class, 'updateStatus']);
 
