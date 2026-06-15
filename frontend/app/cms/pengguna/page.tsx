@@ -207,34 +207,62 @@ export default function KelolaPenggunaPage() {
                   </td>
                 </tr>
               ) : filteredData.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="px-6 py-10 text-center text-gray-500 font-medium">
-                    Tidak ada data pengguna ditemukan.
-                  </td>
-                </tr>
-              ) : (
-                paginatedData.map((item, index) => (
-                  <tr key={item.id} className={`hover:bg-gray-50/50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
-                    <td className="px-6 py-4 text-center font-medium text-gray-500">{(currentPage - 1) * itemsPerPage + index + 1}</td>
-                    <td className="px-6 py-4 font-medium text-gray-900">{item.name}</td>
-                    <td className="px-6 py-4 text-gray-600 text-center font-medium underline decoration-gray-300 underline-offset-4">{item.email}</td>
-                    <td className="px-6 py-4 text-gray-800 font-medium capitalize">{item.role}</td>
-                    <td className="px-6 py-4 text-gray-600 font-medium">
-                      {item.created_at ? dayjs(item.created_at).format('HH:mm:ss DD-MM-YYYY') : '-'}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center justify-center gap-3">
-                        <button
-                          onClick={() => handleDeleteClick(item.id)}
-                          className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100"
-                          title="Hapus"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
+                <>
+                  <tr>
+                    <td colSpan={6} className="px-6 py-10 text-center text-gray-500 font-medium">
+                      Tidak ada data pengguna ditemukan.
                     </td>
                   </tr>
-                ))
+                  {/* Baris kosong agar tabel tidak mengecil */}
+                  {Array.from({ length: itemsPerPage - 1 }).map((_, i) => (
+                    <tr key={`empty-${i}`} className="border-transparent">
+                      <td className="px-6 py-4">&nbsp;</td>
+                      <td className="px-6 py-4"></td>
+                      <td className="px-6 py-4"></td>
+                      <td className="px-6 py-4"></td>
+                      <td className="px-6 py-4"></td>
+                      <td className="px-6 py-4"></td>
+                    </tr>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {paginatedData.map((item, index) => (
+                    <tr key={item.id} className={`hover:bg-gray-50/50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
+                      <td className="px-6 py-4 text-center font-medium text-gray-500">{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                      <td className="px-6 py-4 font-medium text-gray-900">{item.name}</td>
+                      <td className="px-6 py-4 text-gray-600 text-center font-medium underline decoration-gray-300 underline-offset-4">{item.email}</td>
+                      <td className="px-6 py-4 text-gray-800 font-medium capitalize">{item.role}</td>
+                      <td className="px-6 py-4 text-gray-600 font-medium">
+                        {item.created_at ? dayjs(item.created_at).format('HH:mm:ss DD-MM-YYYY') : '-'}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center justify-center gap-3">
+                          <button
+                            onClick={() => handleDeleteClick(item.id)}
+                            className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100"
+                            title="Hapus"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                  {/* Baris kosong agar tinggi tabel tetap konsisten saat data sedikit */}
+                  {paginatedData.length < itemsPerPage &&
+                    Array.from({ length: itemsPerPage - paginatedData.length }).map((_, i) => (
+                      <tr key={`empty-${i}`} className="border-transparent">
+                        <td className="px-6 py-4">&nbsp;</td>
+                        <td className="px-6 py-4"></td>
+                        <td className="px-6 py-4"></td>
+                        <td className="px-6 py-4"></td>
+                        <td className="px-6 py-4"></td>
+                        <td className="px-6 py-4"></td>
+                      </tr>
+                    ))
+                  }
+                </>
               )}
             </tbody>
           </table>

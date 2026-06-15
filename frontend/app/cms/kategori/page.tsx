@@ -8,7 +8,7 @@ import { getTags, deleteTag } from '@/lib/api/tags';
 
 export default function KategoriTagPage() {
   const [activeTab, setActiveTab] = useState<'kategori' | 'tag'>('kategori');
-  
+
   const [categories, setCategories] = useState<any[]>([]);
   const [tags, setTags] = useState<any[]>([]);
 
@@ -33,8 +33,8 @@ export default function KategoriTagPage() {
       const fetchedCategories = categoriesRes.data.data.map((cat: any) => ({
         id: cat.id,
         nama: cat.name,
-        gambar: '', 
-        jumlahArtikel: 0 
+        gambar: '',
+        jumlahArtikel: 0
       }));
       setCategories(fetchedCategories);
 
@@ -81,7 +81,7 @@ export default function KategoriTagPage() {
 
         setIsDeleteModalOpen(false);
         setIsSuccessModalOpen(true);
-        
+
         setTimeout(() => {
           setIsSuccessModalOpen(false);
           setSelectedId(null);
@@ -146,7 +146,7 @@ export default function KategoriTagPage() {
       <div className="flex flex-col gap-6 w-full">
         <div className="flex flex-col sm:flex-row gap-4 w-full">
           {/* Kategori Card */}
-          <div 
+          <div
             onClick={() => setActiveTab('kategori')}
             className={`flex flex-col justify-between p-6 rounded-2xl border cursor-pointer transition-all flex-1 min-w-[200px] h-[120px] ${activeTab === 'kategori' ? 'bg-blue-50 border-blue-200 shadow-sm' : 'bg-white border-gray-100 hover:border-gray-200 shadow-[0_2px_10px_rgba(0,0,0,0.02)]'}`}
           >
@@ -162,7 +162,7 @@ export default function KategoriTagPage() {
           </div>
 
           {/* Tag Card */}
-          <div 
+          <div
             onClick={() => setActiveTab('tag')}
             className={`flex flex-col justify-between p-6 rounded-2xl border cursor-pointer transition-all flex-1 min-w-[200px] h-[120px] ${activeTab === 'tag' ? 'bg-[#ecfdf5] border-emerald-200 shadow-sm' : 'bg-white border-gray-100 hover:border-gray-200 shadow-[0_2px_10px_rgba(0,0,0,0.02)]'}`}
           >
@@ -180,7 +180,7 @@ export default function KategoriTagPage() {
 
         <div className={`flex flex-col md:flex-row items-start md:items-end gap-4 w-full ${activeTab === 'kategori' ? 'justify-between' : 'justify-end'}`}>
           {activeTab === 'kategori' && (
-            <Link 
+            <Link
               href="/cms/kategori/tambah?type=kategori"
               className="inline-flex items-center justify-center gap-2 bg-[#363259] hover:bg-[#2a2745] text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors shadow-sm w-fit"
             >
@@ -242,17 +242,17 @@ export default function KategoriTagPage() {
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-center gap-3">
                       {activeTab === 'kategori' && (
-                        <Link 
+                        <Link
                           href={`/cms/kategori/edit/${item.id}?type=kategori`}
-                          className="text-green-500 hover:text-green-600 transition-colors bg-green-50 p-1.5 rounded-md border border-green-100 block" 
+                          className="text-green-500 hover:text-green-600 transition-colors bg-green-50 p-1.5 rounded-md border border-green-100 block"
                           title="Edit"
                         >
                           <Edit size={16} />
                         </Link>
                       )}
-                      <button 
+                      <button
                         onClick={() => handleDeleteClick(item.id, activeTab)}
-                        className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100 block" 
+                        className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100 block"
                         title="Hapus"
                       >
                         <Trash2 size={16} />
@@ -359,7 +359,7 @@ export default function KategoriTagPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="p-6 text-center relative">
-              <button 
+              <button
                 onClick={cancelDelete}
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition-colors"
               >
@@ -369,13 +369,13 @@ export default function KategoriTagPage() {
                 Apakah Anda Yakin<br />Ingin Menghapus {deleteType === 'kategori' ? 'Kategori' : 'Tag'} ini?
               </h3>
               <div className="flex items-center justify-center gap-4">
-                <button 
+                <button
                   onClick={confirmDelete}
                   className="px-8 py-2 bg-[#69c77e] hover:bg-[#5db471] text-white text-sm font-bold rounded-lg shadow-sm transition-colors"
                 >
                   Ya
                 </button>
-                <button 
+                <button
                   onClick={cancelDelete}
                   className="px-8 py-2 bg-[#ef6e6e] hover:bg-[#d96464] text-white text-sm font-bold rounded-lg shadow-sm transition-colors"
                 >
