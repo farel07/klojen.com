@@ -20,9 +20,12 @@ class Media extends Model
 
     protected $fillable = [
         'article_id',
+        'uploaded_by',
         'file_url',
         'media_type',
         'alt_text',
+        'category_name',
+        'is_library',
     ];
 
     // ── Relationships ─────────────────────────────────────────────────────────
@@ -30,5 +33,10 @@ class Media extends Model
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class, 'article_id');
+    }
+
+    public function uploader(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'uploaded_by');
     }
 }

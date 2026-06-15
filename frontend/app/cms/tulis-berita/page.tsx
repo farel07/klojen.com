@@ -31,7 +31,8 @@ import {
   Crop,
   ArrowLeft,
   ArrowRight,
-  RefreshCw
+  RefreshCw,
+  Camera,
 } from 'lucide-react';
 import RichTextEditor from '@/app/components/cms/RichTextEditor';
 import Cropper from 'react-easy-crop';
@@ -43,7 +44,8 @@ import { createArticle, updateArticleStatus,  updateArticle,
   getCmsArticleById, lockArticle, unlockArticle
 } from '@/lib/api/articles';
 import { getCategories } from '@/lib/api/categories';
-import { uploadMedia } from '@/lib/api/media';
+import { uploadMedia, getMyMedia } from '@/lib/api/media';
+import type { MediaItem as ApiMediaItem } from '@/lib/api/media';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -63,29 +65,50 @@ const KANAL_OPTIONS = [
 
 const MAX_PHOTOS = 3;
 
-// ─── Mock Media ────────────────────────────────────────────────────────────────
+// ─── Bake Watermark ke Canvas ─────────────────────────────────────────────────
+// Mengrender teks watermark langsung ke dalam file gambar sebelum diupload
 
-interface MediaItem {
-  id: string;
-  file_url: string;
-  caption: string;
-  category: string;
+async function bakeWatermarkToBlob(blobUrl: string): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    // img.crossOrigin tidak dibutuhkan untuk blob: URL dan malah bisa bikin error
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width  = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return reject(new Error('Canvas context tidak tersedia'));
+
+      // Gambar foto asli
+      ctx.drawImage(img, 0, 0);
+
+      // Overlay watermark teks
+      const fontSize = Math.max(24, Math.round(canvas.width * 0.07));
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(-30 * Math.PI / 180);
+      ctx.font        = `bold ${fontSize}px Arial, sans-serif`;
+      ctx.fillStyle   = 'rgba(255,255,255,0.40)';
+      ctx.textAlign   = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowColor  = 'rgba(0,0,0,0.35)';
+      ctx.shadowBlur   = 4;
+      ctx.fillText('KLOJEN.COM', 0, 0);
+      ctx.restore();
+
+      canvas.toBlob(
+        (blob) => {
+          if (blob) resolve(blob);
+          else reject(new Error('Gagal membuat blob dari canvas'));
+        },
+        'image/jpeg',
+        0.92,
+      );
+    };
+    img.onerror = () => reject(new Error('Gagal memuat gambar untuk watermark'));
+    img.src = blobUrl;
+  });
 }
-
-const MOCK_MEDIA: MediaItem[] = [
-  { id: '1',  file_url: 'https://picsum.photos/id/28/600/400',  caption: 'Kegiatan Belajar Mengajar di SMA 4 Malang',    category: 'Pendidikan' },
-  { id: '2',  file_url: 'https://picsum.photos/id/29/600/400',  caption: 'Nikmati Kelezatan Bakso Malang Legendaris',     category: 'Kuliner'   },
-  { id: '3',  file_url: 'https://picsum.photos/id/164/600/400', caption: 'Hotel Nyaman dengan Pemandangan Kota Malang',   category: 'Hotel'     },
-  { id: '4',  file_url: 'https://picsum.photos/id/42/600/400',  caption: 'Wisata Kuliner Sego Sambel Favorit Malang',     category: 'Kuliner'   },
-  { id: '5',  file_url: 'https://picsum.photos/id/152/600/400', caption: 'Pesona Alun-Alun Batu untuk Liburan Keluarga',  category: 'Wisata'    },
-  { id: '6',  file_url: 'https://picsum.photos/id/192/600/400', caption: 'Classic Hotel Malang',                         category: 'Hotel'     },
-  { id: '7',  file_url: 'https://picsum.photos/id/201/600/400', caption: 'Lomba Sains Tingkat Kota Malang 2025',         category: 'Pendidikan'},
-  { id: '8',  file_url: 'https://picsum.photos/id/225/600/400', caption: 'Bakso Bakar Khas Malang yang Menggugah Selera',category: 'Kuliner'   },
-  { id: '9',  file_url: 'https://picsum.photos/id/237/600/400', caption: 'Air Terjun Coban Rondo Menawan',               category: 'Wisata'    },
-  { id: '10', file_url: 'https://picsum.photos/id/244/600/400', caption: 'Hotel Bintang 5 Terbaik di Malang',            category: 'Hotel'     },
-  { id: '11', file_url: 'https://picsum.photos/id/250/600/400', caption: 'Wisuda Akbar Universitas Brawijaya',          category: 'Pendidikan'},
-  { id: '12', file_url: 'https://picsum.photos/id/292/600/400', caption: 'Rawon Hitam Pekat Khas Malang',               category: 'Kuliner'   },
-];
 
 // ─── Media Library Modal ──────────────────────────────────────────────────────
 
@@ -94,15 +117,51 @@ function MediaLibraryModal({
   onSelect,
 }: {
   onClose: () => void;
-  onSelect: (item: MediaItem) => void;
+  onSelect: (item: { file_url: string; caption: string }) => void;
 }) {
-  const [search, setSearch]             = useState('');
+  const [search, setSearch]               = useState('');
   const [activeCategory, setActiveCategory] = useState('Semua');
+  const [mediaList, setMediaList]         = useState<ApiMediaItem[]>([]);
+  const [isLoading, setIsLoading]         = useState(true);
+  const [isUploading, setIsUploading]     = useState(false);
+  const uploadInputRef                    = useRef<HTMLInputElement>(null);
+  const cameraInputRef                    = useRef<HTMLInputElement>(null);
   const CATS = ['Semua', 'Kuliner', 'Wisata', 'Pendidikan', 'Hotel'];
 
-  const filtered = MOCK_MEDIA.filter((m) => {
-    const matchSearch = m.caption.toLowerCase().includes(search.toLowerCase());
-    const matchCat    = activeCategory === 'Semua' || m.category === activeCategory;
+  // Fetch media dari API saat modal dibuka
+  useEffect(() => {
+    const fetchMedia = async () => {
+      try {
+        setIsLoading(true);
+        const res = await getMyMedia();
+        setMediaList(res.data.data);
+      } catch (err) {
+        console.error('Gagal mengambil media:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchMedia();
+  }, []);
+
+  const handleUploadFile = async (file: File) => {
+    if (!file.type.startsWith('image/')) return;
+    try {
+      setIsUploading(true);
+      const res = await uploadMedia(file, undefined, file.name.replace(/\.[^.]+$/, ''), undefined, true);
+      setMediaList((prev) => [res.data.data, ...prev]);
+    } catch (err) {
+      console.error('Gagal upload:', err);
+      alert('Gagal mengupload gambar.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const filtered = mediaList.filter((m) => {
+    const caption = m.alt_text ?? m.article_title ?? '';
+    const matchSearch = caption.toLowerCase().includes(search.toLowerCase());
+    const matchCat    = activeCategory === 'Semua' || m.category_name === activeCategory;
     return matchSearch && matchCat;
   });
 
@@ -121,12 +180,45 @@ function MediaLibraryModal({
             <h3 className="text-lg font-bold text-gray-800">Media Tersimpan</h3>
             <p className="text-xs text-gray-400 font-medium">Klik gambar untuk memilih</p>
           </div>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
-          >
-            <X size={18} className="text-gray-500" />
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Upload baru */}
+            <label
+              title="Upload Gambar Baru"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-semibold cursor-pointer hover:bg-blue-100 transition-colors"
+            >
+              <Upload size={13} />
+              Upload
+              <input
+                ref={uploadInputRef}
+                type="file"
+                accept="image/png,image/jpeg,image/jpg"
+                className="hidden"
+                onChange={(e) => { if (e.target.files?.[0]) handleUploadFile(e.target.files[0]); e.target.value = ''; }}
+              />
+            </label>
+            {/* Kamera */}
+            <label
+              title="Ambil dari Kamera"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 text-purple-600 rounded-lg text-xs font-semibold cursor-pointer hover:bg-purple-100 transition-colors"
+            >
+              <Camera size={13} />
+              Kamera
+              <input
+                ref={cameraInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={(e) => { if (e.target.files?.[0]) handleUploadFile(e.target.files[0]); e.target.value = ''; }}
+              />
+            </label>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <X size={18} className="text-gray-500" />
+            </button>
+          </div>
         </div>
 
         {/* Search + Filter */}
@@ -157,29 +249,48 @@ function MediaLibraryModal({
 
         {/* Grid */}
         <div className="flex-1 overflow-y-auto p-6">
-          {filtered.length === 0 ? (
+          {isLoading || isUploading ? (
+            <div className="flex flex-col items-center justify-center py-16 text-gray-400">
+              <RefreshCw size={28} className="animate-spin mb-3 text-blue-400" />
+              <p className="text-sm font-medium">{isUploading ? 'Mengupload...' : 'Memuat media...'}</p>
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-gray-400">
               <span className="text-4xl mb-3">🖼️</span>
               <p className="text-sm font-medium">Tidak ada gambar ditemukan</p>
+              <p className="text-xs mt-1">Klik Upload atau Kamera di atas untuk menambah gambar</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {filtered.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => { onSelect(item); onClose(); }}
+                  onClick={() => {
+                    onSelect({ file_url: item.file_url, caption: item.alt_text ?? item.article_title ?? '' });
+                    onClose();
+                  }}
                   className="group relative flex flex-col gap-2 text-left"
                 >
                   <div className="relative rounded-xl overflow-hidden aspect-video bg-gray-100 border-2 border-transparent group-hover:border-blue-400 transition-all">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={item.file_url} alt={item.caption} className="w-full h-full object-cover" />
+                    <img src={item.file_url} alt={item.alt_text ?? ''} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/10 transition-all flex items-center justify-center">
                       <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
                         <Check size={16} className="text-blue-500" />
                       </div>
                     </div>
+                    {item.category_name && (
+                      <span className="absolute top-1.5 left-1.5 bg-white/90 text-gray-700 text-[9px] font-bold px-1.5 py-0.5 rounded-full">
+                        {item.category_name}
+                      </span>
+                    )}
                   </div>
-                  <p className="text-xs text-gray-600 font-medium line-clamp-2 px-0.5">{item.caption}</p>
+                  <p className="text-xs text-gray-600 font-medium line-clamp-2 px-0.5">
+                    {item.alt_text || item.article_title || 'Tanpa keterangan'}
+                  </p>
+                  {item.uploader_name && (
+                    <p className="text-[10px] text-gray-400 px-0.5">oleh {item.uploader_name}</p>
+                  )}
                 </button>
               ))}
             </div>
@@ -439,7 +550,7 @@ export default function TulisBeritaPage() {
     });
   };
 
-  const handleMediaSelect = (item: MediaItem) => {
+  const handleMediaSelect = (item: { file_url: string; caption: string }) => {
     if (mediaModalTarget === 'add') {
       if (photos.length < MAX_PHOTOS)
         setPhotos((prev) => [...prev, { url: item.file_url, caption: item.caption, watermark: false }]);
@@ -545,23 +656,38 @@ export default function TulisBeritaPage() {
         await updateArticle(articleId, payload);
       }
 
-      // Upload all photos that are blobs (newly added)
+      // Upload foto-foto baru (blob) ke server
+      // - Foto TANPA watermark → upload normal, terikat artikel, TIDAK masuk Media Tersimpan
+      // - Foto DENGAN watermark → watermark di-bake ke gambar via canvas, lalu upload dengan
+      //   is_library=true agar masuk Media Tersimpan (hanya SATU upload, tidak dobel)
       let updatedFeaturedImageUrl: string | null = null;
 
       for (let i = 0; i < photos.length; i++) {
         const photo = photos[i];
         if (photo.url.startsWith('blob:')) {
           try {
-            const blobResponse = await fetch(photo.url);
-            const blob = await blobResponse.blob();
+            let uploadBlob: Blob;
+
+            if (photo.watermark) {
+              // Bake watermark ke gambar via canvas sebelum upload
+              uploadBlob = await bakeWatermarkToBlob(photo.url);
+            } else {
+              const blobResponse = await fetch(photo.url);
+              uploadBlob = await blobResponse.blob();
+            }
+
             const formData = new FormData();
-            formData.append('image', blob, 'image.jpg');
+            formData.append('image', uploadBlob, 'image.jpg');
             formData.append('article_id', newArticleId as string);
             formData.append('alt_text', photo.caption || title);
-            
-            const uploadRes = await uploadMedia(formData);
+            if (kanal) formData.append('category_name', kanal);
+            // Hanya foto yang diberi watermark yang masuk ke Media Tersimpan global
+            // Laravel boolean validation accepts '1'/'0', not 'true'/'false' string
+            formData.append('is_library', photo.watermark ? '1' : '0');
+
+            const uploadRes = await uploadMedia(formData as any);
             const uploadedUrl = uploadRes.data.data.file_url;
-            
+
             if (i === 0) {
               updatedFeaturedImageUrl = uploadedUrl;
             }
@@ -569,8 +695,8 @@ export default function TulisBeritaPage() {
             console.error(`Gagal upload gambar ke-${i + 1}:`, uploadError);
           }
         } else {
-           if (i === 0 && isBlob) {
-               // Should not happen, but just in case
+           if (i === 0) {
+               // Jika foto dari media library, langsung gunakan URL-nya sebagai featured image
                updatedFeaturedImageUrl = photo.url;
            }
         }

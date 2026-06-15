@@ -61,6 +61,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/bookmarks', [BookmarkController::class, 'toggle']);
     
     // Media
+    Route::get('/media', [\App\Http\Controllers\MediaController::class, 'index']);
     Route::post('/media/upload', [\App\Http\Controllers\MediaController::class, 'upload']);
     Route::delete('/media/{id}', [\App\Http\Controllers\MediaController::class, 'destroy']);
 
