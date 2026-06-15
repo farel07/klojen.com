@@ -90,7 +90,6 @@ const VISITOR_DATA = {
 const SPARKLINE_1 = [{ v: 2 }, { v: 3 }, { v: 3.5 }, { v: 5 }, { v: 4 }, { v: 6 }, { v: 8 }];
 const SPARKLINE_2 = [{ v: 4 }, { v: 4.5 }, { v: 4 }, { v: 5.5 }, { v: 5 }, { v: 6.5 }, { v: 7 }];
 const SPARKLINE_3 = [{ v: 3 }, { v: 2 }, { v: 4 }, { v: 3.5 }, { v: 5 }, { v: 4.5 }, { v: 6 }];
-const SPARKLINE_4 = [{ v: 5 }, { v: 4.5 }, { v: 5.5 }, { v: 5 }, { v: 7 }, { v: 6 }, { v: 8 }];
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
@@ -113,13 +112,11 @@ export default function AdminDashboard() {
     totalBerita: 0,
     totalUser: 0,
     totalBeritaHariIni: 0,
-    iklanAktif: 12
   });
   const [sparklines, setSparklines] = useState({
     totalBerita: SPARKLINE_1,
     totalUser: SPARKLINE_2,
     beritaHariIni: SPARKLINE_3,
-    iklanAktif: SPARKLINE_4
   });
   const [visitorData, setVisitorData] = useState(VISITOR_DATA);
 
@@ -163,7 +160,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
 
         {/* Card 1: Total Berita */}
         <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 border border-gray-100 flex flex-col justify-between h-[150px]">
@@ -222,25 +219,6 @@ export default function AdminDashboard() {
             <div className="text-[11px] font-bold text-gray-500">Artikel</div>
             <div className="w-[80px] h-[30px]">
               <Sparkline data={sparklines.beritaHariIni} color="#f59e0b" />
-            </div>
-          </div>
-        </div>
-
-        {/* Card 4: Iklan Aktif */}
-        <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-6 border border-gray-100 flex flex-col justify-between h-[150px]">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-[#f5f3ff] text-purple-600 flex items-center justify-center shrink-0">
-              <Megaphone size={24} strokeWidth={1.5} />
-            </div>
-            <div>
-              <div className="text-xs font-bold text-gray-800 mb-0.5">Iklan Aktif</div>
-              <div className="text-3xl font-extrabold text-gray-900 leading-none tracking-tight">{topCards.iklanAktif}</div>
-            </div>
-          </div>
-          <div className="flex justify-between items-end mt-4">
-            <div className="text-[11px] font-bold text-gray-500">Penempatan</div>
-            <div className="w-[80px] h-[30px]">
-              <Sparkline data={sparklines.iklanAktif} color="#8b5cf6" />
             </div>
           </div>
         </div>

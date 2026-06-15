@@ -68,8 +68,6 @@ const NAV_BY_ROLE: Record<Role, NavItem[]> = {
     { label: 'Kelola Akun Karyawan', href: '/cms/karyawan', icon: ClipboardList, roles: ['admin'] },
     { label: 'Kelola Akun Pengguna', href: '/cms/pengguna', icon: ClipboardList, roles: ['admin'] },
     { label: 'Kategori dan Tag', href: '/cms/kategori', icon: Hash, roles: ['admin'] },
-    { label: 'Kelola Iklan', href: '/cms/iklan', icon: AdsIcon, roles: ['admin'] },
-    { label: 'Statistik Portal', href: '/cms/statistik', icon: LineChart, roles: ['admin'] },
   ],
 };
 
