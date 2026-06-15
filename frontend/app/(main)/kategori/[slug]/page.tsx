@@ -1,43 +1,116 @@
-import Kategori from '@/app/pages/kategori';
-import type { Metadata } from 'next';
+import Kategori from "@/app/pages/kategori";
+import type { Metadata } from "next";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-// ── Dynamic metadata per kategori ─────────────────────────────────────────────
+// ── Fetch nama kategori dari API ────────────────────────────────────────────
 
-const CATEGORY_META: Record<string, { title: string; description: string }> = {
-  kuliner: {
-    title: 'Kuliner Kota Malang | Klojen',
-    description: 'Temukan rekomendasi kuliner terbaik di Kota Malang — dari street food legendaris hingga restoran modern.',
-  },
-  wisata: {
-    title: 'Wisata Kota Malang | Klojen',
-    description: 'Eksplorasi destinasi wisata terbaik di Malang — alam, budaya, dan spot instagramable terpopuler.',
-  },
-  pendidikan: {
-    title: 'Pendidikan Kota Malang | Klojen',
-    description: 'Berita dan informasi seputar dunia pendidikan di Kota Malang — universitas, sekolah, dan beasiswa.',
-  },
-  hotel: {
-    title: 'Hotel di Kota Malang | Klojen',
-    description: 'Rekomendasi hotel dan penginapan terbaik di Malang — dari budget hingga bintang 5.',
-  },
-};
+interface CategoryData {
+  id: string;
+  name: string;
+  slug: string;
+  parent_id: string | null;
+}
+
+async function fetchCategory(slug: string): Promise<CategoryData | null> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  try {
+    const res = await fetch(`${apiUrl}/categories`, {
+      next: { revalidate: 3600 }, // kategori jarang berubah, cache 1 jam
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    const categories: CategoryData[] = json?.data ?? [];
+    return categories.find((c) => c.slug === slug) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+// ── Dynamic Metadata ────────────────────────────────────────────────────────
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const meta = CATEGORY_META[slug];
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const category = await fetchCategory(slug);
+
+  const categoryName = category?.name ?? slug.charAt(0).toUpperCase() + slug.slice(1);
+  const title = `${categoryName} Kota Malang`;
+  const description = `Baca berita dan artikel terbaru seputar ${categoryName} di Kota Malang. Informasi terkini, terpercaya, dan dikurasi khusus untuk Anda.`;
+  const canonicalUrl = `${siteUrl}/kategori/${slug}`;
+
   return {
-    title: meta?.title ?? `Kategori: ${slug} | Klojen`,
-    description: meta?.description ?? `Baca artikel terbaru kategori ${slug} di Klojen — Portal Berita Kota Malang.`,
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${title} | Klojen`,
+      description,
+      url: canonicalUrl,
+      type: "website",
+      locale: "id_ID",
+      siteName: "Klojen",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | Klojen`,
+      description,
+    },
   };
 }
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// ── BreadcrumbList JSON-LD ──────────────────────────────────────────────────
+
+function BreadcrumbJsonLd({
+  categoryName,
+  slug,
+}: {
+  categoryName: string;
+  slug: string;
+}) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Beranda",
+        item: siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: categoryName,
+        item: `${siteUrl}/kategori/${slug}`,
+      },
+    ],
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
+// ── Page ────────────────────────────────────────────────────────────────────
 
 export default async function KategoriPage({ params }: Props) {
   const { slug } = await params;
-  return <Kategori slug={slug} />;
+  const category = await fetchCategory(slug);
+  const categoryName =
+    category?.name ?? slug.charAt(0).toUpperCase() + slug.slice(1);
+
+  return (
+    <>
+      <BreadcrumbJsonLd categoryName={categoryName} slug={slug} />
+      <Kategori slug={slug} />
+    </>
+  );
 }
