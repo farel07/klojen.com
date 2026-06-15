@@ -94,9 +94,9 @@ export default function TambahKaryawanPage() {
                 className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm appearance-none"
               >
                 <option value="" disabled>Pilih...</option>
-                <option value="Admin">Admin</option>
-                <option value="Editor">Editor</option>
-                <option value="Jurnalis">Jurnalis</option>
+                <option value="admin">Admin</option>
+                <option value="editor">Editor</option>
+                <option value="journalist">Jurnalis</option>
               </select>
               <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={18} />
             </div>
