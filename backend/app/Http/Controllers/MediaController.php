@@ -13,28 +13,70 @@ class MediaController extends Controller
     ) {}
 
     /**
+     * GET /api/media
+     * Mengambil media yang masuk galeri Media Tersimpan (is_library = true)
+     */
+    public function index(): JsonResponse
+    {
+        /** @var \App\Models\User $user */
+        $user = auth('api')->user();
+
+        if (!in_array($user->role, ['journalist', 'editor', 'admin'])) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Akses ditolak.',
+            ], 403);
+        }
+
+        $media = $this->mediaService->getAllMedia();
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $media,
+        ]);
+    }
+
+    /**
      * POST /api/media/upload
-     * Upload gambar (png/jpg/jpeg), ukuran max 2048 KB
+     * Upload gambar.
+     * - article_id: opsional (null = standalone dari halaman Media Tersimpan)
+     * - is_library: boolean — jika true, muncul di galeri Media Tersimpan
      */
     public function upload(Request $request): JsonResponse
     {
         $request->validate([
-            'image'      => 'required|file|mimes:png,jpg,jpeg|max:2048',
-            'article_id' => 'required|string',
-            'alt_text'   => 'nullable|string|max:255',
+            'image'         => 'required|file|mimes:png,jpg,jpeg|max:5120',
+            'article_id'    => 'nullable|string',
+            'alt_text'      => 'nullable|string|max:255',
+            'category_name' => 'nullable|string|max:100',
+            'is_library'    => 'nullable|boolean',
         ]);
 
-        $file = $request->file('image');
-        $articleId = $request->input('article_id');
-        $altText = $request->input('alt_text');
+        /** @var \App\Models\User $user */
+        $user = auth('api')->user();
 
-        $media = $this->mediaService->uploadImage($file, $articleId, $altText);
+        $file         = $request->file('image');
+        $articleId    = $request->input('article_id') ?: null;
+        $altText      = $request->input('alt_text');
+        $categoryName = $request->input('category_name');
+        // is_library: true jika upload dari halaman Media Tersimpan atau jika foto diberi watermark
+        $isLibrary    = filter_var($request->input('is_library', false), FILTER_VALIDATE_BOOLEAN);
+
+        $media = $this->mediaService->uploadImage(
+            $file,
+            $user->id,
+            $articleId,
+            $altText,
+            $categoryName,
+            $isLibrary,
+        );
 
         return response()->json([
             'status' => 'success',
             'data'   => $media,
         ], 201);
     }
+
     /**
      * DELETE /api/media/{id}
      * Menghapus media dan file fisiknya

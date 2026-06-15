@@ -353,12 +353,28 @@ class CmsArticleController extends Controller
         }
     }
 
+    public function destroy(string $id): JsonResponse
+    {
+        $user = auth('api')->user();
+        try {
+            $this->cmsArticleService->deleteArticle($id, $user->id, $user->role);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Artikel berhasil dihapus.',
+            ]);
+        } catch (\RuntimeException $e) {
+            return $this->handleException($e);
+        }
+    }
+
     private function handleException(\RuntimeException $e): JsonResponse
     {
         $map = [
             'FORBIDDEN_ROLE' => [403, 'Anda tidak memiliki akses.'],
             'ARTICLE_NOT_FOUND' => [404, 'Artikel tidak ditemukan.'],
             'LOCKED_BY_OTHER' => [403, 'Artikel sedang dikerjakan oleh editor lain.'],
+            'FORBIDDEN_OWNERSHIP' => [403, 'Anda hanya diizinkan menghapus/mengubah artikel Anda sendiri.'],
+            'FORBIDDEN_STATUS' => [403, 'Aksi ini tidak diizinkan pada status artikel saat ini.'],
         ];
 
         if (isset($map[$e->getMessage()])) {
