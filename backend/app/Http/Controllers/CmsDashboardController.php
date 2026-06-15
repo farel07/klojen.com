@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\PageView;
 use Illuminate\Support\Facades\DB;
 
 class CmsDashboardController extends Controller
@@ -128,8 +129,7 @@ class CmsDashboardController extends Controller
             // Summary Data
             $totalBerita = Article::where('created_at', '>=', $date)->count();
             $userBaru = User::where('created_at', '>=', $date)->count();
-            // Mock pageViews based on articles * 100 for some realism
-            $pageViews = $totalBerita * 150 + rand(100, 500);
+            $pageViews = PageView::where('created_at', '>=', $date)->count();
 
             $summaryData[$key] = [
                 'pageViews' => number_format($pageViews, 0, ',', '.'),
@@ -165,14 +165,10 @@ class CmsDashboardController extends Controller
             $categoryData[$key] = $catList;
         }
 
-        // Generate sparkline data
         $sparklines = [
             'totalBerita' => [],
             'totalUser' => [],
-            'beritaHariIni' => [],
-            'iklanAktif' => [
-                ['v' => 5], ['v' => 4.5], ['v' => 5.5], ['v' => 5], ['v' => 7], ['v' => 6], ['v' => 8]
-            ]
+            'beritaHariIni' => []
         ];
 
         // 7 days trend
@@ -201,7 +197,7 @@ class CmsDashboardController extends Controller
             }
         }
 
-        // Generate Visitor Data (Mock dynamic)
+        // Generate Visitor Data (Real data from page_views)
         $visitorData = [
             'hari_ini' => [],
             '7_hari' => [],
@@ -211,37 +207,53 @@ class CmsDashboardController extends Controller
 
         // hari_ini: 6 points, every 4 hours
         for ($i = 0; $i < 6; $i++) {
-            $hour = str_pad($i * 4, 2, '0', STR_PAD_LEFT) . ':00';
+            $hourStart = now()->startOfDay()->addHours($i * 4);
+            $hourEnd = $hourStart->copy()->addHours(4);
+            $hourLabel = str_pad($i * 4, 2, '0', STR_PAD_LEFT) . ':00';
+            
+            $count = PageView::whereBetween('created_at', [$hourStart, $hourEnd])->count();
             $visitorData['hari_ini'][] = [
-                'date' => $hour,
-                'visitors' => rand(100, 5000)
+                'date' => $hourLabel,
+                'visitors' => $count
             ];
         }
 
         // 7_hari: 7 points, daily
         for ($i = 6; $i >= 0; $i--) {
-            $date = now()->subDays($i)->translatedFormat('d M');
+            $dayStart = now()->subDays($i)->startOfDay();
+            $dayEnd = now()->subDays($i)->endOfDay();
+            $dateLabel = now()->subDays($i)->translatedFormat('d M');
+            
+            $count = PageView::whereBetween('created_at', [$dayStart, $dayEnd])->count();
             $visitorData['7_hari'][] = [
-                'date' => $date,
-                'visitors' => rand(3000, 12000)
+                'date' => $dateLabel,
+                'visitors' => $count
             ];
         }
 
-        // 30_hari: 7 points, every 4-5 days
+        // 30_hari: 7 points, every 4-5 days (approximate grouping)
         for ($i = 6; $i >= 0; $i--) {
-            $date = now()->subDays($i * 4)->translatedFormat('d M');
+            $periodEnd = now()->subDays($i * 4)->endOfDay();
+            $periodStart = now()->subDays(($i + 1) * 4)->endOfDay()->addSecond();
+            $dateLabel = now()->subDays($i * 4)->translatedFormat('d M');
+            
+            $count = PageView::whereBetween('created_at', [$periodStart, $periodEnd])->count();
             $visitorData['30_hari'][] = [
-                'date' => $date,
-                'visitors' => rand(4000, 15000)
+                'date' => $dateLabel,
+                'visitors' => $count
             ];
         }
 
         // 1_tahun: 12 points, monthly
         for ($i = 11; $i >= 0; $i--) {
-            $date = now()->subMonths($i)->translatedFormat('M');
+            $monthStart = now()->subMonths($i)->startOfMonth();
+            $monthEnd = now()->subMonths($i)->endOfMonth();
+            $dateLabel = now()->subMonths($i)->translatedFormat('M');
+            
+            $count = PageView::whereBetween('created_at', [$monthStart, $monthEnd])->count();
             $visitorData['1_tahun'][] = [
-                'date' => $date,
-                'visitors' => rand(100000, 300000)
+                'date' => $dateLabel,
+                'visitors' => $count
             ];
         }
 
@@ -252,8 +264,7 @@ class CmsDashboardController extends Controller
             'topCards' => [
                 'totalBerita' => Article::count(),
                 'totalUser' => User::count(),
-                'totalBeritaHariIni' => Article::where('created_at', '>=', $filters['hari_ini'])->count(),
-                'iklanAktif' => 12 // mock
+                'totalBeritaHariIni' => Article::where('created_at', '>=', $filters['hari_ini'])->count()
             ],
             'sparklines' => $sparklines,
             'visitorData' => $visitorData

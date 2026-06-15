@@ -46,6 +46,9 @@ Route::get('/categories', [CategoryController::class, 'index']);
 // ── Tags ─────────────────────────────────────────────────────────────────────
 Route::get('/tags', [TagController::class, 'index']);
 
+// ── Analytics ────────────────────────────────────────────────────────────────
+Route::post('/analytics/track', [\App\Http\Controllers\AnalyticsController::class, 'track']);
+
 // ── Articles ──────────────────────────────────────────────────────────────────
 Route::get('/articles',                  [ArticleController::class, 'index']);
 Route::get('/articles/sitemap',          [ArticleController::class, 'sitemap']);
@@ -103,6 +106,18 @@ Route::middleware('auth:api')->prefix('cms')->group(function () {
 
     // GET /api/cms/statistics — Dashboard statistics
     Route::get('/statistics', [\App\Http\Controllers\CmsDashboardController::class, 'index']);
+
+    // CMS Categories
+    Route::get('/categories', [\App\Http\Controllers\CmsCategoryController::class, 'index']);
+    Route::post('/categories', [\App\Http\Controllers\CmsCategoryController::class, 'store']);
+    Route::put('/categories/{id}', [\App\Http\Controllers\CmsCategoryController::class, 'update']);
+    Route::delete('/categories/{id}', [\App\Http\Controllers\CmsCategoryController::class, 'destroy']);
+
+    // CMS Tags
+    Route::get('/tags', [\App\Http\Controllers\CmsTagController::class, 'index']);
+    Route::post('/tags', [\App\Http\Controllers\CmsTagController::class, 'store']);
+    Route::put('/tags/{id}', [\App\Http\Controllers\CmsTagController::class, 'update']);
+    Route::delete('/tags/{id}', [\App\Http\Controllers\CmsTagController::class, 'destroy']);
 });
 
 // ── Users (admin only) ────────────────────────────────────────────────────────

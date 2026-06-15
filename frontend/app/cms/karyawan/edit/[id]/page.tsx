@@ -2,12 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { CheckCircle2, ChevronDown } from 'lucide-react';
 import axiosInstance from '@/lib/axios';
 
-export default function EditKaryawanPage({ params }: { params: { id: string } }) {
+export default function EditKaryawanPage() {
   const router = useRouter();
+  const params = useParams();
+  const id = params.id as string;
+
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -22,14 +25,16 @@ export default function EditKaryawanPage({ params }: { params: { id: string } })
   });
 
   useEffect(() => {
+    if (!id) return;
+
     const fetchUser = async () => {
       try {
-        const response = await axiosInstance.get(`/users/${params.id}`);
+        const response = await axiosInstance.get(`/users/${id}`);
         const user = response.data.data;
         setFormData({
-          nama: user.name,
-          role: user.role.charAt(0).toUpperCase() + user.role.slice(1), // Capitalize
-          email: user.email,
+          nama: user.name || '',
+          role: user.role ? user.role.toLowerCase() : '', // simpan as-is lowercase agar cocok dengan option value
+          email: user.email || '',
         });
       } catch (error: any) {
         console.error('Failed to fetch user:', error);
@@ -38,8 +43,9 @@ export default function EditKaryawanPage({ params }: { params: { id: string } })
         setIsLoading(false);
       }
     };
+
     fetchUser();
-  }, [params.id]);
+  }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,10 +53,10 @@ export default function EditKaryawanPage({ params }: { params: { id: string } })
     setErrorMessage('');
     
     try {
-      await axiosInstance.patch(`/users/${params.id}`, {
+      await axiosInstance.patch(`/users/${id}`, {
         name: formData.nama,
         email: formData.email,
-        role: formData.role.toLowerCase(),
+        role: formData.role, // sudah lowercase dari state
       });
       setIsSuccessModalOpen(true);
       
@@ -119,11 +125,9 @@ export default function EditKaryawanPage({ params }: { params: { id: string } })
                   className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm appearance-none"
                 >
                   <option value="" disabled>Pilih...</option>
-                  <option value="Admin">Admin</option>
-                  <option value="Editor">Editor</option>
-                  <option value="Jurnalis">Jurnalis</option>
-                  <option value="Pembaca">Pembaca</option>
-                  {/* Tambahan role karena data dummy ada yang "Pembaca" */}
+                  <option value="admin">Admin</option>
+                  <option value="editor">Editor</option>
+                  <option value="journalist">Jurnalis</option>
                 </select>
                 <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={18} />
               </div>
