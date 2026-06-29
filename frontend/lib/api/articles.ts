@@ -8,6 +8,7 @@ export const getArticles = (params?: {
   status?: ArticleStatus;
   category?: string;
   tag?: string;
+  search?: string;
   page?: number;
   limit?: number;
   featured?: boolean;

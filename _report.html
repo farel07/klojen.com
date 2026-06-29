@@ -1,0 +1,4683 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<title>Portal Berita Klojen.com — Dokumentasi Lengkap</title>
+<style>
+@page {
+    size: A4;
+    margin: 25mm 20mm 25mm 20mm;
+}
+* { box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 10pt;
+    line-height: 1.6;
+    color: #2d2d2d;
+    margin: 0; padding: 0;
+}
+
+/* ── Cover Page ── */
+.cover {
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
+    text-align: center;
+    padding: 60px 40px;
+}
+.cover h1 {
+    font-size: 32pt;
+    color: #1a56db;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+.cover .subtitle {
+    font-size: 16pt;
+    color: #555;
+    margin-bottom: 20px;
+}
+.cover .line {
+    width: 120px;
+    height: 3px;
+    background: #1a56db;
+    margin: 20px auto;
+    border-radius: 2px;
+}
+.cover .desc {
+    font-style: italic;
+    color: #666;
+    max-width: 500px;
+    margin: 0 auto 30px;
+    font-size: 10.5pt;
+}
+.cover .info-table {
+    margin: 0 auto;
+    text-align: left;
+    font-size: 10pt;
+}
+.cover .info-table td { padding: 4px 12px; border: none; }
+.cover .info-table td:first-child { font-weight: bold; color: #444; }
+.cover .docs-included {
+    margin-top: 30px;
+    font-size: 9.5pt;
+    color: #555;
+}
+.cover .docs-included h3 { color: #1a56db; font-size: 11pt; }
+
+/* ── TOC ── */
+.toc {
+    page-break-after: always;
+    padding: 30px 0;
+}
+.toc h2 {
+    text-align: center;
+    color: #1a56db;
+    font-size: 18pt;
+    border-bottom: 2px solid #1a56db;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.toc .part { font-weight: bold; color: #1a56db; margin-top: 14px; font-size: 10.5pt; }
+.toc .item { padding-left: 24px; color: #444; font-size: 9.5pt; line-height: 1.8; }
+
+/* ── Section Divider ── */
+.section-divider {
+    page-break-before: always;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 40vh;
+    text-align: center;
+    padding: 60px 0;
+}
+.section-divider h1 {
+    font-size: 24pt;
+    color: #1a56db;
+    border-bottom: 3px solid #1a56db;
+    padding-bottom: 12px;
+    display: inline-block;
+}
+
+/* ── Content ── */
+.content {
+    page-break-before: always;
+}
+h1 { font-size: 20pt; color: #1a56db; border-bottom: 2px solid #1a56db; padding-bottom: 8px; margin-top: 40px; }
+h2 { font-size: 16pt; color: #1a56db; border-bottom: 1px solid #d0d7e8; padding-bottom: 6px; margin-top: 32px; }
+h3 { font-size: 13pt; color: #333; margin-top: 24px; }
+h4 { font-size: 11pt; color: #444; margin-top: 20px; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 16px;
+    font-size: 9pt;
+}
+th {
+    background: #e8edf5;
+    color: #333;
+    font-weight: 600;
+    padding: 8px 10px;
+    border: 1px solid #c0c8d8;
+    text-align: left;
+}
+td {
+    padding: 6px 10px;
+    border: 1px solid #d0d7e8;
+    vertical-align: top;
+}
+tr:nth-child(even) td { background: #f8f9fc; }
+
+code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    background: #eef0f4;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 8.5pt;
+    color: #444;
+}
+
+pre {
+    background: #f6f7f9;
+    color: #2d2d2d;
+    padding: 14px 18px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 8.5pt;
+    line-height: 1.55;
+    margin: 0;
+    border-left: 3px solid #c0c8d8;
+}
+pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+}
+
+.code-block {
+    margin: 12px 0 16px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #dce0e8;
+}
+.code-lang {
+    background: #e8ecf2;
+    color: #555;
+    padding: 4px 14px;
+    font-size: 7.5pt;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #dce0e8;
+}
+
+.mermaid-block {
+    margin: 16px 0;
+    border: 1px solid #d0d7e8;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #f8f9fc;
+}
+.mermaid-label {
+    background: #e8edf5;
+    padding: 6px 14px;
+    font-weight: bold;
+    color: #1a56db;
+    font-size: 9pt;
+}
+.mermaid-code {
+    padding: 14px 18px;
+    font-family: 'Consolas', monospace;
+    font-size: 8.5pt;
+    line-height: 1.5;
+    color: #444;
+    white-space: pre;
+    margin: 0;
+    background: #f8f9fc;
+}
+
+.diagram-img-block {
+    margin: 20px 0;
+    text-align: center;
+    page-break-inside: avoid;
+    background: #fff;
+    border: 1px solid #e0e4ea;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.diagram-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+blockquote {
+    border-left: 4px solid #1a56db;
+    background: #eef5ff;
+    padding: 10px 16px;
+    margin: 12px 0;
+    font-style: italic;
+    color: #444;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol { padding-left: 24px; margin: 8px 0; }
+li { margin-bottom: 4px; }
+
+hr {
+    border: none;
+    border-top: 1px solid #d0d7e8;
+    margin: 24px 0;
+}
+
+a { color: #1a56db; text-decoration: none; }
+
+/* Page footer simulation */
+.page-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 8pt;
+    color: #999;
+    border-top: 1px solid #ddd;
+    padding: 4px 0;
+}
+
+@media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .content { page-break-before: always; }
+    .section-divider { page-break-before: always; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════ COVER PAGE ════ -->
+<div class="cover">
+    <h1>Portal Berita Klojen.com</h1>
+    <div class="subtitle">Dokumentasi Teknis Lengkap</div>
+    <div class="line"></div>
+    <div class="desc">
+        Dokumen ini berisi dokumentasi menyeluruh aplikasi Portal Berita Klojen.com,
+        mencakup gambaran umum sistem, arsitektur teknologi, fitur-fitur,
+        diagram teknis, model data, dan referensi API lengkap.
+    </div>
+    <table class="info-table">
+        <tr><td>Versi</td><td>1.0.0</td></tr>
+        <tr><td>Tanggal</td><td>Juni 2026</td></tr>
+        <tr><td>Status</td><td>In Development</td></tr>
+        <tr><td>Backend</td><td>Laravel 12 (PHP 8.2+) + MySQL 8</td></tr>
+        <tr><td>Frontend</td><td>Next.js 15 (React 19) + TypeScript</td></tr>
+    </table>
+    <div class="docs-included">
+        <h3>Dokumen yang Tergabung</h3>
+        <div>1. docs-all.md — Gambaran Umum Aplikasi, Tech Stack &amp; Fitur</div>
+        <div>2. docs-teknikal.md — Diagram Teknis (Use Case, Activity, Sequence, Class, CDM, PDM)</div>
+        <div>3. api-docs.md — Referensi API Lengkap (50 Endpoint)</div>
+    </div>
+</div>
+
+<!-- ════ TABLE OF CONTENTS ════ -->
+<div class="toc">
+    <h2>Daftar Isi</h2>
+    <div class="part">BAGIAN I: GAMBARAN UMUM APLIKASI</div>
+    <div class="item">1. Tentang Proyek</div>
+    <div class="item">2. Tech Stack</div>
+    <div class="item">3. Arsitektur Sistem</div>
+    <div class="item">4. Struktur Folder</div>
+    <div class="item">5. Role &amp; Hak Akses (RBAC)</div>
+    <div class="item">6. Fitur Portal Publik</div>
+    <div class="item">7. Fitur CMS Redaksi</div>
+    <div class="item">8. Autentikasi &amp; Keamanan</div>
+    <div class="item">9. Alur Kerja Redaksi</div>
+    <div class="item">10. Database</div>
+    <div class="item">11–18. API, SEO, Analytics, Search, Media, Komentar, Frontend</div>
+
+    <div class="part">BAGIAN II: DOKUMENTASI TEKNIS (DIAGRAM)</div>
+    <div class="item">1. Use Case Diagram</div>
+    <div class="item">2. Activity Diagrams (5 diagram)</div>
+    <div class="item">3. Sequence Diagrams (6 diagram)</div>
+    <div class="item">4. Class Diagram (Backend + Frontend)</div>
+    <div class="item">5. Conceptual Data Model (CDM)</div>
+    <div class="item">6. Physical Data Model (PDM — 14 tabel)</div>
+    <div class="item">7. Penjelasan Detail</div>
+
+    <div class="part">BAGIAN III: REFERENSI API LENGKAP</div>
+    <div class="item">1. Konvensi &amp; Format Response</div>
+    <div class="item">2. Authentication (9 endpoints)</div>
+    <div class="item">3. Public Endpoints (Beranda, Categories, Tags, Articles)</div>
+    <div class="item">4. Comments, Bookmarks, Media, Analytics</div>
+    <div class="item">5. CMS Articles (8 endpoints)</div>
+    <div class="item">6. CMS Comments, Statistics, Categories, Tags</div>
+    <div class="item">7. User Management (Admin — 5 endpoints)</div>
+    <div class="item">8. SEO Sitemap &amp; Error Codes</div>
+    <div class="item">9. Quick Reference Table (50 endpoints)</div>
+
+    <div class="part">BAGIAN IV: HASIL TESTING</div>
+    <div class="item">1. Lingkungan Testing</div>
+    <div class="item">2. Black Box Testing — Autentikasi &amp; Akun</div>
+    <div class="item">3. Black Box Testing — Portal Publik</div>
+    <div class="item">4. Black Box Testing — CMS Redaksi</div>
+    <div class="item">5. Black Box Testing — Editorial Workflow</div>
+    <div class="item">6. Testing API (Postman / Automated)</div>
+    <div class="item">7. Testing Performa &amp; Keamanan</div>
+    <div class="item">8. Ringkasan Hasil Testing</div>
+</div>
+
+<!-- ════ PART I ════ -->
+<div class="section-divider">
+    <h1>BAGIAN I<br/>GAMBARAN UMUM APLIKASI</h1>
+</div>
+<div class="content">
+<blockquote>Dokumentasi ini menjelaskan secara menyeluruh arsitektur, teknologi, fitur, dan alur kerja aplikasi Portal Berita Klojen.com.</blockquote>
+<hr/>
+<hr/>
+<h2>1. Tentang Proyek</h2>
+<p><strong>Klojen.com</strong> adalah portal berita digital full-stack dengan sistem manajemen redaksi (CMS) yang lengkap. Aplikasi ini mendukung seluruh alur kerja tim redaksi — mulai dari jurnalis menulis draft, editor mereview dan menerbitkan artikel, hingga pembaca berinteraksi melalui komentar dan bookmark.</p>
+<p>Sistem ini terdiri dari dua antarmuka utama:</p>
+<table>
+<thead><tr><th>Antarmuka</th><th>Deskripsi</th><th>URL</th></tr></thead>
+<tbody>
+<tr><td><strong>Portal Publik</strong></td><td>Website berita untuk pembaca umum — beranda, artikel, kategori, pencarian</td><td><code>http://localhost:3000</code></td></tr>
+<tr><td><strong>CMS Redaksi</strong></td><td>Dashboard internal untuk jurnalis, editor, dan admin mengelola konten</td><td><code>http://localhost:3000/cms</code></td></tr>
+</tbody></table>
+<p>Aplikasi menggunakan arsitektur <strong>Decoupled / Headless CMS</strong> — backend dan frontend terpisah sepenuhnya dan berkomunikasi melalui REST API.</p>
+<hr/>
+<h2>2. Tech Stack</h2>
+<h3>Frontend</h3>
+<table>
+<thead><tr><th>Teknologi</th><th>Versi</th><th>Kegunaan</th></tr></thead>
+<tbody>
+<tr><td><strong>Next.js</strong></td><td>15</td><td>Framework React dengan App Router (SSR/SSG/CSR)</td></tr>
+<tr><td><strong>React</strong></td><td>19</td><td>UI library</td></tr>
+<tr><td><strong>TypeScript</strong></td><td>5</td><td>Type safety untuk seluruh kodebase</td></tr>
+<tr><td><strong>Tailwind CSS</strong></td><td>4</td><td>Utility-first CSS framework</td></tr>
+<tr><td><strong>Zustand</strong></td><td>5</td><td>State management (ringan, tanpa boilerplate)</td></tr>
+<tr><td><strong>Axios</strong></td><td>1</td><td>HTTP client dengan interceptor (auto-refresh token)</td></tr>
+<tr><td><strong>React Hook Form</strong></td><td>7</td><td>Performant form handling</td></tr>
+<tr><td><strong>Zod</strong></td><td>3</td><td>Schema validation (frontend & backend)</td></tr>
+<tr><td><strong>TipTap</strong></td><td>2</td><td>Rich text editor untuk menulis artikel</td></tr>
+<tr><td><strong>Recharts</strong></td><td>2</td><td>Grafik chart untuk dashboard (BarChart, PieChart)</td></tr>
+<tr><td><strong>day.js</strong></td><td>1</td><td>Manipulasi tanggal & waktu</td></tr>
+<tr><td><strong>Lucide React</strong></td><td>-</td><td>Icon set</td></tr>
+<tr><td><strong>Next Image</strong></td><td>-</td><td>Optimized image loading</td></tr>
+</tbody></table>
+<h3>Backend</h3>
+<table>
+<thead><tr><th>Teknologi</th><th>Versi</th><th>Kegunaan</th></tr></thead>
+<tbody>
+<tr><td><strong>Laravel</strong></td><td>12</td><td>PHP framework (REST API)</td></tr>
+<tr><td><strong>PHP</strong></td><td>8.2+</td><td>Runtime language</td></tr>
+<tr><td><strong>MySQL</strong></td><td>8.0</td><td>Database utama (dengan FULLTEXT search)</td></tr>
+<tr><td><strong>tymon/jwt-auth</strong></td><td>2.x</td><td>JWT authentication (access + refresh token)</td></tr>
+<tr><td><strong>Laravel Mail</strong></td><td>-</td><td>Pengiriman email (kredensial user baru, reset password)</td></tr>
+<tr><td><strong>Laravel Storage</strong></td><td>-</td><td>Penyimpanan file media & avatar (local public disk)</td></tr>
+<tr><td><strong>Artisan Command</strong></td><td>-</td><td>CLI command untuk scheduled publish & reindex</td></tr>
+</tbody></table>
+<h3>Development Tools</h3>
+<table>
+<thead><tr><th>Tool</th><th>Kegunaan</th></tr></thead>
+<tbody>
+<tr><td><strong>Composer</strong></td><td>PHP dependency manager</td></tr>
+<tr><td><strong>npm</strong></td><td>JavaScript package manager</td></tr>
+<tr><td><strong>Postman</strong></td><td>API testing (collection tersedia di <code>.postman/</code>)</td></tr>
+<tr><td><strong>ESLint</strong></td><td>JavaScript/TypeScript linting</td></tr>
+<tr><td><strong>Vite</strong></td><td>Asset bundling (backend)</td></tr>
+</tbody></table>
+<hr/>
+<h2>3. Arsitektur Sistem</h2>
+<div class="code-block"><pre><code>
+┌────────────────────────────────────────────────────────────────┐
+
+│                         CLIENT (Browser)                       │
+
+│                                                                │
+
+│   ┌──────────────────────┐      ┌──────────────────────┐      │
+
+│   │    Portal Publik     │      │    CMS Redaksi        │      │
+
+│   │  (Next.js App Router)│      │  (Next.js SPA)       │      │
+
+│   │  - Beranda           │      │  - Dashboard         │      │
+
+│   │  - Artikel Detail    │      │  - Bank Berita       │      │
+
+│   │  - Kategori / Tag    │      │  - Tulis Berita      │      │
+
+│   │  - Pencarian         │      │  - Tinjauan Artikel  │      │
+
+│   │  - About / Contact   │      │  - Media, Komentar   │      │
+
+│   └──────────┬───────────┘      └──────────┬───────────┘      │
+
+└──────────────┼──────────────────────────────┼──────────────────┘
+
+               │          REST API            │
+
+               │    (JSON, Bearer JWT)        │
+
+               └──────────────┬───────────────┘
+
+                              │
+
+┌─────────────────────────────▼──────────────────────────────────┐
+
+│                      BACKEND (Laravel 12)                      │
+
+│                                                                │
+
+│   ┌─────────────────────────────────────────────────────┐      │
+
+│   │                  Controllers (Thin)                  │      │
+
+│   │  Auth │ Article │ CMS │ Comment │ Media │ User │ ... │      │
+
+│   └─────────────────────┬───────────────────────────────┘      │
+
+│                         │                                      │
+
+│   ┌─────────────────────▼───────────────────────────────┐      │
+
+│   │                  Services (Business Logic)           │      │
+
+│   │  AuthService │ CmsArticleService │ SearchService │ ...│      │
+
+│   └─────────────────────┬───────────────────────────────┘      │
+
+│                         │                                      │
+
+│   ┌─────────────────────▼───────────────────────────────┐      │
+
+│   │            Repositories (Data Access Layer)          │      │
+
+│   │  ArticleRepo │ UserRepo │ CategoryRepo │ ...         │      │
+
+│   └─────────────────────┬───────────────────────────────┘      │
+
+│                         │                                      │
+
+│              JWT Auth + Middleware                              │
+
+│              RepositoryServiceProvider (DI Binding)            │
+
+│              Artisan Commands (Cron)                           │
+
+└─────────────────────────┬──────────────────────────────────────┘
+
+                          │
+
+┌─────────────────────────▼──────────────────────────────────────┐
+
+│                    DATABASE (MySQL 8)                           │
+
+│                     14 tabel                                    │
+
+│  users │ articles │ categories │ tags │ comments │ media │ ... │
+
+└────────────────────────────────────────────────────────────────┘
+
+</code></pre></div>
+<h3>Design Patterns yang Digunakan</h3>
+<table>
+<thead><tr><th>Pattern</th><th>Implementasi</th></tr></thead>
+<tbody>
+<tr><td><strong>Service-Repository</strong></td><td>Controller → Service → Repository → Database. Controller tipis, logika bisnis di Service, query di Repository.</td></tr>
+<tr><td><strong>Dependency Injection</strong></td><td>Repository interface di-bind ke implementasi via <code>RepositoryServiceProvider</code>. Memudahkan pertukaran sumber data.</td></tr>
+<tr><td><strong>JWT Token Pair</strong></td><td>Access token (umur pendek) + refresh token (14 hari, hashed). Silent refresh otomatis di Axios interceptor.</td></tr>
+<tr><td><strong>State Machine</strong></td><td>Status artikel mengikuti aturan transisi: <code>draft → review → published/scheduled/rejected → archived</code>.</td></tr>
+<tr><td><strong>Toggle Pattern</strong></td><td>Bookmark menggunakan toggle — add jika belum ada, remove jika sudah ada.</td></tr>
+<tr><td><strong>Observer/Tracker</strong></td><td><code>AnalyticsTracker</code> component otomatis track page view setiap navigasi.</td></tr>
+</tbody></table>
+<hr/>
+<h2>4. Struktur Folder</h2>
+<div class="code-block"><pre><code>
+klojen.com/
+
+├── backend/                          # Laravel 12 REST API
+
+│   ├── app/
+
+│   │   ├── Console/Commands/         # Artisan commands (publish-scheduled, reindex)
+
+│   │   ├── Http/
+
+│   │   │   ├── Controllers/          # 16 controller files
+
+│   │   │   └── Middleware/           # Admin middleware
+
+│   │   ├── Mail/                     # Email templates (NewUserCredentials, ResetPassword)
+
+│   │   ├── Models/                   # 11 Eloquent models
+
+│   │   ├── Providers/                # AppServiceProvider, RepositoryServiceProvider
+
+│   │   ├── Repositories/             # 9 repositories + 9 contracts (interfaces)
+
+│   │   └── Services/                 # 12 service classes
+
+│   ├── database/migrations/          # 26 migration files
+
+│   ├── routes/api.php                # Semua API route definitions
+
+│   └── config/                       # Konfigurasi Laravel
+
+│
+
+├── frontend/                         # Next.js 15 App
+
+│   ├── app/
+
+│   │   ├── (main)/                   # Layout publik (Navbar + Footer)
+
+│   │   │   ├── page.tsx              # Halaman utama (/)
+
+│   │   │   └── ...                   # Artikel, kategori, about, contact, search
+
+│   │   ├── cms/                      # Layout CMS (Sidebar + Topbar)
+
+│   │   │   ├── layout.tsx            # Auth guard + role check
+
+│   │   │   ├── dashboard/            # Dashboard statistik
+
+│   │   │   ├── artikel/              # Bank Berita (list + detail + preview)
+
+│   │   │   ├── artikel/baru/         # Form tulis artikel
+
+│   │   │   ├── tulis-berita/         # Alternatif form tulis
+
+│   │   │   ├── tinjauan-artikel/     # Review artikel (editor)
+
+│   │   │   ├── media/                # Media Tersimpan (galeri)
+
+│   │   │   ├── komentar/             # Moderasi komentar
+
+│   │   │   ├── karyawan/             # Kelola karyawan (admin)
+
+│   │   │   ├── pengguna/             # Kelola pengguna (admin)
+
+│   │   │   ├── kategori/             # Kelola kategori &amp; tag (admin)
+
+│   │   │   ├── profil/               # Profil user
+
+│   │   │   └── reset-password/       # Reset password internal
+
+│   │   ├── components/               # Komponen reusable
+
+│   │   │   ├── cms/                  # Sidebar, Topbar, AdminDashboard
+
+│   │   │   ├── navbar.tsx            # Navbar publik
+
+│   │   │   ├── footer.tsx            # Footer publik
+
+│   │   │   ├── AuthProvider.tsx      # Auth rehydration provider
+
+│   │   │   └── AnalyticsTracker.tsx  # Page view tracker
+
+│   │   ├── constants/                # Konstanta (roles, config)
+
+│   │   ├── types/                    # TypeScript type definitions
+
+│   │   ├── login/                    # Halaman login
+
+│   │   ├── register/                 # Halaman register
+
+│   │   ├── lupa-password/            # Forgot password
+
+│   │   ├── reset-password/           # Reset password
+
+│   │   ├── pages/                    # Halaman publik (beranda, about, contact)
+
+│   │   ├── news-sitemap.xml/         # News sitemap generator
+
+│   │   ├── sitemap.ts                # XML sitemap generator
+
+│   │   ├── robots.ts                 # Robots.txt generator
+
+│   │   └── layout.tsx                # Root layout
+
+│   ├── lib/
+
+│   │   ├── api/                      # API client functions
+
+│   │   │   ├── articles.ts           # CRUD artikel
+
+│   │   │   ├── auth.ts               # Login, register, dll
+
+│   │   │   ├── bookmarks.ts          # Bookmark operations
+
+│   │   │   ├── categories.ts         # Category operations
+
+│   │   │   ├── media.ts              # Media upload/list
+
+│   │   │   ├── tags.ts               # Tag operations
+
+│   │   │   └── taxonomy.ts           # Category + tag combined
+
+│   │   ├── axios.ts                  # Axios instance + interceptors
+
+│   │   ├── auth.ts                   # Auth helpers (localStorage)
+
+│   │   └── validations.ts            # Zod validation schemas
+
+│   ├── stores/
+
+│   │   └── authStore.ts              # Zustand auth store
+
+│   └── utils/
+
+│       └── cropImage.ts              # Image cropping utility
+
+│
+
+├── docs-teknikal.md                  # Dokumentasi teknis (diagram: sequence, class, activity, CDM, PDM)
+
+├── api-docs.md                       # Dokumentasi API lengkap (50 endpoints)
+
+├── docs-all.md                       # Dokumentasi ini
+
+└── docs-teknikal.md                  # Diagram &amp; model dokumentasi
+
+</code></pre></div>
+<hr/>
+<h2>5. Role & Hak Akses (RBAC)</h2>
+<p>Sistem menggunakan <strong>4 role</strong> dengan hak akses bertingkat:</p>
+<h3>Matriks Hak Akses</h3>
+<table>
+<thead><tr><th>Fitur</th><th>Reader</th><th>Journalist</th><th>Editor</th><th>Admin</th></tr></thead>
+<tbody>
+<tr><td><strong>Portal Publik</strong></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Membaca artikel</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+<tr><td>Mencari artikel</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+<tr><td>Memberi komentar</td><td>✅*</td><td>✅</td><td>✅</td><td>✅</td></tr>
+<tr><td>Bookmark artikel</td><td>✅*</td><td>✅</td><td>✅</td><td>✅</td></tr>
+<tr><td><strong>CMS — Penulisan</strong></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Buat artikel baru</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td></tr>
+<tr><td>Edit artikel sendiri (draft)</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td></tr>
+<tr><td>Edit artikel orang lain</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td></tr>
+<tr><td>Upload media</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td></tr>
+<tr><td><strong>CMS — Editorial</strong></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Review artikel</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td></tr>
+<tr><td>Publish artikel</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td></tr>
+<tr><td>Schedule artikel</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td></tr>
+<tr><td>Reject artikel</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td></tr>
+<tr><td>Lock/Unlock artikel</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td></tr>
+<tr><td>Archive artikel</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td></tr>
+<tr><td><strong>CMS — Moderasi</strong></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Lihat semua komentar</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td></tr>
+<tr><td>Hapus komentar</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td></tr>
+<tr><td><strong>CMS — Administrasi</strong></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Dashboard analitik visitor</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td></tr>
+<tr><td>Kelola akun karyawan</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td></tr>
+<tr><td>Kelola akun pengguna</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td></tr>
+<tr><td>Kelola kategori</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td></tr>
+<tr><td>Kelola tag</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td></tr>
+</tbody></table>
+<p><em>\</em> Reader perlu login terlebih dahulu*</p>
+<h3>Dashboard per Role</h3>
+<ul>
+<li><strong>Admin</strong> → <code>AdminDashboard</code> — statistik visitor (page views), total artikel, user baru, sparklines tren, distribusi kategori, filter waktu (hari ini, 7 hari, 30 hari, 1 tahun).</li>
+<li><strong>Editor/Journalist</strong> → <code>EditorDashboardView</code> — statistik personal (artikel published/draft), grafik yearly, distribusi kategori pribadi menggunakan Recharts.</li>
+</ul>
+<hr/>
+<h2>6. Fitur Portal Publik</h2>
+<h3>6.1 Halaman Beranda (<code>/pages/beranda</code>)</h3>
+<p>Halaman utama portal berita dengan section:</p>
+<table>
+<thead><tr><th>Section</th><th>Deskripsi</th><th>Sumber API</th></tr></thead>
+<tbody>
+<tr><td><strong>Hero / Featured</strong></td><td>Artikel unggulan (<code>is_featured = true</code>)</td><td><code>GET /beranda</code> → <code>featured</code></td></tr>
+<tr><td><strong>Popular</strong></td><td>5 artikel terpopuler berdasarkan <code>view_count</code></td><td><code>GET /beranda</code> → <code>popular</code></td></tr>
+<tr><td><strong>Latest News</strong></td><td>6 artikel terbaru berdasarkan <code>published_at</code></td><td><code>GET /beranda</code> → <code>latest</code></td></tr>
+<tr><td><strong>Categories</strong></td><td>Daftar kategori dengan sub-kategori</td><td><code>GET /beranda</code> → <code>categories</code></td></tr>
+<tr><td><strong>Baca Sekarang</strong></td><td>Artikel tambahan untuk dibaca</td><td><code>GET /beranda</code> → <code>latest</code></td></tr>
+</tbody></table>
+<p>Fitur UI: Skeleton loading state, responsive design, dynamic category navigation.</p>
+<h3>6.2 Halaman Artikel (<code>/artikel/[slug]</code>)</h3>
+<p>Menampilkan detail artikel lengkap:</p>
+<ul>
+<li>Konten HTML (dari TipTap editor)</li>
+<li>Featured image</li>
+<li>Author info (nama, avatar)</li>
+<li>Kategori dan tags</li>
+<li>Tombol bookmark (toggle)</li>
+<li>Form komentar (jika login)</li>
+<li>Daftar komentar threaded (max 2 level)</li>
+<li>JSON-LD structured data (SEO)</li>
+<li>Open Graph & Twitter Card meta tags</li>
+</ul>
+<h3>6.3 Pencarian Artikel</h3>
+<ul>
+<li>Menggunakan <strong>MySQL FULLTEXT search</strong> pada tabel <code>search_indexes</code></li>
+<li>Pencarian di: judul + konten (strip HTML) + nama tags</li>
+<li>Ranking relevansi otomatis oleh MySQL</li>
+<li>Query: <code>MATCH(search_vector) AGAINST('keyword')</code></li>
+</ul>
+<h3>6.4 Navigasi Kategori & Tag</h3>
+<ul>
+<li>Navbar menampilkan kategori dinamis dari API (<code>GET /categories</code>)</li>
+<li>Halaman kategori menampilkan artikel berdasarkan kategori (dengan hierarki parent-child)</li>
+<li>Halaman tag menampilkan artikel berdasarkan tag tertentu</li>
+</ul>
+<h3>6.5 Bookmark</h3>
+<ul>
+<li>Toggle pattern — klik sekali untuk bookmark, klik lagi untuk hapus</li>
+<li>Daftar bookmark tersimpan di halaman terpisah</li>
+<li>Requires login (role apapun)</li>
+</ul>
+<h3>6.6 Komentar</h3>
+<ul>
+<li>Komentar threaded (max 2 level: comment → reply)</li>
+<li>Rate limiting: 10 komentar per jam per user</li>
+<li>Status komentar: <code>pending</code> → <code>approved</code> / <code>rejected</code> (moderasi editor/admin)</li>
+</ul>
+<hr/>
+<h2>7. Fitur CMS Redaksi</h2>
+<h3>7.1 Dashboard (<code>/cms/dashboard</code>)</h3>
+<p>Dua tampilan berbeda berdasarkan role:</p>
+<p><strong>Admin Dashboard:</strong></p>
+<ul>
+<li>Top cards: total berita, total user, berita hari ini</li>
+<li>Summary data per filter waktu (hari ini, 7 hari, 30 hari, 1 tahun): page views, total berita, user baru</li>
+<li>Sparklines: tren berita 7 hari, tren user 7 hari, tren berita hari ini (per 3 jam)</li>
+<li>Visitor data: chart line dari <code>page_views</code> (real data)</li>
+<li>Distribusi kategori (pie chart)</li>
+</ul>
+<p><strong>Editor/Journalist Dashboard:</strong></p>
+<ul>
+<li>Stat cards: berita published, draft, kategori aktif, media tersimpan</li>
+<li>Bar chart: data artikel per tahun (Recharts)</li>
+<li>Pie chart: distribusi kategori artikel pribadi</li>
+</ul>
+<h3>7.2 Bank Berita (<code>/cms/artikel</code>)</h3>
+<p>Daftar semua artikel CMS dengan fitur:</p>
+<ul>
+<li><strong>Filter status</strong>: All, Draft, Review, Published, Scheduled, Archived (dengan jumlah dinamis per tab)</li>
+<li><strong>Pencarian</strong>: cari berdasarkan judul</li>
+<li><strong>Filter kategori</strong>: dropdown kategori</li>
+<li><strong>Pagination</strong>: navigasi halaman</li>
+<li><strong>Status badge</strong>: warna berbeda per status</li>
+<li><strong>Lock indicator</strong>: ikon gembok jika artikel sedang dikunci editor</li>
+<li><strong>Delete confirmation</strong>: modal konfirmasi hapus (hanya draft)</li>
+</ul>
+<p><strong>Filter berdasarkan role:</strong></p>
+<ul>
+<li>Journalist: hanya artikel milik sendiri</li>
+<li>Editor/Admin: semua artikel</li>
+</ul>
+<h3>7.3 Tulis Berita (<code>/cms/tulis-berita</code>, <code>/cms/artikel/baru</code>)</h3>
+<p>Form penulisan artikel baru:</p>
+<ul>
+<li><strong>Judul</strong> — auto-generate slug</li>
+<li><strong>Slug</strong> — editable, validasi regex</li>
+<li><strong>Konten</strong> — TipTap rich text editor</li>
+<li><strong>Kategori</strong> — dropdown dari API</li>
+<li><strong>Tags</strong> — multi-select, auto-create jika belum ada</li>
+<li><strong>Featured image</strong> — URL gambar utama</li>
+<li><strong>Excerpt</strong> — ringkasan singkat (max 1000 karakter)</li>
+<li><strong>Change note</strong> — catatan revisi (disimpan di <code>article_revisions</code>)</li>
+<li>Status default: <code>draft</code></li>
+</ul>
+<h3>7.4 Tinjauan Artikel (<code>/cms/tinjauan-artikel</code>)</h3>
+<p>Halaman review untuk editor/admin:</p>
+<ul>
+<li>Daftar artikel berstatus <code>review</code></li>
+<li>Tombol <strong>Approve</strong> → publish langsung</li>
+<li>Tombol <strong>Schedule</strong> → set waktu terbit (min 5 menit dari sekarang)</li>
+<li>Tombol <strong>Reject</strong> → dengan alasan penolakan</li>
+<li>Filter dan pencarian artikel</li>
+</ul>
+<h3>7.5 Media Tersimpan (<code>/cms/media</code>)</h3>
+<p>Galeri media global:</p>
+<ul>
+<li>Upload gambar (PNG/JPG/JPEG, max 5 MB)</li>
+<li>Kategori media (<code>category_name</code>)</li>
+<li>Alt text untuk aksesibilitas</li>
+<li><code>is_library = true</code> → muncul di galeri global, bisa dipakai ulang</li>
+<li><code>is_library = false</code> → hanya terikat ke satu artikel</li>
+<li>Hapus media beserta file fisiknya</li>
+</ul>
+<h3>7.6 Moderasi Komentar (<code>/cms/komentar</code>)</h3>
+<p>Daftar komentar dari semua artikel:</p>
+<ul>
+<li>Status: pending, approved, rejected</li>
+<li>Info artikel terkait (judul, slug)</li>
+<li>Info penulis komentar (nama)</li>
+<li>Pagination (20 per halaman)</li>
+<li>Aksi: approve, reject, delete</li>
+</ul>
+<h3>7.7 Kelola Karyawan (<code>/cms/karyawan</code>) — Admin Only</h3>
+<p>CRUD akun karyawan (journalist, editor, admin):</p>
+<ul>
+<li>Buat karyawan baru → password auto-generate, kirim email kredensial</li>
+<li>Edit role, status aktif</li>
+<li>Hapus karyawan (tidak bisa hapus diri sendiri)</li>
+<li>Daftar semua karyawan</li>
+</ul>
+<h3>7.8 Kelola Pengguna (<code>/cms/pengguna</code>) — Admin Only</h3>
+<p>CRUD akun pembaca (reader):</p>
+<ul>
+<li>Daftar semua pengguna</li>
+<li>Detail pengguna</li>
+<li>Buat pengguna baru</li>
+<li>Edit pengguna</li>
+<li>Hapus pengguna</li>
+</ul>
+<h3>7.9 Kategori & Tag (<code>/cms/kategori</code>) — Admin Only</h3>
+<p><strong>Kategori:</strong></p>
+<ul>
+<li>CRUD kategori</li>
+<li>Hierarki parent-child (sub-kategori)</li>
+<li>Auto-generate slug dari nama</li>
+<li>Slug unik (auto-increment counter jika duplikat)</li>
+</ul>
+<p><strong>Tag:</strong></p>
+<ul>
+<li>CRUD tag</li>
+<li>Auto-generate slug</li>
+<li>Hapus tag → cascade delete relasi <code>article_tags</code></li>
+</ul>
+<h3>7.10 Profil (<code>/cms/profil</code>)</h3>
+<ul>
+<li>Lihat dan edit profil (nama, email, avatar)</li>
+<li>Upload avatar (JPEG/PNG/JPG, max 2 MB)</li>
+<li>Ganti password</li>
+</ul>
+<hr/>
+<h2>8. Fitur Autentikasi & Keamanan</h2>
+<h3>8.1 JWT Token Pair</h3>
+<table>
+<thead><tr><th>Token</th><th>Umur</th><th>Penyimpanan</th><th>Fungsi</th></tr></thead>
+<tbody>
+<tr><td><strong>Access Token</strong></td><td>Sesuai config JWT (pendek)</td><td>Zustand store (memory + persist)</td><td>Bearer token untuk setiap API request</td></tr>
+<tr><td><strong>Refresh Token</strong></td><td>14 hari</td><td><code>localStorage</code> + hash SHA-256 di DB</td><td>Mendapatkan access token baru saat expired</td></tr>
+</tbody></table>
+<h3>8.2 Siklus Autentikasi</h3>
+<div class="code-block"><pre><code>
+Register → auto role = reader
+
+Login    → access_token + refresh_token
+
+Request  → Axios interceptor attach Bearer token
+
+Expired  → Silent refresh via /auth/refresh → retry request otomatis
+
+Logout   → Revoke refresh_token di DB + clear state + redirect /login
+
+</code></pre></div>
+<h3>8.3 Silent Token Refresh</h3>
+<p>Axios interceptor secara otomatis:</p>
+<ol>
+<li>Mendeteksi response <code>TOKEN_EXPIRED</code></li>
+<li>Meng-queue request yang gagal</li>
+<li>Memanggil <code>POST /auth/refresh</code> dengan refresh_token dari localStorage</li>
+<li>Update access_token di Zustand store</li>
+<li>Retry semua request yang di-queue dengan token baru</li>
+<li>Jika refresh gagal → force logout + redirect ke login</li>
+</ol>
+<h3>8.4 AuthProvider Rehydration</h3>
+<p>Komponen <code>AuthProvider</code> di root layout:</p>
+<ul>
+<li>Saat halaman pertama kali dimuat, cek <code>refresh_token</code> di localStorage</li>
+<li>Jika ada, panggil <code>/auth/refresh</code> untuk mendapat access_token baru</li>
+<li>User otomatis login tanpa perlu login ulang (silent rehydration)</li>
+</ul>
+<h3>8.5 Keamanan Lainnya</h3>
+<table>
+<thead><tr><th>Fitur</th><th>Implementasi</th></tr></thead>
+<tbody>
+<tr><td><strong>Password hashing</strong></td><td>bcrypt (Laravel default)</td></tr>
+<tr><td><strong>Anti user-enumeration</strong></td><td>Forgot password selalu return 200 (email terdaftar/tidak)</td></tr>
+<tr><td><strong>Reset password revoke all</strong></td><td>Semua refresh token di-revoke saat reset password</td></tr>
+<tr><td><strong>Rate limiting komentar</strong></td><td>10 komentar/jam per user (tabel <code>comment_rate_limits</code>)</td></tr>
+<tr><td><strong>Anti-spam analytics</strong></td><td>Dedup 5 menit per IP + path (tidak INSERT duplikat)</td></tr>
+<tr><td><strong>Article locking</strong></td><td>Editor lock artikel untuk mencegah concurrent editing</td></tr>
+<tr><td><strong>Admin self-protection</strong></td><td>Admin tidak bisa edit/hapus akun sendiri via user management</td></tr>
+</tbody></table>
+<hr/>
+<h2>9. Alur Kerja Redaksi (Editorial Workflow)</h2>
+<h3>State Machine Status Artikel</h3>
+<div class="code-block"><pre><code>
+                ┌──────────┐
+
+                │  DRAFT   │ ← Journalist/Editor/Admin membuat artikel
+
+                └────┬─────┘
+
+                     │ kirim review
+
+                     ▼
+
+                ┌──────────┐
+
+                │  REVIEW  │ ← Editor melihat di "Tinjauan Artikel"
+
+                └────┬─────┘
+
+                     │
+
+          ┌──────────┼──────────┬────────────┐
+
+          ▼          ▼          ▼            ▼
+
+    ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
+
+    │PUBLISHED │ │SCHEDULED │ │REJECTED  │ │  DRAFT   │
+
+    └────┬─────┘ └────┬─────┘ └──────────┘ └──────────┘
+
+         │             │ cron job             (dikembalikan
+
+         │             ▼                      ke author)
+
+         │       ┌──────────┐
+
+         │       │PUBLISHED │
+
+         │       └──────────┘
+
+         ▼
+
+    ┌──────────┐
+
+    │ ARCHIVED │ ← Status final, tidak bisa kembali
+
+    └──────────┘
+
+</code></pre></div>
+<h3>Aturan Transisi Status</h3>
+<table>
+<thead><tr><th>Dari</th><th>Ke</th><th>Siapa</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>draft</code></td><td><code>review</code></td><td>Journalist, Editor, Admin</td><td>Kirim ke review</td></tr>
+<tr><td><code>review</code></td><td><code>published</code></td><td>Editor, Admin</td><td>Langsung terbit</td></tr>
+<tr><td><code>review</code></td><td><code>scheduled</code></td><td>Editor, Admin</td><td>Terbit terjadwal (min 5 menit)</td></tr>
+<tr><td><code>review</code></td><td><code>rejected</code></td><td>Editor, Admin</td><td>Ditolak dengan alasan</td></tr>
+<tr><td><code>review</code></td><td><code>draft</code></td><td>Editor, Admin</td><td>Dikembalikan ke author</td></tr>
+<tr><td><code>scheduled</code></td><td><code>published</code></td><td>Editor, Admin, Cron</td><td>Terbit otomatis/melewatkan jadwal</td></tr>
+<tr><td><code>published</code></td><td><code>archived</code></td><td>Editor, Admin</td><td>Arsip (satu arah, final)</td></tr>
+</tbody></table>
+<h3>Article Locking</h3>
+<ul>
+<li>Editor mengklik <strong>Lock</strong> → <code>articles.locked_by = editor_id</code></li>
+<li>Editor lain melihat indikator "sedang dikerjakan"</li>
+<li>Editor yang sama bisa <strong>Unlock</strong> → <code>articles.locked_by = NULL</code></li>
+<li>Lock otomatis terlepas jika editor dihapus (<code>nullOnDelete</code>)</li>
+</ul>
+<hr/>
+<h2>10. Database</h2>
+<p>Menggunakan <strong>MySQL 8</strong> dengan <strong>14 tabel utama</strong>:</p>
+<table>
+<thead><tr><th>Tabel</th><th>Primary Key</th><th>Deskripsi</th></tr></thead>
+<tbody>
+<tr><td><code>users</code></td><td>BIGINT AUTO_INCREMENT</td><td>Semua pengguna (admin, editor, journalist, reader)</td></tr>
+<tr><td><code>articles</code></td><td>UUID</td><td>Konten berita utama (judul, konten, slug, status)</td></tr>
+<tr><td><code>categories</code></td><td>UUID</td><td>Kategori berita (hierarki parent-child)</td></tr>
+<tr><td><code>tags</code></td><td>UUID</td><td>Label/keyword fleksibel</td></tr>
+<tr><td><code>article_tags</code></td><td>Composite PK</td><td>Relasi many-to-many artikel ↔ tag</td></tr>
+<tr><td><code>comments</code></td><td>UUID</td><td>Komentar pembaca (threaded, max 2 level)</td></tr>
+<tr><td><code>media</code></td><td>UUID</td><td>Metadata file media (gambar)</td></tr>
+<tr><td><code>bookmarks</code></td><td>UUID</td><td>Artikel tersimpan pembaca</td></tr>
+<tr><td><code>refresh_tokens</code></td><td>UUID</td><td>Refresh token hashed untuk sesi login</td></tr>
+<tr><td><code>article_revisions</code></td><td>UUID</td><td>Riwayat perubahan artikel (audit trail)</td></tr>
+<tr><td><code>scheduled_articles</code></td><td>UUID</td><td>Antrian jadwal tayang otomatis (1:1 dengan artikel)</td></tr>
+<tr><td><code>search_indexes</code></td><td>UUID</td><td>Index full-text search (FULLTEXT)</td></tr>
+<tr><td><code>comment_rate_limits</code></td><td>UUID</td><td>Pelacak rate limit komentar per user</td></tr>
+<tr><td><code>page_views</code></td><td>BIGINT AUTO_INCREMENT</td><td>Pencatatan kunjungan halaman</td></tr>
+</tbody></table>
+<h3>Relasi Utama</h3>
+<div class="code-block"><pre><code>
+users ──1:N──► articles (author)
+
+users ──1:N──► articles (published_by)
+
+users ──1:N──► articles (locked_by)
+
+users ──1:N──► comments
+
+users ──1:N──► bookmarks
+
+users ──1:N──► refresh_tokens
+
+users ──1:N──► media (uploaded_by)
+
+users ──1:1──► comment_rate_limits
+
+
+
+categories ──self──► categories (parent-child)
+
+categories ──1:N──► articles
+
+
+
+articles ──M:N──► tags (via article_tags)
+
+articles ──1:N──► comments (threaded self-ref)
+
+articles ──1:N──► media
+
+articles ──1:N──► bookmarks
+
+articles ──1:1──► search_indexes
+
+articles ──1:1──► scheduled_articles
+
+articles ──1:N──► article_revisions
+
+</code></pre></div>
+<blockquote>Detail skema tabel (kolom, tipe data, constraints, index) tersedia di <code>docs-teknikal.md</code> bagian <strong>PDM (Physical Data Model)</strong>.</blockquote>
+<hr/>
+<h2>11. API Overview</h2>
+<p><strong>Base URL:</strong> <code>http://localhost:8000/api</code></p>
+<p>Total: <strong>50 endpoint</strong> yang dikelompokkan menjadi:</p>
+<table>
+<thead><tr><th>Group</th><th>Jumlah</th><th>Auth</th><th>Role</th></tr></thead>
+<tbody>
+<tr><td>Health Check</td><td>1</td><td>-</td><td>Public</td></tr>
+<tr><td>Authentication</td><td>9</td><td>JWT (sebagian)</td><td>Public / Any</td></tr>
+<tr><td>Beranda</td><td>1</td><td>-</td><td>Public</td></tr>
+<tr><td>Categories (Public)</td><td>1</td><td>-</td><td>Public</td></tr>
+<tr><td>Tags (Public)</td><td>1</td><td>-</td><td>Public</td></tr>
+<tr><td>Articles (Public)</td><td>3</td><td>-</td><td>Public</td></tr>
+<tr><td>Comments</td><td>3</td><td>JWT</td><td>Any / Editor+</td></tr>
+<tr><td>Bookmarks</td><td>2</td><td>JWT</td><td>Any</td></tr>
+<tr><td>Media</td><td>3</td><td>JWT</td><td>CMS roles</td></tr>
+<tr><td>Analytics</td><td>1</td><td>-</td><td>Public</td></tr>
+<tr><td>CMS Articles</td><td>8</td><td>JWT</td><td>CMS roles</td></tr>
+<tr><td>CMS Comments</td><td>1</td><td>JWT</td><td>Editor+</td></tr>
+<tr><td>CMS Statistics</td><td>1</td><td>JWT</td><td>CMS roles</td></tr>
+<tr><td>CMS Categories</td><td>4</td><td>JWT</td><td>Admin</td></tr>
+<tr><td>CMS Tags</td><td>4</td><td>JWT</td><td>Admin</td></tr>
+<tr><td>User Management</td><td>5</td><td>JWT + admin</td><td>Admin</td></tr>
+<tr><td>SEO Sitemap</td><td>2</td><td>-</td><td>Public</td></tr>
+</tbody></table>
+<blockquote>Dokumentasi detail setiap endpoint (request/response/error) tersedia di <code>api-docs.md</code>.</blockquote>
+<hr/>
+<h2>12. Fitur SEO</h2>
+<table>
+<thead><tr><th>Fitur</th><th>Implementasi</th></tr></thead>
+<tbody>
+<tr><td><strong>XML Sitemap</strong></td><td><code>GET /articles/sitemap</code> → data slug + timestamps → frontend generate XML</td></tr>
+<tr><td><strong>News Sitemap</strong></td><td><code>GET /articles/news-sitemap</code> → hanya artikel 48 jam terakhir (Google News requirement)</td></tr>
+<tr><td><strong>JSON-LD</strong></td><td>Structured data <code>Article</code> di setiap halaman artikel detail</td></tr>
+<tr><td><strong>Open Graph</strong></td><td>Meta tag <code>og:title</code>, <code>og:description</code>, <code>og:image</code>, <code>og:url</code></td></tr>
+<tr><td><strong>Twitter Cards</strong></td><td>Meta tag <code>twitter:card</code>, <code>twitter:title</code>, <code>twitter:description</code></td></tr>
+<tr><td><strong>robots.ts</strong></td><td>Konfigurasi crawler (allow/disallow path)</td></tr>
+<tr><td><strong>Dynamic Meta</strong></td><td>Setiap halaman artikel memiliki meta tags dinamis dari data API</td></tr>
+<tr><td><strong>Clean URLs</strong></td><td>Slug-based article URLs (<code>/artikel/judul-berita</code>)</td></tr>
+</tbody></table>
+<hr/>
+<h2>13. Fitur Analytics & Dashboard</h2>
+<h3>Page View Tracking</h3>
+<ul>
+<li>Endpoint: <code>POST /analytics/track</code></li>
+<li>Dipanggil otomatis oleh <code>AnalyticsTracker</code> component setiap navigasi halaman</li>
+<li>Data yang dicatat: <code>path</code>, <code>ip_address</code>, <code>user_agent</code></li>
+<li>Anti-spam: dedup 5 menit per kombinasi IP + path</li>
+<li>Disimpan di tabel <code>page_views</code></li>
+</ul>
+<h3>Admin Dashboard Analytics</h3>
+<p>Dashboard admin menampilkan data real dari <code>page_views</code>:</p>
+<table>
+<thead><tr><th>Filter</th><th>Granularity</th><th>Data Points</th></tr></thead>
+<tbody>
+<tr><td>Hari ini</td><td>Per 4 jam</td><td>6 points</td></tr>
+<tr><td>7 hari</td><td>Per hari</td><td>7 points</td></tr>
+<tr><td>30 hari</td><td>Per ~4 hari</td><td>7 points</td></tr>
+<tr><td>1 tahun</td><td>Per bulan</td><td>12 points</td></tr>
+</tbody></table>
+<p><strong>Sparklines:</strong></p>
+<ul>
+<li>Tren artikel 7 hari terakhir (7 points)</li>
+<li>Tren user baru 7 hari terakhir (7 points)</li>
+<li>Tren artikel hari ini per 3 jam (7 points)</li>
+</ul>
+<p><strong>Summary Cards</strong> (per filter waktu):</p>
+<ul>
+<li>Page views</li>
+<li>Total berita</li>
+<li>User baru</li>
+</ul>
+<p><strong>Category Distribution:</strong></p>
+<ul>
+<li>Pie chart distribusi artikel per kategori (per filter waktu)</li>
+</ul>
+<hr/>
+<h2>14. Scheduled Publishing</h2>
+<h3>Cara Kerja</h3>
+<ol>
+<li>Editor/Admin mengubah status artikel ke <code>scheduled</code> dengan <code>scheduled_at</code> (waktu terbit)</li>
+<li>Validasi: <code>scheduled_at</code> minimal <strong>5 menit</strong> dari waktu sekarang</li>
+<li>Data disimpan di tabel <code>scheduled_articles</code> (<code>article_id</code>, <code>scheduled_by</code>, <code>scheduled_at</code>)</li>
+<li><strong>Cron job</strong> menjalankan Artisan command: <code>php artisan articles:publish-scheduled</code></li>
+</ol>
+<h3>Artisan Command: <code>articles:publish-scheduled</code></h3>
+<p>Dijalankan secara berkala (misal setiap menit via cron):</p>
+<ol>
+<li>Query: cari <code>scheduled_articles</code> WHERE <code>scheduled_at <= NOW()</code> AND <code>is_published = false</code></li>
+<li>Untuk setiap artikel:</li>
+</ol>
+<ul>
+<li>Update <code>articles.status = 'published'</code></li>
+<li>Set <code>articles.published_at = NOW()</code></li>
+<li>Set <code>articles.published_by = scheduled_by</code></li>
+<li>Update <code>scheduled_articles.is_published = true</code></li>
+<li>Reindex <code>search_indexes</code></li>
+</ul>
+<ol>
+<li>Return jumlah artikel yang dipublish</li>
+</ol>
+<h3>Setup Cron (Production)</h3>
+<div class="code-block"><div class="code-lang">bash</div><pre><code>
+# Tambahkan ke crontab
+
+* * * * * cd /path/to/backend &amp;&amp; php artisan schedule:run &gt;&gt; /dev/null 2&gt;&amp;1
+
+</code></pre></div>
+<hr/>
+<h2>15. Full-Text Search</h2>
+<h3>Implementasi</h3>
+<ul>
+<li>Tabel <code>search_indexes</code> dengan kolom <code>search_vector</code> (TEXT + FULLTEXT index)</li>
+<li><code>search_vector</code> = gabungan: <strong>judul artikel + konten (strip HTML) + nama-nama tag</strong></li>
+<li>Index diperbarui setiap kali artikel: dibuat, diupdate, atau dipublish</li>
+</ul>
+<h3>SearchService</h3>
+<div class="code-block"><pre><code>
+createArticle() → SearchService::index(article)
+
+updateArticle() → SearchService::index(article)
+
+updateStatus(published) → SearchService::index(article)
+
+deleteArticle() → CASCADE (search_indexes row ikut terhapus)
+
+</code></pre></div>
+<h3>Artisan Command: <code>articles:reindex</code></h3>
+<p>Rebuild seluruh search index dari awal:</p>
+<div class="code-block"><div class="code-lang">bash</div><pre><code>
+php artisan articles:reindex
+
+</code></pre></div>
+<h3>Query Search</h3>
+<div class="code-block"><div class="code-lang">sql</div><pre><code>
+SELECT * FROM search_indexes
+
+WHERE MATCH(search_vector) AGAINST('keyword' IN NATURAL LANGUAGE MODE)
+
+ORDER BY MATCH(search_vector) AGAINST('keyword') DESC
+
+</code></pre></div>
+<hr/>
+<h2>16. Manajemen Media</h2>
+<h3>Upload Flow</h3>
+<ol>
+<li>User memilih file gambar (PNG/JPG/JPEG, max 5 MB)</li>
+<li>Frontend kirim <code>POST /media/upload</code> dengan <code>multipart/form-data</code></li>
+<li>Backend simpan file ke <code>storage/app/public/media/</code></li>
+<li>Metadata disimpan di tabel <code>media</code>:</li>
+</ol>
+<ul>
+<li><code>file_url</code> — path ke file</li>
+<li><code>article_id</code> — UUID artikel (nullable)</li>
+<li><code>uploaded_by</code> — ID user yang upload</li>
+<li><code>is_library</code> — boolean (true = Media Tersimpan global)</li>
+<li><code>category_name</code> — kategori media</li>
+<li><code>alt_text</code> — teks alternatif</li>
+</ul>
+<h3>Mode Upload</h3>
+<table>
+<thead><tr><th>Mode</th><th><code>article_id</code></th><th><code>is_library</code></th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>Dari artikel</td><td>UUID</td><td>false</td><td>Terikat artikel, tidak muncul di galeri</td></tr>
+<tr><td>Dari Media Tersimpan</td><td>null</td><td>true</td><td>Berdiri sendiri, muncul di galeri global</td></tr>
+<tr><td>Hybrid</td><td>UUID</td><td>true</td><td>Terikat artikel DAN muncul di galeri</td></tr>
+</tbody></table>
+<h3>Galeri Media Tersimpan</h3>
+<p>Halaman <code>/cms/media</code> menampilkan semua media dengan <code>is_library = true</code>. Media ini bisa dipakai ulang di artikel lain tanpa upload ulang.</p>
+<hr/>
+<h2>17. Komentar & Moderasi</h2>
+<h3>Alur Komentar</h3>
+<div class="code-block"><pre><code>
+Reader memberi komentar → POST /articles/{id}/comments
+
+    │
+
+    ├── Rate limit check (10/jam) → jika over: 429
+
+    ├── Nesting check (max 2 level) → jika over: 400
+
+    ├── Parent validation → parent harus di artikel yang sama
+
+    │
+
+    ▼
+
+INSERT comments (status = approved)
+
+    │
+
+    ▼
+
+Editor/Admin moderasi → GET /cms/comments
+
+    │
+
+    ├── Approve → status = approved (default sudah approved)
+
+    ├── Reject → status = rejected
+
+    └── Delete → DELETE /comments/{id} → cascade delete replies
+
+</code></pre></div>
+<h3>Threading Rules</h3>
+<ul>
+<li><strong>Max 2 level</strong>: top-level comment → reply</li>
+<li>Reply dari reply <strong>tidak diizinkan</strong> → error 400</li>
+<li>Cascade delete: hapus parent → semua reply ikut terhapus</li>
+</ul>
+<h3>Rate Limiting</h3>
+<ul>
+<li>Tabel <code>comment_rate_limits</code> per user</li>
+<li>Counter reset setiap 1 jam dari <code>window_start</code></li>
+<li>Jika <code>comment_count >= 10</code> → return 429</li>
+<li>Field <code>is_blocked</code> dan <code>blocked_until</code> untuk blokir manual</li>
+</ul>
+<hr/>
+<h2>18. State Management Frontend</h2>
+<h3>Zustand Auth Store (<code>authStore.ts</code>)</h3>
+<div class="code-block"><div class="code-lang">typescript</div><pre><code>
+interface AuthState {
+
+  accessToken: string | null;
+
+  user: { id, name, role } | null;
+
+  isAuthenticated: boolean;
+
+  login: (token, user) =&gt; void;
+
+  logout: () =&gt; void;
+
+  setAccessToken: (token) =&gt; void;
+
+}
+
+</code></pre></div>
+<ul>
+<li>Menggunakan <code>persist</code> middleware → state tersimpan di localStorage</li>
+<li><code>accessToken</code> dibaca oleh Axios interceptor untuk setiap request</li>
+<li><code>user</code> berisi data user yang sedang login (id, name, role)</li>
+</ul>
+<h3>Axios Interceptors (<code>lib/axios.ts</code>)</h3>
+<p><strong>Request Interceptor:</strong></p>
+<ul>
+<li>Sebelum setiap request, baca <code>accessToken</code> dari Zustand store</li>
+<li>Attach ke header: <code>Authorization: Bearer <token></code></li>
+</ul>
+<p><strong>Response Interceptor:</strong></p>
+<ul>
+<li>Jika response error <code>TOKEN_EXPIRED</code>:</li>
+</ul>
+<ol>
+<li>Queue request yang gagal</li>
+<li>POST <code>/auth/refresh</code> dengan refresh_token</li>
+<li>Update access_token di store</li>
+<li>Retry semua queued request</li>
+</ol>
+<ul>
+<li>Jika refresh gagal → force logout</li>
+</ul>
+<h3>AuthProvider (<code>components/AuthProvider.tsx</code>)</h3>
+<ul>
+<li>Dibungkus di root layout</li>
+<li>Saat mount: cek <code>refresh_token</code> di localStorage</li>
+<li>Jika ada → silent call <code>/auth/refresh</code> → rehydrate user session</li>
+<li>User otomatis login saat refresh halaman tanpa perlu login ulang</li>
+</ul>
+<h3>AnalyticsTracker (<code>components/AnalyticsTracker.tsx</code>)</h3>
+<ul>
+<li>Invisible component (tidak render UI)</li>
+<li>Listen perubahan <code>pathname</code> (navigasi)</li>
+<li>POST <code>/analytics/track</code> dengan <code>{ path, ip, user_agent }</code></li>
+<li>Anti-spam: dedup 5 menit (handled di backend)</li>
+</ul>
+<hr/>
+<h2>19. Cara Menjalankan</h2>
+<h3>Prasyarat</h3>
+<table>
+<thead><tr><th>Software</th><th>Versi Minimum</th></tr></thead>
+<tbody>
+<tr><td>PHP</td><td>8.2+</td></tr>
+<tr><td>Composer</td><td>2.x</td></tr>
+<tr><td>Node.js</td><td>18+</td></tr>
+<tr><td>MySQL</td><td>8.0+</td></tr>
+<tr><td>npm</td><td>9+</td></tr>
+</tbody></table>
+<h3>Setup Backend</h3>
+<div class="code-block"><div class="code-lang">bash</div><pre><code>
+cd backend
+
+cp .env.example .env
+
+composer install
+
+php artisan key:generate
+
+php artisan jwt:secret
+
+
+
+# Konfigurasi .env
+
+# DB_HOST=localhost
+
+# DB_PORT=3306
+
+# DB_DATABASE=klojen_db
+
+# DB_USERNAME=root
+
+# DB_PASSWORD=
+
+
+
+php artisan migrate
+
+php artisan db:seed    # (opsional) isi data awal
+
+php artisan storage:link
+
+
+
+php artisan serve      # → http://localhost:8000
+
+</code></pre></div>
+<h3>Setup Frontend</h3>
+<div class="code-block"><div class="code-lang">bash</div><pre><code>
+cd frontend
+
+cp .env.example .env.local
+
+
+
+# Konfigurasi .env.local
+
+# NEXT_PUBLIC_API_URL=http://localhost:8000/api
+
+
+
+npm install
+
+npm run dev            # → http://localhost:3000
+
+</code></pre></div>
+<h3>Akses Aplikasi</h3>
+<table>
+<thead><tr><th>Layanan</th><th>URL</th></tr></thead>
+<tbody>
+<tr><td>Portal Publik</td><td>http://localhost:3000</td></tr>
+<tr><td>CMS Redaksi</td><td>http://localhost:3000/cms</td></tr>
+<tr><td>Backend API</td><td>http://localhost:8000/api</td></tr>
+<tr><td>API Health Check</td><td>http://localhost:8000/api/ping</td></tr>
+</tbody></table>
+<hr/>
+<h2>20. Dokumen Terkait</h2>
+<table>
+<thead><tr><th>Dokumen</th><th>Deskripsi</th></tr></thead>
+<tbody>
+<tr><td><code>docs-all.md</code></td><td>Dokumentasi ini — penjelasan menyeluruh tentang aplikasi</td></tr>
+<tr><td><code>docs-teknikal.md</code></td><td>Dokumentasi teknis: Use Case, Activity, Sequence, Class Diagram, CDM, PDM</td></tr>
+<tr><td><code>api-docs.md</code></td><td>Dokumentasi API lengkap: 50 endpoint dengan request/response/error</td></tr>
+<tr><td><code>README.md</code></td><td>README utama repositori</td></tr>
+</tbody></table>
+</div>
+
+<!-- ════ PART II ════ -->
+<div class="section-divider">
+    <h1>BAGIAN II<br/>DOKUMENTASI TEKNIS (DIAGRAM)</h1>
+</div>
+<div class="content">
+<hr/>
+<h2>1. Gambaran Umum Sistem</h2>
+<p><strong>Klojen.com</strong> adalah portal berita berbasis web dengan arsitektur <em>decoupled/headless CMS</em> yang memisahkan backend dan frontend:</p>
+<table>
+<thead><tr><th>Komponen</th><th>Teknologi</th></tr></thead>
+<tbody>
+<tr><td>Backend</td><td>Laravel 12 (PHP 8.2+), MySQL, JWT Auth</td></tr>
+<tr><td>Frontend</td><td>Next.js 15 (React, App Router)</td></tr>
+<tr><td>Database</td><td>MySQL dengan UUID primary keys</td></tr>
+<tr><td>Autentikasi</td><td>JWT (access token + refresh token)</td></tr>
+<tr><td>State Mgmt</td><td>Zustand (persist middleware)</td></tr>
+<tr><td>Pattern</td><td>Service-Repository Pattern</td></tr>
+</tbody></table>
+<h3>Peran Pengguna (Role-Based Access Control)</h3>
+<table>
+<thead><tr><th>Role</th><th>Hak Akses</th></tr></thead>
+<tbody>
+<tr><td><strong>Reader</strong></td><td>Membaca artikel, bookmark, komentar, reset password</td></tr>
+<tr><td><strong>Journalist</strong></td><td>Semua hak reader + menulis/edit artikel draft, upload media</td></tr>
+<tr><td><strong>Editor</strong></td><td>Semua hak journalist + review artikel, publish, lock/unlock, moderasi komentar</td></tr>
+<tr><td><strong>Admin</strong></td><td>Akses penuh: semua fitur CMS + kelola user, kategori, tag, dashboard analitik</td></tr>
+</tbody></table>
+<h3>Alur Editorial (Editorial Workflow)</h3>
+<div class="code-block"><pre><code>
+draft → review → published / scheduled / rejected → archived
+
+</code></pre></div>
+<ul>
+<li><strong>Journalist</strong> hanya bisa membuat artikel dengan status <code>draft</code> dan mengirim ke <code>review</code>.</li>
+<li><strong>Editor/Admin</strong> dapat mengubah status ke <code>published</code>, <code>scheduled</code>, atau <code>rejected</code>.</li>
+<li>Artikel <code>published</code> hanya bisa diubah ke <code>archived</code>.</li>
+<li>Artikel <code>scheduled</code> akan otomatis terbit melalui cron job (<code>articles:publish-scheduled</code>).</li>
+</ul>
+<hr/>
+<h2>2. Use Case Diagram</h2>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_01.png" class="diagram-img" alt="Diagram 1"/>
+</div>
+<h3>Penjelasan Use Case</h3>
+<p>Diagram di atas menggambarkan 4 level aktor berdasarkan peran (role):</p>
+<ol>
+<li><strong>Pengunjung (Public)</strong> — dapat mengakses halaman beranda, membaca artikel, mencari artikel, melihat kategori/tag, dan melihat sitemap tanpa perlu login. Juga bisa register dan login.</li>
+<li><strong>Reader</strong> — pengguna terdaftar yang bisa memberi komentar pada artikel, menyimpan bookmark, melihat daftar bookmark, serta mengelola profil dan password pribadi.</li>
+<li><strong>Journalist</strong> — memiliki semua hak reader ditambah kemampuan menulis artikel baru (draft), mengedit artikel milik sendiri, mengirim artikel ke review, upload media, dan mengakses Bank Berita.</li>
+<li><strong>Editor</strong> — memiliki semua hak journalist ditambah kemampuan mereview artikel dari journalist manapun, mengubah status artikel (publish/schedule/reject), mengunci artikel agar tidak diedit bersamaan, dan memoderasi komentar.</li>
+<li><strong>Admin</strong> — memiliki akses penuh ke seluruh fitur CMS ditambah kemampuan mengelola akun karyawan dan pengguna, mengelola kategori dan tag, serta melihat dashboard analitik visitor.</li>
+</ol>
+<hr/>
+<h2>3. Activity Diagram</h2>
+<h3>3.1 Activity Diagram — Proses Login & Autentikasi</h3>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_02.png" class="diagram-img" alt="Diagram 2"/>
+</div>
+<p><strong>Penjelasan:</strong> Proses login dimulai dari validasi input di frontend (email dan password wajib diisi). Request dikirim ke endpoint <code>/api/auth/login</code>. Backend memverifikasi kredensial melalui <code>AuthService::login()</code>. Jika berhasil, JWT access token (umur pendek) dan refresh token (14 hari, di-hash SHA-256) dihasilkan. Access token disimpan di Zustand store (memory + persist), refresh token di localStorage. Axios interceptor akan otomatis menyertakan Bearer token pada setiap request berikutnya.</p>
+<h3>3.2 Activity Diagram — Silent Token Refresh</h3>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_03.png" class="diagram-img" alt="Diagram 3"/>
+</div>
+<p><strong>Penjelasan:</strong> Setiap request API melewati Axios interceptor yang menyertakan Bearer token. Jika backend mengembalikan error <code>TOKEN_EXPIRED</code>, interceptor secara otomatis melakukan silent refresh menggunakan refresh token dari localStorage. Jika refresh berhasil, request awal diulang dengan token baru tanpa interaksi user. Jika refresh gagal (token revoked/expired), user di-logout paksa dan diarahkan ke halaman login.</p>
+<h3>3.3 Activity Diagram — Alur Penulisan & Publikasi Artikel</h3>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_04.png" class="diagram-img" alt="Diagram 4"/>
+</div>
+<p><strong>Penjelasan:</strong> Alur penulisan artikel dimulai dari form "Tulis Berita". Journalist dan editor/admin dapat membuat artikel baru yang otomatis berstatus <code>draft</code>. Setelah draft tersimpan, author dapat mengedit (selama masih draft) atau mengirim ke review. Editor/admin kemudian mereview melalui halaman "Tinjauan Artikel" dan dapat menyetujui (published), menjadwalkan (scheduled), atau menolak (rejected). Artikel yang di-publish akan di-index ulang di search_indexes. Artikel scheduled disimpan di tabel <code>scheduled_articles</code> dan akan otomatis terbit melalui cron job.</p>
+<h3>3.4 Activity Diagram — Moderasi Komentar</h3>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_05.png" class="diagram-img" alt="Diagram 5"/>
+</div>
+<p><strong>Penjelasan:</strong> Reader yang sudah login dapat memberi komentar. Sistem menerapkan rate limiting 10 komentar per jam per user menggunakan tabel <code>comment_rate_limits</code>. Komentar bisa bertingkat (threaded) maksimal 2 level. Setiap komentar baru berstatus <code>pending</code> dan perlu disetujui oleh editor/admin melalui CMS. Editor/admin juga dapat menghapus komentar beserta reply-nya (cascade delete).</p>
+<h3>3.5 Activity Diagram — Scheduled Publishing</h3>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_06.png" class="diagram-img" alt="Diagram 6"/>
+</div>
+<p><strong>Penjelasan:</strong> Cron job menjalankan perintah Artisan <code>articles:publish-scheduled</code> secara berkala. <code>ScheduledPublishService</code> mencari semua artikel yang sudah melewati waktu terjadwal dan belum dipublikasi. Setiap artikel yang ditemukan akan diubah statusnya menjadi <code>published</code>, di-set waktu publish dan who-published-nya, kemudian search index-nya diperbarui.</p>
+<hr/>
+<h2>4. Sequence Diagram</h2>
+<h3>4.1 Sequence Diagram — Proses Login</h3>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_07.png" class="diagram-img" alt="Diagram 7"/>
+</div>
+<h3>4.2 Sequence Diagram — Silent Token Refresh</h3>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_08.png" class="diagram-img" alt="Diagram 8"/>
+</div>
+<h3>4.3 Sequence Diagram — CRUD Artikel CMS</h3>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_09.png" class="diagram-img" alt="Diagram 9"/>
+</div>
+<h3>4.4 Sequence Diagram — Review & Publish Artikel</h3>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_10.png" class="diagram-img" alt="Diagram 10"/>
+</div>
+<h3>4.5 Sequence Diagram — Bookmark Artikel</h3>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_11.png" class="diagram-img" alt="Diagram 11"/>
+</div>
+<h3>4.6 Sequence Diagram — Page View Analytics</h3>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_12.png" class="diagram-img" alt="Diagram 12"/>
+</div>
+<hr/>
+<h2>5. Class Diagram</h2>
+<h3>5.1 Backend Architecture — Service-Repository Pattern</h3>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_13.png" class="diagram-img" alt="Diagram 13"/>
+</div>
+<h3>Penjelasan Class Diagram</h3>
+<p>Arsitektur backend mengikuti <strong>Service-Repository Pattern</strong>:</p>
+<ul>
+<li><strong>Controllers</strong> (lapis terluar) — menerima HTTP request, melakukan validasi dasar, lalu mendelegasikan ke Service. Controller bersifat <em>thin</em> (sedikit logika bisnis).</li>
+<li><strong>Services</strong> (lapis tengah) — berisi semua logika bisnis seperti validasi role, cek ownership, transisi status artikel, dan orkestrasi antar-repository.</li>
+<li><strong>Repositories</strong> (lapis data) — menangani query database. Didefinisikan sebagai <em>interface</em> (<code>ArticleRepositoryInterface</code>, <code>UserRepositoryInterface</code>, dll.) yang di-bind ke implementasi konkret melalui <code>RepositoryServiceProvider</code>. Ini memungkinkan pertukaran sumber data (misal: DB ke JSON) tanpa mengubah Service atau Controller.</li>
+</ul>
+<h3>5.2 Frontend Architecture</h3>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_14.png" class="diagram-img" alt="Diagram 14"/>
+</div>
+<h3>Penjelasan Frontend Architecture</h3>
+<p>Frontend Next.js menggunakan <strong>Zustand</strong> sebagai state manager untuk autentikasi:</p>
+<ul>
+<li><strong>AuthStore</strong> — menyimpan access token, data user, dan status autentikasi. Menggunakan <code>persist</code> middleware agar state tersimpan di localStorage.</li>
+<li><strong>Axios Instance</strong> — custom Axios dengan 2 interceptor: request (attach Bearer token) dan response (silent refresh saat token expired).</li>
+<li><strong>AuthProvider</strong> — komponen wrapper yang melakukan <em>silent rehydration</em> saat halaman pertama kali dimuat, menggunakan refresh token dari localStorage.</li>
+<li><strong>CMSLayout</strong> — layout CMS yang melakukan pengecekan autentikasi dan role sebelum merender Sidebar + Topbar + konten halaman.</li>
+<li><strong>Sidebar</strong> — navigasi CMS berbasis role (<code>NAV_BY_ROLE</code>), menampilkan menu berbeda untuk journalist, editor, dan admin.</li>
+</ul>
+<hr/>
+<h2>6. Conceptual Data Model (CDM)</h2>
+<p>CDM menggambarkan entitas-entitas utama dalam sistem beserta hubungannya secara konseptual, tanpa detail kolom.</p>
+<div class="diagram-img-block">
+<img src="file:///C:/apps/klojen.com/diagrams/diagram_15.png" class="diagram-img" alt="Diagram 15"/>
+</div>
+<h3>Penjelasan Entitas CDM</h3>
+<table>
+<thead><tr><th>Entitas</th><th>Deskripsi</th></tr></thead>
+<tbody>
+<tr><td><strong>User</strong></td><td>Semua pengguna sistem (reader, journalist, editor, admin)</td></tr>
+<tr><td><strong>Article</strong></td><td>Artikel berita dengan judul, konten, slug, status editorial</td></tr>
+<tr><td><strong>Category</strong></td><td>Kategori artikel dengan struktur hierarki (parent-child self-reference)</td></tr>
+<tr><td><strong>Tag</strong></td><td>Label/keyword yang bisa ditempel ke banyak artikel</td></tr>
+<tr><td><strong>Article_Tag</strong></td><td>Tabel junction many-to-many antara Article dan Tag</td></tr>
+<tr><td><strong>Comment</strong></td><td>Komentar pengguna pada artikel, mendukung threading (max 2 level)</td></tr>
+<tr><td><strong>Bookmark</strong></td><td>Penanda artikel favorit oleh user (unique constraint: 1 user = 1 bookmark per artikel)</td></tr>
+<tr><td><strong>Media</strong></td><td>File media (image/video/audio) yang terikat ke artikel atau berdiri sendiri (library)</td></tr>
+<tr><td><strong>RefreshToken</strong></td><td>Token untuk memperbarui JWT access token, disimpan dalam bentuk hash</td></tr>
+<tr><td><strong>SearchIndex</strong></td><td>Index pencarian full-text (gabungan judul + konten + tags), 1:1 dengan artikel</td></tr>
+<tr><td><strong>ArticleRevision</strong></td><td>Snapshot riwayat perubahan artikel</td></tr>
+<tr><td><strong>ScheduledArticle</strong></td><td>Jadwal penerbitan otomatis, 1:1 dengan artikel</td></tr>
+<tr><td><strong>CommentRateLimit</strong></td><td>Pembatasan rate komentar per user (10/jam)</td></tr>
+<tr><td><strong>PageView</strong></td><td>Pencatatan kunjungan halaman untuk analitik</td></tr>
+</tbody></table>
+<h3>Relasi Utama</h3>
+<ul>
+<li><strong>User → Article</strong>: Satu user bisa menulis banyak artikel (author). User lain bisa mem-publish (published_by) atau mengunci (locked_by).</li>
+<li><strong>Category → Article</strong>: Satu kategori memiliki banyak artikel, satu artikel hanya di satu kategori (nullable).</li>
+<li><strong>Article ↔ Tag</strong>: Many-to-many melalui tabel junction <code>article_tags</code>.</li>
+<li><strong>Article → Comment</strong>: Satu artikel memiliki banyak komentar. Komentar bisa memiliki reply (self-reference, max 2 level).</li>
+<li><strong>User → Bookmark → Article</strong>: User bisa bookmark banyak artikel, tapi satu artikel hanya bisa di-bookmark sekali per user.</li>
+<li><strong>Article → SearchIndex</strong>: One-to-one, setiap artikel punya satu index pencarian.</li>
+<li><strong>Article → ScheduledArticle</strong>: One-to-one, artikel terjadwal punya satu record jadwal.</li>
+<li><strong>Category → Category</strong>: Self-reference untuk hierarki kategori parent-child.</li>
+</ul>
+<hr/>
+<h2>7. Physical Data Model (PDM)</h2>
+<p>PDM menggambarkan struktur tabel database secara detail termasuk tipe data, constraints, dan index.</p>
+<h3>7.1 Tabel <code>users</code></h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>BIGINT UNSIGNED</td><td>PK, AUTO_INCREMENT</td><td>Primary key</td></tr>
+<tr><td><code>name</code></td><td>VARCHAR(255)</td><td>NOT NULL</td><td>Nama lengkap</td></tr>
+<tr><td><code>email</code></td><td>VARCHAR(255)</td><td>UNIQUE, NOT NULL</td><td>Email untuk login</td></tr>
+<tr><td><code>role</code></td><td>ENUM</td><td>DEFAULT 'reader'</td><td>admin/editor/journalist/reader</td></tr>
+<tr><td><code>is_active</code></td><td>BOOLEAN</td><td>DEFAULT true</td><td>Status akun aktif</td></tr>
+<tr><td><code>avatar_url</code></td><td>VARCHAR(255)</td><td>NULLABLE</td><td>URL foto profil</td></tr>
+<tr><td><code>bio</code></td><td>TEXT</td><td>NULLABLE</td><td>Bio pengguna</td></tr>
+<tr><td><code>password</code></td><td>VARCHAR(255)</td><td>NOT NULL</td><td>Hash bcrypt</td></tr>
+<tr><td><code>remember_token</code></td><td>VARCHAR(100)</td><td>NULLABLE</td><td>Laravel remember token</td></tr>
+<tr><td><code>email_verified_at</code></td><td>TIMESTAMP</td><td>NULLABLE</td><td>Verifikasi email</td></tr>
+<tr><td><code>created_at</code></td><td>TIMESTAMP</td><td></td><td></td></tr>
+<tr><td><code>updated_at</code></td><td>TIMESTAMP</td><td></td><td></td></tr>
+</tbody></table>
+<h3>7.2 Tabel <code>categories</code></h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>PK</td><td>UUID primary key</td></tr>
+<tr><td><code>parent_id</code></td><td>UUID</td><td>NULLABLE, FK→categories(id) ON DELETE SET NULL</td><td>Parent kategori (hierarki)</td></tr>
+<tr><td><code>name</code></td><td>VARCHAR(255)</td><td>NOT NULL</td><td>Nama kategori</td></tr>
+<tr><td><code>slug</code></td><td>VARCHAR(255)</td><td>UNIQUE, NOT NULL</td><td>URL slug</td></tr>
+</tbody></table>
+<h3>7.3 Tabel <code>articles</code></h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>PK</td><td>UUID primary key</td></tr>
+<tr><td><code>author_id</code></td><td>BIGINT UNSIGNED</td><td>FK→users(id) ON DELETE CASCADE, NOT NULL</td><td>Penulis artikel</td></tr>
+<tr><td><code>published_by</code></td><td>BIGINT UNSIGNED</td><td>FK→users(id) ON DELETE SET NULL, NULLABLE</td><td>User yang mem-publish</td></tr>
+<tr><td><code>locked_by</code></td><td>BIGINT UNSIGNED</td><td>FK→users(id) ON DELETE SET NULL, NULLABLE</td><td>Editor yang mengunci</td></tr>
+<tr><td><code>category_id</code></td><td>UUID</td><td>FK→categories(id) ON DELETE RESTRICT, NULLABLE</td><td>Kategori artikel</td></tr>
+<tr><td><code>title</code></td><td>VARCHAR(255)</td><td>NOT NULL</td><td>Judul artikel</td></tr>
+<tr><td><code>slug</code></td><td>VARCHAR(255)</td><td>UNIQUE, NOT NULL</td><td>URL slug</td></tr>
+<tr><td><code>excerpt</code></td><td>TEXT</td><td>NULLABLE</td><td>Ringkasan artikel</td></tr>
+<tr><td><code>content</code></td><td>LONGTEXT</td><td>NOT NULL</td><td>Konten lengkap</td></tr>
+<tr><td><code>featured_image_url</code></td><td>VARCHAR(255)</td><td>NULLABLE</td><td>URL gambar utama</td></tr>
+<tr><td><code>status</code></td><td>ENUM</td><td>DEFAULT 'draft', INDEX</td><td>draft/review/scheduled/published/archived</td></tr>
+<tr><td><code>is_featured</code></td><td>BOOLEAN</td><td>DEFAULT false, INDEX</td><td>Artikel unggulan</td></tr>
+<tr><td><code>view_count</code></td><td>BIGINT UNSIGNED</td><td>DEFAULT 0, INDEX</td><td>Jumlah view</td></tr>
+<tr><td><code>published_at</code></td><td>TIMESTAMP</td><td>NULLABLE, INDEX</td><td>Waktu publikasi</td></tr>
+<tr><td><code>created_at</code></td><td>TIMESTAMP</td><td></td><td></td></tr>
+<tr><td><code>updated_at</code></td><td>TIMESTAMP</td><td></td><td></td></tr>
+</tbody></table>
+<h3>7.4 Tabel <code>tags</code></h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>PK</td><td>UUID primary key</td></tr>
+<tr><td><code>name</code></td><td>VARCHAR(255)</td><td>UNIQUE, NOT NULL</td><td>Nama tag</td></tr>
+<tr><td><code>slug</code></td><td>VARCHAR(255)</td><td>UNIQUE, NOT NULL</td><td>URL slug</td></tr>
+</tbody></table>
+<h3>7.5 Tabel <code>article_tags</code> (Junction)</h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>article_id</code></td><td>UUID</td><td>FK→articles(id) ON DELETE CASCADE</td><td>Composite PK</td></tr>
+<tr><td><code>tag_id</code></td><td>UUID</td><td>FK→tags(id) ON DELETE CASCADE</td><td>Composite PK</td></tr>
+</tbody></table>
+<h3>7.6 Tabel <code>comments</code></h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>PK</td><td>UUID primary key</td></tr>
+<tr><td><code>article_id</code></td><td>UUID</td><td>FK→articles(id) ON DELETE CASCADE</td><td>Artikel terkait</td></tr>
+<tr><td><code>user_id</code></td><td>BIGINT UNSIGNED</td><td>FK→users(id) ON DELETE CASCADE</td><td>Pembuat komentar</td></tr>
+<tr><td><code>parent_id</code></td><td>UUID</td><td>FK→comments(id) ON DELETE CASCADE, NULLABLE</td><td>Reply dari komentar</td></tr>
+<tr><td><code>content</code></td><td>TEXT</td><td>NOT NULL</td><td>Isi komentar</td></tr>
+<tr><td><code>status</code></td><td>ENUM</td><td>DEFAULT 'pending'</td><td>pending/approved/rejected</td></tr>
+<tr><td><code>created_at</code></td><td>TIMESTAMP</td><td>DEFAULT CURRENT_TIMESTAMP</td><td></td></tr>
+<tr><td><strong>Index</strong></td><td></td><td>INDEX (article_id, status)</td><td></td></tr>
+</tbody></table>
+<h3>7.7 Tabel <code>media</code></h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>PK</td><td>UUID primary key</td></tr>
+<tr><td><code>article_id</code></td><td>UUID</td><td>FK→articles(id) ON DELETE SET NULL, NULLABLE</td><td>Artikel terkait (nullable = library)</td></tr>
+<tr><td><code>uploaded_by</code></td><td>BIGINT UNSIGNED</td><td>FK→users(id) ON DELETE SET NULL, NULLABLE</td><td>User yang upload</td></tr>
+<tr><td><code>file_url</code></td><td>VARCHAR(255)</td><td>NOT NULL</td><td>URL file</td></tr>
+<tr><td><code>media_type</code></td><td>ENUM</td><td>NOT NULL</td><td>image/video/audio</td></tr>
+<tr><td><code>alt_text</code></td><td>VARCHAR(255)</td><td>NULLABLE</td><td>Teks alternatif</td></tr>
+<tr><td><code>category_name</code></td><td>VARCHAR(255)</td><td>NULLABLE</td><td>Kategori media</td></tr>
+<tr><td><code>is_library</code></td><td>BOOLEAN</td><td>DEFAULT false</td><td>true = Media Tersimpan global</td></tr>
+<tr><td><code>created_at</code></td><td>TIMESTAMP</td><td>DEFAULT CURRENT_TIMESTAMP</td><td></td></tr>
+</tbody></table>
+<h3>7.8 Tabel <code>bookmarks</code></h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>PK</td><td>UUID primary key</td></tr>
+<tr><td><code>user_id</code></td><td>BIGINT UNSIGNED</td><td>FK→users(id) ON DELETE CASCADE</td><td>User yang bookmark</td></tr>
+<tr><td><code>article_id</code></td><td>UUID</td><td>NOT NULL (FK dropped)</td><td>ID artikel</td></tr>
+<tr><td><code>created_at</code></td><td>TIMESTAMP</td><td>DEFAULT CURRENT_TIMESTAMP</td><td></td></tr>
+<tr><td><strong>Unique</strong></td><td></td><td>UNIQUE (user_id, article_id)</td><td>1 bookmark per user per artikel</td></tr>
+</tbody></table>
+<h3>7.9 Tabel <code>refresh_tokens</code></h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>PK</td><td>UUID primary key</td></tr>
+<tr><td><code>user_id</code></td><td>BIGINT UNSIGNED</td><td>FK→users(id) ON DELETE CASCADE</td><td>Pemilik token</td></tr>
+<tr><td><code>token_hash</code></td><td>VARCHAR(255)</td><td>NOT NULL</td><td>Hash SHA-256 dari token</td></tr>
+<tr><td><code>device_info</code></td><td>VARCHAR(255)</td><td>NULLABLE</td><td>Info perangkat</td></tr>
+<tr><td><code>ip_address</code></td><td>VARCHAR(45)</td><td>NULLABLE</td><td>Alamat IP</td></tr>
+<tr><td><code>is_revoked</code></td><td>BOOLEAN</td><td>DEFAULT false</td><td>Status dicabut</td></tr>
+<tr><td><code>expires_at</code></td><td>TIMESTAMP</td><td>NOT NULL, INDEX</td><td>Waktu kedaluwarsa</td></tr>
+<tr><td><code>created_at</code></td><td>TIMESTAMP</td><td>DEFAULT CURRENT_TIMESTAMP</td><td></td></tr>
+<tr><td><strong>Index</strong></td><td></td><td>INDEX (user_id, is_revoked)</td><td></td></tr>
+</tbody></table>
+<h3>7.10 Tabel <code>search_indexes</code></h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>PK</td><td>UUID primary key</td></tr>
+<tr><td><code>article_id</code></td><td>UUID</td><td>UNIQUE, FK→articles(id) CASCADE</td><td>1 artikel = 1 index</td></tr>
+<tr><td><code>search_vector</code></td><td>TEXT</td><td>FULLTEXT INDEX</td><td>Gabungan judul + konten + tags</td></tr>
+<tr><td><code>tags_cache</code></td><td>TEXT</td><td>NULLABLE</td><td>Nama-nama tag dalam satu string</td></tr>
+<tr><td><code>updated_at</code></td><td>TIMESTAMP</td><td>DEFAULT CURRENT_TIMESTAMP ON UPDATE</td><td></td></tr>
+</tbody></table>
+<h3>7.11 Tabel <code>article_revisions</code></h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>PK</td><td>UUID primary key</td></tr>
+<tr><td><code>article_id</code></td><td>UUID</td><td>FK→articles(id) ON DELETE CASCADE</td><td>Artikel terkait</td></tr>
+<tr><td><code>edited_by</code></td><td>BIGINT UNSIGNED</td><td>FK→users(id) ON DELETE RESTRICT</td><td>User yang mengedit</td></tr>
+<tr><td><code>title_snapshot</code></td><td>VARCHAR(255)</td><td>NOT NULL</td><td>Snapshot judul</td></tr>
+<tr><td><code>content_snapshot</code></td><td>LONGTEXT</td><td>NOT NULL</td><td>Snapshot konten</td></tr>
+<tr><td><code>change_note</code></td><td>VARCHAR(255)</td><td>NULLABLE</td><td>Catatan perubahan</td></tr>
+<tr><td><code>created_at</code></td><td>TIMESTAMP</td><td>DEFAULT CURRENT_TIMESTAMP</td><td></td></tr>
+</tbody></table>
+<h3>7.12 Tabel <code>scheduled_articles</code></h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>PK</td><td>UUID primary key</td></tr>
+<tr><td><code>article_id</code></td><td>UUID</td><td>UNIQUE, FK→articles(id) ON DELETE CASCADE</td><td>1 artikel = 1 jadwal</td></tr>
+<tr><td><code>scheduled_by</code></td><td>BIGINT UNSIGNED</td><td>FK→users(id) ON DELETE RESTRICT</td><td>User yang menjadwalkan</td></tr>
+<tr><td><code>scheduled_at</code></td><td>TIMESTAMP</td><td>NOT NULL</td><td>Waktu terbit terjadwal</td></tr>
+<tr><td><code>is_published</code></td><td>BOOLEAN</td><td>DEFAULT false</td><td>Sudah terbit atau belum</td></tr>
+<tr><td><code>created_at</code></td><td>TIMESTAMP</td><td>DEFAULT CURRENT_TIMESTAMP</td><td></td></tr>
+<tr><td><strong>Index</strong></td><td></td><td>INDEX (is_published, scheduled_at)</td><td></td></tr>
+</tbody></table>
+<h3>7.13 Tabel <code>comment_rate_limits</code></h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>PK</td><td>UUID primary key</td></tr>
+<tr><td><code>user_id</code></td><td>BIGINT UNSIGNED</td><td>UNIQUE, FK→users(id) ON DELETE CASCADE</td><td>1 record per user</td></tr>
+<tr><td><code>comment_count</code></td><td>INT UNSIGNED</td><td>DEFAULT 0</td><td>Jumlah komentar di window</td></tr>
+<tr><td><code>window_start</code></td><td>TIMESTAMP</td><td>DEFAULT CURRENT_TIMESTAMP</td><td>Awal window rate limit</td></tr>
+<tr><td><code>is_blocked</code></td><td>BOOLEAN</td><td>DEFAULT false</td><td>Status diblokir</td></tr>
+<tr><td><code>blocked_until</code></td><td>TIMESTAMP</td><td>NULLABLE</td><td>Waktu buka blokir</td></tr>
+<tr><td><strong>Index</strong></td><td></td><td>INDEX (user_id, is_blocked)</td><td></td></tr>
+</tbody></table>
+<h3>7.14 Tabel <code>page_views</code></h3>
+<table>
+<thead><tr><th>Kolom</th><th>Tipe Data</th><th>Constraint</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>BIGINT</td><td>PK, AUTO_INCREMENT</td><td>Primary key</td></tr>
+<tr><td><code>path</code></td><td>VARCHAR(255)</td><td>INDEX, NOT NULL</td><td>Path URL yang dikunjungi</td></tr>
+<tr><td><code>ip_address</code></td><td>VARCHAR(45)</td><td>NULLABLE</td><td>Alamat IP visitor</td></tr>
+<tr><td><code>user_agent</code></td><td>TEXT</td><td>NULLABLE</td><td>User agent browser</td></tr>
+<tr><td><code>created_at</code></td><td>TIMESTAMP</td><td></td><td></td></tr>
+<tr><td><code>updated_at</code></td><td>TIMESTAMP</td><td></td><td></td></tr>
+</tbody></table>
+<hr/>
+<h2>8. Penjelasan Detail</h2>
+<h3>8.1 Alur Autentikasi Lengkap</h3>
+<p>Sistem autentikasi menggunakan <strong>JWT (JSON Web Token)</strong> dengan dua jenis token:</p>
+<ol>
+<li><strong>Access Token</strong> — umur pendek (dari config JWT), dikirim sebagai Bearer token di header <code>Authorization</code>. Digunakan untuk mengakses semua endpoint terproteksi.</li>
+<li><strong>Refresh Token</strong> — umur 14 hari, disimpan sebagai hash SHA-256 di tabel <code>refresh_tokens</code>. Disimpan di <code>localStorage</code> browser dan hanya dikirim saat endpoint <code>/api/auth/refresh</code>.</li>
+</ol>
+<p><strong>Siklus Token:</strong></p>
+<div class="code-block"><pre><code>
+Login → access_token + refresh_token
+
+      → access_token expired → silent refresh via refresh_token → new access_token
+
+      → refresh_token expired/revoke → force logout → re-login
+
+</code></pre></div>
+<p><strong>Keamanan:</strong></p>
+<ul>
+<li>Refresh token di-hash (SHA-256) sebelum disimpan di DB — jika DB bocor, token asli tidak bisa direkonstruksi.</li>
+<li>Saat reset password, semua refresh token user di-revoke (semua sesi berakhir).</li>
+<li>Endpoint forgot password menggunakan pola anti user-enumeration (response sama untuk email terdaftar/tidak).</li>
+</ul>
+<h3>8.2 Editorial Workflow (Alur Redaksi)</h3>
+<p>Alur editorial mengimplementasikan <strong>state machine</strong> sederhana:</p>
+<div class="code-block"><pre><code>
+     ┌──────────┐
+
+     │  DRAFT   │ ← Journalist membuat artikel
+
+     └────┬─────┘
+
+          │ kirim review
+
+          ▼
+
+     ┌──────────┐
+
+     │  REVIEW  │ ← Editor melihat di Tinjauan Artikel
+
+     └────┬─────┘
+
+          │
+
+     ┌────┼────────────┐
+
+     ▼    ▼            ▼
+
+┌─────────┐ ┌──────────┐ ┌──────────┐
+
+│PUBLISHED│ │SCHEDULED │ │REJECTED  │
+
+└────┬────┘ └────┬─────┘ └──────────┘
+
+     │           │ cron job
+
+     │           ▼
+
+     │      ┌──────────┐
+
+     │      │PUBLISHED │
+
+     │      └──────────┘
+
+     ▼
+
+┌──────────┐
+
+│ ARCHIVED │
+
+└──────────┘
+
+</code></pre></div>
+<p><strong>Aturan transisi status:</strong></p>
+<ul>
+<li><code>draft</code> → <code>review</code> : oleh journalist/editor/admin</li>
+<li><code>review</code> → <code>published</code> / <code>scheduled</code> / <code>rejected</code> : oleh editor/admin</li>
+<li><code>scheduled</code> → <code>published</code> : otomatis oleh cron job</li>
+<li><code>published</code> → <code>archived</code> : oleh editor/admin (satu arah, tidak bisa kembali)</li>
+</ul>
+<p><strong>Validasi:</strong></p>
+<ul>
+<li>Scheduled publish minimal 5 menit dari waktu sekarang.</li>
+<li>Journalist hanya bisa edit artikel miliknya sendiri yang masih draft.</li>
+<li>Editor bisa lock artikel untuk mencegah editing bersamaan.</li>
+</ul>
+<h3>8.3 Article Locking Mechanism</h3>
+<p>Fitur ini mencegah konflik editing saat beberapa editor bekerja:</p>
+<ol>
+<li>Editor mengklik "Lock" → <code>articles.locked_by = editor_id</code></li>
+<li>Editor lain yang mencoba edit akan melihat artikel terkunci</li>
+<li>Editor yang sama bisa "Unlock" → <code>articles.locked_by = NULL</code></li>
+<li>Lock otomatis terlepas jika editor ter-logout (nullOnDelete)</li>
+</ol>
+<h3>8.4 Pencarian Full-Text</h3>
+<p>Pencarian menggunakan <strong>MySQL FULLTEXT</strong> pada tabel <code>search_indexes</code>:</p>
+<ul>
+<li><code>search_vector</code> = gabungan judul + konten (strip HTML) + nama-nama tag</li>
+<li>Di-index ulang setiap kali artikel dibuat, diupdate, atau dipublish</li>
+<li>Query menggunakan <code>MATCH(search_vector) AGAINST('keyword')</code> untuk ranking relevansi</li>
+<li>Command <code>php artisan articles:reindex</code> untuk rebuild seluruh index</li>
+</ul>
+<h3>8.5 SEO & Sitemap</h3>
+<ul>
+<li><strong>XML Sitemap</strong> — <code>/articles/sitemap</code> menghasilkan sitemap standar semua artikel published</li>
+<li><strong>News Sitemap</strong> — <code>/articles/news-sitemap</code> menghasilkan sitemap khusus Google News (hanya artikel 48 jam terakhir)</li>
+<li><strong>JSON-LD</strong> — structured data Article di setiap halaman artikel</li>
+<li><strong>Open Graph & Twitter Cards</strong> — meta tag untuk social sharing</li>
+<li><strong>robots.ts</strong> — konfigurasi crawler</li>
+</ul>
+<h3>8.6 Dashboard Analitik</h3>
+<p>Dashboard menampilkan statistik berbeda berdasarkan role:</p>
+<p><strong>Admin:</strong></p>
+<ul>
+<li>Total artikel, komentar, bookmark (dengan filter waktu: hari ini, 7 hari, 30 hari, 1 tahun)</li>
+<li>Sparkline grafik tren harian dari tabel <code>page_views</code></li>
+<li>Distribusi artikel per kategori</li>
+<li>Top artikel berdasarkan view count</li>
+</ul>
+<p><strong>Editor/Journalist:</strong></p>
+<ul>
+<li>Statistik personal: total artikel, draft, published, archived</li>
+<li>Grafik distribusi status artikel (Recharts BarChart & PieChart)</li>
+</ul>
+<h3>8.7 API Endpoints Ringkasan</h3>
+<table>
+<thead><tr><th>Group</th><th>Method</th><th>Endpoint</th><th>Auth</th><th>Role</th><th>Fungsi</th></tr></thead>
+<tbody>
+<tr><td>Auth</td><td>POST</td><td><code>/api/auth/register</code></td><td>-</td><td>Public</td><td>Registrasi user baru</td></tr>
+<tr><td>Auth</td><td>POST</td><td><code>/api/auth/login</code></td><td>-</td><td>Public</td><td>Login</td></tr>
+<tr><td>Auth</td><td>POST</td><td><code>/api/auth/refresh</code></td><td>-</td><td>Public</td><td>Refresh access token</td></tr>
+<tr><td>Auth</td><td>POST</td><td><code>/api/auth/logout</code></td><td>JWT</td><td>Any</td><td>Logout + revoke token</td></tr>
+<tr><td>Auth</td><td>GET</td><td><code>/api/auth/me</code></td><td>JWT</td><td>Any</td><td>Data user saat ini</td></tr>
+<tr><td>Auth</td><td>PUT</td><td><code>/api/auth/profile</code></td><td>JWT</td><td>Any</td><td>Update profil</td></tr>
+<tr><td>Auth</td><td>PUT</td><td><code>/api/auth/change-password</code></td><td>JWT</td><td>Any</td><td>Ganti password</td></tr>
+<tr><td>Auth</td><td>POST</td><td><code>/api/auth/forgot-password</code></td><td>-</td><td>Public</td><td>Request reset password</td></tr>
+<tr><td>Auth</td><td>POST</td><td><code>/api/auth/reset-password</code></td><td>-</td><td>Public</td><td>Reset password dengan token</td></tr>
+<tr><td>Public</td><td>GET</td><td><code>/api/beranda</code></td><td>-</td><td>Public</td><td>Data halaman beranda</td></tr>
+<tr><td>Public</td><td>GET</td><td><code>/api/categories</code></td><td>-</td><td>Public</td><td>Daftar kategori</td></tr>
+<tr><td>Public</td><td>GET</td><td><code>/api/tags</code></td><td>-</td><td>Public</td><td>Daftar tag</td></tr>
+<tr><td>Public</td><td>GET</td><td><code>/api/articles</code></td><td>-</td><td>Public</td><td>Artikel published (paginated)</td></tr>
+<tr><td>Public</td><td>GET</td><td><code>/api/articles/{slug}</code></td><td>-</td><td>Public</td><td>Detail artikel</td></tr>
+<tr><td>Public</td><td>GET</td><td><code>/api/articles/{id}/comments</code></td><td>-</td><td>Public</td><td>Komentar artikel</td></tr>
+<tr><td>Public</td><td>GET</td><td><code>/api/articles/sitemap</code></td><td>-</td><td>Public</td><td>XML Sitemap</td></tr>
+<tr><td>Public</td><td>GET</td><td><code>/api/articles/news-sitemap</code></td><td>-</td><td>Public</td><td>News Sitemap</td></tr>
+<tr><td>Analytics</td><td>POST</td><td><code>/api/analytics/track</code></td><td>-</td><td>Public</td><td>Track page view</td></tr>
+<tr><td>Bookmark</td><td>GET</td><td><code>/api/bookmarks</code></td><td>JWT</td><td>Any</td><td>Daftar bookmark</td></tr>
+<tr><td>Bookmark</td><td>POST</td><td><code>/api/bookmarks</code></td><td>JWT</td><td>Any</td><td>Toggle bookmark</td></tr>
+<tr><td>Comment</td><td>POST</td><td><code>/api/articles/{id}/comments</code></td><td>JWT</td><td>Any (rate limit)</td><td>Buat komentar</td></tr>
+<tr><td>Comment</td><td>DELETE</td><td><code>/api/comments/{id}</code></td><td>JWT</td><td>Editor/Admin</td><td>Hapus komentar</td></tr>
+<tr><td>Media</td><td>GET</td><td><code>/api/media</code></td><td>JWT</td><td>CMS roles</td><td>Daftar media</td></tr>
+<tr><td>Media</td><td>POST</td><td><code>/api/media/upload</code></td><td>JWT</td><td>CMS roles</td><td>Upload media</td></tr>
+<tr><td>Media</td><td>DELETE</td><td><code>/api/media/{id}</code></td><td>JWT</td><td>CMS roles</td><td>Hapus media</td></tr>
+<tr><td>CMS Article</td><td>GET</td><td><code>/api/cms/articles</code></td><td>JWT</td><td>CMS roles</td><td>Daftar artikel CMS</td></tr>
+<tr><td>CMS Article</td><td>POST</td><td><code>/api/cms/articles</code></td><td>JWT</td><td>CMS roles</td><td>Buat artikel baru</td></tr>
+<tr><td>CMS Article</td><td>GET</td><td><code>/api/cms/articles/{id}</code></td><td>JWT</td><td>CMS roles</td><td>Detail artikel CMS</td></tr>
+<tr><td>CMS Article</td><td>PUT</td><td><code>/api/cms/articles/{id}</code></td><td>JWT</td><td>CMS roles</td><td>Update artikel</td></tr>
+<tr><td>CMS Article</td><td>DELETE</td><td><code>/api/cms/articles/{id}</code></td><td>JWT</td><td>CMS roles</td><td>Hapus artikel (draft only)</td></tr>
+<tr><td>CMS Article</td><td>PATCH</td><td><code>/api/cms/articles/{id}/status</code></td><td>JWT</td><td>Editor/Admin</td><td>Ubah status artikel</td></tr>
+<tr><td>CMS Article</td><td>POST</td><td><code>/api/cms/articles/{id}/lock</code></td><td>JWT</td><td>Editor/Admin</td><td>Kunci artikel</td></tr>
+<tr><td>CMS Article</td><td>POST</td><td><code>/api/cms/articles/{id}/unlock</code></td><td>JWT</td><td>Editor/Admin</td><td>Buka kunci artikel</td></tr>
+<tr><td>CMS Comment</td><td>GET</td><td><code>/api/cms/comments</code></td><td>JWT</td><td>Editor/Admin</td><td>Daftar komentar moderasi</td></tr>
+<tr><td>CMS Stats</td><td>GET</td><td><code>/api/cms/statistics</code></td><td>JWT</td><td>CMS roles</td><td>Dashboard statistics</td></tr>
+<tr><td>CMS Category</td><td>CRUD</td><td><code>/api/cms/categories</code></td><td>JWT</td><td>Admin</td><td>Kelola kategori</td></tr>
+<tr><td>CMS Tag</td><td>CRUD</td><td><code>/api/cms/tags</code></td><td>JWT</td><td>Admin</td><td>Kelola tag</td></tr>
+<tr><td>User</td><td>CRUD</td><td><code>/api/users</code></td><td>JWT+admin</td><td>Admin</td><td>Kelola user</td></tr>
+</tbody></table>
+<h3>8.8 Konvensi Penamaan & Standar Kode</h3>
+<ul>
+<li><strong>Primary Key</strong>: UUID untuk tabel bisnis (articles, categories, tags, comments, media, dll), AUTO_INCREMENT BIGINT untuk tabel sistem (users, page_views)</li>
+<li><strong>Foreign Key</strong>: Selalu menggunakan constraint dengan policy yang sesuai (CASCADE untuk child yang harus ikut terhapus, SET NULL untuk relasi opsional, RESTRICT untuk mencegah hapus jika masih direferensi)</li>
+<li><strong>Naming</strong>: snake_case untuk kolom dan tabel, camelCase untuk method dan properti di PHP/JavaScript</li>
+<li><strong>API Response</strong>: Format konsisten <code>{success: boolean, data?: any, message?: string, errors?: object}</code></li>
+<li><strong>Error Code</strong>: <code>TOKEN_EXPIRED</code> untuk JWT expired, HTTP 401/403/404/422 untuk standar</li>
+</ul>
+<h3>8.9 Struktur Folder Frontend</h3>
+<div class="code-block"><pre><code>
+frontend/
+
+├── app/
+
+│   ├── (main)/           # Layout publik (Navbar + Footer)
+
+│   │   ├── page.tsx      # Halaman utama (/)
+
+│   │   └── ...
+
+│   ├── cms/              # Layout CMS (Sidebar + Topbar)
+
+│   │   ├── layout.tsx    # Auth guard + role check
+
+│   │   ├── dashboard/    # Dashboard statistik
+
+│   │   ├── artikel/      # Bank Berita (list + detail + preview)
+
+│   │   ├── tulis-berita/ # Form tulis artikel baru
+
+│   │   ├── tinjauan-artikel/ # Review artikel (editor)
+
+│   │   ├── media/        # Media Tersimpan
+
+│   │   ├── komentar/     # Moderasi komentar
+
+│   │   ├── karyawan/     # Kelola karyawan (admin)
+
+│   │   ├── pengguna/     # Kelola pengguna (admin)
+
+│   │   ├── kategori/     # Kelola kategori &amp; tag (admin)
+
+│   │   ├── profil/       # Profil user
+
+│   │   └── reset-password/
+
+│   ├── components/       # Komponen reusable
+
+│   │   ├── cms/          # Sidebar, Topbar, AdminDashboard
+
+│   │   ├── navbar.tsx
+
+│   │   ├── footer.tsx
+
+│   │   ├── AuthProvider.tsx
+
+│   │   └── AnalyticsTracker.tsx
+
+│   ├── constants/        # Konstanta (roles, config)
+
+│   ├── types/            # TypeScript type definitions
+
+│   ├── login/            # Halaman login
+
+│   ├── register/         # Halaman register
+
+│   ├── pages/            # Halaman publik (beranda, about, contact)
+
+│   └── layout.tsx        # Root layout
+
+├── lib/
+
+│   ├── api/              # API client functions
+
+│   ├── axios.ts          # Axios instance + interceptors
+
+│   ├── auth.ts           # Auth helpers (localStorage)
+
+│   └── validations.ts    # Zod validation schemas
+
+└── stores/
+
+    └── authStore.ts      # Zustand auth store
+
+</code></pre></div>
+</div>
+
+<!-- ════ PART III ════ -->
+<div class="section-divider">
+    <h1>BAGIAN III<br/>REFERENSI API LENGKAP</h1>
+</div>
+<div class="content">
+<blockquote><strong>Base URL:</strong> <code>http://localhost:8000/api</code></blockquote>
+<blockquote><strong>Content-Type:</strong> <code>application/json</code> (kecuali upload media: <code>multipart/form-data</code>)</blockquote>
+<blockquote><strong>Autentikasi:</strong> JWT Bearer Token di header <code>Authorization: Bearer <token></code></blockquote>
+<hr/>
+<hr/>
+<h2>1. Konvensi & Format Response</h2>
+<h3>Format Response Sukses</h3>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": { ... },
+
+  "message": "Deskripsi opsional"
+
+}
+
+</code></pre></div>
+<h3>Format Response Error</h3>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "error",
+
+  "code": 404,
+
+  "error": "ERROR_CODE_CONSTANT",
+
+  "message": "Pesan error yang mudah dipahami."
+
+}
+
+</code></pre></div>
+<h3>Konvensi</h3>
+<table>
+<thead><tr><th>Aspek</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>Primary Key</td><td>UUID string untuk tabel bisnis (<code>"id": "550e8400-..."</code>) , BIGINT untuk users (<code>"id": 3</code>)</td></tr>
+<tr><td>Pagination</td><td><code>?page=1&limit=20</code> → response berisi <code>current_page</code>, <code>per_page</code>, <code>total</code>, <code>last_page</code></td></tr>
+<tr><td>Auth Header</td><td><code>Authorization: Bearer eyJ0eXAiOiJKV1QiLC...</code></td></tr>
+<tr><td>Role Required</td><td>Ditulis di setiap endpoint. Role: <code>reader</code>, <code>journalist</code>, <code>editor</code>, <code>admin</code></td></tr>
+<tr><td>Tanggal</td><td>ISO 8601: <code>"2026-06-15T10:30:00.000000Z"</code></td></tr>
+</tbody></table>
+<hr/>
+<h2>2. Health Check</h2>
+<h3><code>GET /ping</code></h3>
+<p>Mengecek ketersediaan server API.</p>
+<p><strong>Auth:</strong> Tidak diperlukan</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "ok",
+
+  "message": "Portal Berita API aktif."
+
+}
+
+</code></pre></div>
+<hr/>
+<h2>3. Authentication (Auth)</h2>
+<h3>3.1 Register</h3>
+<p><strong><code>POST /auth/register</code></strong></p>
+<p>Mendaftarkan akun baru. Role otomatis = <code>reader</code>.</p>
+<p><strong>Auth:</strong> Tidak diperlukan</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "name": "Budi Santoso",
+
+  "email": "budi@example.com",
+
+  "password": "password123"
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>name</code></td><td>string</td><td>Ya</td><td>max:255</td></tr>
+<tr><td><code>email</code></td><td>string</td><td>Ya</td><td>email, unique di tabel users</td></tr>
+<tr><td><code>password</code></td><td>string</td><td>Ya</td><td>min:8</td></tr>
+</tbody></table>
+<p><strong>Response <code>201 Created</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "user_id": 1,
+
+    "name": "Budi Santoso",
+
+    "email": "budi@example.com",
+
+    "role": "reader"
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>422</td><td>VALIDATION_ERROR</td><td>Field tidak valid / email sudah terdaftar</td></tr>
+</tbody></table>
+<hr/>
+<h3>3.2 Login</h3>
+<p><strong><code>POST /auth/login</code></strong></p>
+<p>Login dan dapatkan access_token (JWT) + refresh_token.</p>
+<p><strong>Auth:</strong> Tidak diperlukan</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "email": "budi@example.com",
+
+  "password": "password123"
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th></tr></thead>
+<tbody>
+<tr><td><code>email</code></td><td>string</td><td>Ya</td></tr>
+<tr><td><code>password</code></td><td>string</td><td>Ya</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGci...",
+
+    "refresh_token": "def50200a3b2c1d4e5f6...",
+
+    "expires_in": 3600,
+
+    "user": {
+
+      "id": 1,
+
+      "name": "Budi Santoso",
+
+      "role": "reader"
+
+    }
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>401</td><td>INVALID_CREDENTIALS</td><td>Email atau password salah</td></tr>
+<tr><td>403</td><td>ACCOUNT_INACTIVE</td><td>Akun nonaktif (<code>is_active = false</code>)</td></tr>
+</tbody></table>
+<p><strong>Catatan:</strong></p>
+<ul>
+<li><code>access_token</code> disimpan di Zustand store (frontend) dan dikirim sebagai Bearer token.</li>
+<li><code>refresh_token</code> disimpan di <code>localStorage</code> dan hanya digunakan untuk endpoint <code>/auth/refresh</code>.</li>
+<li>Refresh token di-hash SHA-256 sebelum disimpan di database (tabel <code>refresh_tokens</code>).</li>
+</ul>
+<hr/>
+<h3>3.3 Refresh Token</h3>
+<p><strong><code>POST /auth/refresh</code></strong></p>
+<p>Dapatkan access_token baru menggunakan refresh_token yang masih valid.</p>
+<p><strong>Auth:</strong> Tidak diperlukan (refresh_token dikirim di body)</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "refresh_token": "def50200a3b2c1d4e5f6..."
+
+}
+
+</code></pre></div>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGci..._NEW",
+
+    "refresh_token": "def50200a3b2c1d4e5f6...",
+
+    "expires_in": 3600,
+
+    "user": {
+
+      "id": 1,
+
+      "name": "Budi Santoso",
+
+      "email": "budi@example.com",
+
+      "avatar_url": "https://example.com/storage/avatars/1.jpg",
+
+      "role": "reader"
+
+    }
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>401</td><td>TOKEN_REVOKED</td><td>Refresh token sudah di-revoke</td></tr>
+<tr><td>401</td><td>TOKEN_EXPIRED</td><td>Refresh token sudah kedaluwarsa (> 14 hari)</td></tr>
+<tr><td>400</td><td>TOKEN_NOT_FOUND</td><td>Refresh token tidak ditemukan di database</td></tr>
+</tbody></table>
+<p><strong>Catatan:</strong> Frontend Axios interceptor memanggil endpoint ini secara otomatis (silent refresh) saat access_token expired, tanpa interaksi user.</p>
+<hr/>
+<h3>3.4 Logout</h3>
+<p><strong><code>POST /auth/logout</code></strong></p>
+<p>Logout: revoke refresh token + invalidasi JWT.</p>
+<p><strong>Auth:</strong> JWT Bearer Token (wajib)</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "refresh_token": "def50200a3b2c1d4e5f6..."
+
+}
+
+</code></pre></div>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "Logout berhasil"
+
+}
+
+</code></pre></div>
+<p><strong>Catatan:</strong> Refresh token ditandai <code>is_revoked = true</code> di database. Frontend tetap melanjutkan logout meskipun request ini gagal.</p>
+<hr/>
+<h3>3.5 Get Current User (Me)</h3>
+<p><strong><code>GET /auth/me</code></strong></p>
+<p>Ambil data profil user yang sedang login.</p>
+<p><strong>Auth:</strong> JWT Bearer Token (wajib)</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "id": 1,
+
+    "name": "Budi Santoso",
+
+    "email": "budi@example.com",
+
+    "role": "reader",
+
+    "avatar_url": "https://example.com/storage/avatars/1.jpg"
+
+  }
+
+}
+
+</code></pre></div>
+<hr/>
+<h3>3.6 Update Profile</h3>
+<p><strong><code>PUT /auth/profile</code></strong></p>
+<p>Update data profil user (nama, email, avatar).</p>
+<p><strong>Auth:</strong> JWT Bearer Token (wajib)</p>
+<p><strong>Content-Type:</strong> <code>multipart/form-data</code> (karena ada file avatar)</p>
+<p><strong>Request Body (Form-Data):</strong></p>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>name</code></td><td>string</td><td>Ya</td><td>max:255</td></tr>
+<tr><td><code>email</code></td><td>string</td><td>Ya</td><td>email, unique (kecuali email sendiri)</td></tr>
+<tr><td><code>avatar</code></td><td>file</td><td>Tidak</td><td>image (jpeg/png/jpg), max:2048KB</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "Profil berhasil diperbarui.",
+
+  "data": {
+
+    "id": 1,
+
+    "name": "Budi Santoso",
+
+    "email": "budi_new@example.com",
+
+    "role": "reader",
+
+    "avatar_url": "https://example.com/storage/avatars/abc123.jpg"
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Catatan:</strong> Avatar lama otomatis dihapus dari storage saat upload avatar baru. Avatar disimpan di <code>storage/app/public/avatars/</code>.</p>
+<hr/>
+<h3>3.7 Change Password</h3>
+<p><strong><code>PUT /auth/change-password</code></strong></p>
+<p>Ubah password user yang sedang login.</p>
+<p><strong>Auth:</strong> JWT Bearer Token (wajib)</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "current_password": "oldpassword123",
+
+  "new_password": "newpassword456"
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>current_password</code></td><td>string</td><td>Ya</td><td>Harus cocok dengan password saat ini</td></tr>
+<tr><td><code>new_password</code></td><td>string</td><td>Ya</td><td>min:8</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "Password berhasil diubah."
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>422</td><td>-</td><td>Password saat ini salah</td></tr>
+</tbody></table>
+<hr/>
+<h3>3.8 Forgot Password</h3>
+<p><strong><code>POST /auth/forgot-password</code></strong></p>
+<p>Kirim link reset password ke email user.</p>
+<p><strong>Auth:</strong> Tidak diperlukan</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "email": "budi@example.com"
+
+}
+
+</code></pre></div>
+<p><strong>Response <code>200 OK</code></strong> (selalu 200, anti user-enumeration):</p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "Jika email Anda terdaftar, kami telah mengirimkan link reset password. Periksa inbox Anda."
+
+}
+
+</code></pre></div>
+<p><strong>Catatan:</strong> Response selalu 200 meskipun email tidak terdaftar, untuk mencegah attacker mengetahui email mana yang valid. Token reset disimpan di tabel <code>password_reset_tokens</code> dan dikirim via email (<code>ResetPasswordMail</code>).</p>
+<hr/>
+<h3>3.9 Reset Password</h3>
+<p><strong><code>POST /auth/reset-password</code></strong></p>
+<p>Reset password menggunakan token yang diterima dari email.</p>
+<p><strong>Auth:</strong> Tidak diperlukan</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "email": "budi@example.com",
+
+  "token": "abc123def456...",
+
+  "password": "newpassword123",
+
+  "password_confirmation": "newpassword123"
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>email</code></td><td>string</td><td>Ya</td><td>email</td></tr>
+<tr><td><code>token</code></td><td>string</td><td>Ya</td><td>Harus valid dan belum expired</td></tr>
+<tr><td><code>password</code></td><td>string</td><td>Ya</td><td>min:8</td></tr>
+<tr><td><code>password_confirmation</code></td><td>string</td><td>Ya</td><td>same:password</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "Password berhasil direset. Silakan login dengan password baru Anda."
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>422</td><td>INVALID_TOKEN</td><td>Token tidak valid atau sudah expired</td></tr>
+<tr><td>422</td><td>TOKEN_ALREADY_USED</td><td>Token sudah pernah digunakan</td></tr>
+</tbody></table>
+<p><strong>Catatan:</strong> Setelah reset berhasil, <strong>semua refresh token user di-revoke</strong> (semua sesi berakhir). User harus login ulang di semua perangkat.</p>
+<hr/>
+<h2>4. Beranda (Homepage)</h2>
+<h3><code>GET /beranda</code></h3>
+<p>Mengambil data lengkap untuk halaman beranda dalam satu request: artikel featured (headline), berita terbaru, artikel populer, dan daftar kategori dengan sub-kategorinya.</p>
+<p><strong>Auth:</strong> Tidak diperlukan</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "Data beranda berhasil dimuat.",
+
+  "data": {
+
+    "featured": [
+
+      {
+
+        "id": "uuid",
+
+        "title": "Judul Artikel Featured",
+
+        "slug": "judul-artikel-featured",
+
+        "excerpt": "Ringkasan singkat...",
+
+        "featured_image_url": "https://...",
+
+        "published_at": "2026-06-15T10:00:00.000000Z",
+
+        "author": { "id": 1, "name": "Reporter A" },
+
+        "category": { "id": "uuid", "name": "Politik", "slug": "politik" }
+
+      }
+
+    ],
+
+    "latest": [ ... ],
+
+    "popular": [ ... ],
+
+    "categories": [
+
+      {
+
+        "id": "uuid",
+
+        "name": "Teknologi",
+
+        "slug": "teknologi",
+
+        "children": [
+
+          { "id": "uuid", "name": "Gadget", "slug": "gadget" }
+
+        ]
+
+      }
+
+    ]
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Penjelasan:</strong></p>
+<ul>
+<li><code>featured</code> — artikel dengan <code>is_featured = true</code> dan status <code>published</code></li>
+<li><code>latest</code> — 6 artikel terbaru berdasarkan <code>published_at</code></li>
+<li><code>popular</code> — 5 artikel dengan <code>view_count</code> tertinggi</li>
+<li><code>categories</code> — kategori utama dengan sub-kategori (hierarki parent-child)</li>
+</ul>
+<hr/>
+<h2>5. Categories (Public)</h2>
+<h3><code>GET /categories</code></h3>
+<p>Mengambil semua kategori dalam struktur hierarki (parent → children).</p>
+<p><strong>Auth:</strong> Tidak diperlukan</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": [
+
+    {
+
+      "id": "uuid-1",
+
+      "name": "Olahraga",
+
+      "slug": "olahraga",
+
+      "parent_id": null,
+
+      "children": [
+
+        { "id": "uuid-2", "name": "Sepak Bola", "slug": "sepak-bola", "parent_id": "uuid-1" },
+
+        { "id": "uuid-3", "name": "Basket", "slug": "basket", "parent_id": "uuid-1" }
+
+      ]
+
+    }
+
+  ]
+
+}
+
+</code></pre></div>
+<hr/>
+<h2>6. Tags (Public)</h2>
+<h3><code>GET /tags</code></h3>
+<p>Mengambil semua tag.</p>
+<p><strong>Auth:</strong> Tidak diperlukan</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": [
+
+    { "id": "uuid", "name": "Breaking News", "slug": "breaking-news" },
+
+    { "id": "uuid", "name": "Viral", "slug": "viral" }
+
+  ]
+
+}
+
+</code></pre></div>
+<hr/>
+<h2>7. Articles (Public)</h2>
+<h3>7.1 List Articles</h3>
+<p><strong><code>GET /articles</code></strong></p>
+<p>Mengambil daftar artikel published dengan dukungan pencarian, filter, dan pagination.</p>
+<p><strong>Auth:</strong> Tidak diperlukan (opsional — header <code>X-Client: cms</code> untuk akses CMS)</p>
+<p><strong>Query Parameters:</strong></p>
+<table>
+<thead><tr><th>Parameter</th><th>Tipe</th><th>Default</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>search</code></td><td>string</td><td>-</td><td>Pencarian full-text (judul + konten + tags)</td></tr>
+<tr><td><code>category</code></td><td>string</td><td>-</td><td>Filter berdasarkan slug kategori</td></tr>
+<tr><td><code>tag</code></td><td>string</td><td>-</td><td>Filter berdasarkan slug tag</td></tr>
+<tr><td><code>featured</code></td><td>boolean</td><td>-</td><td>Filter <code>is_featured</code></td></tr>
+<tr><td><code>page</code></td><td>integer</td><td>1</td><td>Halaman</td></tr>
+<tr><td><code>limit</code></td><td>integer</td><td>10</td><td>Jumlah per halaman</td></tr>
+<tr><td><code>status</code></td><td>string</td><td><code>published</code></td><td>Hanya berlaku jika <code>X-Client: cms</code> + JWT valid</td></tr>
+<tr><td><code>author_id</code></td><td>string</td><td>-</td><td>Filter berdasarkan author (CMS only)</td></tr>
+</tbody></table>
+<p><strong>Header (Opsional):</strong></p>
+<table>
+<thead><tr><th>Header</th><th>Nilai</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>X-Client</code></td><td><code>cms</code></td><td>Jika dikirim, server cek JWT untuk role-based filtering</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "data": [
+
+      {
+
+        "id": "uuid",
+
+        "title": "Judul Artikel",
+
+        "slug": "judul-artikel",
+
+        "excerpt": "Ringkasan...",
+
+        "featured_image_url": "https://...",
+
+        "status": "published",
+
+        "published_at": "2026-06-15T10:00:00.000000Z",
+
+        "view_count": 150,
+
+        "author": { "id": 1, "name": "Reporter A" },
+
+        "category": { "id": "uuid", "name": "Teknologi", "slug": "teknologi" },
+
+        "tags": [
+
+          { "id": "uuid", "name": "AI", "slug": "ai" }
+
+        ]
+
+      }
+
+    ],
+
+    "current_page": 1,
+
+    "per_page": 10,
+
+    "total": 50,
+
+    "last_page": 5
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Logika X-Client:</strong></p>
+<ul>
+<li>Tanpa header / <code>X-Client: public</code> → hanya artikel <code>published</code></li>
+<li><code>X-Client: cms</code> + JWT journalist → hanya artikel milik sendiri, semua status</li>
+<li><code>X-Client: cms</code> + JWT editor/admin → semua artikel, semua status</li>
+</ul>
+<hr/>
+<h3>7.2 Detail Article</h3>
+<p><strong><code>GET /articles/{slug}</code></strong></p>
+<p>Mengambil satu artikel berdasarkan slug, lengkap dengan tags dan data author.</p>
+<p><strong>Auth:</strong> Tidak diperlukan</p>
+<p><strong>Path Parameter:</strong></p>
+<table>
+<thead><tr><th>Parameter</th><th>Tipe</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>slug</code></td><td>string</td><td>Slug artikel (dari URL)</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "id": "uuid",
+
+    "title": "Judul Artikel",
+
+    "slug": "judul-artikel",
+
+    "excerpt": "Ringkasan artikel...",
+
+    "content": "&lt;p&gt;Konten lengkap artikel dalam HTML...&lt;/p&gt;",
+
+    "featured_image_url": "https://...",
+
+    "status": "published",
+
+    "is_featured": true,
+
+    "view_count": 250,
+
+    "published_at": "2026-06-15T10:00:00.000000Z",
+
+    "author": { "id": 1, "name": "Reporter A", "avatar_url": "..." },
+
+    "category": { "id": "uuid", "name": "Teknologi", "slug": "teknologi" },
+
+    "tags": [
+
+      { "id": "uuid", "name": "AI", "slug": "ai" },
+
+      { "id": "uuid", "name": "Startup", "slug": "startup" }
+
+    ],
+
+    "created_at": "2026-06-14T08:00:00.000000Z",
+
+    "updated_at": "2026-06-15T09:00:00.000000Z"
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>404</td><td>ARTICLE_NOT_FOUND</td><td>Slug tidak ditemukan</td></tr>
+</tbody></table>
+<hr/>
+<h3>7.3 Get Article Comments</h3>
+<p><strong><code>GET /articles/{id}/comments</code></strong></p>
+<p>Mengambil semua komentar publik pada artikel (termasuk nested reply, max 2 level).</p>
+<p><strong>Auth:</strong> Tidak diperlukan</p>
+<p><strong>Path Parameter:</strong></p>
+<table>
+<thead><tr><th>Parameter</th><th>Tipe</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>ID artikel</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "comments": [
+
+      {
+
+        "id": "uuid",
+
+        "content": "Artikel yang sangat informatif!",
+
+        "status": "approved",
+
+        "parent_id": null,
+
+        "created_at": "2026-06-15T11:00:00.000000Z",
+
+        "user": { "id": 5, "name": "Pembaca A" },
+
+        "replies": [
+
+          {
+
+            "id": "uuid",
+
+            "content": "Setuju sekali!",
+
+            "status": "approved",
+
+            "parent_id": "uuid-parent",
+
+            "created_at": "2026-06-15T11:30:00.000000Z",
+
+            "user": { "id": 6, "name": "Pembaca B" }
+
+          }
+
+        ]
+
+      }
+
+    ]
+
+  }
+
+}
+
+</code></pre></div>
+<hr/>
+<h2>8. Comments</h2>
+<h3>8.1 Post Comment (via Article)</h3>
+<p><strong><code>POST /articles/{id}/comments</code></strong></p>
+<p>Memberi komentar pada artikel (shortcut — article_id dari URL).</p>
+<p><strong>Auth:</strong> JWT Bearer Token (wajib)</p>
+<p><strong>Path Parameter:</strong></p>
+<table>
+<thead><tr><th>Parameter</th><th>Tipe</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>ID artikel</td></tr>
+</tbody></table>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "content": "Artikel yang sangat informatif!",
+
+  "parent_id": null
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>content</code></td><td>string</td><td>Ya</td><td>max:1000</td></tr>
+<tr><td><code>parent_id</code></td><td>UUID</td><td>Tidak</td><td>UUID komentar yang direply (nullable)</td></tr>
+</tbody></table>
+<p><strong>Response <code>201 Created</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "id": "uuid",
+
+    "article_id": "uuid",
+
+    "user_id": 5,
+
+    "parent_id": null,
+
+    "content": "Artikel yang sangat informatif!",
+
+    "status": "approved",
+
+    "created_at": "2026-06-15T11:00:00.000000Z",
+
+    "user": { "id": 5, "name": "Pembaca A" }
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>429</td><td>RATE_LIMIT_EXCEEDED</td><td>Melebihi 10 komentar per jam</td></tr>
+<tr><td>400</td><td>MAX_NESTING</td><td>Kedalaman reply sudah 2 level (parent adalah reply, bukan top-level)</td></tr>
+<tr><td>400</td><td>PARENT_MISMATCH</td><td>Parent comment tidak berada di artikel yang sama</td></tr>
+</tbody></table>
+<p><strong>Rate Limiting:</strong></p>
+<ul>
+<li>Maksimal 10 komentar per jam per user (tabel <code>comment_rate_limits</code>).</li>
+<li>Window reset otomatis setelah 1 jam dari <code>window_start</code>.</li>
+</ul>
+<p><strong>Threading Rules:</strong></p>
+<ul>
+<li>Max 2 level: top-level comment → reply. Reply dari reply tidak diizinkan.</li>
+<li>Reply dari komentar yang sudah di-reply → error 400.</li>
+</ul>
+<hr/>
+<h3>8.2 Post Comment (Direct)</h3>
+<p><strong><code>POST /comments</code></strong></p>
+<p>Alternatif endpoint — article_id dikirim di body.</p>
+<p><strong>Auth:</strong> JWT Bearer Token (wajib)</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "article_id": "uuid-artikel",
+
+  "content": "Komentar saya",
+
+  "parent_id": null
+
+}
+
+</code></pre></div>
+<p>Response dan validasi sama dengan endpoint 8.1.</p>
+<hr/>
+<h3>8.3 Delete Comment</h3>
+<p><strong><code>DELETE /comments/{id}</code></strong></p>
+<p>Hapus komentar secara permanen (beserta reply-nya via cascade).</p>
+<p><strong>Auth:</strong> JWT Bearer Token (wajib)</p>
+<p><strong>Role:</strong> <code>editor</code>, <code>admin</code> saja</p>
+<p><strong>Path Parameter:</strong></p>
+<table>
+<thead><tr><th>Parameter</th><th>Tipe</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>ID komentar</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "Komentar berhasil dihapus secara permanen."
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>403</td><td>FORBIDDEN</td><td>Bukan editor/admin</td></tr>
+<tr><td>404</td><td>COMMENT_NOT_FOUND</td><td>Komentar tidak ditemukan</td></tr>
+</tbody></table>
+<hr/>
+<h2>9. Bookmarks</h2>
+<h3>9.1 List Bookmarks</h3>
+<p><strong><code>GET /bookmarks</code></strong></p>
+<p>Ambil semua bookmark milik user yang sedang login.</p>
+<p><strong>Auth:</strong> JWT Bearer Token (wajib)</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "bookmarks": [
+
+      {
+
+        "id": "uuid",
+
+        "article_id": "uuid-artikel",
+
+        "created_at": "2026-06-15T10:00:00.000000Z"
+
+      }
+
+    ]
+
+  }
+
+}
+
+</code></pre></div>
+<hr/>
+<h3>9.2 Toggle Bookmark</h3>
+<p><strong><code>POST /bookmarks</code></strong></p>
+<p>Toggle bookmark: tambahkan jika belum ada, hapus jika sudah ada.</p>
+<p><strong>Auth:</strong> JWT Bearer Token (wajib)</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "article_id": "uuid-artikel"
+
+}
+
+</code></pre></div>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "bookmarked": true
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Penjelasan:</strong></p>
+<ul>
+<li>Jika user belum bookmark → INSERT → return <code>bookmarked: true</code></li>
+<li>Jika user sudah bookmark → DELETE → return <code>bookmarked: false</code></li>
+<li>Unique constraint: satu user hanya bisa bookmark satu artikel satu kali.</li>
+</ul>
+<hr/>
+<h2>10. Media</h2>
+<h3>10.1 List Media Library</h3>
+<p><strong><code>GET /media</code></strong></p>
+<p>Mengambil semua media dari galeri Media Tersimpan (<code>is_library = true</code>).</p>
+<p><strong>Auth:</strong> JWT Bearer Token (wajib)</p>
+<p><strong>Role:</strong> <code>journalist</code>, <code>editor</code>, <code>admin</code></p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": [
+
+    {
+
+      "id": "uuid",
+
+      "article_id": null,
+
+      "uploaded_by": 3,
+
+      "file_url": "/storage/media/img_abc123.jpg",
+
+      "media_type": "image",
+
+      "alt_text": "Foto gedung",
+
+      "category_name": "Infrastruktur",
+
+      "is_library": true,
+
+      "created_at": "2026-06-15T10:00:00.000000Z"
+
+    }
+
+  ]
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>403</td><td>-</td><td>Bukan journalist/editor/admin</td></tr>
+</tbody></table>
+<hr/>
+<h3>10.2 Upload Media</h3>
+<p><strong><code>POST /media/upload</code></strong></p>
+<p>Upload gambar ke server.</p>
+<p><strong>Auth:</strong> JWT Bearer Token (wajib)</p>
+<p><strong>Content-Type:</strong> <code>multipart/form-data</code></p>
+<p><strong>Request Body (Form-Data):</strong></p>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>image</code></td><td>file</td><td>Ya</td><td>png/jpg/jpeg, max:5120KB</td><td>File gambar</td></tr>
+<tr><td><code>article_id</code></td><td>string</td><td>Tidak</td><td>UUID artikel</td><td>Jika kosong = standalone (dari Media Tersimpan)</td></tr>
+<tr><td><code>alt_text</code></td><td>string</td><td>Tidak</td><td>max:255</td><td>Teks alternatif untuk aksesibilitas</td></tr>
+<tr><td><code>category_name</code></td><td>string</td><td>Tidak</td><td>max:100</td><td>Kategori media</td></tr>
+<tr><td><code>is_library</code></td><td>boolean</td><td>Tidak</td><td>default: false</td><td>true = masuk galeri Media Tersimpan</td></tr>
+</tbody></table>
+<p><strong>Response <code>201 Created</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "id": "uuid",
+
+    "article_id": "uuid-artikel",
+
+    "uploaded_by": 3,
+
+    "file_url": "/storage/media/img_abc123.jpg",
+
+    "media_type": "image",
+
+    "alt_text": "Foto gedung",
+
+    "category_name": "Infrastruktur",
+
+    "is_library": true,
+
+    "created_at": "2026-06-15T10:00:00.000000Z"
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Penjelasan:</strong></p>
+<ul>
+<li>File disimpan di <code>storage/app/public/media/</code>.</li>
+<li><code>is_library = true</code> → media muncul di galeri "Media Tersimpan" dan bisa dipakai ulang di artikel lain.</li>
+<li><code>is_library = false</code> → media hanya terikat ke satu artikel, tidak muncul di galeri.</li>
+<li><code>article_id = null</code> → media standalone (upload dari halaman Media Tersimpan tanpa artikel).</li>
+</ul>
+<hr/>
+<h3>10.3 Delete Media</h3>
+<p><strong><code>DELETE /media/{id}</code></strong></p>
+<p>Menghapus media dan file fisiknya dari storage.</p>
+<p><strong>Auth:</strong> JWT Bearer Token (wajib)</p>
+<p><strong>Path Parameter:</strong></p>
+<table>
+<thead><tr><th>Parameter</th><th>Tipe</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>ID media</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "Media berhasil dihapus"
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>404</td><td>-</td><td>Media tidak ditemukan</td></tr>
+</tbody></table>
+<hr/>
+<h2>11. Analytics</h2>
+<h3><code>POST /analytics/track</code></h3>
+<p>Mencatat kunjungan halaman (page view). Endpoint ini dipanggil secara otomatis oleh <code>AnalyticsTracker</code> component di frontend setiap navigasi halaman.</p>
+<p><strong>Auth:</strong> Tidak diperlukan</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "path": "/artikel/kopi-malang-hits"
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>path</code></td><td>string</td><td>Ya</td><td>max:255</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "View tracked successfully."
+
+}
+
+</code></pre></div>
+<p><strong>Anti-Spam:</strong></p>
+<ul>
+<li>Dedup berdasarkan <code>ip_address</code> + <code>path</code> dalam window 5 menit.</li>
+<li>Jika ada catatan identik dalam 5 menit terakhir, request diabaikan (tidak INSERT duplikat).</li>
+<li>IP address dan user_agent dicatat otomatis dari request.</li>
+</ul>
+<hr/>
+<h2>12. CMS Articles</h2>
+<p>Semua endpoint CMS Article memerlukan JWT dan role <code>journalist</code>, <code>editor</code>, atau <code>admin</code>.</p>
+<h3>12.1 List CMS Articles (Bank Berita)</h3>
+<p><strong><code>GET /cms/articles</code></strong></p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>journalist</code>, <code>editor</code>, <code>admin</code></p>
+<p><strong>Logika Filter Role:</strong></p>
+<ul>
+<li><strong>Journalist:</strong> Hanya artikel milik sendiri (<code>author_id = user.id</code>)</li>
+<li><strong>Editor:</strong> Semua artikel (untuk keperluan review)</li>
+<li><strong>Admin:</strong> Semua artikel</li>
+</ul>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": [
+
+    {
+
+      "id": "uuid",
+
+      "title": "Judul Artikel",
+
+      "slug": "judul-artikel",
+
+      "status": "draft",
+
+      "is_featured": false,
+
+      "view_count": 0,
+
+      "locked_by": null,
+
+      "author": { "id": 3, "name": "Reporter A" },
+
+      "category": { "id": "uuid", "name": "Teknologi" },
+
+      "tags": [{ "id": "uuid", "name": "AI" }],
+
+      "created_at": "2026-06-15T08:00:00.000000Z",
+
+      "updated_at": "2026-06-15T09:00:00.000000Z"
+
+    }
+
+  ]
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>403</td><td>FORBIDDEN_ROLE</td><td>Bukan journalist/editor/admin</td></tr>
+</tbody></table>
+<hr/>
+<h3>12.2 Get CMS Article Detail</h3>
+<p><strong><code>GET /cms/articles/{id}</code></strong></p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>journalist</code>, <code>editor</code>, <code>admin</code></p>
+<p><strong>Path Parameter:</strong></p>
+<table>
+<thead><tr><th>Parameter</th><th>Tipe</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>UUID</td><td>ID artikel</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "id": "uuid",
+
+    "author_id": 3,
+
+    "published_by": null,
+
+    "locked_by": null,
+
+    "category_id": "uuid",
+
+    "title": "Judul Artikel",
+
+    "slug": "judul-artikel",
+
+    "excerpt": "Ringkasan...",
+
+    "content": "&lt;p&gt;Konten HTML lengkap...&lt;/p&gt;",
+
+    "featured_image_url": "https://...",
+
+    "status": "draft",
+
+    "is_featured": false,
+
+    "view_count": 0,
+
+    "published_at": null,
+
+    "tag_ids": ["uuid-tag-1", "uuid-tag-2"],
+
+    "created_at": "2026-06-15T08:00:00.000000Z"
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>404</td><td>-</td><td>Artikel tidak ditemukan atau akses ditolak</td></tr>
+</tbody></table>
+<p><strong>Catatan:</strong> Journalist hanya bisa melihat detail artikel miliknya sendiri.</p>
+<hr/>
+<h3>12.3 Create Article (Tulis Berita)</h3>
+<p><strong><code>POST /cms/articles</code></strong></p>
+<p>Buat artikel baru. Status otomatis <code>draft</code>.</p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>journalist</code>, <code>editor</code>, <code>admin</code></p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "title": "Judul Artikel Baru",
+
+  "content": "&lt;p&gt;Isi artikel dalam HTML...&lt;/p&gt;",
+
+  "category_id": "uuid-kategori",
+
+  "slug": "judul-artikel-baru",
+
+  "excerpt": "Ringkasan singkat...",
+
+  "featured_image_url": "https://example.com/img.jpg",
+
+  "tags": ["AI", "Teknologi", "Startup"],
+
+  "change_note": "Draf pertama"
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>title</code></td><td>string</td><td>Ya</td><td>max:500</td></tr>
+<tr><td><code>content</code></td><td>string</td><td>Ya</td><td>-</td></tr>
+<tr><td><code>category_id</code></td><td>UUID</td><td>Tidak</td><td>exists di tabel categories</td></tr>
+<tr><td><code>slug</code></td><td>string</td><td>Tidak</td><td>regex slug, auto-generate jika kosong</td></tr>
+<tr><td><code>excerpt</code></td><td>string</td><td>Tidak</td><td>max:1000</td></tr>
+<tr><td><code>featured_image_url</code></td><td>URL</td><td>Tidak</td><td>max:2048</td></tr>
+<tr><td><code>tags</code></td><td>array</td><td>Tidak</td><td>array of string (nama tag), max:100 per item</td></tr>
+<tr><td><code>change_note</code></td><td>string</td><td>Tidak</td><td>max:500, catatan revisi</td></tr>
+</tbody></table>
+<p><strong>Response <code>201 Created</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "id": "uuid",
+
+    "author_id": 3,
+
+    "category_id": "uuid",
+
+    "title": "Judul Artikel Baru",
+
+    "slug": "judul-artikel-baru",
+
+    "excerpt": "Ringkasan singkat...",
+
+    "featured_image_url": "https://example.com/img.jpg",
+
+    "status": "draft",
+
+    "is_featured": false,
+
+    "view_count": 0,
+
+    "tag_ids": ["uuid-tag-1", "uuid-tag-2"],
+
+    "published_at": null,
+
+    "created_at": "2026-06-15T10:00:00.000000Z"
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>403</td><td>FORBIDDEN_ROLE</td><td>Bukan journalist/editor/admin</td></tr>
+<tr><td>409</td><td>SLUG_ALREADY_EXISTS</td><td>Slug sudah dipakai artikel lain</td></tr>
+<tr><td>422</td><td>VALIDATION_ERROR</td><td>Field wajib tidak lengkap</td></tr>
+</tbody></table>
+<p><strong>Catatan:</strong></p>
+<ul>
+<li>Slug auto-generate dari judul jika tidak diisi (menggunakan <code>Str::slug</code>).</li>
+<li>Tags diproses berdasarkan nama: jika tag sudah ada → pakai, jika belum → buat baru.</li>
+<li>Artikel baru otomatis ter-index di <code>search_indexes</code>.</li>
+</ul>
+<hr/>
+<h3>12.4 Update Article</h3>
+<p><strong><code>PUT /cms/articles/{id}</code></strong></p>
+<p>Update artikel. Journalist hanya bisa update artikel miliknya sendiri.</p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>journalist</code>, <code>editor</code>, <code>admin</code></p>
+<p><strong>Path Parameter:</strong> <code>id</code> (UUID)</p>
+<p><strong>Request Body</strong> (sama dengan Create, semua field opsional/sometimes):</p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "title": "Judul Diperbarui",
+
+  "content": "&lt;p&gt;Konten baru...&lt;/p&gt;",
+
+  "category_id": "uuid-kategori",
+
+  "slug": "judul-diperbarui",
+
+  "excerpt": "Ringkasan baru...",
+
+  "featured_image_url": "https://...",
+
+  "tags": ["AI", "Machine Learning"],
+
+  "change_note": "Revisi kedua"
+
+}
+
+</code></pre></div>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": { ... }
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>403</td><td>FORBIDDEN_ROLE</td><td>Bukan journalist/editor/admin</td></tr>
+<tr><td>403</td><td>FORBIDDEN_OWNERSHIP</td><td>Journalist mencoba edit artikel orang lain</td></tr>
+<tr><td>403</td><td>FORBIDDEN_STATUS</td><td>Mencoba edit artikel yang sedang review/scheduled/published</td></tr>
+<tr><td>404</td><td>NOT_FOUND</td><td>Artikel tidak ditemukan</td></tr>
+<tr><td>409</td><td>SLUG_ALREADY_EXISTS</td><td>Slug sudah dipakai</td></tr>
+</tbody></table>
+<p><strong>Aturan Edit:</strong></p>
+<ul>
+<li><strong>Journalist:</strong> Hanya bisa edit artikel miliknya sendiri yang berstatus <code>draft</code>.</li>
+<li><strong>Editor/Admin:</strong> Bisa edit semua artikel.</li>
+<li>Artikel berstatus <code>review</code>, <code>scheduled</code>, atau <code>published</code> hanya bisa diedit oleh editor/admin.</li>
+<li>Setiap update membuat snapshot di <code>article_revisions</code> (jika <code>change_note</code> diisi).</li>
+<li>Search index diperbarui setelah update.</li>
+</ul>
+<hr/>
+<h3>12.5 Delete Article</h3>
+<p><strong><code>DELETE /cms/articles/{id}</code></strong></p>
+<p>Hapus artikel. Hanya artikel berstatus <code>draft</code> yang bisa dihapus.</p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>journalist</code>, <code>editor</code>, <code>admin</code></p>
+<p><strong>Path Parameter:</strong> <code>id</code> (UUID)</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "Artikel berhasil dihapus."
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>403</td><td>FORBIDDEN_ROLE</td><td>Bukan CMS role</td></tr>
+<tr><td>403</td><td>FORBIDDEN_OWNERSHIP</td><td>Journalist mencoba hapus artikel orang lain</td></tr>
+<tr><td>403</td><td>FORBIDDEN_STATUS</td><td>Mencoba hapus artikel non-draft</td></tr>
+<tr><td>403</td><td>LOCKED_BY_OTHER</td><td>Artikel sedang dikunci editor lain</td></tr>
+<tr><td>404</td><td>ARTICLE_NOT_FOUND</td><td>Artikel tidak ditemukan</td></tr>
+</tbody></table>
+<p><strong>Cascade Delete:</strong> Saat artikel dihapus, data berikut ikut terhapus:</p>
+<ul>
+<li><code>article_tags</code> (relasi tag)</li>
+<li><code>comments</code> (dan reply-nya)</li>
+<li><code>media</code> (file fisik juga dihapus)</li>
+<li><code>search_indexes</code></li>
+<li><code>article_revisions</code></li>
+</ul>
+<hr/>
+<h3>12.6 Update Status Article (Review/Publish/Schedule/Reject)</h3>
+<p><strong><code>PATCH /cms/articles/{id}/status</code></strong></p>
+<p>Mengubah status editorial artikel. Endpoint kunci dalam workflow redaksi.</p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>journalist</code>, <code>editor</code>, <code>admin</code></p>
+<p><strong>Path Parameter:</strong> <code>id</code> (UUID)</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "published",
+
+  "scheduled_at": null
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>status</code></td><td>string</td><td>Ya</td><td><code>draft</code>, <code>review</code>, <code>published</code>, <code>scheduled</code>, <code>archived</code></td></tr>
+<tr><td><code>scheduled_at</code></td><td>datetime</td><td>Jika status = <code>scheduled</code></td><td>date, minimal 5 menit dari sekarang</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "id": "uuid",
+
+    "status": "published",
+
+    "published_at": "2026-06-15T10:00:00.000000Z",
+
+    "published_by": 2
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>400</td><td>INVALID_STATUS_TRANSITION</td><td>Transisi status tidak valid (lihat State Machine di bawah)</td></tr>
+<tr><td>400</td><td>SCHEDULED_TIME_TOO_SOON</td><td><code>scheduled_at</code> kurang dari 5 menit dari sekarang</td></tr>
+<tr><td>403</td><td>FORBIDDEN_ROLE</td><td>Bukan CMS role</td></tr>
+<tr><td>404</td><td>NOT_FOUND</td><td>Artikel tidak ditemukan</td></tr>
+</tbody></table>
+<p><strong>State Machine — Transisi Status yang Diizinkan:</strong></p>
+<div class="code-block"><pre><code>
+draft     → review      (oleh journalist/editor/admin)
+
+review    → published   (oleh editor/admin)
+
+review    → scheduled   (oleh editor/admin, wajib isi scheduled_at)
+
+review    → rejected    (oleh editor/admin)
+
+review    → draft       (oleh editor/admin, kembalikan ke author)
+
+scheduled → published   (oleh editor/admin atau otomatis via cron)
+
+published → archived    (oleh editor/admin, satu arah)
+
+</code></pre></div>
+<p><strong>Transisi yang DILARANG:</strong></p>
+<ul>
+<li><code>published</code> → <code>draft</code> / <code>review</code> / <code>scheduled</code> (tidak bisa kembali dari published)</li>
+<li><code>archived</code> → apapun (arsip adalah status final)</li>
+<li><code>draft</code> → <code>published</code> (harus melalui review terlebih dahulu)</li>
+</ul>
+<p><strong>Aksi Otomatis:</strong></p>
+<ul>
+<li>Status → <code>published</code>: set <code>published_at = NOW()</code>, <code>published_by = user.id</code>, reindex search</li>
+<li>Status → <code>scheduled</code>: INSERT ke tabel <code>scheduled_articles</code></li>
+<li>Status → <code>archived</code>: tidak ada aksi tambahan</li>
+</ul>
+<hr/>
+<h3>12.7 Lock Article</h3>
+<p><strong><code>POST /cms/articles/{id}/lock</code></strong></p>
+<p>Tandai artikel sebagai "sedang dikerjakan" (on progress) oleh editor.</p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>editor</code>, <code>admin</code></p>
+<p><strong>Path Parameter:</strong> <code>id</code> (UUID)</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "Artikel berhasil ditandai on progress."
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>403</td><td>FORBIDDEN_ROLE</td><td>Bukan editor/admin</td></tr>
+<tr><td>403</td><td>LOCKED_BY_OTHER</td><td>Sudah dikunci editor lain</td></tr>
+<tr><td>404</td><td>ARTICLE_NOT_FOUND</td><td>Artikel tidak ditemukan</td></tr>
+</tbody></table>
+<p><strong>Penjelasan:</strong></p>
+<ul>
+<li>Set <code>articles.locked_by = user.id</code></li>
+<li>Editor lain yang melihat akan tahu artikel sedang dikerjakan.</li>
+<li>Lock otomatis terlepas (<code>nullOnDelete</code>) jika user dihapus.</li>
+</ul>
+<hr/>
+<h3>12.8 Unlock Article</h3>
+<p><strong><code>POST /cms/articles/{id}/unlock</code></strong></p>
+<p>Lepas tanda "sedang dikerjakan" dari artikel.</p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>editor</code>, <code>admin</code></p>
+<p><strong>Path Parameter:</strong> <code>id</code> (UUID)</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "Tanda on progress berhasil dilepas."
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>403</td><td>FORBIDDEN_ROLE</td><td>Bukan editor/admin</td></tr>
+<tr><td>404</td><td>ARTICLE_NOT_FOUND</td><td>Artikel tidak ditemukan</td></tr>
+</tbody></table>
+<p><strong>Penjelasan:</strong> Set <code>articles.locked_by = NULL</code>.</p>
+<hr/>
+<h2>13. CMS Comments</h2>
+<h3><code>GET /cms/comments</code></h3>
+<p>Ambil semua komentar (semua status) untuk keperluan moderasi.</p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>editor</code>, <code>admin</code></p>
+<p><strong>Query Parameters:</strong></p>
+<table>
+<thead><tr><th>Parameter</th><th>Tipe</th><th>Default</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>page</code></td><td>integer</td><td>1</td><td>Halaman</td></tr>
+<tr><td><code>limit</code></td><td>integer</td><td>20</td><td>Jumlah per halaman</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "data": [
+
+      {
+
+        "id": "uuid",
+
+        "content": "Isi komentar...",
+
+        "status": "pending",
+
+        "parent_id": null,
+
+        "created_at": "2026-06-15T10:00:00.000000Z",
+
+        "article": {
+
+          "id": "uuid",
+
+          "title": "Judul Artikel",
+
+          "slug": "judul-artikel"
+
+        },
+
+        "user": {
+
+          "id": 5,
+
+          "name": "Pembaca A"
+
+        }
+
+      }
+
+    ],
+
+    "current_page": 1,
+
+    "per_page": 20,
+
+    "total": 150,
+
+    "last_page": 8
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>403</td><td>FORBIDDEN_ROLE</td><td>Bukan editor/admin</td></tr>
+</tbody></table>
+<p><strong>Penjelasan:</strong> Menampilkan komentar dari semua artikel dengan relasi <code>article</code> dan <code>user</code>. Editor/admin dapat melihat status komentar (pending/approved/rejected) dan mengambil tindakan (approve/reject/delete via endpoint <code>DELETE /comments/{id}</code>).</p>
+<hr/>
+<h2>14. CMS Dashboard Statistics</h2>
+<h3><code>GET /cms/statistics</code></h3>
+<p>Menghasilkan statistik dashboard yang berbeda berdasarkan role.</p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>journalist</code>, <code>editor</code>, <code>admin</code></p>
+<p><strong>Response <code>200 OK</code> — Admin:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "role": "admin",
+
+  "topCards": {
+
+    "totalBerita": 150,
+
+    "totalUser": 25,
+
+    "totalBeritaHariIni": 3
+
+  },
+
+  "summaryData": {
+
+    "hari_ini": {
+
+      "pageViews": "1,234",
+
+      "totalBerita": "3",
+
+      "userBaru": "1",
+
+      "rawTotalBerita": 3,
+
+      "rawUserBaru": 1
+
+    },
+
+    "7_hari": { ... },
+
+    "30_hari": { ... },
+
+    "1_tahun": { ... }
+
+  },
+
+  "sparklines": {
+
+    "totalBerita": [{ "v": 2 }, { "v": 5 }, { "v": 1 }, { "v": 3 }, { "v": 0 }, { "v": 4 }, { "v": 2 }],
+
+    "totalUser": [{ "v": 1 }, { "v": 0 }, { "v": 2 }, { "v": 0 }, { "v": 1 }, { "v": 0 }, { "v": 1 }],
+
+    "beritaHariIni": [{ "v": 1 }, { "v": 0 }, { "v": 2 }, { "v": 0 }, { "v": 0 }, { "v": 0 }, { "v": 0 }]
+
+  },
+
+  "visitorData": {
+
+    "hari_ini": [
+
+      { "date": "00:00", "visitors": 45 },
+
+      { "date": "04:00", "visitors": 12 },
+
+      { "date": "08:00", "visitors": 89 },
+
+      { "date": "12:00", "visitors": 156 },
+
+      { "date": "16:00", "visitors": 201 },
+
+      { "date": "20:00", "visitors": 78 }
+
+    ],
+
+    "7_hari": [
+
+      { "date": "09 Jun", "visitors": 345 },
+
+      { "date": "10 Jun", "visitors": 412 },
+
+      ...
+
+    ],
+
+    "30_hari": [ ... ],
+
+    "1_tahun": [
+
+      { "date": "Jul", "visitors": 1200 },
+
+      { "date": "Aug", "visitors": 1500 },
+
+      ...
+
+    ]
+
+  },
+
+  "categoryData": {
+
+    "hari_ini": [
+
+      { "name": "Teknologi", "value": 2, "color": "#2563eb", "percent": "67%" },
+
+      { "name": "Olahraga", "value": 1, "color": "#16a34a", "percent": "33%" }
+
+    ],
+
+    "7_hari": [ ... ],
+
+    "30_hari": [ ... ],
+
+    "1_tahun": [ ... ]
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Response <code>200 OK</code> — Editor/Journalist:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "role": "journalist",
+
+  "statCards": {
+
+    "beritaPublish": 12,
+
+    "draft": 5,
+
+    "kategoriAktif": 3,
+
+    "mediaTersimpan": 372
+
+  },
+
+  "yearlyData": [
+
+    { "year": "2025", "berita": 10 },
+
+    { "year": "2026", "berita": 7 }
+
+  ],
+
+  "categoryData": [
+
+    { "name": "Teknologi", "value": 8, "color": "#7c3aed" },
+
+    { "name": "Politik", "value": 5, "color": "#2563eb" }
+
+  ]
+
+}
+
+</code></pre></div>
+<p><strong>Penjelasan:</strong></p>
+<ul>
+<li><strong>Admin</strong> mendapat data analitik lengkap dengan filter waktu (hari ini, 7 hari, 30 hari, 1 tahun), sparklines tren 7 hari, visitor data dari <code>page_views</code>, dan distribusi kategori.</li>
+<li><strong>Editor/Journalist</strong> mendapat statistik personal: jumlah artikel published, draft, kategori aktif, serta data yearly dan category untuk grafik Recharts.</li>
+<li>Editor melihat artikel yang pernah di-review, di-publish, atau di-schedule olehnya.</li>
+<li>Journalist hanya melihat artikel miliknya.</li>
+</ul>
+<hr/>
+<h2>15. CMS Categories</h2>
+<p>CRUD kategori. Semua endpoint memerlukan JWT + role <code>admin</code> (dan juga <code>editor</code>/<code>journalist</code> untuk GET).</p>
+<h3>15.1 List Categories (CMS)</h3>
+<p><strong><code>GET /cms/categories</code></strong></p>
+<p><strong>Auth:</strong> JWT (wajib)</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": [
+
+    {
+
+      "id": "uuid",
+
+      "name": "Olahraga",
+
+      "slug": "olahraga",
+
+      "parent_id": null,
+
+      "children_count": 2
+
+    },
+
+    {
+
+      "id": "uuid",
+
+      "name": "Sepak Bola",
+
+      "slug": "sepak-bola",
+
+      "parent_id": "uuid-parent",
+
+      "children_count": 0
+
+    }
+
+  ]
+
+}
+
+</code></pre></div>
+<hr/>
+<h3>15.2 Create Category</h3>
+<p><strong><code>POST /cms/categories</code></strong></p>
+<p><strong>Auth:</strong> JWT (wajib)</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "name": "Teknologi",
+
+  "parent_id": null
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>name</code></td><td>string</td><td>Ya</td><td>max:100, unique</td></tr>
+<tr><td><code>parent_id</code></td><td>UUID</td><td>Tidak</td><td>exists di categories (untuk sub-kategori)</td></tr>
+</tbody></table>
+<p><strong>Response <code>201 Created</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "id": "uuid",
+
+    "name": "Teknologi",
+
+    "slug": "teknologi",
+
+    "parent_id": null
+
+  },
+
+  "message": "Kategori berhasil ditambahkan."
+
+}
+
+</code></pre></div>
+<p><strong>Catatan:</strong> Slug auto-generate dari nama. Jika slug duplikat, ditambahkan counter (<code>teknologi-1</code>, <code>teknologi-2</code>, dst.).</p>
+<hr/>
+<h3>15.3 Update Category</h3>
+<p><strong><code>PUT /cms/categories/{id}</code></strong></p>
+<p><strong>Auth:</strong> JWT (wajib)</p>
+<p><strong>Path Parameter:</strong> <code>id</code> (UUID)</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "name": "Teknologi Terbaru",
+
+  "parent_id": "uuid-parent"
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>name</code></td><td>string</td><td>Ya</td><td>max:100, unique (kecuali id sendiri)</td></tr>
+<tr><td><code>parent_id</code></td><td>UUID</td><td>Tidak</td><td>exists di categories</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "id": "uuid",
+
+    "name": "Teknologi Terbaru",
+
+    "slug": "teknologi-terbaru",
+
+    "parent_id": "uuid-parent"
+
+  },
+
+  "message": "Kategori berhasil diperbarui."
+
+}
+
+</code></pre></div>
+<hr/>
+<h3>15.4 Delete Category</h3>
+<p><strong><code>DELETE /cms/categories/{id}</code></strong></p>
+<p><strong>Auth:</strong> JWT (wajib)</p>
+<p><strong>Path Parameter:</strong> <code>id</code> (UUID)</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "Kategori berhasil dihapus."
+
+}
+
+</code></pre></div>
+<p><strong>Catatan:</strong> Saat kategori dihapus:</p>
+<ul>
+<li>Sub-kategori (children) tidak ikut terhapus, tapi <code>parent_id</code> mereka di-set ke <code>null</code>.</li>
+<li>Artikel dengan <code>category_id</code> yang dihapus → <code>category_id</code> menjadi <code>null</code> (karena FK <code>RESTRICT</code> akan menolak jika masih ada artikel — pastikan pindahkan artikel dulu).</li>
+</ul>
+<hr/>
+<h2>16. CMS Tags</h2>
+<p>CRUD tag. Semua endpoint memerlukan JWT.</p>
+<h3>16.1 List Tags (CMS)</h3>
+<p><strong><code>GET /cms/tags</code></strong></p>
+<p><strong>Auth:</strong> JWT (wajib)</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": [
+
+    { "id": "uuid", "name": "Breaking News", "slug": "breaking-news" },
+
+    { "id": "uuid", "name": "Viral", "slug": "viral" }
+
+  ]
+
+}
+
+</code></pre></div>
+<hr/>
+<h3>16.2 Create Tag</h3>
+<p><strong><code>POST /cms/tags</code></strong></p>
+<p><strong>Auth:</strong> JWT (wajib)</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "name": "Breaking News"
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>name</code></td><td>string</td><td>Ya</td><td>max:100, unique</td></tr>
+</tbody></table>
+<p><strong>Response <code>201 Created</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "id": "uuid",
+
+    "name": "Breaking News",
+
+    "slug": "breaking-news"
+
+  },
+
+  "message": "Tag berhasil ditambahkan."
+
+}
+
+</code></pre></div>
+<hr/>
+<h3>16.3 Update Tag</h3>
+<p><strong><code>PUT /cms/tags/{id}</code></strong></p>
+<p><strong>Auth:</strong> JWT (wajib)</p>
+<p><strong>Path Parameter:</strong> <code>id</code> (UUID)</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "name": "Super Viral"
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>name</code></td><td>string</td><td>Ya</td><td>max:100, unique (kecuali id sendiri)</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "id": "uuid",
+
+    "name": "Super Viral",
+
+    "slug": "super-viral"
+
+  },
+
+  "message": "Tag berhasil diperbarui."
+
+}
+
+</code></pre></div>
+<hr/>
+<h3>16.4 Delete Tag</h3>
+<p><strong><code>DELETE /cms/tags/{id}</code></strong></p>
+<p><strong>Auth:</strong> JWT (wajib)</p>
+<p><strong>Path Parameter:</strong> <code>id</code> (UUID)</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "Tag berhasil dihapus."
+
+}
+
+</code></pre></div>
+<p><strong>Catatan:</strong> Menghapus tag juga menghapus relasi <code>article_tags</code> untuk tag tersebut (cascade delete). Artikel tetap ada, hanya kehilangan tag.</p>
+<hr/>
+<h2>17. User Management (Admin)</h2>
+<p>Semua endpoint user management memerlukan JWT + middleware <code>admin</code> (role = <code>admin</code>).</p>
+<h3>17.1 List Users</h3>
+<p><strong><code>GET /users</code></strong></p>
+<p>Ambil semua user.</p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>admin</code> — <strong>Middleware:</strong> <code>admin</code></p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "users": [
+
+      {
+
+        "id": 1,
+
+        "name": "Admin Utama",
+
+        "email": "admin@klojen.com",
+
+        "role": "admin",
+
+        "is_active": true,
+
+        "created_at": "2026-05-15T10:00:00.000000Z"
+
+      }
+
+    ],
+
+    "total": 25
+
+  }
+
+}
+
+</code></pre></div>
+<hr/>
+<h3>17.2 Get User Detail</h3>
+<p><strong><code>GET /users/{id}</code></strong></p>
+<p>Ambil detail satu user.</p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>admin</code></p>
+<p><strong>Path Parameter:</strong> <code>id</code> (BIGINT — user ID)</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": {
+
+    "id": 3,
+
+    "name": "Reporter A",
+
+    "email": "reporter@klojen.com",
+
+    "role": "journalist",
+
+    "is_active": true,
+
+    "created_at": "2026-05-20T08:00:00.000000Z"
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>404</td><td>USER_NOT_FOUND</td><td>User tidak ditemukan</td></tr>
+</tbody></table>
+<hr/>
+<h3>17.3 Create User</h3>
+<p><strong><code>POST /users</code></strong></p>
+<p>Buat user baru (karyawan: journalist/editor/admin). Password di-generate otomatis dan dikirim via email.</p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>admin</code></p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "name": "Reporter Baru",
+
+  "email": "reporter.baru@klojen.com",
+
+  "role": "journalist"
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>name</code></td><td>string</td><td>Ya</td><td>max:255</td></tr>
+<tr><td><code>email</code></td><td>string</td><td>Ya</td><td>email, harus unik</td></tr>
+<tr><td><code>role</code></td><td>string</td><td>Ya</td><td><code>admin</code>, <code>editor</code>, <code>journalist</code>, <code>reader</code></td></tr>
+</tbody></table>
+<p><strong>Response <code>201 Created</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "User berhasil dibuat. Kredensial telah dikirim ke email reporter.baru@klojen.com.",
+
+  "data": {
+
+    "id": 26,
+
+    "name": "Reporter Baru",
+
+    "email": "reporter.baru@klojen.com",
+
+    "role": "journalist",
+
+    "is_active": true,
+
+    "created_at": "2026-06-15T10:00:00.000000Z"
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>409</td><td>EMAIL_ALREADY_EXISTS</td><td>Email sudah terdaftar</td></tr>
+</tbody></table>
+<p><strong>Catatan:</strong> Password sementara di-generate random, di-hash, dan dikirim ke email user baru via <code>NewUserCredentials</code> Mailable. User harus mengganti password setelah login pertama.</p>
+<hr/>
+<h3>17.4 Update User</h3>
+<p><strong><code>PATCH /users/{id}</code></strong></p>
+<p>Update data user (role, status aktif, dll).</p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>admin</code></p>
+<p><strong>Path Parameter:</strong> <code>id</code> (BIGINT)</p>
+<p><strong>Request Body:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "name": "Nama Baru",
+
+  "email": "email.baru@klojen.com",
+
+  "role": "editor",
+
+  "is_active": false
+
+}
+
+</code></pre></div>
+<table>
+<thead><tr><th>Field</th><th>Tipe</th><th>Wajib</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td><code>name</code></td><td>string</td><td>Tidak</td><td>max:255</td></tr>
+<tr><td><code>email</code></td><td>string</td><td>Tidak</td><td>email, unique</td></tr>
+<tr><td><code>role</code></td><td>string</td><td>Tidak</td><td><code>admin</code>, <code>editor</code>, <code>journalist</code>, <code>reader</code></td></tr>
+<tr><td><code>is_active</code></td><td>boolean</td><td>Tidak</td><td>true/false</td></tr>
+</tbody></table>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "User berhasil diperbarui.",
+
+  "data": {
+
+    "id": 3,
+
+    "name": "Nama Baru",
+
+    "email": "email.baru@klojen.com",
+
+    "role": "editor",
+
+    "is_active": false,
+
+    "created_at": "2026-05-20T08:00:00.000000Z"
+
+  }
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>404</td><td>USER_NOT_FOUND</td><td>User tidak ditemukan</td></tr>
+<tr><td>403</td><td>CANNOT_MODIFY_SELF</td><td>Admin tidak bisa mengubah akun sendiri di halaman ini</td></tr>
+<tr><td>409</td><td>EMAIL_ALREADY_EXISTS</td><td>Email sudah terdaftar</td></tr>
+</tbody></table>
+<hr/>
+<h3>17.5 Delete User</h3>
+<p><strong><code>DELETE /users/{id}</code></strong></p>
+<p>Hapus user secara permanen.</p>
+<p><strong>Auth:</strong> JWT (wajib) — <strong>Role:</strong> <code>admin</code></p>
+<p><strong>Path Parameter:</strong> <code>id</code> (BIGINT)</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "message": "User berhasil dihapus."
+
+}
+
+</code></pre></div>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead><tr><th>Code</th><th>Error</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>404</td><td>USER_NOT_FOUND</td><td>User tidak ditemukan</td></tr>
+<tr><td>403</td><td>CANNOT_MODIFY_SELF</td><td>Admin tidak bisa menghapus akun sendiri</td></tr>
+</tbody></table>
+<p><strong>Catatan:</strong> Menghapus user akan cascade:</p>
+<ul>
+<li>Artikel yang ditulis user → <code>author_id</code> cascade delete (artikel ikut terhapus)</li>
+<li>Komentar user → cascade delete</li>
+<li>Refresh token user → cascade delete</li>
+<li>Bookmark user → cascade delete</li>
+</ul>
+<hr/>
+<h2>18. SEO: Sitemap</h2>
+<h3>18.1 XML Sitemap Data</h3>
+<p><strong><code>GET /articles/sitemap</code></strong></p>
+<p>Mengembalikan semua artikel published untuk generate XML sitemap.</p>
+<p><strong>Auth:</strong> Tidak diperlukan</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": [
+
+    {
+
+      "slug": "judul-artikel-1",
+
+      "published_at": "2026-06-15T10:00:00.000000Z",
+
+      "updated_at": "2026-06-15T11:00:00.000000Z"
+
+    },
+
+    {
+
+      "slug": "judul-artikel-2",
+
+      "published_at": "2026-06-14T08:00:00.000000Z",
+
+      "updated_at": "2026-06-14T08:00:00.000000Z"
+
+    }
+
+  ]
+
+}
+
+</code></pre></div>
+<p><strong>Penjelasan:</strong> Frontend (<code>sitemap.ts</code>) memanggil endpoint ini untuk men-generate XML sitemap yang bisa di-crawl oleh Googlebot. Hanya field <code>slug</code>, <code>published_at</code>, dan <code>updated_at</code> yang dikembalikan (ringan).</p>
+<hr/>
+<h3>18.2 News Sitemap Data</h3>
+<p><strong><code>GET /articles/news-sitemap</code></strong></p>
+<p>Mengembalikan artikel published dalam <strong>48 jam terakhir</strong> untuk Google News Sitemap.</p>
+<p><strong>Auth:</strong> Tidak diperlukan</p>
+<p><strong>Response <code>200 OK</code>:</strong></p>
+<div class="code-block"><div class="code-lang">json</div><pre><code>
+{
+
+  "status": "success",
+
+  "data": [
+
+    {
+
+      "slug": "breaking-news-hari-ini",
+
+      "title": "Breaking News Hari Ini",
+
+      "published_at": "2026-06-15T10:00:00.000000Z"
+
+    }
+
+  ]
+
+}
+
+</code></pre></div>
+<p><strong>Penjelasan:</strong> Google News hanya menerima artikel maksimal 2 hari (48 jam) ke belakang. Frontend (<code>news-sitemap.xml/route.ts</code>) memanggil endpoint ini dan men-generate XML khusus news sitemap.</p>
+<hr/>
+<h2>19. Error Codes Reference</h2>
+<p>Daftar semua error code yang digunakan di seluruh API:</p>
+<table>
+<thead><tr><th>Error Code</th><th>HTTP Status</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>INVALID_CREDENTIALS</code></td><td>401</td><td>Email atau password salah saat login</td></tr>
+<tr><td><code>ACCOUNT_INACTIVE</code></td><td>403</td><td>Akun nonaktif (<code>is_active = false</code>)</td></tr>
+<tr><td><code>TOKEN_REVOKED</code></td><td>401</td><td>Refresh token sudah di-revoke</td></tr>
+<tr><td><code>TOKEN_EXPIRED</code></td><td>401</td><td>JWT atau refresh token sudah kedaluwarsa</td></tr>
+<tr><td><code>TOKEN_NOT_FOUND</code></td><td>400</td><td>Refresh token tidak ditemukan di DB</td></tr>
+<tr><td><code>FORBIDDEN_ROLE</code></td><td>403</td><td>User tidak memiliki role yang diperlukan</td></tr>
+<tr><td><code>FORBIDDEN_OWNERSHIP</code></td><td>403</td><td>Journalist mencoba akses artikel orang lain</td></tr>
+<tr><td><code>FORBIDDEN_STATUS</code></td><td>403</td><td>Aksi tidak diizinkan pada status artikel saat ini</td></tr>
+<tr><td><code>LOCKED_BY_OTHER</code></td><td>403</td><td>Artikel sedang dikunci editor lain</td></tr>
+<tr><td><code>NOT_FOUND</code></td><td>404</td><td>Resource tidak ditemukan</td></tr>
+<tr><td><code>ARTICLE_NOT_FOUND</code></td><td>404</td><td>Artikel tidak ditemukan</td></tr>
+<tr><td><code>COMMENT_NOT_FOUND</code></td><td>404</td><td>Komentar tidak ditemukan</td></tr>
+<tr><td><code>USER_NOT_FOUND</code></td><td>404</td><td>User tidak ditemukan</td></tr>
+<tr><td><code>SLUG_ALREADY_EXISTS</code></td><td>409</td><td>Slug artikel sudah dipakai</td></tr>
+<tr><td><code>EMAIL_ALREADY_EXISTS</code></td><td>409</td><td>Email sudah terdaftar</td></tr>
+<tr><td><code>CANNOT_MODIFY_SELF</code></td><td>403</td><td>Admin tidak bisa edit/hapus akun sendiri</td></tr>
+<tr><td><code>INVALID_STATUS_TRANSITION</code></td><td>400</td><td>Transisi status artikel tidak valid</td></tr>
+<tr><td><code>SCHEDULED_TIME_TOO_SOON</code></td><td>400</td><td><code>scheduled_at</code> kurang dari 5 menit</td></tr>
+<tr><td><code>RATE_LIMIT_EXCEEDED</code></td><td>429</td><td>Melebihi batas 10 komentar/jam</td></tr>
+<tr><td><code>MAX_NESTING</code></td><td>400</td><td>Reply sudah max 2 level</td></tr>
+<tr><td><code>PARENT_MISMATCH</code></td><td>400</td><td>Parent comment bukan di artikel yang sama</td></tr>
+<tr><td><code>VALIDATION_ERROR</code></td><td>422</td><td>Input tidak lolos validasi Laravel</td></tr>
+<tr><td><code>INTERNAL_ERROR</code></td><td>500</td><td>Error internal server</td></tr>
+</tbody></table>
+<hr/>
+<h2>Ringkasan Endpoint Cepat</h2>
+<table>
+<thead><tr><th>#</th><th>Method</th><th>Endpoint</th><th>Auth</th><th>Role</th><th>Fungsi</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>GET</td><td><code>/ping</code></td><td>-</td><td>-</td><td>Health check</td></tr>
+<tr><td>2</td><td>POST</td><td><code>/auth/register</code></td><td>-</td><td>Public</td><td>Registrasi</td></tr>
+<tr><td>3</td><td>POST</td><td><code>/auth/login</code></td><td>-</td><td>Public</td><td>Login</td></tr>
+<tr><td>4</td><td>POST</td><td><code>/auth/refresh</code></td><td>-</td><td>Public</td><td>Refresh access token</td></tr>
+<tr><td>5</td><td>POST</td><td><code>/auth/logout</code></td><td>JWT</td><td>Any</td><td>Logout</td></tr>
+<tr><td>6</td><td>GET</td><td><code>/auth/me</code></td><td>JWT</td><td>Any</td><td>Data user saat ini</td></tr>
+<tr><td>7</td><td>PUT</td><td><code>/auth/profile</code></td><td>JWT</td><td>Any</td><td>Update profil</td></tr>
+<tr><td>8</td><td>PUT</td><td><code>/auth/change-password</code></td><td>JWT</td><td>Any</td><td>Ganti password</td></tr>
+<tr><td>9</td><td>POST</td><td><code>/auth/forgot-password</code></td><td>-</td><td>Public</td><td>Request reset password</td></tr>
+<tr><td>10</td><td>POST</td><td><code>/auth/reset-password</code></td><td>-</td><td>Public</td><td>Reset password</td></tr>
+<tr><td>11</td><td>GET</td><td><code>/beranda</code></td><td>-</td><td>Public</td><td>Data halaman beranda</td></tr>
+<tr><td>12</td><td>GET</td><td><code>/categories</code></td><td>-</td><td>Public</td><td>Daftar kategori hierarki</td></tr>
+<tr><td>13</td><td>GET</td><td><code>/tags</code></td><td>-</td><td>Public</td><td>Daftar tag</td></tr>
+<tr><td>14</td><td>GET</td><td><code>/articles</code></td><td>-</td><td>Public</td><td>List artikel published</td></tr>
+<tr><td>15</td><td>GET</td><td><code>/articles/sitemap</code></td><td>-</td><td>Public</td><td>Data XML sitemap</td></tr>
+<tr><td>16</td><td>GET</td><td><code>/articles/news-sitemap</code></td><td>-</td><td>Public</td><td>Data news sitemap</td></tr>
+<tr><td>17</td><td>GET</td><td><code>/articles/{slug}</code></td><td>-</td><td>Public</td><td>Detail artikel</td></tr>
+<tr><td>18</td><td>GET</td><td><code>/articles/{id}/comments</code></td><td>-</td><td>Public</td><td>Komentar artikel</td></tr>
+<tr><td>19</td><td>POST</td><td><code>/articles/{id}/comments</code></td><td>JWT</td><td>Any</td><td>Buat komentar</td></tr>
+<tr><td>20</td><td>POST</td><td><code>/comments</code></td><td>JWT</td><td>Any</td><td>Buat komentar (direct)</td></tr>
+<tr><td>21</td><td>DELETE</td><td><code>/comments/{id}</code></td><td>JWT</td><td>Editor/Admin</td><td>Hapus komentar</td></tr>
+<tr><td>22</td><td>GET</td><td><code>/bookmarks</code></td><td>JWT</td><td>Any</td><td>Daftar bookmark</td></tr>
+<tr><td>23</td><td>POST</td><td><code>/bookmarks</code></td><td>JWT</td><td>Any</td><td>Toggle bookmark</td></tr>
+<tr><td>24</td><td>GET</td><td><code>/media</code></td><td>JWT</td><td>CMS roles</td><td>Daftar media library</td></tr>
+<tr><td>25</td><td>POST</td><td><code>/media/upload</code></td><td>JWT</td><td>CMS roles</td><td>Upload media</td></tr>
+<tr><td>26</td><td>DELETE</td><td><code>/media/{id}</code></td><td>JWT</td><td>CMS roles</td><td>Hapus media</td></tr>
+<tr><td>27</td><td>POST</td><td><code>/analytics/track</code></td><td>-</td><td>Public</td><td>Track page view</td></tr>
+<tr><td>28</td><td>GET</td><td><code>/cms/articles</code></td><td>JWT</td><td>CMS roles</td><td>List artikel CMS</td></tr>
+<tr><td>29</td><td>POST</td><td><code>/cms/articles</code></td><td>JWT</td><td>CMS roles</td><td>Buat artikel baru</td></tr>
+<tr><td>30</td><td>GET</td><td><code>/cms/articles/{id}</code></td><td>JWT</td><td>CMS roles</td><td>Detail artikel CMS</td></tr>
+<tr><td>31</td><td>PUT</td><td><code>/cms/articles/{id}</code></td><td>JWT</td><td>CMS roles</td><td>Update artikel</td></tr>
+<tr><td>32</td><td>DELETE</td><td><code>/cms/articles/{id}</code></td><td>JWT</td><td>CMS roles</td><td>Hapus artikel (draft only)</td></tr>
+<tr><td>33</td><td>PATCH</td><td><code>/cms/articles/{id}/status</code></td><td>JWT</td><td>CMS roles</td><td>Ubah status artikel</td></tr>
+<tr><td>34</td><td>POST</td><td><code>/cms/articles/{id}/lock</code></td><td>JWT</td><td>Editor/Admin</td><td>Kunci artikel</td></tr>
+<tr><td>35</td><td>POST</td><td><code>/cms/articles/{id}/unlock</code></td><td>JWT</td><td>Editor/Admin</td><td>Buka kunci artikel</td></tr>
+<tr><td>36</td><td>GET</td><td><code>/cms/comments</code></td><td>JWT</td><td>Editor/Admin</td><td>Komentar moderasi</td></tr>
+<tr><td>37</td><td>GET</td><td><code>/cms/statistics</code></td><td>JWT</td><td>CMS roles</td><td>Dashboard statistics</td></tr>
+<tr><td>38</td><td>GET</td><td><code>/cms/categories</code></td><td>JWT</td><td>CMS roles</td><td>List kategori CMS</td></tr>
+<tr><td>39</td><td>POST</td><td><code>/cms/categories</code></td><td>JWT</td><td>Admin</td><td>Buat kategori</td></tr>
+<tr><td>40</td><td>PUT</td><td><code>/cms/categories/{id}</code></td><td>JWT</td><td>Admin</td><td>Update kategori</td></tr>
+<tr><td>41</td><td>DELETE</td><td><code>/cms/categories/{id}</code></td><td>JWT</td><td>Admin</td><td>Hapus kategori</td></tr>
+<tr><td>42</td><td>GET</td><td><code>/cms/tags</code></td><td>JWT</td><td>CMS roles</td><td>List tag CMS</td></tr>
+<tr><td>43</td><td>POST</td><td><code>/cms/tags</code></td><td>JWT</td><td>Admin</td><td>Buat tag</td></tr>
+<tr><td>44</td><td>PUT</td><td><code>/cms/tags/{id}</code></td><td>JWT</td><td>Admin</td><td>Update tag</td></tr>
+<tr><td>45</td><td>DELETE</td><td><code>/cms/tags/{id}</code></td><td>JWT</td><td>Admin</td><td>Hapus tag</td></tr>
+<tr><td>46</td><td>GET</td><td><code>/users</code></td><td>JWT+admin</td><td>Admin</td><td>List semua user</td></tr>
+<tr><td>47</td><td>POST</td><td><code>/users</code></td><td>JWT+admin</td><td>Admin</td><td>Buat user baru</td></tr>
+<tr><td>48</td><td>GET</td><td><code>/users/{id}</code></td><td>JWT+admin</td><td>Admin</td><td>Detail user</td></tr>
+<tr><td>49</td><td>PATCH</td><td><code>/users/{id}</code></td><td>JWT+admin</td><td>Admin</td><td>Update user</td></tr>
+<tr><td>50</td><td>DELETE</td><td><code>/users/{id}</code></td><td>JWT+admin</td><td>Admin</td><td>Hapus user</td></tr>
+</tbody></table>
+</div>
+
+<!-- ════ PART IV: HASIL TESTING ════ -->
+<div class="section-divider">
+    <h1>BAGIAN IV<br/>HASIL TESTING</h1>
+</div>
+<div class="content">
+
+<h2>1. Lingkungan Testing</h2>
+<table>
+<thead><tr><th>Komponen</th><th>Spesifikasi</th></tr></thead>
+<tbody>
+<tr><td>Sistem Operasi</td><td></td></tr>
+<tr><td>Browser</td><td></td></tr>
+<tr><td>PHP Version</td><td></td></tr>
+<tr><td>Node.js Version</td><td></td></tr>
+<tr><td>MySQL Version</td><td></td></tr>
+<tr><td>RAM</td><td></td></tr>
+<tr><td>Processor</td><td></td></tr>
+<tr><td>Tanggal Testing</td><td></td></tr>
+<tr><td>Tester</td><td></td></tr>
+</tbody>
+</table>
+
+<h2>2. Black Box Testing — Autentikasi &amp; Akun</h2>
+
+<table>
+<thead><tr><th>No</th><th>Skenario</th><th>Langkah</th><th>Hasil yang Diharapkan</th><th>Hasil Aktual</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Register akun baru</td><td>Isi form register dengan data valid, klik Daftar</td><td>Akun berhasil dibuat, redirect ke login</td><td></td><td></td></tr>
+<tr><td>2</td><td>Register dengan email duplikat</td><td>Isi email yang sudah terdaftar</td><td>Muncul pesan error email sudah digunakan</td><td></td><td></td></tr>
+<tr><td>3</td><td>Login dengan kredensial benar</td><td>Isi email &amp; password yang valid</td><td>Berhasil login, redirect ke beranda/CMS</td><td></td><td></td></tr>
+<tr><td>4</td><td>Login dengan password salah</td><td>Isi password yang salah</td><td>Muncul pesan error kredensial tidak valid</td><td></td><td></td></tr>
+<tr><td>5</td><td>Forgot password</td><td>Klik lupa password, isi email terdaftar</td><td>Email reset terkirim</td><td></td><td></td></tr>
+<tr><td>6</td><td>Reset password</td><td>Klik link di email, isi password baru</td><td>Password berhasil diubah</td><td></td><td></td></tr>
+<tr><td>7</td><td>Edit profil</td><td>Ubah nama, bio, avatar di halaman profil</td><td>Data profil berhasil diperbarui</td><td></td><td></td></tr>
+<tr><td>8</td><td>Ganti password</td><td>Isi password lama &amp; password baru</td><td>Password berhasil diubah</td><td></td><td></td></tr>
+<tr><td>9</td><td>Logout</td><td>Klik tombol logout</td><td>Session berakhir, redirect ke halaman login</td><td></td><td></td></tr>
+<tr><td>10</td><td>Refresh token otomatis</td><td>Tunggu access token expired, akses halaman</td><td>Token di-refresh otomatis tanpa logout</td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h2>3. Black Box Testing — Portal Publik</h2>
+
+<table>
+<thead><tr><th>No</th><th>Skenario</th><th>Langkah</th><th>Hasil yang Diharapkan</th><th>Hasil Aktual</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Melihat beranda</td><td>Akses halaman utama</td><td>Menampilkan artikel featured &amp; terbaru</td><td></td><td></td></tr>
+<tr><td>2</td><td>Melihat detail artikel</td><td>Klik judul artikel</td><td>Halaman artikel terbuka dengan konten lengkap</td><td></td><td></td></tr>
+<tr><td>3</td><td>Filter artikel per kategori</td><td>Klik kategori di sidebar/navbar</td><td>Menampilkan artikel sesuai kategori</td><td></td><td></td></tr>
+<tr><td>4</td><td>Filter artikel per tag</td><td>Klik tag di halaman artikel</td><td>Menampilkan artikel dengan tag tersebut</td><td></td><td></td></tr>
+<tr><td>5</td><td>Mencari artikel</td><td>Ketik kata kunci di kolom pencarian</td><td>Menampilkan hasil pencarian yang relevan</td><td></td><td></td></tr>
+<tr><td>6</td><td>Pagination artikel</td><td>Scroll ke bawah / klik halaman berikutnya</td><td>Artikel berikutnya dimuat</td><td></td><td></td></tr>
+<tr><td>7</td><td>Membaca komentar</td><td>Scroll ke bagian komentar artikel</td><td>Komentar tampil dengan struktur thread</td><td></td><td></td></tr>
+<tr><td>8</td><td>Menambah komentar</td><td>Login, isi komentar di artikel, klik kirim</td><td>Komentar berhasil ditambahkan</td><td></td><td></td></tr>
+<tr><td>9</td><td>Membalas komentar</td><td>Klik balas pada komentar, isi balasan</td><td>Balasan tampil sebagai child komentar</td><td></td><td></td></tr>
+<tr><td>10</td><td>Bookmark artikel</td><td>Klik ikon bookmark di artikel (login)</td><td>Artikel masuk ke daftar bookmark</td><td></td><td></td></tr>
+<tr><td>11</td><td>Melihat daftar bookmark</td><td>Akses halaman bookmark</td><td>Menampilkan artikel yang di-bookmark</td><td></td><td></td></tr>
+<tr><td>12</td><td>Unbookmark artikel</td><td>Klik lagi ikon bookmark yang sudah aktif</td><td>Artikel dihapus dari bookmark</td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h2>4. Black Box Testing — CMS Redaksi</h2>
+
+<table>
+<thead><tr><th>No</th><th>Skenario</th><th>Langkah</th><th>Hasil yang Diharapkan</th><th>Hasil Aktual</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Dashboard jurnalis</td><td>Login sebagai jurnalis, akses /cms/dashboard</td><td>Menampilkan statistik artikel pribadi</td><td></td><td></td></tr>
+<tr><td>2</td><td>Dashboard editor</td><td>Login sebagai editor, akses /cms/dashboard</td><td>Menampilkan statistik semua artikel</td><td></td><td></td></tr>
+<tr><td>3</td><td>Dashboard admin</td><td>Login sebagai admin, akses /cms/dashboard</td><td>Menampilkan analitik lengkap + grafik</td><td></td><td></td></tr>
+<tr><td>4</td><td>Menulis artikel baru (jurnalis)</td><td>Klik Tulis Berita, isi judul, konten, pilih kategori &amp; tag</td><td>Artikel tersimpan sebagai draft</td><td></td><td></td></tr>
+<tr><td>5</td><td>Upload media/gambar</td><td>Klik upload di editor artikel, pilih file gambar</td><td>Gambar berhasil diupload dan tampil</td><td></td><td></td></tr>
+<tr><td>6</td><td>Melihat Bank Berita</td><td>Akses menu Bank Berita</td><td>Menampilkan semua artikel dari semua penulis</td><td></td><td></td></tr>
+<tr><td>7</td><td>Edit artikel sendiri</td><td>Buka artikel draft milik sendiri, edit konten</td><td>Perubahan tersimpan</td><td></td><td></td></tr>
+<tr><td>8</td><td>Kirim artikel ke review</td><td>Ubah status artikel dari draft ke review</td><td>Status berubah, muncul di tinjauan editor</td><td></td><td></td></tr>
+<tr><td>9</td><td>Kelola kategori (admin)</td><td>Tambah, edit, hapus kategori di menu Kategori &amp; Tag</td><td>CRUD kategori berhasil</td><td></td><td></td></tr>
+<tr><td>10</td><td>Kelola tag (admin)</td><td>Tambah, edit, hapus tag</td><td>CRUD tag berhasil</td><td></td><td></td></tr>
+<tr><td>11</td><td>Kelola user (admin)</td><td>Tambah karyawan/pengguna baru, edit, nonaktifkan</td><td>Manajemen user berhasil</td><td></td><td></td></tr>
+<tr><td>12</td><td>Moderasi komentar</td><td>Akses menu Komentar, hapus komentar tidak pantas</td><td>Komentar berhasil dihapus</td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h2>5. Black Box Testing — Editorial Workflow</h2>
+
+<table>
+<thead><tr><th>No</th><th>Skenario</th><th>Langkah</th><th>Hasil yang Diharapkan</th><th>Hasil Aktual</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Editor review artikel</td><td>Login sebagai editor, buka artikel status review</td><td>Editor bisa melihat &amp; mengedit artikel</td><td></td><td></td></tr>
+<tr><td>2</td><td>Editor publish artikel</td><td>Ubah status artikel dari review ke published</td><td>Artikel langsung muncul di portal publik</td><td></td><td></td></tr>
+<tr><td>3</td><td>Editor reject artikel</td><td>Ubah status artikel dari review ke rejected</td><td>Artikel kembali ke jurnalis dengan status rejected</td><td></td><td></td></tr>
+<tr><td>4</td><td>Schedule artikel</td><td>Ubah status ke scheduled, isi tanggal terbit</td><td>Artikel otomatis terbit sesuai jadwal</td><td></td><td></td></tr>
+<tr><td>5</td><td>Lock artikel</td><td>Editor klik lock pada artikel yang sedang diedit</td><td>Artikel terkunci, user lain tidak bisa edit</td><td></td><td></td></tr>
+<tr><td>6</td><td>Unlock artikel</td><td>Editor klik unlock pada artikel terkunci</td><td>Artikel bisa diedit kembali</td><td></td><td></td></tr>
+<tr><td>7</td><td>Archive artikel</td><td>Ubah status published ke archived</td><td>Artikel tidak lagi muncul di portal publik</td><td></td><td></td></tr>
+<tr><td>8</td><td>Set featured article</td><td>Toggle featured pada artikel</td><td>Artikel muncul di bagian featured beranda</td><td></td><td></td></tr>
+<tr><td>9</td><td>Revisi artikel</td><td>Edit artikel yang sudah published</td><td>Revision tercatat di database</td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h2>6. Testing API (Postman / Automated)</h2>
+
+<table>
+<thead><tr><th>No</th><th>Endpoint</th><th>Method</th><th>Skenario</th><th>Expected Status</th><th>Actual Status</th><th>Hasil</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>/api/auth/register</td><td>POST</td><td>Register dengan data valid</td><td>201</td><td></td><td></td></tr>
+<tr><td>2</td><td>/api/auth/login</td><td>POST</td><td>Login dengan kredensial benar</td><td>200</td><td></td><td></td></tr>
+<tr><td>3</td><td>/api/auth/login</td><td>POST</td><td>Login dengan password salah</td><td>401</td><td></td><td></td></tr>
+<tr><td>4</td><td>/api/auth/refresh</td><td>POST</td><td>Refresh token yang valid</td><td>200</td><td></td><td></td></tr>
+<tr><td>5</td><td>/api/auth/me</td><td>GET</td><td>Akses dengan token valid</td><td>200</td><td></td><td></td></tr>
+<tr><td>6</td><td>/api/auth/logout</td><td>POST</td><td>Logout dengan token valid</td><td>200</td><td></td><td></td></tr>
+<tr><td>7</td><td>/api/articles</td><td>GET</td><td>Get daftar artikel published</td><td>200</td><td></td><td></td></tr>
+<tr><td>8</td><td>/api/articles/:slug</td><td>GET</td><td>Get detail artikel by slug</td><td>200</td><td></td><td></td></tr>
+<tr><td>9</td><td>/api/articles/search</td><td>GET</td><td>Search artikel dengan keyword</td><td>200</td><td></td><td></td></tr>
+<tr><td>10</td><td>/api/comments</td><td>POST</td><td>Tambah komentar (login)</td><td>201</td><td></td><td></td></tr>
+<tr><td>11</td><td>/api/comments</td><td>POST</td><td>Tambah komentar tanpa login</td><td>401</td><td></td><td></td></tr>
+<tr><td>12</td><td>/api/bookmarks/toggle</td><td>POST</td><td>Toggle bookmark artikel</td><td>200</td><td></td><td></td></tr>
+<tr><td>13</td><td>/api/cms/articles</td><td>GET</td><td>Get daftar artikel CMS (auth)</td><td>200</td><td></td><td></td></tr>
+<tr><td>14</td><td>/api/cms/articles</td><td>POST</td><td>Buat artikel baru (jurnalis)</td><td>201</td><td></td><td></td></tr>
+<tr><td>15</td><td>/api/cms/articles/:id/status</td><td>PUT</td><td>Ubah status artikel (editor)</td><td>200</td><td></td><td></td></tr>
+<tr><td>16</td><td>/api/cms/articles/:id/lock</td><td>PUT</td><td>Lock artikel (editor)</td><td>200</td><td></td><td></td></tr>
+<tr><td>17</td><td>/api/media</td><td>POST</td><td>Upload media (multipart)</td><td>201</td><td></td><td></td></tr>
+<tr><td>18</td><td>/api/users</td><td>POST</td><td>Tambah user (admin)</td><td>201</td><td></td><td></td></tr>
+<tr><td>19</td><td>/api/users</td><td>POST</td><td>Tambah user (non-admin)</td><td>403</td><td></td><td></td></tr>
+<tr><td>20</td><td>/api/categories</td><td>GET</td><td>Get semua kategori</td><td>200</td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h2>7. Testing Performa &amp; Keamanan</h2>
+
+<h3>7.1 Performa</h3>
+<table>
+<thead><tr><th>No</th><th>Skenario</th><th>Metrik</th><th>Target</th><th>Hasil Aktual</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Load time halaman beranda</td><td>First Contentful Paint</td><td>&lt; 2 detik</td><td></td><td></td></tr>
+<tr><td>2</td><td>Load time detail artikel</td><td>Time to Interactive</td><td>&lt; 3 detik</td><td></td><td></td></tr>
+<tr><td>3</td><td>Response time API /articles</td><td>Response Time</td><td>&lt; 500ms</td><td></td><td></td></tr>
+<tr><td>4</td><td>Response time search</td><td>Response Time</td><td>&lt; 800ms</td><td></td><td></td></tr>
+<tr><td>5</td><td>Upload media 5MB</td><td>Upload Duration</td><td>&lt; 5 detik</td><td></td><td></td></tr>
+<tr><td>6</td><td>Concurrent 50 user akses beranda</td><td>Avg Response Time</td><td>&lt; 2 detik</td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h3>7.2 Keamanan</h3>
+<table>
+<thead><tr><th>No</th><th>Skenario</th><th>Langkah</th><th>Hasil yang Diharapkan</th><th>Hasil Aktual</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Akses endpoint tanpa token</td><td>Kirim request tanpa Authorization header</td><td>Response 401 Unauthorized</td><td></td><td></td></tr>
+<tr><td>2</td><td>Akses endpoint dengan token expired</td><td>Gunakan token yang sudah kadaluarsa</td><td>Response 401, prompt refresh</td><td></td><td></td></tr>
+<tr><td>3</td><td>Akses admin endpoint sebagai jurnalis</td><td>Gunakan token jurnalis untuk /api/users</td><td>Response 403 Forbidden</td><td></td><td></td></tr>
+<tr><td>4</td><td>SQL Injection pada search</td><td>Input query dengan SQL syntax</td><td>Query di-sanitize, tidak ada error</td><td></td><td></td></tr>
+<tr><td>5</td><td>XSS pada komentar</td><td>Input script tag di komentar</td><td>Script di-escape, tidak dieksekusi</td><td></td><td></td></tr>
+<tr><td>6</td><td>Rate limit komentar</td><td>Kirim &gt;10 komentar dalam 1 jam</td><td>Request ke-11 ditolak (429)</td><td></td><td></td></tr>
+<tr><td>7</td><td>Upload file non-gambar</td><td>Upload file .exe atau .php</td><td>Upload ditolak, hanya gambar yang diterima</td><td></td><td></td></tr>
+<tr><td>8</td><td>CORS dari domain tidak dikenal</td><td>Kirim request dari origin bukan localhost:3000</td><td>Response diblokir oleh CORS policy</td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h2>8. Ringkasan Hasil Testing</h2>
+
+<table>
+<thead><tr><th>Kategori</th><th>Total Kasus</th><th>Berhasil</th><th>Gagal</th><th>Belum Ditest</th><th>Persentase</th></tr></thead>
+<tbody>
+<tr><td>Autentikasi &amp; Akun</td><td>10</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Portal Publik</td><td>12</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>CMS Redaksi</td><td>12</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Editorial Workflow</td><td>9</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Testing API</td><td>20</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Performa</td><td>6</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Keamanan</td><td>8</td><td></td><td></td><td></td><td></td></tr>
+<tr><td><strong>TOTAL</strong></td><td><strong>77</strong></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<br/>
+<blockquote>
+    Catatan: Isi kolom "Hasil Aktual" dan "Status" setelah melakukan testing. 
+    Status menggunakan: <strong>PASS</strong> (berhasil), <strong>FAIL</strong> (gagal), atau <strong>PENDING</strong> (belum ditest).
+</blockquote>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<title>Sistem CMS Portal Berita Klojen.com</title>
+<style>
+@page { size: A4; margin: 25mm 20mm 25mm 20mm; }
+* { box-sizing: border-box; }
+body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10pt; line-height: 1.6; color: #2d2d2d; margin: 0; padding: 0; }
+
+.cover { page-break-after: always; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; text-align: center; padding: 60px 40px; }
+.cover h1 { font-size: 30pt; color: #1a56db; margin-bottom: 8px; }
+.cover .subtitle { font-size: 15pt; color: #555; margin-bottom: 20px; }
+.cover .line { width: 120px; height: 3px; background: #1a56db; margin: 20px auto; border-radius: 2px; }
+.cover .desc { font-style: italic; color: #666; max-width: 520px; margin: 0 auto 30px; font-size: 10.5pt; }
+.cover .info-table { margin: 0 auto; text-align: left; font-size: 10pt; }
+.cover .info-table td { padding: 4px 12px; border: none; }
+.cover .info-table td:first-child { font-weight: bold; color: #444; }
+
+.toc { page-break-after: always; padding: 30px 0; }
+.toc h2 { text-align: center; color: #1a56db; font-size: 18pt; border-bottom: 2px solid #1a56db; padding-bottom: 10px; margin-bottom: 20px; }
+.toc .ch { font-weight: bold; color: #1a56db; margin-top: 12px; font-size: 10.5pt; }
+.toc .item { padding-left: 24px; color: #444; font-size: 9.5pt; line-height: 1.8; }
+
+.section-divider { page-break-before: always; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 35vh; text-align: center; padding: 50px 0; }
+.section-divider h1 { font-size: 22pt; color: #1a56db; border-bottom: 3px solid #1a56db; padding-bottom: 12px; display: inline-block; }
+
+.content { page-break-before: always; }
+h1 { font-size: 18pt; color: #1a56db; border-bottom: 2px solid #1a56db; padding-bottom: 8px; margin-top: 36px; }
+h2 { font-size: 15pt; color: #1a56db; border-bottom: 1px solid #d0d7e8; padding-bottom: 6px; margin-top: 28px; }
+h3 { font-size: 12pt; color: #333; margin-top: 22px; }
+
+table { width: 100%; border-collapse: collapse; margin: 12px 0 16px; font-size: 9pt; }
+th { background: #e8edf5; color: #333; font-weight: 600; padding: 8px 10px; border: 1px solid #c0c8d8; text-align: left; }
+td { padding: 6px 10px; border: 1px solid #d0d7e8; vertical-align: top; }
+tr:nth-child(even) td { background: #f8f9fc; }
+
+code { font-family: 'Consolas', 'Courier New', monospace; background: #eef0f4; padding: 1px 5px; border-radius: 3px; font-size: 8.5pt; color: #444; }
+pre { background: #f6f7f9; color: #2d2d2d; padding: 14px 18px; border-radius: 4px; overflow-x: auto; font-size: 8.5pt; line-height: 1.55; margin: 0; border-left: 3px solid #c0c8d8; }
+.code-block { margin: 12px 0 16px; border-radius: 4px; overflow: hidden; border: 1px solid #dce0e8; }
+.code-lang { background: #e8ecf2; color: #555; padding: 4px 14px; font-size: 7.5pt; font-family: 'Segoe UI', Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #dce0e8; }
+
+.diagram-img-block { margin: 20px 0; text-align: center; page-break-inside: avoid; background: #fff; border: 1px solid #e0e4ea; border-radius: 8px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.diagram-img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+
+blockquote { border-left: 4px solid #1a56db; background: #eef5ff; padding: 10px 16px; margin: 12px 0; font-style: italic; color: #444; border-radius: 0 4px 4px 0; }
+ul, ol { padding-left: 24px; margin: 8px 0; }
+li { margin-bottom: 4px; }
+hr { border: none; border-top: 1px solid #d0d7e8; margin: 24px 0; }
+
+.screenshot-placeholder { margin: 16px 0; border: 2px dashed #c0c8d8; border-radius: 8px; padding: 40px 20px; text-align: center; background: #f8f9fc; color: #888; font-style: italic; }
+.screenshot-placeholder .label { font-weight: bold; color: #1a56db; font-size: 11pt; display: block; margin-bottom: 6px; }
+
+@media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .content { page-break-before: always; }
+    .section-divider { page-break-before: always; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════ COVER ════ -->
+<div class="cover">
+    <h1>Sistem CMS</h1>
+    <div class="subtitle">Portal Berita Klojen.com</div>
+    <div class="line"></div>
+    <div class="desc">
+        Jurnal dokumentasi sistem Content Management System (CMS) pada Portal Berita Klojen.com.
+        Membahas arsitektur, fitur, alur kerja redaksi, endpoint API, antarmuka pengguna, dan rencana pengujian.
+    </div>
+    <table class="info-table">
+        <tr><td>Versi</td><td>1.0.0</td></tr>
+        <tr><td>Tanggal</td><td>Juni 2026</td></tr>
+        <tr><td>Backend</td><td>Laravel 12 (PHP 8.2+) + MySQL 8</td></tr>
+        <tr><td>Frontend</td><td>Next.js 15 (React 19) + TypeScript</td></tr>
+        <tr><td>Autentikasi</td><td>JWT (tymon/jwt-auth)</td></tr>
+        <tr><td>Pattern</td><td>Service-Repository Pattern</td></tr>
+    </table>
+</div>
+
+<!-- ════ TOC ════ -->
+<div class="toc">
+    <h2>Daftar Isi</h2>
+    <div class="ch">BAB I — PENDAHULUAN</div>
+    <div class="item">1.1 Latar Belakang</div>
+    <div class="item">1.2 Tujuan</div>
+    <div class="item">1.3 Ruang Lingkup</div>
+
+    <div class="ch">BAB II — ARSITEKTUR SISTEM CMS</div>
+    <div class="item">2.1 Arsitektur Keseluruhan</div>
+    <div class="item">2.2 Tech Stack</div>
+    <div class="item">2.3 Pola Desain (Design Pattern)</div>
+    <div class="item">2.4 Struktur Halaman CMS</div>
+
+    <div class="ch">BAB III — ROLE-BASED ACCESS CONTROL</div>
+    <div class="item">3.1 Matriks Hak Akses CMS</div>
+    <div class="item">3.2 Diagram RBAC</div>
+
+    <div class="ch">BAB IV — ALUR KERJA REDAKSI (EDITORIAL WORKFLOW)</div>
+    <div class="item">4.1 State Machine Status Artikel</div>
+    <div class="item">4.2 Sequence Diagram: Siklus Hidup Artikel</div>
+    <div class="item">4.3 Mekanisme Lock/Unlock Artikel</div>
+    <div class="item">4.4 Scheduled Publishing</div>
+
+    <div class="ch">BAB V — FITUR CMS</div>
+    <div class="item">5.1 Dashboard CMS</div>
+    <div class="item">5.2 Bank Berita</div>
+    <div class="item">5.3 Tulis Berita</div>
+    <div class="item">5.4 Tinjauan Artikel</div>
+    <div class="item">5.5 Media Tersimpan</div>
+    <div class="item">5.6 Komentar &amp; Moderasi</div>
+    <div class="item">5.7 Manajemen Karyawan &amp; Pengguna</div>
+    <div class="item">5.8 Kategori &amp; Tag</div>
+
+    <div class="ch">BAB VI — DATABASE CMS</div>
+    <div class="item">6.1 Tabel Utama CMS</div>
+    <div class="item">6.2 Relasi Antar Tabel</div>
+
+    <div class="ch">BAB VII — API ENDPOINTS CMS</div>
+    <div class="item">7.1 CMS Articles (8 endpoints)</div>
+    <div class="item">7.2 CMS Comments</div>
+    <div class="item">7.3 CMS Dashboard Statistics</div>
+    <div class="item">7.4 CMS Categories &amp; Tags</div>
+    <div class="item">7.5 User Management (Admin)</div>
+    <div class="item">7.6 Media Management</div>
+
+    <div class="ch">BAB VIII — HASIL TESTING</div>
+    <div class="item">8.1 Lingkungan Testing</div>
+    <div class="item">8.2 Testing Autentikasi CMS</div>
+    <div class="item">8.3 Testing Dashboard CMS</div>
+    <div class="item">8.4 Testing Tulis &amp; Edit Artikel</div>
+    <div class="item">8.5 Testing Editorial Workflow</div>
+    <div class="item">8.6 Testing Media &amp; Komentar</div>
+    <div class="item">8.7 Testing Manajemen User</div>
+    <div class="item">8.8 Testing API CMS</div>
+    <div class="item">8.9 Ringkasan Hasil Testing</div>
+</div>
+
+<!-- ════ BAB I ════ -->
+<div class="section-divider"><h1>BAB I<br/>PENDAHULUAN</h1></div>
+<div class="content">
+
+<h2>1.1 Latar Belakang</h2>
+<p><strong>Klojen.com</strong> adalah portal berita digital yang membutuhkan sistem manajemen konten (CMS) untuk mendukung alur kerja tim redaksi. CMS ini harus mampu menangani seluruh siklus hidup artikel — mulai dari penulisan draf oleh jurnalis, proses review dan penerbitan oleh editor, hingga pengelolaan media, komentar, dan analitik oleh admin.</p>
+<p>Sistem CMS Klojen.com dirancang dengan arsitektur <strong>Decoupled / Headless CMS</strong>, di mana backend (Laravel 12) dan frontend (Next.js 15) terpisah sepenuhnya dan berkomunikasi melalui REST API. Pendekatan ini memungkinkan skalabilitas, fleksibilitas, dan pemeliharaan yang lebih baik.</p>
+
+<h2>1.2 Tujuan</h2>
+<ol>
+    <li>Mendokumentasikan arsitektur dan fitur sistem CMS Klojen.com secara lengkap.</li>
+    <li>Menjelaskan alur kerja redaksi (editorial workflow) dan mekanisme kontrol akses berbasis role.</li>
+    <li>Mendokumentasikan seluruh endpoint API CMS beserta parameter dan response-nya.</li>
+    <li>Menyajikan rencana pengujian (test plan) yang komprehensif untuk sistem CMS.</li>
+</ol>
+
+<h2>1.3 Ruang Lingkup</h2>
+<p>Dokumen ini hanya membahas <strong>sistem CMS</strong> (halaman <code>/cms/*</code>), tidak mencakup portal publik (halaman beranda, artikel publik, pencarian publik). Ruang lingkup meliputi:</p>
+<ul>
+    <li>Dashboard CMS (jurnalis, editor, admin)</li>
+    <li>Manajemen artikel (CRUD, status, lock/unlock, scheduled publishing)</li>
+    <li>Manajemen media (upload, galeri, library)</li>
+    <li>Moderasi komentar</li>
+    <li>Manajemen user (karyawan, pengguna)</li>
+    <li>Manajemen kategori dan tag</li>
+    <li>Profil user dan autentikasi JWT</li>
+</ul>
+</div>
+
+<!-- ════ BAB II ════ -->
+<div class="section-divider"><h1>BAB II<br/>ARSITEKTUR SISTEM CMS</h1></div>
+<div class="content">
+
+<h2>2.1 Arsitektur Keseluruhan</h2>
+<p>Sistem CMS Klojen.com terdiri dari tiga lapisan utama: Frontend (Next.js 15), Backend REST API (Laravel 12), dan Database (MySQL 8). Komunikasi antar lapisan dilakukan melalui HTTP/JSON dengan autentikasi JWT.</p>
+
+<div class="diagram-img-block"><img src="file:///C:/apps/klojen.com/diagrams_cms/cms_arch.png" class="diagram-img" alt="cms_arch"/></div>
+
+<h2>2.2 Tech Stack</h2>
+<table>
+<thead><tr><th>Komponen</th><th>Teknologi</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>Frontend</td><td>Next.js 15 + React 19 + TypeScript</td><td>App Router, Server Components</td></tr>
+<tr><td>Backend</td><td>Laravel 12 (PHP 8.2+)</td><td>REST API, Service-Repository Pattern</td></tr>
+<tr><td>Database</td><td>MySQL 8</td><td>UUID primary keys, FULLTEXT search</td></tr>
+<tr><td>Autentikasi</td><td>tymon/jwt-auth</td><td>Access token + Refresh token (14 hari)</td></tr>
+<tr><td>State Management</td><td>Zustand</td><td>Persist middleware, token auto-refresh</td></tr>
+<tr><td>HTTP Client</td><td>Axios</td><td>Interceptor untuk silent token refresh</td></tr>
+<tr><td>Rich Text Editor</td><td>TinyMCE / Tiptap</td><td>Editor konten artikel</td></tr>
+<tr><td>File Storage</td><td>Laravel Storage (local/S3)</td><td>Upload media/gambar</td></tr>
+</tbody>
+</table>
+
+<h2>2.3 Pola Desain (Design Pattern)</h2>
+<h3>Service-Repository Pattern</h3>
+<p>Backend menggunakan pola <strong>Service-Repository</strong> untuk memisahkan logika bisnis dari akses data:</p>
+<table>
+<thead><tr><th>Layer</th><th>Tanggung Jawab</th><th>Contoh</th></tr></thead>
+<tbody>
+<tr><td>Controller</td><td>Validasi input, response formatting, role checking</td><td><code>CmsArticleController</code></td></tr>
+<tr><td>Service</td><td>Logika bisnis, orkestrasi operasi, audit trail</td><td><code>CmsArticleService</code></td></tr>
+<tr><td>Repository</td><td>Akses data, query builder, interface-based</td><td><code>ArticleRepository</code></td></tr>
+<tr><td>Model</td><td>ORM representation, relationships</td><td><code>Article</code>, <code>User</code></td></tr>
+</tbody>
+</table>
+
+<h2>2.4 Struktur Halaman CMS</h2>
+<table>
+<thead><tr><th>URL</th><th>Halaman</th><th>Role yang Diizinkan</th></tr></thead>
+<tbody>
+<tr><td><code>/cms/dashboard</code></td><td>Dashboard CMS</td><td>Jurnalis, Editor, Admin</td></tr>
+<tr><td><code>/cms/artikel</code></td><td>Bank Berita (daftar semua artikel)</td><td>Jurnalis, Editor, Admin</td></tr>
+<tr><td><code>/cms/artikel/:id</code></td><td>Detail / Edit Artikel</td><td>Jurnalis (own), Editor, Admin</td></tr>
+<tr><td><code>/cms/artikel/:id/preview</code></td><td>Preview Artikel</td><td>Jurnalis, Editor, Admin</td></tr>
+<tr><td><code>/cms/artikel/baru</code></td><td>Buat Artikel Baru</td><td>Jurnalis, Editor, Admin</td></tr>
+<tr><td><code>/cms/tulis-berita</code></td><td>Tulis Berita (editor lengkap)</td><td>Jurnalis, Editor, Admin</td></tr>
+<tr><td><code>/cms/tinjauan-artikel</code></td><td>Tinjauan Artikel (review)</td><td>Editor, Admin</td></tr>
+<tr><td><code>/cms/media</code></td><td>Media Tersimpan</td><td>Jurnalis, Editor, Admin</td></tr>
+<tr><td><code>/cms/komentar</code></td><td>Moderasi Komentar</td><td>Editor, Admin</td></tr>
+<tr><td><code>/cms/karyawan</code></td><td>Kelola Akun Karyawan</td><td>Admin</td></tr>
+<tr><td><code>/cms/pengguna</code></td><td>Kelola Akun Pengguna</td><td>Admin</td></tr>
+<tr><td><code>/cms/kategori</code></td><td>Kategori &amp; Tag</td><td>Admin</td></tr>
+<tr><td><code>/cms/profil</code></td><td>Profil User</td><td>Semua role CMS</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- ════ BAB III ════ -->
+<div class="section-divider"><h1>BAB III<br/>ROLE-BASED ACCESS CONTROL</h1></div>
+<div class="content">
+
+<h2>3.1 Matriks Hak Akses CMS</h2>
+<table>
+<thead><tr><th>Fitur</th><th>Jurnalis</th><th>Editor</th><th>Admin</th></tr></thead>
+<tbody>
+<tr><td>Dashboard personal</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Dashboard analitik (visitor, grafik)</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td></tr>
+<tr><td>Tulis artikel baru</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Edit artikel sendiri</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Edit artikel orang lain</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Kirim ke review</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Review artikel (tinjauan)</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Publish / Schedule / Reject</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Lock / Unlock artikel</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Archive artikel</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Hapus draft</td><td>&#10003; (own)</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Upload media</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Moderasi komentar</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Kelola karyawan</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td></tr>
+<tr><td>Kelola pengguna</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td></tr>
+<tr><td>Kelola kategori &amp; tag</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td></tr>
+<tr><td>Edit profil sendiri</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td></tr>
+</tbody>
+</table>
+
+<h2>3.2 Diagram RBAC</h2>
+<div class="diagram-img-block"><img src="file:///C:/apps/klojen.com/diagrams_cms/rbac_cms.png" class="diagram-img" alt="rbac_cms"/></div>
+</div>
+
+<!-- ════ BAB IV ════ -->
+<div class="section-divider"><h1>BAB IV<br/>ALUR KERJA REDAKSI<br/>(EDITORIAL WORKFLOW)</h1></div>
+<div class="content">
+
+<h2>4.1 State Machine Status Artikel</h2>
+<p>Setiap artikel memiliki status yang mengikuti state machine berikut. Transisi status divalidasi di <code>CmsArticleService::updateStatus()</code>.</p>
+
+<div class="diagram-img-block"><img src="file:///C:/apps/klojen.com/diagrams_cms/editorial_flow.png" class="diagram-img" alt="editorial_flow"/></div>
+
+<h3>Business Rules</h3>
+<table>
+<thead><tr><th>Kode</th><th>Aturan</th></tr></thead>
+<tbody>
+<tr><td>BR-01</td><td>Artikel baru selalu berstatus <code>draft</code></td></tr>
+<tr><td>BR-02</td><td>Jurnalis hanya bisa mengubah status draft &rarr; review (artikel miliknya)</td></tr>
+<tr><td>BR-03</td><td>Editor/Admin bisa mengubah review &rarr; published / scheduled / draft</td></tr>
+<tr><td>BR-04</td><td><code>scheduled_at</code> harus minimal 5 menit dari sekarang</td></tr>
+<tr><td>BR-05</td><td>Artikel <code>published</code> hanya bisa diubah ke <code>archived</code></td></tr>
+<tr><td>BR-06</td><td>Artikel <code>draft</code> bisa dihapus; status lain tidak bisa dihapus</td></tr>
+</tbody>
+</table>
+
+<h2>4.2 Sequence Diagram: Siklus Hidup Artikel</h2>
+<div class="diagram-img-block"><img src="file:///C:/apps/klojen.com/diagrams_cms/article_lifecycle.png" class="diagram-img" alt="article_lifecycle"/></div>
+
+<h2>4.3 Mekanisme Lock/Unlock Artikel</h2>
+<p>Fitur <strong>Lock</strong> mencegah konflik editing simultan. Kolom <code>locked_by</code> di tabel <code>articles</code> menyimpan ID editor yang sedang mengerjakan artikel.</p>
+<table>
+<thead><tr><th>Aksi</th><th>Endpoint</th><th>Role</th><th>Validasi</th></tr></thead>
+<tbody>
+<tr><td>Lock</td><td><code>PUT /api/cms/articles/:id/lock</code></td><td>Editor</td><td>Tidak boleh lock artikel yang sudah di-lock editor lain</td></tr>
+<tr><td>Unlock</td><td><code>PUT /api/cms/articles/:id/unlock</code></td><td>Editor</td><td>Hanya editor yang lock bisa unlock</td></tr>
+</tbody>
+</table>
+
+<h2>4.4 Scheduled Publishing</h2>
+<p>Artikel dengan status <code>scheduled</code> akan otomatis diterbitkan pada waktu yang ditentukan. Proses ini dijalankan oleh Artisan command <code>articles:publish-scheduled</code> yang dipanggil via cron job.</p>
+<ul>
+    <li>Tabel <code>scheduled_articles</code> menyimpan jadwal terbit setiap artikel</li>
+    <li><code>ScheduledPublishService</code> mengecek artikel yang sudah waktunya terbit</li>
+    <li>Status otomatis berubah dari <code>scheduled</code> ke <code>published</code></li>
+    <li>Field <code>published_at</code> dan <code>published_by</code> diisi saat terbit</li>
+</ul>
+</div>
+
+<!-- ════ BAB V ════ -->
+<div class="section-divider"><h1>BAB V<br/>FITUR CMS</h1></div>
+<div class="content">
+
+<h2>5.1 Dashboard CMS</h2>
+<p>Dashboard menampilkan statistik yang berbeda tergantung role:</p>
+<table>
+<thead><tr><th>Komponen</th><th>Jurnalis</th><th>Editor</th><th>Admin</th></tr></thead>
+<tbody>
+<tr><td>Stat Cards (berita publish, draft, kategori)</td><td>&#10003; (own)</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Grafik berita per tahun (bar chart)</td><td>&#10003; (own)</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Distribusi kategori (pie chart)</td><td>&#10003; (own)</td><td>&#10003;</td><td>&#10003;</td></tr>
+<tr><td>Time filter (hari ini, 7 hari, 30 hari, 1 tahun)</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td></tr>
+<tr><td>Sparkline trend (7 hari)</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td></tr>
+<tr><td>Visitor data (line chart)</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td></tr>
+<tr><td>Total berita, total user, berita hari ini</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td></tr>
+</tbody>
+</table>
+
+<h2>5.2 Bank Berita</h2>
+<p>Halaman <code>/cms/artikel</code> menampilkan daftar artikel. Jurnalis hanya melihat artikel miliknya, editor/admin melihat semua artikel. Fitur: pencarian, filter status, filter kategori, pagination, dan aksi cepat (edit, hapus, ubah status).</p>
+
+<h2>5.3 Tulis Berita</h2>
+<p>Halaman <code>/cms/tulis-berita</code> dan <code>/cms/artikel/baru</code> menyediakan form lengkap untuk menulis artikel baru:</p>
+<ul>
+    <li><strong>Judul</strong> — auto-generate slug dari judul</li>
+    <li><strong>Konten</strong> — rich text editor (HTML)</li>
+    <li><strong>Kategori</strong> — pilih dari daftar kategori</li>
+    <li><strong>Tags</strong> — input multiple, auto-create jika belum ada</li>
+    <li><strong>Featured Image</strong> — upload gambar utama</li>
+    <li><strong>Excerpt</strong> — ringkasan singkat (max 1000 karakter)</li>
+    <li><strong>Media Library</strong> — sisipkan gambar dari media tersimpan</li>
+    <li>Status otomatis: <code>draft</code></li>
+</ul>
+
+<h2>5.4 Tinjauan Artikel</h2>
+<p>Halaman <code>/cms/tinjauan-artikel</code> khusus untuk <strong>Editor dan Admin</strong>. Menampilkan artikel dengan status <code>review</code> yang perlu ditinjau. Editor bisa melakukan:</p>
+<ul>
+    <li>Melihat detail artikel</li>
+    <li>Lock/unlock artikel</li>
+    <li>Edit konten artikel</li>
+    <li>Publish, schedule, atau reject artikel</li>
+</ul>
+
+<h2>5.5 Media Tersimpan</h2>
+<p>Halaman <code>/cms/media</code> mengelola galeri media (gambar). Fitur:</p>
+<ul>
+    <li>Upload gambar baru (multipart/form-data)</li>
+    <li>Galeri grid dengan pagination</li>
+    <li>Filter berdasarkan kategori media</li>
+    <li>Hapus media</li>
+    <li>Dual mode: <code>is_library=true</code> untuk media bank global, <code>is_library=false</code> untuk media terikat artikel</li>
+</ul>
+
+<h2>5.6 Komentar &amp; Moderasi</h2>
+<p>Halaman <code>/cms/komentar</code> untuk moderasi komentar (Editor/Admin):</p>
+<ul>
+    <li>Daftar semua komentar dengan informasi artikel dan user</li>
+    <li>Pagination (20 per halaman)</li>
+    <li>Hapus komentar yang tidak pantas</li>
+    <li>Komentar mendukung threading (max 2 level)</li>
+</ul>
+
+<h2>5.7 Manajemen Karyawan &amp; Pengguna</h2>
+<p>Khusus <strong>Admin</strong>. Terbagi dua halaman:</p>
+<table>
+<thead><tr><th>Halaman</th><th>Target User</th><th>Fitur</th></tr></thead>
+<tbody>
+<tr><td><code>/cms/karyawan</code></td><td>Jurnalis, Editor, Admin</td><td>CRUD karyawan, kirim kredensial via email</td></tr>
+<tr><td><code>/cms/pengguna</code></td><td>Reader (pembaca)</td><td>CRUD pengguna, aktifkan/nonaktifkan akun</td></tr>
+</tbody>
+</table>
+
+<h2>5.8 Kategori &amp; Tag</h2>
+<p>Khusus <strong>Admin</strong>. Halaman <code>/cms/kategori</code> mengelola:</p>
+<ul>
+    <li><strong>Kategori</strong> — hierarchical (parent-child), auto-generate slug</li>
+    <li><strong>Tag</strong> — flat structure, auto-generate slug</li>
+    <li>CRUD: tambah, edit, hapus</li>
+</ul>
+</div>
+
+<!-- ════ BAB VI ════ -->
+<div class="section-divider"><h1>BAB VI<br/>DATABASE CMS</h1></div>
+<div class="content">
+
+<h2>6.1 Tabel Utama CMS</h2>
+<table>
+<thead><tr><th>Tabel</th><th>Primary Key</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td><code>articles</code></td><td>UUID</td><td>Tabel utama artikel: judul, slug, konten, status, author, lock</td></tr>
+<tr><td><code>users</code></td><td>BIGINT AUTO_INCREMENT</td><td>Data user: name, email, password, role, is_active, avatar</td></tr>
+<tr><td><code>categories</code></td><td>UUID</td><td>Kategori hierarchical (parent_id self-ref)</td></tr>
+<tr><td><code>tags</code></td><td>UUID</td><td>Tag artikel (name, slug)</td></tr>
+<tr><td><code>article_tags</code></td><td>Composite (article_id, tag_id)</td><td>Relasi many-to-many artikel-tag</td></tr>
+<tr><td><code>article_revisions</code></td><td>UUID</td><td>Audit trail: snapshot title &amp; content setiap perubahan</td></tr>
+<tr><td><code>scheduled_articles</code></td><td>UUID</td><td>Jadwal terbit: article_id, scheduled_at, is_published</td></tr>
+<tr><td><code>media</code></td><td>UUID</td><td>File media: URL, alt_text, is_library, category_name</td></tr>
+<tr><td><code>comments</code></td><td>UUID</td><td>Komentar: content, status, parent_id (threading)</td></tr>
+<tr><td><code>search_indexes</code></td><td>UUID</td><td>FULLTEXT index untuk pencarian artikel</td></tr>
+<tr><td><code>page_views</code></td><td>BIGINT</td><td>Tracking visitor: IP, path, viewed_at</td></tr>
+</tbody>
+</table>
+
+<h2>6.2 Relasi Antar Tabel</h2>
+<ul>
+    <li><strong>articles &rarr; users</strong>: <code>author_id</code> (penulis), <code>published_by</code> (penerbit), <code>locked_by</code> (editor yg lock)</li>
+    <li><strong>articles &rarr; categories</strong>: <code>category_id</code> (many-to-one)</li>
+    <li><strong>articles &rarr; tags</strong>: via tabel <code>article_tags</code> (many-to-many)</li>
+    <li><strong>articles &rarr; article_revisions</strong>: one-to-many (setiap edit = 1 revision)</li>
+    <li><strong>articles &rarr; scheduled_articles</strong>: one-to-one (jika status = scheduled)</li>
+    <li><strong>articles &rarr; media</strong>: one-to-many (gambar terikat artikel)</li>
+    <li><strong>articles &rarr; comments</strong>: one-to-many (cascade delete)</li>
+    <li><strong>comments &rarr; comments</strong>: self-ref via <code>parent_id</code> (threading, cascade delete)</li>
+    <li><strong>categories &rarr; categories</strong>: self-ref via <code>parent_id</code> (hierarchical)</li>
+</ul>
+</div>
+
+<!-- ════ BAB VII ════ -->
+<div class="section-divider"><h1>BAB VII<br/>API ENDPOINTS CMS</h1></div>
+<div class="content">
+
+<h2>7.1 CMS Articles</h2>
+<table>
+<thead><tr><th>Method</th><th>Endpoint</th><th>Role</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>GET</td><td><code>/api/cms/articles</code></td><td>J/E/A</td><td>List artikel (jurnalis: own, editor/admin: semua)</td></tr>
+<tr><td>GET</td><td><code>/api/cms/articles/:id</code></td><td>J/E/A</td><td>Detail artikel (+ media, tags)</td></tr>
+<tr><td>POST</td><td><code>/api/cms/articles</code></td><td>J/E/A</td><td>Buat artikel baru (status = draft)</td></tr>
+<tr><td>PUT</td><td><code>/api/cms/articles/:id</code></td><td>J/E/A</td><td>Update artikel (jurnalis: own + draft only)</td></tr>
+<tr><td>PATCH</td><td><code>/api/cms/articles/:id/status</code></td><td>J/E/A</td><td>Ubah status (transisi divalidasi)</td></tr>
+<tr><td>PUT</td><td><code>/api/cms/articles/:id/lock</code></td><td>E/A</td><td>Lock artikel (mencegah edit simultan)</td></tr>
+<tr><td>PUT</td><td><code>/api/cms/articles/:id/unlock</code></td><td>E/A</td><td>Unlock artikel</td></tr>
+<tr><td>DELETE</td><td><code>/api/cms/articles/:id</code></td><td>J/E/A</td><td>Hapus artikel (hanya status draft)</td></tr>
+</tbody>
+</table>
+
+<h2>7.2 CMS Comments</h2>
+<table>
+<thead><tr><th>Method</th><th>Endpoint</th><th>Role</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>GET</td><td><code>/api/cms/comments</code></td><td>E/A</td><td>List semua komentar (paginated, ?page, ?limit)</td></tr>
+</tbody>
+</table>
+
+<h2>7.3 CMS Dashboard Statistics</h2>
+<table>
+<thead><tr><th>Method</th><th>Endpoint</th><th>Role</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>GET</td><td><code>/api/cms/dashboard</code></td><td>J/E/A</td><td>Statistik dashboard (berbeda per role)</td></tr>
+</tbody>
+</table>
+
+<h2>7.4 CMS Categories &amp; Tags</h2>
+<table>
+<thead><tr><th>Method</th><th>Endpoint</th><th>Role</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>GET</td><td><code>/api/cms/categories</code></td><td>Admin</td><td>List semua kategori</td></tr>
+<tr><td>POST</td><td><code>/api/cms/categories</code></td><td>Admin</td><td>Tambah kategori baru</td></tr>
+<tr><td>PUT</td><td><code>/api/cms/categories/:id</code></td><td>Admin</td><td>Update kategori</td></tr>
+<tr><td>DELETE</td><td><code>/api/cms/categories/:id</code></td><td>Admin</td><td>Hapus kategori</td></tr>
+<tr><td>GET</td><td><code>/api/cms/tags</code></td><td>Admin</td><td>List semua tag</td></tr>
+<tr><td>POST</td><td><code>/api/cms/tags</code></td><td>Admin</td><td>Tambah tag baru</td></tr>
+<tr><td>PUT</td><td><code>/api/cms/tags/:id</code></td><td>Admin</td><td>Update tag</td></tr>
+<tr><td>DELETE</td><td><code>/api/cms/tags/:id</code></td><td>Admin</td><td>Hapus tag</td></tr>
+</tbody>
+</table>
+
+<h2>7.5 User Management (Admin)</h2>
+<table>
+<thead><tr><th>Method</th><th>Endpoint</th><th>Role</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>GET</td><td><code>/api/users</code></td><td>Admin</td><td>List semua user</td></tr>
+<tr><td>GET</td><td><code>/api/users/:id</code></td><td>Admin</td><td>Detail user</td></tr>
+<tr><td>POST</td><td><code>/api/users</code></td><td>Admin</td><td>Buat user baru (+ kirim email kredensial)</td></tr>
+<tr><td>PATCH</td><td><code>/api/users/:id</code></td><td>Admin</td><td>Update user (name, email, role, is_active)</td></tr>
+<tr><td>DELETE</td><td><code>/api/users/:id</code></td><td>Admin</td><td>Hapus user (tidak bisa hapus diri sendiri)</td></tr>
+</tbody>
+</table>
+
+<h2>7.6 Media Management</h2>
+<table>
+<thead><tr><th>Method</th><th>Endpoint</th><th>Role</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td>GET</td><td><code>/api/media</code></td><td>J/E/A</td><td>List media library (paginated)</td></tr>
+<tr><td>POST</td><td><code>/api/media</code></td><td>J/E/A</td><td>Upload media (multipart/form-data)</td></tr>
+<tr><td>DELETE</td><td><code>/api/media/:id</code></td><td>J/E/A</td><td>Hapus media</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- ════ BAB VIII: HASIL TESTING ════ -->
+<div class="section-divider"><h1>BAB VIII<br/>HASIL TESTING</h1></div>
+<div class="content">
+
+<h2>8.1 Lingkungan Testing</h2>
+<table>
+<thead><tr><th>Komponen</th><th>Spesifikasi</th></tr></thead>
+<tbody>
+<tr><td>Sistem Operasi</td><td></td></tr>
+<tr><td>Browser</td><td></td></tr>
+<tr><td>PHP Version</td><td></td></tr>
+<tr><td>Node.js Version</td><td></td></tr>
+<tr><td>MySQL Version</td><td></td></tr>
+<tr><td>RAM</td><td></td></tr>
+<tr><td>Tanggal Testing</td><td></td></tr>
+<tr><td>Tester</td><td></td></tr>
+</tbody>
+</table>
+
+<h2>8.2 Testing Autentikasi CMS</h2>
+<table>
+<thead><tr><th>No</th><th>Skenario</th><th>Langkah</th><th>Hasil yang Diharapkan</th><th>Hasil Aktual</th><th>Status</th><th>Screenshot</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Login ke CMS</td><td>Isi email &amp; password, klik Login</td><td>Redirect ke /cms/dashboard</td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td>Akses CMS tanpa login</td><td>Buka /cms/dashboard tanpa token</td><td>Redirect ke /login</td><td></td><td></td><td></td></tr>
+<tr><td>3</td><td>Sidebar menu per role</td><td>Login sebagai masing-masing role</td><td>Menu sidebar sesuai hak akses role</td><td></td><td></td><td></td></tr>
+<tr><td>4</td><td>Token expired auto-refresh</td><td>Tunggu token expired, akses halaman CMS</td><td>Token di-refresh otomatis, tidak logout</td><td></td><td></td><td></td></tr>
+<tr><td>5</td><td>Logout dari CMS</td><td>Klik tombol logout</td><td>Session berakhir, redirect ke /login</td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h2>8.3 Testing Dashboard CMS</h2>
+<table>
+<thead><tr><th>No</th><th>Skenario</th><th>Langkah</th><th>Hasil yang Diharapkan</th><th>Hasil Aktual</th><th>Status</th><th>Screenshot</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Dashboard jurnalis</td><td>Login sebagai jurnalis</td><td>Stat cards + chart artikel pribadi</td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td>Dashboard editor</td><td>Login sebagai editor</td><td>Stat cards + chart semua artikel terkait</td><td></td><td></td><td></td></tr>
+<tr><td>3</td><td>Dashboard admin</td><td>Login sebagai admin</td><td>Analitik lengkap + time filter + visitor chart</td><td></td><td></td><td></td></tr>
+<tr><td>4</td><td>Time filter admin</td><td>Ubah filter: hari ini, 7 hari, 30 hari, 1 tahun</td><td>Data statistik berubah sesuai filter</td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h2>8.4 Testing Tulis &amp; Edit Artikel</h2>
+<table>
+<thead><tr><th>No</th><th>Skenario</th><th>Langkah</th><th>Hasil yang Diharapkan</th><th>Hasil Aktual</th><th>Status</th><th>Screenshot</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Buat artikel baru</td><td>Buka /cms/tulis-berita, isi semua field, simpan</td><td>Artikel tersimpan sebagai draft</td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td>Auto-generate slug</td><td>Isi judul, biarkan slug kosong</td><td>Slug otomatis dibuat dari judul</td><td></td><td></td><td></td></tr>
+<tr><td>3</td><td>Slug duplikat</td><td>Isi slug yang sudah dipakai artikel lain</td><td>Error: slug sudah digunakan</td><td></td><td></td><td></td></tr>
+<tr><td>4</td><td>Upload featured image</td><td>Upload gambar di form artikel</td><td>Gambar tampil sebagai thumbnail</td><td></td><td></td><td></td></tr>
+<tr><td>5</td><td>Tambah tags</td><td>Input beberapa tag, simpan</td><td>Tag tersimpan, auto-create jika baru</td><td></td><td></td><td></td></tr>
+<tr><td>6</td><td>Edit artikel draft</td><td>Buka artikel draft, ubah konten, simpan</td><td>Perubahan tersimpan, revision tercatat</td><td></td><td></td><td></td></tr>
+<tr><td>7</td><td>Edit artikel milik orang lain (jurnalis)</td><td>Jurnalis coba buka artikel jurnalis lain</td><td>Akses ditolak (403)</td><td></td><td></td><td></td></tr>
+<tr><td>8</td><td>Preview artikel</td><td>Klik preview pada artikel</td><td>Halaman preview menampilkan rendering artikel</td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h2>8.5 Testing Editorial Workflow</h2>
+<table>
+<thead><tr><th>No</th><th>Skenario</th><th>Langkah</th><th>Hasil yang Diharapkan</th><th>Hasil Aktual</th><th>Status</th><th>Screenshot</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Kirim ke review</td><td>Jurnalis ubah status draft &rarr; review</td><td>Status berubah, muncul di tinjauan editor</td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td>Editor lihat tinjauan</td><td>Editor buka /cms/tinjauan-artikel</td><td>Artikel status review tampil</td><td></td><td></td><td></td></tr>
+<tr><td>3</td><td>Lock artikel</td><td>Editor klik lock pada artikel</td><td>Artikel terkunci, badge "On Progress" muncul</td><td></td><td></td><td></td></tr>
+<tr><td>4</td><td>Edit artikel locked (editor lain)</td><td>Editor lain coba edit artikel yg di-lock</td><td>Akses ditolak: artikel sedang dikerjakan</td><td></td><td></td><td></td></tr>
+<tr><td>5</td><td>Unlock artikel</td><td>Editor yang lock klik unlock</td><td>Lock dilepas, bisa diedit siapa saja</td><td></td><td></td><td></td></tr>
+<tr><td>6</td><td>Publish artikel</td><td>Editor ubah status review &rarr; published</td><td>Artikel terbit, muncul di portal publik</td><td></td><td></td><td></td></tr>
+<tr><td>7</td><td>Schedule artikel</td><td>Editor pilih scheduled, isi tanggal (&gt;5 menit)</td><td>Artikel terjadwal, otomatis terbit</td><td></td><td></td><td></td></tr>
+<tr><td>8</td><td>Schedule terlalu dekat</td><td>Isi scheduled_at &lt;5 menit dari sekarang</td><td>Error: waktu terlalu dekat</td><td></td><td></td><td></td></tr>
+<tr><td>9</td><td>Reject artikel</td><td>Editor ubah status review &rarr; draft</td><td>Artikel kembali ke draft</td><td></td><td></td><td></td></tr>
+<tr><td>10</td><td>Archive artikel</td><td>Editor ubah published &rarr; archived</td><td>Artikel tidak muncul di portal publik</td><td></td><td></td><td></td></tr>
+<tr><td>11</td><td>Transisi tidak valid</td><td>Coba ubah published &rarr; draft</td><td>Error: transisi tidak valid</td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h2>8.6 Testing Media &amp; Komentar</h2>
+<table>
+<thead><tr><th>No</th><th>Skenario</th><th>Langkah</th><th>Hasil yang Diharapkan</th><th>Hasil Aktual</th><th>Status</th><th>Screenshot</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Upload media</td><td>Buka /cms/media, upload gambar</td><td>Gambar tersimpan dan tampil di galeri</td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td>Hapus media</td><td>Pilih media, klik hapus</td><td>Media terhapus dari galeri dan storage</td><td></td><td></td><td></td></tr>
+<tr><td>3</td><td>Upload file non-gambar</td><td>Coba upload file .exe</td><td>Upload ditolak</td><td></td><td></td><td></td></tr>
+<tr><td>4</td><td>Lihat daftar komentar</td><td>Editor buka /cms/komentar</td><td>Semua komentar tampil (paginated)</td><td></td><td></td><td></td></tr>
+<tr><td>5</td><td>Hapus komentar</td><td>Klik hapus pada komentar</td><td>Komentar terhapus (cascade child comments)</td><td></td><td></td><td></td></tr>
+<tr><td>6</td><td>Jurnalis akses komentar</td><td>Jurnalis coba buka /cms/komentar</td><td>Akses ditolak (403)</td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h2>8.7 Testing Manajemen User</h2>
+<table>
+<thead><tr><th>No</th><th>Skenario</th><th>Langkah</th><th>Hasil yang Diharapkan</th><th>Hasil Aktual</th><th>Status</th><th>Screenshot</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Tambah karyawan</td><td>Admin: isi form tambah karyawan</td><td>User baru dibuat, email kredensial terkirim</td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td>Email duplikat</td><td>Isi email yang sudah terdaftar</td><td>Error: email sudah terdaftar</td><td></td><td></td><td></td></tr>
+<tr><td>3</td><td>Edit karyawan</td><td>Ubah nama/role karyawan</td><td>Data berhasil diperbarui</td><td></td><td></td><td></td></tr>
+<tr><td>4</td><td>Nonaktifkan user</td><td>Toggle is_active = false</td><td>User tidak bisa login</td><td></td><td></td><td></td></tr>
+<tr><td>5</td><td>Hapus user</td><td>Klik hapus pada user</td><td>User terhapus dari database</td><td></td><td></td><td></td></tr>
+<tr><td>6</td><td>Hapus diri sendiri</td><td>Admin coba hapus akun sendiri</td><td>Error: tidak bisa hapus diri sendiri</td><td></td><td></td><td></td></tr>
+<tr><td>7</td><td>Non-admin akses user mgmt</td><td>Editor coba buka /cms/karyawan</td><td>Menu tidak muncul / akses ditolak</td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h2>8.8 Testing API CMS</h2>
+<table>
+<thead><tr><th>No</th><th>Endpoint</th><th>Method</th><th>Skenario</th><th>Expected</th><th>Actual</th><th>Hasil</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>/api/cms/articles</td><td>GET</td><td>List artikel (jurnalis)</td><td>200 (own articles only)</td><td></td><td></td></tr>
+<tr><td>2</td><td>/api/cms/articles</td><td>GET</td><td>List artikel (editor)</td><td>200 (all articles)</td><td></td><td></td></tr>
+<tr><td>3</td><td>/api/cms/articles</td><td>POST</td><td>Buat artikel baru</td><td>201</td><td></td><td></td></tr>
+<tr><td>4</td><td>/api/cms/articles</td><td>POST</td><td>Buat artikel (reader role)</td><td>403</td><td></td><td></td></tr>
+<tr><td>5</td><td>/api/cms/articles/:id/status</td><td>PATCH</td><td>Publish (editor)</td><td>200</td><td></td><td></td></tr>
+<tr><td>6</td><td>/api/cms/articles/:id/status</td><td>PATCH</td><td>Invalid transition</td><td>400</td><td></td><td></td></tr>
+<tr><td>7</td><td>/api/cms/articles/:id/lock</td><td>PUT</td><td>Lock (editor)</td><td>200</td><td></td><td></td></tr>
+<tr><td>8</td><td>/api/cms/articles/:id/lock</td><td>PUT</td><td>Lock (jurnalis)</td><td>403</td><td></td><td></td></tr>
+<tr><td>9</td><td>/api/cms/comments</td><td>GET</td><td>List komentar (editor)</td><td>200</td><td></td><td></td></tr>
+<tr><td>10</td><td>/api/cms/dashboard</td><td>GET</td><td>Dashboard (admin)</td><td>200 (full analytics)</td><td></td><td></td></tr>
+<tr><td>11</td><td>/api/cms/categories</td><td>POST</td><td>Tambah kategori (admin)</td><td>201</td><td></td><td></td></tr>
+<tr><td>12</td><td>/api/media</td><td>POST</td><td>Upload media (multipart)</td><td>201</td><td></td><td></td></tr>
+<tr><td>13</td><td>/api/users</td><td>POST</td><td>Tambah user (admin)</td><td>201</td><td></td><td></td></tr>
+<tr><td>14</td><td>/api/users</td><td>POST</td><td>Tambah user (editor)</td><td>403</td><td></td><td></td></tr>
+<tr><td>15</td><td>/api/cms/articles/:id</td><td>DELETE</td><td>Hapus draft (jurnalis own)</td><td>200</td><td></td><td></td></tr>
+<tr><td>16</td><td>/api/cms/articles/:id</td><td>DELETE</td><td>Hapus published article</td><td>403</td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<h2>8.9 Ringkasan Hasil Testing</h2>
+<table>
+<thead><tr><th>Kategori</th><th>Total Kasus</th><th>Berhasil</th><th>Gagal</th><th>Belum Ditest</th><th>Persentase</th></tr></thead>
+<tbody>
+<tr><td>Autentikasi CMS</td><td>5</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Dashboard CMS</td><td>4</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Tulis &amp; Edit Artikel</td><td>8</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Editorial Workflow</td><td>11</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Media &amp; Komentar</td><td>6</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Manajemen User</td><td>7</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>API CMS</td><td>16</td><td></td><td></td><td></td><td></td></tr>
+<tr><td><strong>TOTAL</strong></td><td><strong>57</strong></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+
+<br/>
+<blockquote>
+    <strong>Catatan:</strong> Isi kolom "Hasil Aktual", "Status", dan "Screenshot" setelah melakukan testing.
+    Status menggunakan: <strong>PASS</strong> (berhasil), <strong>FAIL</strong> (gagal), atau <strong>PENDING</strong> (belum ditest).
+    Kolom Screenshot untuk menempelkan bukti screenshot hasil testing.
+</blockquote>
+
+</div>
+</body>
+</html>

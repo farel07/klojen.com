@@ -123,12 +123,13 @@ class UserService
     }
 
     /**
-     * Delete user oleh admin.
-     * Cek bukan diri sendiri, revoke token, arsipkan artikel, hapus user.
+     * Deactivate user oleh admin.
+     * Cek bukan diri sendiri, revoke token, arsipkan artikel, set is_active = false.
+     * User TIDAK dihapus dari database, hanya dinonaktifkan.
      *
      * @throws \RuntimeException
      */
-    public function deleteUser(string $id, string $currentUserId): void
+    public function deactivateUser(string $id, string $currentUserId): void
     {
         if ($id === $currentUserId) {
             throw new \RuntimeException('CANNOT_MODIFY_SELF', 403);
@@ -139,13 +140,26 @@ class UserService
             throw new \RuntimeException('USER_NOT_FOUND', 404);
         }
 
-        // Revoke token
+        // 1. Revoke semua refresh token (logout paksa dari semua perangkat)
         $this->refreshTokenRepository->revokeAllForUser($id);
 
-        // Arsipkan artikel
+        // 2. Arsipkan semua artikel milik user (status = archived)
         $this->articleRepository->archiveUserArticles($id);
 
-        // Hapus user
-        $this->userRepository->delete($user);
+        // 3. Set is_active = false (user tidak bisa login lagi)
+        $this->userRepository->update($user, ['is_active' => false]);
+    }
+
+    /**
+     * Delete user oleh admin.
+     * Sekarang sama dengan deactivateUser — user tidak dihapus dari database,
+     * hanya dinonaktifkan dan artikelnya diarsipkan.
+     * Ini menghindari masalah FK constraint (restrictOnDelete).
+     *
+     * @throws \RuntimeException
+     */
+    public function deleteUser(string $id, string $currentUserId): void
+    {
+        $this->deactivateUser($id, $currentUserId);
     }
 }

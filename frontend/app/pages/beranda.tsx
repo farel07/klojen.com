@@ -169,6 +169,9 @@ export default function Beranda() {
                     src={heroArticle.featured_image_url}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     alt={heroArticle.title}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
                   />
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-900" />
@@ -204,6 +207,9 @@ export default function Beranda() {
                           src={news.featured_image_url}
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                           alt={news.title}
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
                         />
                       )}
                     </div>
@@ -239,6 +245,9 @@ export default function Beranda() {
                           src={news.featured_image_url}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                           alt={news.title}
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
                         />
                       )}
                       <Link
@@ -375,6 +384,9 @@ export default function Beranda() {
                       src={item.featured_image_url}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       alt={item.title}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
                     />
                   )}
                 </div>

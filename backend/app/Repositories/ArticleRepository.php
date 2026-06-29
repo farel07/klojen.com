@@ -81,11 +81,15 @@ class ArticleRepository implements ArticleRepositoryInterface
     {
         $query = $this->baseQuery();
 
-        // Filter search (Fulltext MATCH AGAINST)
+        // Filter search — gunakan LIKE pada artikel langsung agar selalu berfungsi
+        // (FULLTEXT memerlukan search_indexes terisi & kata ≥4 huruf)
         if (! empty($params['search'])) {
-            $query->join('search_indexes', 'articles.id', '=', 'search_indexes.article_id')
-                  ->whereRaw('MATCH(search_indexes.search_vector) AGAINST(? IN BOOLEAN MODE)', [$params['search']])
-                  ->select('articles.*');
+            $keyword = '%' . $params['search'] . '%';
+            $query->where(function ($q) use ($keyword) {
+                $q->where('articles.title', 'LIKE', $keyword)
+                  ->orWhere('articles.excerpt', 'LIKE', $keyword)
+                  ->orWhere('articles.content', 'LIKE', $keyword);
+            });
         }
 
         // Filter status (default: published)

@@ -15,6 +15,7 @@ import {
   LineChart,
   Images,
   Newspaper,
+  Archive,
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import axiosInstance from '@/lib/axios';
@@ -68,6 +69,7 @@ const NAV_BY_ROLE: Record<Role, NavItem[]> = {
     { label: 'Kelola Akun Karyawan', href: '/cms/karyawan', icon: ClipboardList, roles: ['admin'] },
     { label: 'Kelola Akun Pengguna', href: '/cms/pengguna', icon: ClipboardList, roles: ['admin'] },
     { label: 'Kategori dan Tag', href: '/cms/kategori', icon: Hash, roles: ['admin'] },
+    { label: 'Artikel Arsip', href: '/cms/artikel-arsip', icon: Archive, roles: ['admin'] },
   ],
 };
 

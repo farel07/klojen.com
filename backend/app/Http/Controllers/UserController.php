@@ -159,6 +159,35 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * PATCH /api/users/{id}/deactivate
+     * Nonaktifkan user (admin only).
+     * User tidak dihapus, hanya is_active=false + artikel diarsipkan + token revoked.
+     */
+    public function deactivate(string $id): JsonResponse
+    {
+        try {
+            $this->userService->deactivateUser($id, auth('api')->id());
+        } catch (\RuntimeException $e) {
+            $status = $e->getCode() ?: 500;
+            return response()->json([
+                'status'  => 'error',
+                'code'    => $status,
+                'error'   => $e->getMessage(),
+                'message' => match ($e->getMessage()) {
+                    'USER_NOT_FOUND'     => 'User tidak ditemukan.',
+                    'CANNOT_MODIFY_SELF' => 'Anda tidak dapat menonaktifkan akun Anda sendiri.',
+                    default              => $e->getMessage(),
+                },
+            ], $status);
+        }
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'User berhasil dinonaktifkan dan seluruh artikelnya telah diarsipkan.',
+        ]);
+    }
+
     // ── Private helpers ───────────────────────────────────────────────────────
 
     private function formatUser(\App\Models\User $user): array

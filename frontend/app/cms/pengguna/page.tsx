@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search, Calendar, Trash2, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Calendar, UserX, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 import axiosInstance from '@/lib/axios';
 import { User } from '@/app/types';
 import dayjs from 'dayjs';
@@ -78,8 +78,11 @@ export default function KelolaPenggunaPage() {
   const confirmDelete = async () => {
     if (selectedId !== null) {
       try {
-        await axiosInstance.delete(`/users/${selectedId}`);
-        setData(data.filter((item) => item.id !== selectedId));
+        await axiosInstance.patch(`/users/${selectedId}/deactivate`);
+        // Update status user di list menjadi nonaktif (bukan hapus dari list)
+        setData(data.map((item) => 
+          item.id === selectedId ? { ...item, is_active: false } : item
+        ));
         setIsDeleteModalOpen(false);
         setIsSuccessModalOpen(true);
 
@@ -88,7 +91,7 @@ export default function KelolaPenggunaPage() {
           setSelectedId(null);
         }, 2000);
       } catch (error) {
-        console.error('Failed to delete user:', error);
+        console.error('Failed to deactivate user:', error);
         setIsDeleteModalOpen(false);
       }
     }
@@ -195,6 +198,7 @@ export default function KelolaPenggunaPage() {
                 <th className="px-6 py-4 font-bold">Nama Pengguna</th>
                 <th className="px-6 py-4 font-bold text-center">Email</th>
                 <th className="px-6 py-4 font-bold">Role</th>
+                <th className="px-6 py-4 font-bold text-center">Status</th>
                 <th className="px-6 py-4 font-bold">Tanggal Bergabung</th>
                 <th className="px-6 py-4 font-bold text-center">Aksi</th>
               </tr>
@@ -202,14 +206,14 @@ export default function KelolaPenggunaPage() {
             <tbody className="divide-y divide-gray-100">
               {isLoading ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-10 text-center text-gray-500 font-medium">
+                  <td colSpan={7} className="px-6 py-10 text-center text-gray-500 font-medium">
                     Memuat data...
                   </td>
                 </tr>
               ) : filteredData.length === 0 ? (
                 <>
                   <tr>
-                    <td colSpan={6} className="px-6 py-10 text-center text-gray-500 font-medium">
+                    <td colSpan={7} className="px-6 py-10 text-center text-gray-500 font-medium">
                       Tidak ada data pengguna ditemukan.
                     </td>
                   </tr>
@@ -217,6 +221,7 @@ export default function KelolaPenggunaPage() {
                   {Array.from({ length: itemsPerPage - 1 }).map((_, i) => (
                     <tr key={`empty-${i}`} className="border-transparent">
                       <td className="px-6 py-4">&nbsp;</td>
+                      <td className="px-6 py-4"></td>
                       <td className="px-6 py-4"></td>
                       <td className="px-6 py-4"></td>
                       <td className="px-6 py-4"></td>
@@ -233,18 +238,27 @@ export default function KelolaPenggunaPage() {
                       <td className="px-6 py-4 font-medium text-gray-900">{item.name}</td>
                       <td className="px-6 py-4 text-gray-600 text-center font-medium underline decoration-gray-300 underline-offset-4">{item.email}</td>
                       <td className="px-6 py-4 text-gray-800 font-medium capitalize">{item.role}</td>
+                      <td className="px-6 py-4 text-center">
+                        {item.is_active === false ? (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">Nonaktif</span>
+                        ) : (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Aktif</span>
+                        )}
+                      </td>
                       <td className="px-6 py-4 text-gray-600 font-medium">
                         {item.created_at ? dayjs(item.created_at).format('HH:mm:ss DD-MM-YYYY') : '-'}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-center gap-3">
-                          <button
-                            onClick={() => handleDeleteClick(item.id)}
-                            className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100"
-                            title="Hapus"
-                          >
-                            <Trash2 size={16} />
-                          </button>
+                          {item.is_active !== false && (
+                            <button
+                              onClick={() => handleDeleteClick(item.id)}
+                              className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100"
+                              title="Nonaktifkan"
+                            >
+                              <UserX size={16} />
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -254,6 +268,7 @@ export default function KelolaPenggunaPage() {
                     Array.from({ length: itemsPerPage - paginatedData.length }).map((_, i) => (
                       <tr key={`empty-${i}`} className="border-transparent">
                         <td className="px-6 py-4">&nbsp;</td>
+                        <td className="px-6 py-4"></td>
                         <td className="px-6 py-4"></td>
                         <td className="px-6 py-4"></td>
                         <td className="px-6 py-4"></td>
@@ -355,7 +370,7 @@ export default function KelolaPenggunaPage() {
                 <X size={20} />
               </button>
               <h3 className="text-lg font-bold text-gray-900 mt-4 mb-8 leading-tight">
-                Apakah Anda Yakin<br />Ingin Menghapus?
+                Apakah Anda Yakin<br />Ingin Menonaktifkan Akun Ini?
               </h3>
               <div className="flex items-center justify-center gap-4">
                 <button
@@ -385,7 +400,7 @@ export default function KelolaPenggunaPage() {
                 <CheckCircle2 size={32} className="text-[#69c77e]" />
               </div>
               <h3 className="text-xl font-bold text-gray-900">
-                Akun Telah Terhapus!
+                Akun Telah Dinonaktifkan!
               </h3>
             </div>
           </div>

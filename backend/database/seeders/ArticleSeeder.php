@@ -50,6 +50,13 @@ class ArticleSeeder extends Seeder
         $this->command->info('  ✓ Articles seeded (' . count($data['articles']) . ' records)');
         $tagCount = array_sum(array_map(fn($a) => count($a['tags']), $data['articles']));
         $this->command->info('  ✓ Article tags seeded (' . $tagCount . ' records)');
+
+        // Populate search_indexes untuk setiap artikel yang baru di-insert
+        $searchService = app(\App\Services\SearchService::class);
+        foreach ($data['articles'] as $article) {
+            $searchService->reindexArticle($article['id']);
+        }
+        $this->command->info('  ✓ Search indexes seeded (' . count($data['articles']) . ' records)');
     }
 
     private function loadJson(): array

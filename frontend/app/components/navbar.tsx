@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Menu, X, Search } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
@@ -154,7 +154,11 @@ const STATIC_LINKS = [{ name: "Beranda", path: "/" }];
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [categories, setCategories] = useState<CategoryWithChildren[]>([]);
+    const [searchOpen, setSearchOpen] = useState(false);
+    const [searchValue, setSearchValue] = useState('');
     const pathname = usePathname();
+    const router = useRouter();
+    const searchInputRef = useRef<HTMLInputElement>(null);
 
     // Fetch parent categories from API
     useEffect(() => {
@@ -189,6 +193,32 @@ const Navbar = () => {
     const isActive = (path: string) => {
         if (path === "/") return pathname === "/";
         return pathname === path || pathname.startsWith(path);
+    };
+
+    // Focus search input when opened
+    useEffect(() => {
+        if (searchOpen) {
+            setTimeout(() => searchInputRef.current?.focus(), 50);
+        }
+    }, [searchOpen]);
+
+    // Close search on Escape key
+    useEffect(() => {
+        const handleKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setSearchOpen(false);
+        };
+        window.addEventListener('keydown', handleKey);
+        return () => window.removeEventListener('keydown', handleKey);
+    }, []);
+
+    const handleSearchSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const q = searchValue.trim();
+        if (!q) return;
+        setSearchOpen(false);
+        setSearchValue('');
+        setIsOpen(false);
+        router.push(`/cari?q=${encodeURIComponent(q)}`);
     };
 
     return (
@@ -231,21 +261,89 @@ const Navbar = () => {
                             );
                         })}
 
+                        {/* Search button — desktop */}
+                        <div className="relative">
+                            {searchOpen ? (
+                                <form onSubmit={handleSearchSubmit} className="flex items-center">
+                                    <div className="flex items-center bg-white border border-black/10 rounded-full overflow-hidden shadow-sm pr-1">
+                                        <input
+                                            ref={searchInputRef}
+                                            type="text"
+                                            value={searchValue}
+                                            onChange={(e) => setSearchValue(e.target.value)}
+                                            placeholder="Cari berita..."
+                                            className="px-4 py-1.5 text-sm text-gray-900 bg-transparent outline-none w-44 placeholder-gray-400"
+                                            autoComplete="off"
+                                        />
+                                        <button
+                                            type="submit"
+                                            className="bg-black text-white p-1.5 rounded-full hover:bg-neutral-800 transition-colors"
+                                        >
+                                            <Search size={13} />
+                                        </button>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => { setSearchOpen(false); setSearchValue(''); }}
+                                        className="ml-1.5 text-black/50 hover:text-black transition-colors p-1"
+                                    >
+                                        <X size={16} />
+                                    </button>
+                                </form>
+                            ) : (
+                                <button
+                                    onClick={() => setSearchOpen(true)}
+                                    aria-label="Cari berita"
+                                    className="text-black/60 hover:text-black transition-colors p-2 rounded-full hover:bg-black/5"
+                                >
+                                    <Search size={18} />
+                                </button>
+                            )}
+                        </div>
+
                         {/* Auth area — desktop */}
                         <AuthButton />
                     </nav>
 
-                    {/* Mobile Button */}
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="lg:hidden text-black p-2 rounded-lg hover:bg-black/5 transition-colors"
-                    >
-                        {isOpen ? <X size={24} /> : <Menu size={24} />}
-                    </button>
+                    {/* Mobile Buttons */}
+                    <div className="lg:hidden flex items-center gap-1">
+                        <Link
+                            href="/cari"
+                            aria-label="Cari berita"
+                            className="text-black p-2 rounded-lg hover:bg-black/5 transition-colors"
+                        >
+                            <Search size={22} />
+                        </Link>
+                        <button
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="text-black p-2 rounded-lg hover:bg-black/5 transition-colors"
+                        >
+                            {isOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
+                    </div>
 
                     {/* Mobile Menu */}
                     {isOpen && (
                         <div className="absolute top-[75px] left-0 w-full bg-white/90 backdrop-blur-xl border border-black/10 rounded-2xl shadow-xl p-6 flex flex-col gap-3 lg:hidden">
+                            {/* Mobile search bar */}
+                            <form onSubmit={handleSearchSubmit} className="flex items-center bg-black/5 rounded-xl overflow-hidden mb-1">
+                                <Search size={16} className="ml-3 text-black/40 shrink-0" />
+                                <input
+                                    type="text"
+                                    value={searchValue}
+                                    onChange={(e) => setSearchValue(e.target.value)}
+                                    placeholder="Cari berita..."
+                                    className="flex-1 px-3 py-2.5 text-sm bg-transparent outline-none text-gray-900 placeholder-gray-400"
+                                    autoComplete="off"
+                                />
+                                <button
+                                    type="submit"
+                                    className="px-3 py-2.5 text-black/60 hover:text-black transition-colors font-semibold text-xs"
+                                >
+                                    Cari
+                                </button>
+                            </form>
+
                             {navLinks.map((link) => {
                                 const active = isActive(link.path);
                                 return (

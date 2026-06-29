@@ -1,0 +1,2132 @@
+[0][Body Text] 
+[1][Normal] RANCANG BANGUN SISTEM PORTAL BERITA DAN
+[2][Normal] CONTENT MANAGEMENT SYSTEM (CMS) REDAKSI
+[3][Normal] MENGGUNAKAN NEXT.JS DAN LARAVEL 12
+[4][Body Text] 
+[5][Heading 1] DI PT. KETIK MEDIA SIBER PRAKTEK KERJA LAPANGAN
+[6][Normal] ◆
+[7][Body Text] Oleh :
+[8][Body Text] 
+[9][Body Text] 
+[10][Body Text] 
+[11][Normal] <NAMA PESERTA>
+[12][Body Text] 
+[13][Body Text] 
+[14][Body Text] 
+[15][Normal] NPM <NOMOR POKOK MAHASISWA>
+[16][Body Text] 
+[17][Body Text] 
+[18][Body Text] 
+[19][Body Text] 
+[20][Body Text] 
+[21][Body Text] 
+[22][Body Text] 
+[23][Normal] PROGRAM STUDI INFORMATIKA FAKULTAS ILMU KOMPUTER
+[24][Normal] UNIVERSITAS	PEMBANGUNAN	NASIONAL	“VETERAN”	JAWA TIMUR
+[25][Normal] 2026
+[26][Normal] 
+[27][Body Text] 
+[28][Heading 1] LEMBAR PENGESAHAN PRAKTEK KERJA LAPANGAN
+[29][Heading 3] Judul	: RANCANG BANGUN SISTEM PORTAL BERITA DAN CONTENT MANAGEMENT SYSTEM (CMS) REDAKSI MENGGUNAKAN NEXT.JS DAN LARAVEL 12 DI PT. KETIK MEDIA SIBER
+[30][Normal] Oleh	: <NAMA PESERTA>
+[31][Normal] NPM  : <NPM>
+[32][Body Text] 
+[33][Normal] Telah Diseminarkan Dalam Ujian PKL, pada : Hari <Hari> , Tanggal <Tanggal Bulan Tahun>
+[34][Body Text] 
+[35][Heading 3] Menyetujui
+[36][Body Text] 
+[37][Body Text] 
+[38][Body Text] 
+[39][Body Text] Pembimbing Lapangan
+[40][Body Text] 
+[41][Body Text] 
+[42][Body Text] 
+[43][Body Text] 
+[44][Normal] <Nama Pembimbing Lapangan> NIP <NIP>
+[45][Body Text] Dosen Pembimbing
+[46][Body Text] 
+[47][Body Text] 
+[48][Body Text] 
+[49][Body Text] 
+[50][Normal] <Nama Dosen Pembimbing>
+[51][Normal] NIP <NIP>
+[52][Normal] 
+[53][Body Text] Dosen Penguji
+[54][Body Text] 
+[55][Body Text] 
+[56][Body Text] 
+[57][Body Text] 
+[58][Normal] <Nama Dosen Penguji>
+[59][Normal] NIP <NIP>
+[60][Body Text] 
+[61][Body Text] 
+[62][Body Text] 
+[63][Heading 3] Mengetahui
+[64][Body Text] 
+[65][Body Text] 
+[66][Body Text] 
+[67][Body Text] Dekan
+[68][Body Text] Fakultas Ilmu Komputer
+[69][Body Text] Koordinator Program Studi Informatika
+[70][Body Text] 
+[71][Body Text] 
+[72][Body Text] 
+[73][Body Text] 
+[74][Body Text] 
+[75][Body Text] 
+[76][Heading 3] Prof. Dr. Ir. Novirina Hendrasarie, M.T.
+[77][Body Text] NIP 19681126 199403 2 001
+[78][Heading 3] Fetty	Tri	Anggraeny,	S.Kom., M.Kom.
+[79][Body Text] NIP 19820211 2021212 005
+[80][Body Text] 
+[81][Body Text] 
+[82][Heading 1] SURAT PERNYATAAN
+[83][Body Text] 
+[84][Body Text] Kami yang bertanda tangan di bawah ini:
+[85][Normal] Nama	: <Nama Peserta>
+[86][Normal] NPM	: <NPM>
+[87][Body Text] 
+[88][Body Text] Menyatakan bahwa kegiatan PKL yang kami lakukan memang benar-benar telah kami lakukan di perusahaan:
+[89][Body Text] Nama Perusahaan  : PT Ketik Media Siber
+[90][Body Text] Alamat	: Jl. Ketintang Permai Blok BA No. 21, Karah, Kec. Jambangan, Surabaya
+[91][Body Text] Valid, dan perusahaan/instansi tempat kami PKL benar adanya dan dapat dibuktikan kebenarannya. Jika kami menyalahi surat pernyataan yang kami buat maka kami siap mendapatkan konsekuensi akademik maupun non-akademik. Berikut surat pernyataan kami buat sebagai syarat laporan PKL di Prodi Informatika, FIK, UPN “Veteran” Jawa Timur.
+[92][Body Text] 
+[93][Body Text] 
+[94][Normal] Surabaya, <Tanggal>
+[95][Body Text] Hormat Kami,
+[96][Body Text] 
+[97][Body Text] 
+[98][Body Text] 
+[99][Body Text] 
+[100][Normal] <Nama Peserta>
+[101][Normal] NPM. <NPM>
+[102][Normal] 
+[103][Body Text] 
+[104][Heading 1] ABSTRAK
+[105][Body Text] 
+[106][Heading 3] Judul : Rancang Bangun Sistem Portal Berita dan Content Management System (CMS) Redaksi Menggunakan Next.js dan Laravel 12 di PT. Ketik Media Siber
+[107][Normal] Studi Kasus : PT Ketik Media Siber Penulis	: <Nama Peserta>
+[108][Normal] Pembimbing : <Nama Dosen Pembimbing>
+[109][Body Text] 
+[110][Heading 3] Abstrak
+[111][Body Text] Perkembangan teknologi informasi di era digital telah mengubah cara informasi diproduksi dan didistribusikan. Di sektor media digital, kebutuhan akan platform pengelolaan konten berita yang terstruktur dan efisien menjadi semakin krusial. PT Ketik Media Siber, perusahaan media digital yang mengelola portal berita ketik.com, menginisiasi pengembangan Portal Berita Klojen.com sebagai platform berita digital full-stack dengan sistem manajemen redaksi yang lengkap.
+[112][Body Text] Kegiatan Praktek Kerja Lapangan (PKL) ini dilaksanakan selama 4 bulan 10 hari, dari 9 Februari hingga 19 Juni 2026. Penulis terlibat dalam pengembangan sistem yang menggunakan arsitektur Headless CMS, di mana backend dan frontend dipisahkan sepenuhnya dan berkomunikasi melalui REST API. Backend dikembangkan menggunakan framework Laravel 12 dengan bahasa pemrograman PHP 8.2+ dan database MySQL 8, sedangkan frontend dibangun menggunakan Next.js 15 dengan TypeScript dan Tailwind CSS. Sistem autentikasi menggunakan JSON Web Token (JWT) dengan mekanisme token pair yang terdiri dari access token dan refresh token.
+[113][Body Text] Hasil dari kegiatan PKL ini adalah Portal Berita Klojen.com yang fungsional dan siap digunakan. Sistem yang dikembangkan mencakup portal publik dengan fitur beranda, detail artikel, pencarian, bookmark, dan komentar, serta Content Management System (CMS) redaksi dengan fitur manajemen artikel, workflow editorial, manajemen media, moderasi komentar, dan dashboard statistik berbasis role. Pengujian dilakukan menggunakan metode black box testing terhadap seluruh fitur utama, dan hasilnya menunjukkan bahwa seluruh fitur berfungsi sesuai spesifikasi yang telah ditetapkan.
+[114][Body Text] Kata kunci: Portal Berita, Headless CMS, Laravel, Next.js, REST API, JWT.
+[115][Body Text] 
+[116][Body Text] 
+[117][Heading 2] ABSTRACT
+[118][Body Text] 
+[119][Heading 4] Title: Design and Development of a News Portal System and Editorial Content Management System (CMS) Using Next.js and Laravel 12 at PT. Ketik Media Siber
+[120][Normal] Case Study: PT Ketik Media Siber Author: <Nama Peserta>
+[121][Normal] Supervisor: <Nama Dosen Pembimbing>
+[122][Body Text] 
+[123][Heading 4] Abstract
+[124][Normal] The development of information technology in the digital era has transformed how information is produced and distributed. In the digital media sector, the need for a structured and efficient news content management platform has become increasingly crucial. PT Ketik Media Siber, a digital media company managing the ketik.com news portal, initiated the development of Klojen.com as a full-stack digital news platform with a comprehensive editorial management system.
+[125][Normal] This Field Work Practice (PKL) was conducted over a period of 4 months and 10 days, from February 9 to June 19, 2026. The author was involved in developing a system that employs a Headless CMS architecture, where the backend and frontend are completely separated and communicate through a REST API. The backend was developed using the Laravel 12 framework with PHP 8.2+ and MySQL 8 database, while the frontend was built using Next.js 15 with TypeScript and Tailwind CSS. The authentication system uses JSON Web Token (JWT) with a token pair mechanism consisting of access tokens and refresh tokens.
+[126][Normal] The result of this field work practice is a functional and deployment-ready Klojen.com News Portal. The developed system encompasses a public portal with features including homepage, article detail, search, bookmark, and comments, as well as an editorial Content Management System (CMS) with article management, editorial workflow, media management, comment moderation, and role-based statistics dashboard. Testing was conducted using black box testing methodology on all major features, and the results showed that all features function according to the established specifications.
+[127][Normal] Keywords: News Portal, Headless CMS, Laravel, Next.js, REST API, JWT.
+[128][Normal] 
+[129][Body Text] 
+[130][Heading 1] KATA PENGANTAR
+[131][Body Text] 
+[132][Body Text] Puji syukur kepada Tuhan Yang Maha Esa atas segala rahmat dan karunia-Nya sehingga laporan Praktek Kerja Lapangan (PKL) ini dapat diselesaikan dengan baik. Laporan ini berjudul “Rancang Bangun Sistem Portal Berita dan Content Management System (CMS) Redaksi Menggunakan Next.js dan Laravel 12 di PT. Ketik Media Siber” dan merupakan rangkuman pengalaman selama mengikuti program PKL di PT. Ketik Media Siber, khususnya dalam bidang pengembangan perangkat lunak yang mencakup perancangan sistem, pengembangan backend menggunakan Laravel 12 beserta infrastruktur server-side-nya, serta pengembangan frontend modern menggunakan Next.js 15 dan Tailwind CSS.
+[133][Body Text] Penulis ingin menyampaikan rasa terima kasih yang sebesar-besarnya kepada PT. Ketik Media Siber, Bapak Samsul Hadi Mustofa selaku Direktur yang telah membuka kesempatan PKL ini, serta seluruh tim engineering Ketik.com yang dengan sabar telah membimbing dan berbagi ilmu sepanjang program berlangsung. Terima kasih pula kepada Kemendikbudristek RI melalui program Kampus Merdeka yang menjadi landasan terselenggaranya program ini, serta kepada UPN “Veteran” Jawa Timur dan Program Studi Informatika atas dukungan akademis yang diberikan.
+[134][Body Text] Tidak lupa, ucapan terima kasih yang tulus disampaikan kepada keluarga, khususnya orang tua, atas segala cinta, dukungan, pengorbanan, dan doa yang selalu mengiringi setiap langkah penulis. Kepada rekan-rekan peserta PKL yang telah menjadi teman seperjuangan dan saling mendukung satu sama lain selama program berlangsung, terima kasih atas kerja sama yang luar biasa.
+[135][Body Text] Penulis berharap laporan ini dapat memberikan manfaat dan pengetahuan tambahan bagi para pembaca, khususnya bagi mahasiswa yang berminat mengikuti program PKL di bidang pengembangan perangkat lunak berbasis web.
+[136][Body Text] 
+[137][Body Text] 
+[138][Body Text] Surabaya, 2026
+[139][Body Text] 
+[140][Body Text] 
+[141][Body Text] 
+[142][Body Text] 
+[143][Normal] <Nama Peserta>
+[144][Normal] 
+[145][Body Text] 
+[146][Heading 1] DAFTAR ISI
+[147][Body Text] 
+[148][Heading 3] LEMBAR PENGESAHAN	i
+[149][Body Text] 
+[150][Body Text] 
+[151][Normal] BAB IV HASIL DAN PEMBAHASAN	53
+[152][List Paragraph] Hasil Pekerjaan	53
+[153][List Paragraph] Pembahasan	55
+[154][List Paragraph] Hambatan dan Solusi	57
+[155][List Paragraph] Pengembangan yang Disarankan	58
+[156][Normal] BAB V PENUTUP	60
+[157][List Paragraph] Kesimpulan	60
+[158][List Paragraph] Saran	61
+[159][Normal] DAFTAR PUSTAKA	62
+[160][Normal] LAMPIRAN	63
+[161][Body Text] 
+[162][Body Text] 
+[163][Body Text] 
+[164][Heading 1] DAFTAR TABEL
+[165][Body Text] Tabel 2.1 Jadwal Kerja Program PKL	9
+[166][Body Text] Tabel 3.1 Tech Stack Frontend	19
+[167][Body Text] Tabel 3.2 Tech Stack Backend	19
+[168][Body Text] Tabel 3.3 Matriks Hak Akses (RBAC)	20
+[169][Body Text] Tabel 3.4 Use Case Diagram — Aktor dan Use Case	22
+[170][Body Text] Tabel 3.5 Conceptual Data Model — Entitas dan Relasi	28
+[171][Body Text] Tabel 3.6 PDM — Tabel users	29
+[172][Body Text] Tabel 3.7 PDM — Tabel articles	29
+[173][Body Text] Tabel 3.8 PDM — Tabel categories	30
+[174][Body Text] Tabel 3.9 PDM — Tabel comments	30
+[175][Body Text] Tabel 3.10 PDM — Tabel bookmarks	30
+[176][Body Text] Tabel 3.11 PDM — Tabel media	31
+[177][Body Text] Tabel 3.12 Ringkasan API Endpoint	35
+[178][Body Text] Tabel 3.13 Testing Autentikasi	48
+[179][Body Text] Tabel 3.14 Testing Portal Publik	49
+[180][Body Text] Tabel 3.15 Testing CMS Redaksi	50
+[181][Body Text] Tabel 3.16 Testing Editorial Workflow	51
+[182][Body Text] 
+[183][Body Text] 
+[184][Body Text] 
+[185][Heading 1] DAFTAR GAMBAR
+[186][Body Text] Gambar 3.1 Arsitektur Sistem Klojen.com	15
+[187][Body Text] Gambar 3.2 Struktur Folder Backend	16
+[188][Body Text] Gambar 3.3 Struktur Folder Frontend	17
+[189][Body Text] Gambar 3.4 Use Case Diagram	22
+[190][Body Text] Gambar 3.5 Activity Diagram — Proses Login	24
+[191][Body Text] Gambar 3.6 Activity Diagram — Silent Token Refresh	25
+[192][Body Text] Gambar 3.7 Activity Diagram — Alur Penulisan Artikel	25
+[193][Body Text] Gambar 3.8 Activity Diagram — Moderasi Komentar	26
+[194][Body Text] Gambar 3.9 Activity Diagram — Scheduled Publishing	26
+[195][Body Text] Gambar 3.10 Sequence Diagram — Login	27
+[196][Body Text] Gambar 3.11 Sequence Diagram — Silent Token Refresh	27
+[197][Body Text] Gambar 3.12 Sequence Diagram — CRUD Artikel CMS	27
+[198][Body Text] Gambar 3.13 Sequence Diagram — Review & Publish Artikel	28
+[199][Body Text] Gambar 3.14 Sequence Diagram — Bookmark Artikel	28
+[200][Body Text] Gambar 3.15 Sequence Diagram — Page View Analytics	28
+[201][Body Text] Gambar 3.16 Class Diagram — Backend Service-Repository	31
+[202][Body Text] Gambar 3.17 Class Diagram — Frontend Architecture	32
+[203][Body Text] Gambar 3.18 State Machine — Status Artikel	34
+[204][Body Text] 
+[205][Body Text] 
+[206][Body Text] 
+[207][Heading 1] DAFTAR LAMPIRAN
+[208][Body Text] Lampiran A. Log Activity Mingguan	63
+[209][Body Text] Lampiran B. Referensi API Endpoint Lengkap (50 Endpoint)	66
+[210][Body Text] Lampiran C. Surat Keterangan Selesai PKL	69
+[211][Body Text] 
+[212][Body Text] 
+[213][Body Text] 
+[214][Heading 1] DAFTAR SINGKATAN
+[215][Body Text] 
+[216][Table Paragraph] 
+[217][Body Text] 
+[218][Heading 1] BAB I PENDAHULUAN
+[219][Heading 1] 
+[220][Body Text] 
+[221][Body Text] 
+[222][Heading 3] Latar Belakang
+[223][Body Text] Pesatnya perkembangan teknologi informasi di era digital saat ini menuntut lulusan perguruan tinggi untuk memiliki kompetensi yang adaptif dan relevan dengan kebutuhan industri. Di sektor media digital, transformasi teknologi telah mengubah secara fundamental cara informasi diproduksi, dikelola, dan didistribusikan kepada masyarakat. Kesenjangan antara kurikulum pendidikan formal dan kebutuhan industri yang dinamis menjadi tantangan tersendiri bagi mahasiswa, sehingga pengalaman praktis melalui terjun langsung ke lingkungan profesional menjadi elemen krusial untuk menjembatani kesenjangan tersebut.
+[224][Body Text] Program Studi Informatika Universitas Pembangunan Nasional “Veteran” Jawa Timur menghadirkan Praktek Kerja Lapangan (PKL) sebagai wadah strategis bagi mahasiswa untuk memperoleh pengalaman belajar di lingkungan industri. Melalui program ini, mahasiswa dapat memperoleh pengalaman kerja yang relevan dengan bidang studinya, membangun jaringan profesional, dan mengasah kompetensi teknis yang tidak selalu dapat dipenuhi melalui pembelajaran di dalam kampus semata.
+[225][Body Text] Penulis melaksanakan kegiatan PKL di PT Ketik Media Siber, sebuah perusahaan media digital yang beroperasi melalui platform ketik.com sebagai media kolaborasi Indonesia. Perusahaan ini berlokasi di Jl. Ketintang Permai Blok BA No. 21, Karah, Kecamatan Jambangan, Surabaya, Jawa Timur 60232. Sebagai perusahaan media yang memanfaatkan teknologi sebagai tulang punggung bisnisnya, PT Ketik Media Siber secara aktif mengembangkan platform digital dengan mengadopsi teknologi-teknologi modern dalam ekosistem pengembangannya.
+[226][Body Text] Dalam upaya memperkuat dan memperluas ekosistem digital perusahaan, diinisiasilah pengembangan Portal Berita Klojen.com — sebuah platform berita digital full-stack dengan sistem manajemen redaksi (CMS) yang lengkap. Platform ini dirancang untuk mendukung seluruh alur kerja tim redaksi secara digital, mulai dari proses penulisan artikel oleh jurnalis, proses review dan penerbitan oleh editor, hingga interaksi pembaca melalui komentar dan bookmark. Pemilihan teknologi dalam proyek ini didasarkan pada kebutuhan akan arsitektur yang scalable, keamanan data yang kuat, serta performa yang optimal untuk menangani traffic tinggi yang menjadi karakteristik platform media berita.
+[227][Body Text] Sistem ini dibangun menggunakan arsitektur Decoupled / Headless CMS yang memisahkan backend dan frontend secara sepenuhnya. Backend dikembangkan menggunakan framework Laravel 12 yang terbukti mampu mempercepat waktu pengembangan secara signifikan, sementara frontend menggunakan Next.js 15 yang mendukung Server-Side Rendering (SSR) dan Static Site Generation (SSG) untuk
+[228][Body Text] 
+[229][Body Text] optimalisasi performa dan SEO. Sinergi teknologi ini, dipadukan dengan database MySQL 8 yang mendukung FULLTEXT search serta autentikasi JWT yang aman, menghasilkan platform yang tidak hanya fungsional tetapi juga memenuhi standar kualitas industri.
+[230][Body Text] 
+[231][Heading 3] Rumusan Masalah
+[232][Body Text] Berdasarkan latar belakang yang telah diuraikan, rumusan masalah dalam Praktek Kerja Lapangan ini adalah sebagai berikut:
+[233][List Paragraph] Bagaimana merancang dan membangun portal berita digital yang mampu mendukung seluruh alur kerja tim redaksi PT. Ketik Media Siber secara terintegrasi?
+[234][List Paragraph] Bagaimana mengimplementasikan arsitektur Headless CMS yang memisahkan backend dan frontend untuk menghasilkan sistem yang fleksibel, scalable, dan mudah dipelihara?
+[235][List Paragraph] Bagaimana membangun Content Management System (CMS) yang mendukung workflow editorial lengkap, mulai dari penulisan, peninjauan, penjadwalan, publikasi, hingga pengarsipan artikel?
+[236][List Paragraph] Bagaimana mengimplementasikan mekanisme autentikasi dan otorisasi yang aman menggunakan JWT serta Role-Based Access Control (RBAC)?
+[237][List Paragraph] Bagaimana memastikan kualitas sistem melalui pengujian yang komprehensif terhadap seluruh fitur yang dikembangkan?
+[238][Heading 3] Tujuan Praktek Kerja Lapangan
+[239][Body Text] 
+[240][Heading 4] Tujuan Umum
+[241][List Paragraph] Memahami sistem kerja, budaya profesional, serta proses bisnis yang diterapkan di PT Ketik Media Siber, khususnya pada Divisi Teknologi Informasi.
+[242][List Paragraph] Menerapkan pengetahuan dan keterampilan yang diperoleh selama perkuliahan ke dalam lingkungan kerja nyata melalui pengembangan perangkat lunak berbasis web.
+[243][List Paragraph] Mengembangkan kemampuan komunikasi, kolaborasi, pemecahan masalah, dan kerja sama tim dalam lingkungan kerja profesional.
+[244][List Paragraph] Memperoleh pengalaman praktis yang dapat meningkatkan kesiapan mahasiswa dalam menghadapi dunia kerja di bidang teknologi informasi.
+[245][Heading 4] Tujuan Khusus
+[246][List Paragraph] Merancang dan mengembangkan Portal Berita Klojen.com beserta Content Management System (CMS) redaksi sebagai solusi pengelolaan konten berita
+[247][List Paragraph] 
+[248][Body Text] digital.
+[249][List Paragraph] Mengimplementasikan arsitektur terpisah (decoupled architecture) antara backend dan frontend untuk mendukung pengembangan sistem yang fleksibel dan mudah dipelihara.
+[250][List Paragraph] Mengembangkan layanan REST API dan basis data relasional untuk mendukung proses pengelolaan berita, mulai dari penulisan, peninjauan, hingga publikasi artikel.
+[251][List Paragraph] Mengimplementasikan mekanisme autentikasi dan otorisasi pengguna menggunakan JSON Web Token (JWT) dan Role-Based Access Control (RBAC) guna mendukung keamanan sistem.
+[252][List Paragraph] Mengembangkan fitur-fitur pendukung portal berita, seperti manajemen artikel, pencarian berita, pengelolaan media, moderasi komentar, serta optimasi SEO.
+[253][List Paragraph] Melakukan pengujian dan evaluasi sistem untuk memastikan aplikasi dapat berjalan sesuai kebutuhan pengguna dan standar kualitas perangkat lunak.
+[254][Heading 3] Manfaat
+[255][Body Text] 
+[256][Heading 4] Bagi Mahasiswa
+[257][List Paragraph] Memperoleh pengalaman kerja nyata dalam mengembangkan sistem portal berita berskala produksi menggunakan teknologi modern.
+[258][List Paragraph] Mengasah kompetensi teknis dalam pengembangan backend (Laravel, MySQL, JWT) dan frontend (Next.js, TypeScript, Tailwind CSS).
+[259][List Paragraph] Memahami penerapan pola arsitektur perangkat lunak seperti Service-Repository Pattern dan Headless CMS dalam proyek industri.
+[260][Heading 4] Bagi Perusahaan (PT Ketik Media Siber)
+[261][List Paragraph] Memperoleh sistem Portal Berita Klojen.com yang fungsional dan siap digunakan untuk mendukung operasional redaksi.
+[262][List Paragraph] Mendapatkan kontribusi tenaga kerja terampil dalam pengembangan platform digital perusahaan.
+[263][List Paragraph] Terbentuknya dokumentasi teknis lengkap yang dapat digunakan sebagai referensi pengembangan selanjutnya.
+[264][Heading 4] Bagi Program Studi Informatika UPN “Veteran” Jawa Timur
+[265][List Paragraph] Terjalinnya kerja sama dengan industri media digital dalam rangka pelaksanaan program PKL.
+[266][List Paragraph] Terwujudnya	keselarasan	antara	kurikulum	akademik	dengan	kebutuhan kompetensi di dunia industri.
+[267][List Paragraph] 
+[268][List Paragraph] Dihasilkannya laporan PKL yang dapat menjadi referensi bagi mahasiswa angkatan selanjutnya.
+[269][List Paragraph] 
+[270][Body Text] 
+[271][Heading 1] BAB II
+[272][Normal] GAMBARAN UMUM TEMPAT PKL
+[273][Normal] 
+[274][Body Text] 
+[275][Body Text] 
+[276][Heading 3] Sejarah Perusahaan
+[277][Body Text] PT Ketik Media Siber adalah perusahaan media digital yang beroperasi melalui platform ketik.com sebagai media kolaborasi Indonesia. Perusahaan ini didirikan dengan visi menjadi platform media digital yang mendorong partisipasi publik dalam menghasilkan konten berita yang berkualitas, berimbang, dan dapat dipercaya. Berkantor di Jl. Ketintang Permai Blok BA No. 21, Karah, Kecamatan Jambangan, Surabaya, Jawa Timur 60232, PT Ketik Media Siber telah membangun reputasi sebagai perusahaan media yang memanfaatkan teknologi sebagai tulang punggung operasional bisnisnya.
+[278][Body Text] Sejak awal berdiri, perusahaan ini berkomitmen untuk mengadopsi teknologi-teknologi modern dalam ekosistem pengembangan platform digitalnya. Berbeda dengan perusahaan media konvensional yang masih mengandalkan proses manual dalam pengelolaan konten, PT Ketik Media Siber secara aktif berinvestasi dalam pengembangan infrastruktur teknologi informasi yang memungkinkan tim redaksi bekerja secara lebih efisien dan terstruktur.
+[279][Body Text] Sebagai media digital yang berorientasi pada kolaborasi, ketik.com memungkinkan berbagai pihak untuk berkontribusi dalam proses produksi konten berita. Model bisnis ini menuntut adanya sistem teknologi yang mampu mengelola alur kerja editorial secara terintegrasi, dari penulisan artikel oleh kontributor, proses peninjauan dan publikasi oleh editor, hingga distribusi konten kepada pembaca melalui berbagai kanal digital.
+[280][Body Text] 
+[281][Heading 3] Struktur Organisasi
+[282][Body Text] PT. Ketik Media Siber dipimpin oleh Samsul Hadi Mustofa sebagai Direktur, yang bertanggung jawab atas seluruh operasional dan kebijakan strategis perusahaan. Struktur organisasi perusahaan dirancang untuk mendukung dua fungsi utama yang saling melengkapi, yakni produksi konten media dan pengembangan platform teknologi.
+[283][Body Text] Dalam konteks program PKL, peserta ditempatkan di bawah naungan Divisi IT yang membawahi seluruh kegiatan pengembangan perangkat lunak perusahaan. Divisi ini bertanggung jawab atas pengembangan dan pemeliharaan platform berita, termasuk layanan API backend, antarmuka web berbasis Next.js, serta infrastruktur server yang mendukung keseluruhan sistem. Peserta PKL berinteraksi langsung dengan para engineer senior yang berperan sebagai mentor teknis dan memberikan arahan sepanjang program berlangsung.
+[284][Body Text] Tim redaksi bekerja secara paralel dengan tim teknologi, menciptakan lingkungan kerja yang unik di mana peserta PKL tidak hanya bersentuhan dengan tantangan teknis murni, tetapi juga memahami bagaimana keputusan teknologi berdampak langsung pada
+[285][Body Text] 
+[286][Body Text] pengalaman pengguna dan operasional redaksi sehari-hari. Interaksi lintas divisi ini memperkaya pemahaman peserta tentang ekosistem perusahaan media digital secara menyeluruh.
+[287][Body Text] 
+[288][Heading 3] Bidang Usaha
+[289][Body Text] PT. Ketik Media Siber bergerak di bidang media digital dengan fokus pada pengelolaan dan distribusi konten berita melalui platform digital. Bidang usaha perusahaan meliputi:
+[290][List Paragraph] Portal Berita Digital — Mengelola platform ketik.com sebagai media kolaborasi Indonesia yang menyajikan berita dari berbagai kategori seperti politik, ekonomi, teknologi, olahraga, hiburan, dan gaya hidup.
+[291][List Paragraph] Content Management System — Mengembangkan dan memelihara sistem CMS internal yang mendukung alur kerja redaksi, mulai dari penulisan, peninjauan, publikasi, hingga pengarsipan artikel.
+[292][List Paragraph] Pengembangan Teknologi — Secara aktif mengembangkan platform digital dengan mengadopsi teknologi modern seperti arsitektur Headless CMS, REST API, dan framework terkini untuk memastikan performa dan skalabilitas sistem.
+[293][List Paragraph] Layanan Media Digital — Menyediakan layanan publikasi konten digital yang optimal melalui implementasi SEO, analitik pengunjung, dan distribusi konten multi-kanal.
+[294][Body Text] Dalam upaya memperkuat ekosistem digitalnya, PT. Ketik Media Siber menginisiasi pengembangan Portal Berita Klojen.com sebagai platform berita digital baru yang dibangun dari awal menggunakan teknologi-teknologi terkini. Proyek ini menjadi fokus utama kegiatan PKL penulis, di mana penulis terlibat langsung dalam proses pengembangan sistem secara menyeluruh.
+[295][Body Text] 
+[296][Body Text] 
+[297][Heading 1] BAB III PELAKSANAAN
+[298][Heading 1] 
+[299][Body Text] 
+[300][Body Text] 
+[301][Heading 3] Waktu dan Tempat PKL
+[302][Body Text] Program Praktek Kerja Lapangan di PT. Ketik Media Siber berlangsung selama 4 bulan 10 hari, tepatnya dari tanggal 9 Februari 2026 hingga 19 Juni 2026. Kegiatan dilaksanakan enam hari per minggu, yakni Senin hingga Jumat mulai pukul 09.00 hingga 17.00 WIB, dan Sabtu mulai pukul 09.00 hingga 13.00 WIB. Tempat pelaksanaan PKL adalah kantor PT. Ketik Media Siber yang berlokasi di Jl. Ketintang Permai Blok BA No. 21, Karah, Kecamatan Jambangan, Surabaya, Jawa Timur 60232.
+[303][Body Text] Berikut adalah jadwal kegiatan PKL yang dilaksanakan selama periode tersebut:
+[304][Body Text] 
+[305][Table Paragraph] 
+[306][Body Text] 
+[307][Normal] Tabel 2.1 Jadwal Kerja Program PKL
+[308][Body Text] 
+[309][Heading 3] Tinjauan Pustaka
+[310][Body Text] Pada bagian ini diuraikan teori-teori dan konsep yang mendukung penyelesaian permasalahan selama kegiatan PKL. Tinjauan pustaka mencakup teknologi, framework, dan pola arsitektur yang digunakan dalam pengembangan Portal Berita Klojen.com.
+[311][Heading 4] Pengembangan Aplikasi Web
+[312][Body Text] Aplikasi web adalah perangkat lunak yang diakses melalui jaringan internet atau intranet menggunakan peramban web sebagai antarmuka pengguna. Berbeda dengan aplikasi desktop yang memerlukan instalasi lokal, aplikasi web berjalan di atas arsitektur client-server di mana logika aplikasi diproses di server dan hasilnya dikirim ke klien dalam bentuk halaman HTML, CSS, dan JavaScript. Pengembangan aplikasi web modern melibatkan berbagai teknologi di sisi frontend (client-side) seperti React, Next.js, dan TypeScript, serta di sisi backend (server-side) seperti Laravel, Node.js, dan Django (Laravel, 2025).
+[313][Heading 4] Framework Laravel
+[314][Body Text] Laravel adalah framework PHP open-source yang mengikuti pola arsitektur Model-View-Controller (MVC). Framework ini dirancang untuk memudahkan pengembangan aplikasi web dengan menyediakan berbagai fitur bawaan seperti routing, autentikasi, session, caching, dan ORM (Object-Relational Mapping) bernama Eloquent. Laravel 12, versi yang digunakan dalam proyek ini, menyediakan dukungan untuk PHP 8.2+ serta berbagai peningkatan performa dan keamanan. Keunggulan Laravel terletak pada sintaksnya yang ekspresif dan elegan, serta ekosistem yang luas meliputi Artisan CLI, migration, seeder, dan middleware (Laravel, 2025).
+[315][Body Text] Dalam proyek ini, Laravel digunakan sebagai backend API yang menyediakan RESTful endpoint untuk seluruh kebutuhan frontend. Framework ini menangani logika bisnis, autentikasi JWT, pengelolaan database, dan berbagai operasi server-side lainnya melalui arsitektur Service-Repository Pattern.
+[316][Heading 4] Framework Next.js
+[317][Body Text] Next.js adalah framework React open-source yang dikembangkan oleh Vercel, menyediakan fitur-fitur seperti Server-Side Rendering (SSR), Static Site Generation (SSG), dan Client-Side Rendering (CSR) dalam satu framework terpadu. Next.js 15, versi yang digunakan dalam proyek ini, menggunakan App Router sebagai sistem
+[318][Body Text] 
+[319][Body Text] routing utama dan mendukung React 19 untuk optimalisasi performa rendering (Next.js, 2025).
+[320][Body Text] Dalam proyek ini, Next.js digunakan untuk membangun dua antarmuka utama: portal publik (halaman beranda, detail artikel, bookmark) dan CMS redaksi (dashboard, bank berita, tinjauan artikel). Fitur SSG dimanfaatkan untuk menghasilkan halaman artikel yang optimal untuk SEO, sementara CSR digunakan untuk halaman-halaman CMS yang bersifat dinamis dan interaktif.
+[321][Heading 4] REST API
+[322][Body Text] REST (Representational State Transfer) adalah gaya arsitektur perangkat lunak yang dikemukakan oleh Roy Fielding pada tahun 2000. RESTful API menggunakan metode HTTP standar — GET untuk membaca data, POST untuk membuat data, PUT/PATCH untuk memperbarui data, dan DELETE untuk menghapus data — dengan URL sebagai alamat sumber daya (resource). Komunikasi antara klien dan server dilakukan menggunakan format JSON (JavaScript Object Notation) yang ringan dan mudah diproses oleh berbagai platform (Fielding, 2000).
+[323][Body Text] Dalam proyek Klojen.com, RESTful API menjadi jembatan komunikasi antara frontend Next.js dan backend Laravel. Total terdapat 50 endpoint API yang dikelompokkan berdasarkan fungsi, meliputi autentikasi, portal publik, CMS, manajemen media, komentar, bookmark, dan analitik.
+[324][Heading 4] JSON Web Token (JWT)
+[325][Body Text] JSON Web Token (JWT) adalah standar terbuka (RFC 7519) yang mendefinisikan metode kompak dan mandiri untuk mentransmisikan informasi secara aman antar pihak sebagai objek JSON. JWT terdiri dari tiga bagian: Header (algoritma dan tipe token), Payload (klaim atau data), dan Signature (verifikasi integritas). JWT bersifat stateless, artinya server tidak perlu menyimpan sesi di database karena seluruh informasi yang dibutuhkan sudah terkandung dalam token itu sendiri.
+[326][Body Text] Dalam proyek ini, JWT diimplementasikan menggunakan library tymon/jwt-auth dengan mekanisme token pair: access token berumur pendek untuk mengakses API, dan refresh token berumur 14 hari yang disimpan secara terenkripsi (SHA-256) di database. Ketika access token kadaluarsa, frontend secara otomatis melakukan silent refresh melalui Axios interceptor tanpa mengharuskan pengguna login ulang.
+[327][Heading 4] MySQL Database
+[328][Body Text] MySQL adalah sistem manajemen basis data relasional (RDBMS) open-source yang paling populer di dunia. MySQL 8.0, versi yang digunakan dalam proyek ini, menyediakan berbagai fitur canggih seperti FULLTEXT indexing untuk pencarian teks lengkap, Common Table Expressions (CTE), Window Functions, dan JSON data type.
+[329][Body Text] 
+[330][Body Text] MySQL dipilih karena keandalannya dalam menangani data dalam jumlah besar, dukungan komunitas yang luas, serta kompatibilitas yang baik dengan framework Laravel.
+[331][Body Text] Database Klojen.com terdiri dari 14 tabel utama yang mencakup tabel users, articles, categories, tags, article_tags, comments, media, bookmarks, refresh_tokens, article_revisions, scheduled_articles, search_indexes, comment_rate_limits, dan page_views. Tabel-tabel ini dihubungkan melalui relasi one-to-many dan many-to-many yang dikelola melalui Eloquent ORM Laravel.
+[332][Heading 4] Arsitektur Headless CMS
+[333][Body Text] Headless CMS adalah arsitektur Content Management System yang memisahkan lapisan pengelolaan konten (backend) dari lapisan presentasi (frontend). Berbeda dengan CMS tradisional monolitik seperti WordPress yang menggabungkan keduanya dalam satu sistem, Headless CMS hanya menyediakan API untuk pengelolaan konten dan membiarkan frontend dikembangkan secara independen menggunakan teknologi apapun (ButterCMS, 2024).
+[334][Body Text] Keunggulan arsitektur ini meliputi: (1) fleksibilitas dalam pemilihan teknologi frontend, (2) skalabilitas yang lebih baik karena backend dan frontend dapat di-scale secara terpisah, (3) keamanan yang lebih tinggi karena API backend tidak terekspos langsung ke pengguna, dan (4) kemampuan untuk menyajikan konten ke berbagai platform (web, mobile, IoT) dari satu sumber yang sama. Dalam proyek Klojen.com, arsitektur Headless CMS diimplementasikan dengan Laravel sebagai backend API dan Next.js sebagai frontend.
+[335][Heading 4] Service-Repository Pattern
+[336][Body Text] Service-Repository Pattern adalah pola arsitektur yang memisahkan logika bisnis (Service) dari akses data (Repository). Dalam pola ini, Controller menerima HTTP request dan mendelegasikannya ke Service, Service menangani seluruh logika bisnis dan orkestrasi antar-repository, sementara Repository menangani query database melalui interface yang didefinisikan secara abstrak (Laravel, 2025).
+[337][Body Text] Keunggulan pola ini meliputi: (1) separation of concerns yang jelas antara lapisan controller, business logic, dan data access, (2) kemudahan dalam melakukan unit testing karena Repository dapat di-mock, (3) kemudahan dalam mengganti sumber data tanpa mengubah Service atau Controller, dan (4) kode yang lebih terstruktur dan mudah dipelihara. Dalam proyek ini, pola ini diimplementasikan melalui RepositoryServiceProvider yang melakukan dependency injection antara interface dan implementasi Repository.
+[338][Heading 4] Alasan Pemilihan Teknologi
+[339][Heading 4] 
+[340][Body Text] Pemilihan teknologi untuk proyek Klojen.com didasarkan pada analisis terhadap kebutuhan sistem, kemampuan tim, dan tujuan jangka panjang. Berikut adalah alasan pemilihan setiap teknologi utama:
+[341][Body Text] 
+[342][Table Paragraph] 
+[343][Body Text] 
+[344][Normal] Tabel 3.2a Alasan Pemilihan Teknologi Utama
+[345][Normal] 
+[346][Body Text] 
+[347][Body Text] 
+[348][Heading 3] Pelaksanaan PKL
+[349][Body Text] Pada bagian ini diuraikan pelaksanaan kegiatan PKL secara detail, mulai dari tahap analisis kebutuhan, perancangan sistem, implementasi backend dan frontend, hingga pengujian sistem yang telah dibangun.
+[350][Heading 4] Analisis Kebutuhan
+[351][Body Text] Tahap pertama dalam pelaksanaan proyek adalah melakukan analisis kebutuhan sistem Portal Berita Klojen.com. Analisis dilakukan dengan mempelajari alur kerja redaksi PT. Ketik Media Siber secara menyeluruh, mulai dari proses penulisan berita oleh jurnalis, proses peninjauan dan persetujuan oleh editor, hingga proses publikasi artikel. Berdasarkan analisis tersebut, kebutuhan sistem diidentifikasi menjadi dua kategori utama: kebutuhan fungsional dan kebutuhan non-fungsional.
+[352][Normal] Kebutuhan Fungsional meliputi fitur-fitur yang harus dimiliki oleh sistem, antara
+[353][Body Text] lain:
+[354][List Paragraph] Sistem Autentikasi & Otorisasi — Registrasi, login, logout, forgot/reset password, serta Role-Based Access Control (RBAC) dengan 4 role: Reader, Journalist, Editor, dan Admin.
+[355][List Paragraph] Portal Publik — Halaman beranda dengan artikel featured, populer, dan terbaru; detail artikel dengan komentar threaded dan bookmark; pencarian artikel menggunakan FULLTEXT search; navigasi kategori dan tag.
+[356][List Paragraph] CMS Redaksi — Dashboard statistik berbasis role; Bank Berita (daftar artikel CMS); form tulis berita dengan rich text editor; halaman tinjauan artikel untuk editor; manajemen media; moderasi komentar.
+[357][List Paragraph] Workflow Editorial — State machine status artikel: draft → review → published/scheduled/rejected → archived; article locking untuk mencegah concurrent editing; scheduled publishing melalui cron job.
+[358][List Paragraph] Fitur Pendukung — Manajemen media (upload, galeri, alt text); full-text search; analitik page views; SEO optimization (sitemap, JSON-LD, Open Graph); rate limiting komentar (10/jam per user).
+[359][Normal] Kebutuhan Non-Fungsional meliputi:
+[360][List Paragraph] Performa — Optimasi SEO menggunakan SSG, lazy loading gambar, dan database indexing.
+[361][List Paragraph] Keamanan — JWT token pair dengan silent refresh, password hashing (bcrypt), refresh token hashing (SHA-256), anti user-enumeration pada forgot password, dan article locking.
+[362][List Paragraph] 
+[363][List Paragraph] Skalabilitas — Arsitektur Headless CMS yang memungkinkan backend dan frontend di-scale secara terpisah.
+[364][List Paragraph] Responsivitas — Antarmuka yang responsif untuk berbagai ukuran layar menggunakan Tailwind CSS.
+[365][List Paragraph] Pemeliharaan — Service-Repository Pattern untuk kode yang terstruktur, dependency injection untuk kemudahan testing, dan dokumentasi teknis yang lengkap.
+[366][List Paragraph] 
+[367][Body Text] 
+[368][Body Text] 
+[369][Heading 4] Perancangan Sistem
+[370][Body Text] Setelah tahap analisis kebutuhan selesai, tahap selanjutnya adalah perancangan sistem. Perancangan dilakukan menggunakan berbagai diagram UML (Unified Modeling Language) serta model data untuk mendokumentasikan arsitektur dan alur kerja sistem secara formal.
+[371][Heading 3] Arsitektur Sistem
+[372][Body Text] Sistem Klojen.com menggunakan arsitektur Decoupled / Headless CMS di mana frontend dan backend terpisah sepenuhnya dan berkomunikasi melalui REST API. Arsitektur ini dapat digambarkan sebagai berikut:
+[373][Body Text] 
+[374][Body Text] 
+[375][Body Text] 
+[376][Body Text] 
+[377][Body Text] 
+[378][Body Text] 
+[379][Body Text] 
+[380][Body Text] 
+[381][Body Text] 
+[382][Body Text] 
+[383][Body Text] 
+[384][Body Text] 
+[385][Body Text] 
+[386][Body Text] 
+[387][Body Text] 
+[388][Body Text] 
+[389][Body Text] 
+[390][Body Text] 
+[391][Body Text] 
+[392][Body Text] 
+[393][Body Text] 
+[394][Body Text] 
+[395][Body Text] 
+[396][Body Text] 
+[397][Body Text] 
+[398][Body Text] 
+[399][Heading 3] Penjelasan Arsitektur Decoupled / Headless CMS
+[400][Body Text] Arsitektur Decoupled atau Headless CMS memisahkan secara total antara backend (penyedia API) dan frontend (antarmuka pengguna). Berbeda dengan CMS tradisional seperti WordPress di mana backend dan frontend tergabung dalam satu aplikasi, pada arsitektur Headless CMS backend hanya menyediakan REST API yang dapat dikonsumsi oleh berbagai jenis klien — web, mobile app, atau bahkan IoT device.
+[401][Body Text] 
+[402][Body Text] Keuntungan utama arsitektur ini adalah: (1) backend dan frontend dapat dikembangkan secara paralel dan independen oleh tim yang berbeda, (2) API yang sama dapat digunakan oleh berbagai platform tanpa modifikasi backend, (3) tim dapat memilih teknologi yang paling sesuai untuk setiap sisi — Laravel untuk backend yang membutuhkan ORM dan validasi kuat, Next.js untuk frontend yang membutuhkan SSR/SSG untuk SEO, dan (4) scalability yang lebih baik karena backend dan frontend dapat di-scale secara terpisah sesuai beban kerja masing-masing.
+[403][Heading 3] Design Patterns yang Digunakan
+[404][Body Text] Sistem Klojen.com mengimplementasikan beberapa design pattern untuk menghasilkan kode yang terstruktur, mudah dipelihara, dan dapat diuji. Berikut adalah pola-pola desain utama yang diterapkan:
+[405][Body Text] 
+[406][Normal] Tabel 3.3a Design Patterns yang Digunakan
+[407][Heading 3] Service-Repository Pattern — Penjelasan Detail
+[408][Heading 3] 
+[409][Body Text] Service-Repository Pattern adalah pola arsitektur yang memisahkan logika bisnis (Service) dari akses data (Repository). Pada backend Klojen.com, pola ini diimplementasikan dalam tiga lapisan utama:
+[410][List Paragraph] Controller (Lapis Terluar) — Menerima HTTP request, melakukan validasi dasar menggunakan Laravel Form Request, lalu mendelegasikan pemrosesan ke Service. Controller bersifat thin, artinya tidak mengandung logika bisnis yang kompleks. Tugas utamanya hanya: menerima input, memanggil Service, dan mengembalikan respons JSON. Contoh: AuthController , ArticleController , BookmarkController .
+[411][List Paragraph] Service (Lapis Tengah) — Berisi seluruh logika bisnis seperti validasi role, pengecekan ownership artikel, transisi status editorial, dan orkestrasi antar-repository. Service tidak mengetahui detail implementasi database — ia hanya memanggil method repository sesuai kebutuhan bisnis. Contoh: AuthService menangani login/register/token, CmsArticleService menangani CRUD artikel CMS dan transisi status, SearchService menangani indexing pencarian.
+[412][List Paragraph] Repository (Lapis Data) — Menangani query database secara langsung. Didefinisikan sebagai interface (kontrak) yang kemudian di-bind ke implementasi konkret melalui Dependency Injection. Interface mendefinisikan method-method yang tersedia (seperti find() , findAll() , create() , update() , delete() , findBySlug() ), sementara implementasi menangani detail query. Contoh: ArticleRepositoryInterface di-bind ke ArticleRepository .
+[413][Body Text] Keuntungan pola ini: (a) kode lebih mudah diuji karena setiap layer dapat di-mock secara terpisah, (b) memudahkan penggantian sumber data tanpa mengubah logika bisnis, (c) pemisahan tanggung jawab yang jelas memudahkan debugging dan pemeliharaan.
+[414][Heading 3] Laravel Query Builder dan Eloquent ORM
+[415][Body Text] Seluruh operasi database pada sistem Klojen.com dilakukan menggunakan kombinasi Laravel Query Builder dan Eloquent ORM, masing-masing dipilih berdasarkan jenis operasi yang dilakukan:
+[416][List Paragraph] Eloquent ORM digunakan untuk operasi baca (read) yang membutuhkan eager loading relasi antar tabel. Eloquent menyediakan API yang elegan untuk mengakses data beserta relasinya melalui method seperti with() , whereHas() , dan load() . Contohnya, saat mengambil daftar artikel beserta data author, kategori, dan tag dalam satu query untuk menghindari masalah N+1: Article::with(['author', 'category', 'tags'])->where('status', 'published')->get() . Eloquent juga  digunakan  untuk  mendefinisikan  relasi  antar  model  ( hasMany() ,
+[417][List Paragraph] 
+[418][Normal] belongsTo() , belongsToMany() ) sehingga query relasi menjadi deklaratif dan mudah dibaca.
+[419][List Paragraph] Query Builder digunakan untuk operasi tulis (insert, update, delete) yang memerlukan kontrol eksplisit terhadap query SQL. Query Builder memberikan fleksibilitas lebih tinggi untuk operasi yang kompleks seperti batch insert, conditional update, dan raw SQL expression. Contohnya: DB::table('articles')->where('id', $id)->update(['status' => 'published', 'published_at' => now()]) untuk update status artikel, atau DB::table('article_tags')->insert([...]) untuk batch insert relasi tag.
+[420][Body Text] Pendekatan hybrid ini memanfaatkan keunggulan masing-masing: Eloquent untuk kemudahan akses relasi dan Query Builder untuk performa dan kontrol penuh atas query yang dihasilkan. Kedua pendekatan ini saling melengkapi dalam Repository layer.
+[421][Heading 3] Struktur Folder Proyek
+[422][Body Text] Proyek Klojen.com terdiri dari dua bagian utama, yaitu backend (Laravel 12) dan frontend (Next.js 15). Berikut adalah gambaran struktur folder kedua bagian tersebut:
+[423][Body Text] 
+[424][Heading 3] Matriks Hak Akses (RBAC)
+[425][Heading 3] 
+[426][Body Text] Sistem menggunakan 4 role dengan hak akses bertingkat seperti ditunjukkan pada Tabel 3.3 berikut:
+[427][Body Text] 
+[428][Normal] *Reader perlu login terlebih dahulu
+[429][Body Text] 
+[430][Normal] Tabel 3.3 Matriks Hak Akses (RBAC)
+[431][Heading 3] Fitur Portal Publik
+[432][Body Text] Portal publik adalah antarmuka yang dapat diakses oleh seluruh pengunjung tanpa perlu login (kecuali fitur komentar dan bookmark). Berikut adalah fitur-fitur utama portal publik:
+[433][Body Text] 
+[434][Table Paragraph] 
+[435][Body Text] 
+[436][Normal] Tabel 3.3b Fitur Portal Publik
+[437][Heading 3] Fitur CMS Redaksi
+[438][Body Text] CMS (Content Management System) adalah antarmuka internal untuk jurnalis, editor, dan admin dalam mengelola konten dan pengguna. Berikut adalah fitur-fitur utama CMS:
+[439][Body Text] 
+[440][Table Paragraph] 
+[441][Body Text] 
+[442][Normal] Tabel 3.3c Fitur CMS Redaksi
+[443][Heading 3] Dashboard per Role
+[444][Body Text] Dashboard CMS menampilkan data yang berbeda berdasarkan role pengguna:
+[445][List Paragraph] Admin → AdminDashboard: statistik visitor dari tabel page_views , total artikel, user baru, sparklines tren (7 hari, harian), distribusi kategori (pie chart), filter waktu (hari ini, 7 hari, 30 hari, 1 tahun).
+[446][List Paragraph] Editor/Journalist → EditorDashboardView: statistik personal (artikel published/draft), grafik yearly (BarChart), distribusi kategori pribadi (PieChart) menggunakan Recharts.
+[447][Heading 3] Fitur Autentikasi & Keamanan
+[448][Body Text] Sistem autentikasi menggunakan JWT (JSON Web Token) dengan mekanisme Token Pair yang terdiri dari dua jenis token:
+[449][Body Text] 
+[450][Normal] Tabel 3.3d JWT Token Pair
+[451][Body Text] Siklus autentikasi lengkap berjalan sebagai berikut:
+[452][List Paragraph] Register → Auto role = reader, password di-hash dengan bcrypt
+[453][List Paragraph] Login → Menghasilkan access_token + refresh_token
+[454][List Paragraph] 
+[455][List Paragraph] Request API → Axios interceptor menyertakan Bearer token secara otomatis
+[456][List Paragraph] Token Expired → Silent refresh via POST /auth/refresh → retry request otomatis tanpa interaksi user
+[457][List Paragraph] Logout → Revoke refresh_token di DB (is_revoked=true) + clear state + redirect
+[458][Body Text] /login
+[459][Body Text] Silent Token Refresh diimplementasikan melalui Axios interceptor yang secara otomatis: (1) mendeteksi response TOKEN_EXPIRED , (2) meng-queue request yang gagal, (3) memanggil POST /auth/refresh dengan refresh_token dari localStorage, (4) update access_token di Zustand store, (5) retry semua request yang di-queue dengan token baru, (6) jika refresh gagal → force logout + redirect ke halaman login.
+[460][Body Text] AuthProvider Rehydration — Komponen AuthProvider yang membungkus root layout melakukan silent rehydration: saat halaman pertama kali dimuat, cek refresh_token di localStorage, jika ada panggil /auth/refresh untuk mendapat access_token baru. User otomatis login tanpa perlu login ulang setelah refresh halaman.
+[461][Heading 3] Keamanan Tambahan:
+[462][Body Text] 
+[463][Normal] Tabel 3.3e Fitur Keamanan
+[464][Heading 3] Alur Kerja Redaksi (Editorial Workflow) — State Machine
+[465][Body Text] Alur kerja editorial mengimplementasikan state machine dengan aturan transisi status yang ketat. Berikut adalah aturan transisi yang diizinkan:
+[466][Body Text] 
+[467][Table Paragraph] 
+[468][Body Text] 
+[469][Normal] Tabel 3.3f Aturan Transisi Status Artikel
+[470][Body Text] Transisi yang DILARANG: published → draft/review/scheduled (tidak bisa kembali dari published), archived → apapun (arsip adalah status final), draft → published (harus melalui review terlebih dahulu).
+[471][Body Text] Article Locking — Editor dapat mengunci artikel dengan mengklik “Lock” yang akan mengeset articles.locked_by = editor_id . Editor lain yang melihat akan tahu artikel sedang dikerjakan dan tidak bisa mengeditnya. Editor yang sama bisa “Unlock” untuk melepas kunci. Lock otomatis terlepas jika editor dihapus (nullOnDelete).
+[472][Body Text] 
+[473][Body Text] 
+[474][Heading 3] Use Case Diagram
+[475][Body Text] Use Case Diagram menggambarkan interaksi antara aktor (pengguna) dengan sistem. Sistem Klojen.com memiliki 5 level aktor berdasarkan peran:
+[476][Body Text] 
+[477][Body Text] 
+[478][Table Paragraph] 
+[479][Normal] Tabel 3.4 Use Case Diagram — Aktor dan Use Case
+[480][Heading 3] Activity Diagram
+[481][Body Text] Activity Diagram menggambarkan alur aktivitas sistem secara detail. Diagram ini menggunakan notasi standar UML (Unified Modeling Language) untuk memvisualisasikan alur proses bisnis dari awal hingga akhir. Berikut adalah notasi yang digunakan dalam seluruh Activity Diagram pada laporan ini:
+[482][Body Text] 
+[483][Normal] Tabel 3.4a Notasi Activity Diagram
+[484][Body Text] Berikut adalah 9 Activity Diagram yang mendokumentasikan proses-proses utama dalam sistem:
+[485][List Paragraph] Activity Diagram — Proses Login & Autentikasi
+[486][List Paragraph] 
+[487][Body Text] 
+[488][Normal] 
+[489][List Paragraph] Activity Diagram — Silent Token Refresh
+[490][List Paragraph] 
+[491][Body Text] 
+[492][Normal] 
+[493][List Paragraph] Activity Diagram — Alur Penulisan & Publikasi Artikel
+[494][List Paragraph] 
+[495][Body Text] 
+[496][Body Text] 
+[497][Body Text] 
+[498][Body Text] 
+[499][Body Text] 
+[500][Body Text] 
+[501][Body Text] 
+[502][Body Text] 
+[503][Body Text] 
+[504][Body Text] 
+[505][Body Text] 
+[506][Body Text] 
+[507][Body Text] 
+[508][Body Text] 
+[509][Body Text] 
+[510][Body Text] 
+[511][Body Text] 
+[512][Body Text] 
+[513][Body Text] 
+[514][Body Text] 
+[515][Body Text] 
+[516][Body Text] 
+[517][Body Text] 
+[518][Body Text] 
+[519][Body Text] 
+[520][List Paragraph] Activity Diagram — Moderasi Komentar
+[521][List Paragraph] 
+[522][Body Text] 
+[523][Normal] 
+[524][List Paragraph] Activity Diagram — Scheduled Publishing
+[525][List Paragraph] 
+[526][Body Text] 
+[527][Normal] 
+[528][List Paragraph] Activity Diagram — Upload Media
+[529][List Paragraph] 
+[530][Body Text] 
+[531][Normal] 
+[532][Body Text] Poin penting: Validasi dilakukan sebelum file dikirim ke server untuk efisiensi bandwidth. File fisik disimpan di cloud storage; database hanya menyimpan URL dan metadata. Setelah upload berhasil, file siap dilampirkan ke artikel melalui editor TipTap.
+[533][List Paragraph] Activity Diagram — Bookmark Artikel (Toggle Pattern)
+[534][List Paragraph] 
+[535][Body Text] 
+[536][Normal] 
+[537][Body Text] Poin penting: Sistem mendeteksi status bookmark untuk menentukan aksi (toggle). Satu klik bisa menambah atau menghapus bookmark sesuai kondisi saat ini. Endpoint yang digunakan tunggal: POST /api/bookmarks .
+[538][List Paragraph] Activity Diagram — Pencarian Artikel
+[539][List Paragraph] 
+[540][Body Text] 
+[541][Normal] 
+[542][Body Text] Poin penting: Pencarian menggunakan fitur FULLTEXT index MySQL pada tabel search_indexes yang berisi title dan content artikel. Index diperbarui setiap kali artikel di-publish atau di-update melalui SearchService.
+[543][List Paragraph] Activity Diagram — Logout & Invalidasi Sesi
+[544][List Paragraph] 
+[545][Body Text] 
+[546][Normal] 
+[547][Body Text] Poin penting: Sesi dihapus dari dua sisi: server (database refresh_tokens di-revoke) dan client (browser localStorage dan Zustand store dikosongkan). Memastikan token lama tidak bisa digunakan kembali setelah logout.
+[548][Body Text] 
+[549][Body Text] 
+[550][Heading 3] Sequence Diagram
+[551][Body Text] Sequence Diagram menggambarkan interaksi antar komponen sistem dalam bentuk urutan waktu. Diagram ini menunjukkan pertukaran pesan antar komponen secara kronologis, dari kiri ke kanan. Berikut adalah komponen-komponen yang terlibat dalam Sequence Diagram:
+[552][Body Text] 
+[553][Normal] Tabel 3.4b Komponen Sequence Diagram
+[554][Body Text] Berikut adalah 13 Sequence Diagram untuk proses-proses utama:
+[555][List Paragraph] Sequence Diagram — Proses Login
+[556][Body Text] 
+[557][Body Text] 
+[558][List Paragraph] Sequence Diagram — Silent Token Refresh
+[559][Body Text] 
+[560][List Paragraph] Sequence Diagram — CRUD Artikel CMS
+[561][Body Text] 
+[562][List Paragraph] Sequence Diagram — Review & Publish Artikel
+[563][List Paragraph] 
+[564][Body Text] 
+[565][Normal] 
+[566][List Paragraph] Sequence Diagram — Bookmark Artikel
+[567][Body Text] 
+[568][List Paragraph] Sequence Diagram — Page View Analytics
+[569][List Paragraph] 
+[570][Body Text] 
+[571][Normal] 
+[572][Body Text] Catatan: Diagram di atas menampilkan 7 sequence diagram sekaligus secara ringkas: (3.15) Page View Analytics, (3.15a) Registrasi Akun, (3.15b) Daftar Artikel Homepage, (3.15c) Detail Artikel, (3.15d) Submit Artikel, (3.15e) Post Komentar, serta deskripsi (3.15f) Upload Media dan (3.15g) Edit Artikel.
+[573][Body Text] 
+[574][Body Text] 
+[575][Heading 3] Class Diagram
+[576][Body Text] Class Diagram menggambarkan struktur kelas dan relasi antar komponen dalam sistem. Backend menggunakan Service-Repository Pattern, sementara Frontend menggunakan arsitektur berbasis komponen.
+[577][Normal] 1. Class Diagram — Backend (Service-Repository Pattern)
+[578][Body Text] 
+[579][Body Text] 
+[580][Table Paragraph] 
+[581][Body Text] 
+[582][Normal] Tabel 3.5 Class Diagram — Backend Service-Repository Pattern
+[583][Body Text] 
+[584][Normal] Tabel 3.6 Class Diagram — Frontend Architecture
+[585][Normal] 
+[586][Body Text] 
+[587][Heading 3] Conceptual Data Model (CDM)
+[588][Body Text] CDM menggambarkan entitas-entitas utama dalam sistem beserta hubungannya secara konseptual. Sistem Klojen.com memiliki 14 entitas utama:
+[589][Body Text] 
+[590][Body Text] 
+[591][Table Paragraph] 
+[592][Body Text] 
+[593][Normal] Tabel 3.7 CDM — Entitas dan Relasi
+[594][Normal] 
+[595][Body Text] 
+[596][Heading 3] Physical Data Model (PDM)
+[597][Body Text] PDM menggambarkan struktur tabel database secara detail termasuk tipe data, constraints, dan index. Berikut adalah skema tabel-tabel utama:
+[598][Normal] Tabel users
+[599][Body Text] 
+[600][Normal] Tabel 3.8 PDM — Tabel users
+[601][Normal] Tabel articles
+[602][Body Text] 
+[603][Table Paragraph] 
+[604][Body Text] 
+[605][Normal] Tabel 3.9 PDM — Tabel articles
+[606][Normal] Tabel categories
+[607][Body Text] 
+[608][Normal] Tabel 3.10 PDM — Tabel categories
+[609][Normal] 
+[610][Body Text] 
+[611][Normal] Tabel comments
+[612][Body Text] 
+[613][Normal] Tabel 3.11 PDM — Tabel comments
+[614][Normal] Tabel bookmarks
+[615][Body Text] 
+[616][Normal] Tabel 3.12 PDM — Tabel bookmarks
+[617][Normal] Tabel media
+[618][Body Text] 
+[619][Normal] Tabel 3.13 PDM — Tabel media
+[620][Normal] 
+[621][Normal] Tabel tags
+[622][Body Text] 
+[623][Normal] Tabel 3.14 PDM — Tabel tags Tabel article_tags (Pivot Table)
+[624][Normal] Tabel 3.15 PDM — Tabel article_tags (Many-to-Many pivot) Tabel refresh_tokens
+[625][Normal] Tabel 3.16 PDM — Tabel refresh_tokens
+[626][Normal] Tabel article_revisions
+[627][Body Text] 
+[628][Table Paragraph] 
+[629][Body Text] 
+[630][Normal] Tabel 3.17 PDM — Tabel article_revisions (Audit Trail)
+[631][Normal] 
+[632][Body Text] 
+[633][Normal] Tabel scheduled_articles
+[634][Body Text] 
+[635][Normal] Tabel 3.18 PDM — Tabel scheduled_articles
+[636][Normal] Tabel search_indexes
+[637][Body Text] 
+[638][Normal] Tabel 3.19 PDM — Tabel search_indexes (Full-Text Search) Tabel comment_rate_limits
+[639][Normal] 
+[640][Body Text] 
+[641][Normal] Tabel 3.20 PDM — Tabel comment_rate_limits
+[642][Normal] Tabel page_views
+[643][Body Text] 
+[644][Normal] Tabel 3.21 PDM — Tabel page_views (Analitik Visitor)
+[645][Body Text] 
+[646][Heading 4] Relasi Antar Tabel
+[647][Body Text] Berikut adalah matriks relasi lengkap antar tabel dalam database Klojen.com:
+[648][Body Text] 
+[649][Table Paragraph] 
+[650][Body Text] 
+[651][Normal] Tabel 3.22 Matriks Relasi Antar Tabel Database
+[652][Normal] 
+[653][Body Text] 
+[654][Body Text] 
+[655][Heading 4] Business Rules (Aturan Bisnis)
+[656][Body Text] Business Rules mendefinisikan aturan-aturan bisnis yang harus ditegakkan oleh sistem — baik di level backend maupun frontend. Seluruh aturan ini wajib diimplementasikan sebelum sistem dianggap siap produksi. Aturan bisnis ini ditegakkan melalui validasi di backend (Laravel Validator) dan frontend (Zod Schema).
+[657][Heading 3] Tabel 3.23 — Business Rules: Artikel & Publikasi
+[658][Body Text] 
+[659][Heading 3] Tabel 3.24 — Business Rules: Komentar
+[660][Body Text] 
+[661][Table Paragraph] 
+[662][Body Text] 
+[663][Heading 3] Tabel 3.25 — Business Rules: Media, Bookmark & Pengguna
+[664][Body Text] 
+[665][Table Paragraph] 
+[666][Body Text] 
+[667][Body Text] 
+[668][Heading 4] Error Handling dan Kode Error
+[669][Body Text] Sistem Klojen.com menerapkan kebijakan error handling yang konsisten di seluruh endpoint API. Setiap error dikembalikan dalam format JSON standar yang memungkinkan frontend untuk menangani error secara terprogram. Format respons error adalah sebagai berikut:
+[670][Body Text] 
+[671][Normal] Potongan Kode — Format respons error API
+[672][Body Text] Pada sisi frontend, setiap error code dipetakan ke pesan bahasa Indonesia yang ramah pengguna melalui mapping terpusat. Pesan error mentah dari server tidak pernah ditampilkan langsung ke pengguna.
+[673][Heading 3] Tabel 3.26 — Error Codes: Autentikasi
+[674][Body Text] 
+[675][Heading 3] Tabel 3.27 — Error Codes: Artikel
+[676][Body Text] 
+[677][Table Paragraph] 
+[678][Body Text] 
+[679][Heading 3] Tabel 3.28 — Error Codes: Komentar, Media & Pengguna
+[680][Body Text] 
+[681][Table Paragraph] 
+[682][Body Text] 
+[683][Body Text] 
+[684][Heading 3] Implementasi Backend
+[685][Body Text] Backend Portal Berita Klojen.com dikembangkan menggunakan framework Laravel 12 yang berjalan pada runtime PHP 8.2+ dengan database MySQL 8. Arsitektur backend mengikuti pola Service-Repository Pattern yang memisahkan logika bisnis (service layer) dari akses data (repository layer), sehingga menghasilkan kode yang lebih terstruktur, mudah diuji, dan dapat dipelihara. Seluruh komunikasi antara frontend dan backend dilakukan melalui REST API yang mengembalikan data dalam format JSON.
+[686][Heading 4] Struktur Folder Backend
+[687][Body Text] Struktur folder backend mengikuti konvensi Laravel 12 dengan penambahan direktori khusus untuk Services, Repositories, dan Controllers yang diorganisasi berdasarkan modul:
+[688][Body Text] 
+[689][Body Text] 
+[690][Body Text] 
+[691][Body Text] 
+[692][Body Text] 
+[693][Body Text] 
+[694][Body Text] 
+[695][Body Text] 
+[696][Body Text] 
+[697][Table Paragraph] 
+[698][Body Text] 
+[699][Normal] 
+[700][Heading 4] Stack Teknologi Backend
+[701][Body Text] 
+[702][Normal] Tabel 3.14 Stack teknologi backend Klojen.com
+[703][Normal] 
+[704][Body Text] 
+[705][Body Text] 
+[706][Heading 4] Autentikasi Berbasis JWT
+[707][Normal] Sistem autentikasi pada backend menggunakan JSON Web Token (JWT) melalui library tymon/jwt-auth . JWT dipilih karena sifatnya yang stateless — server tidak perlu menyimpan sesi di memory atau database, sehingga aplikasi dapat diskalakan secara horizontal tanpa memerlukan shared session storage.
+[708][Body Text] Alur autentikasi JWT pada sistem Klojen.com adalah sebagai berikut:
+[709][List Paragraph] Login  —  Pengguna  mengirim  email  dan  password  ke  endpoint  POST
+[710][Normal] /api/auth/login . Backend memverifikasi kredensial menggunakan bcrypt hash comparison. Jika valid, backend menghasilkan access token (berumur pendek, 15 menit) dan refresh token (berumur panjang, 30 hari).
+[711][List Paragraph] Token Storage — Refresh token disimpan di database dalam bentuk hash SHA-256 pada tabel refresh_tokens dengan kolom token_hash , user_id , is_revoked , dan expires_at . Access token dikirim ke klien dalam body respons JSON.
+[712][List Paragraph] Protected Request — Setiap request ke endpoint yang dilindungi harus menyertakan access token pada header HTTP Authorization: Bearer <token> . Middleware AuthenticateJwt memverifikasi tanda tangan digital token, masa berlaku, dan claim sub (user ID).
+[713][List Paragraph] Silent Token Refresh — Ketika access token kedaluwarsa (15 menit), backend mengembalikan respons error TOKEN_EXPIRED . Frontend secara otomatis memanggil endpoint POST /api/auth/refresh dengan refresh token untuk mendapatkan access token baru tanpa mengharuskan pengguna login ulang. Jika refresh token juga kedaluwarsa atau dicabut, pengguna dipaksa logout.
+[714][List Paragraph] Logout — Endpoint POST /api/auth/logout mencabut refresh token dengan menandai is_revoked = true pada database, sehingga token tersebut tidak dapat digunakan lagi untuk refresh.
+[715][Heading 4] Alur Kerja Editorial (State Machine)
+[716][Body Text] Artikel dalam sistem Klojen.com memiliki siklus hidup (lifecycle) yang mengikuti pola state machine. Setiap artikel memiliki kolom status yang menentukan tahapannya dalam proses penerbitan:
+[717][Body Text] 
+[718][Body Text] 
+[719][Normal] 
+[720][Body Text] Penjelasan setiap transisi status:
+[721][List Paragraph] Draft — Status awal saat jurnalis membuat artikel baru. Artikel dalam status ini hanya terlihat oleh penulisnya sendiri dan dapat diedit secara bebas.
+[722][List Paragraph] Review — Jurnalis mengubah status menjadi review untuk mengirim artikel ke editor. Artikel dalam status ini tidak dapat diedit oleh jurnalis lagi, hanya dapat direview oleh editor.
+[723][List Paragraph] Published  —  Editor  menyetujui  dan  menerbitkan  artikel.  Timestamp
+[724][Body Text] published_at dicatat dan artikel langsung terlihat di portal publik.
+[725][List Paragraph] Scheduled — Editor menjadwalkan penerbitan artikel pada waktu tertentu. Sistem secara otomatis menerbitkan artikel saat waktu yang dijadwalkan tiba melalui background process.
+[726][List Paragraph] Rejected — Editor menolak artikel dengan catatan revisi ( change_note ). Jurnalis dapat memperbaiki dan mengirim ulang artikel.
+[727][List Paragraph] Archived — Editor mengarsipkan artikel yang sudah published jika perlu ditarik dari publik tanpa menghapus data.
+[728][List Paragraph] 
+[729][Body Text] 
+[730][Body Text] 
+[731][Heading 4] Implementasi Fitur Bookmark
+[732][Body Text] Fitur bookmark diimplementasikan menggunakan pola toggle (toggle pattern), yaitu satu endpoint POST yang menangani dua operasi sekaligus: menambah bookmark jika belum ada, atau menghapus bookmark jika sudah ada. Pendekatan ini menyederhanakan API dengan mengurangi jumlah endpoint yang diperlukan.
+[733][Body Text] Backend menerapkan Service-Repository Pattern untuk memisahkan logika bisnis dari akses data. Berikut adalah implementasi method toggle() pada BookmarkService :
+[734][Body Text] 
+[735][Normal] Potongan Kode 1. Method toggle() pada BookmarkService dengan pola check-then-insert/delete.
+[736][Body Text] Pada method toggle() , sistem pertama-tama memeriksa apakah bookmark sudah ada di database menggunakan DB::table('bookmarks') (Query Builder). Jika data ditemukan, sistem menghapus bookmark tersebut dan mengembalikan nilai false . Jika tidak ditemukan, sistem membuat bookmark baru dengan UUID sebagai primary key
+[737][Body Text] 
+[738][Body Text] dan mengembalikan nilai true . Penggunaan Query Builder untuk operasi tulis memberikan performa yang lebih baik dibandingkan Eloquent ORM karena tidak perlu menginstansiasi model.
+[739][Body Text] Untuk mengambil daftar bookmark, sistem menggunakan method getBookmarks() yang menggabungkan Query Builder untuk mengambil daftar bookmark dan Eloquent ORM dengan eager loading untuk enrichment data artikel:
+[740][Body Text] 
+[741][Normal] Potongan Kode 2. Method getBookmarks() dengan enrichment data artikel menggunakan eager loading.
+[742][Body Text] Pendekatan batch loading pada method ini mencegah masalah N+1 query karena seluruh artikel di-load dalam satu query menggunakan whereIn() , bukan satu per satu di dalam loop. Data artikel yang dikembalikan meliputi judul, slug, kategori, dan nama penulis.
+[743][Body Text] Berikut adalah implementasi BookmarkController yang menangani HTTP request dan mendelegasikan ke service layer:
+[744][Body Text] 
+[745][Body Text] 
+[746][Body Text] 
+[747][Normal] 
+[748][Normal] Potongan Kode 3. BookmarkController::toggle() dengan validasi input dan delegasi ke service.
+[749][Body Text] Pada  controller,  validasi  input  dilakukan  menggunakan  fasilitas  $request-
+[750][Body Text] >validate() dari Laravel. Setelah validasi lolos, controller mengambil ID pengguna dari JWT token yang terdecode ( auth('api')->id() ) dan mendelegasikan operasi bisnis ke BookmarkService . Pemisahan tanggung jawab ini memastikan controller tetap tipis (thin controller) dan logika bisnis terpusat di service layer.
+[751][Body Text] 
+[752][Body Text] 
+[753][Body Text] 
+[754][Heading 4] Implementasi Fitur Statistik Dashboard CMS
+[755][Body Text] Fitur statistik dashboard CMS menyediakan data analitik yang berbeda berdasarkan role pengguna. Endpoint GET /api/cms/statistics mengembalikan statistik analitik visitor untuk admin, dan statistik personal untuk editor serta jurnalis. Berikut adalah implementasi CmsDashboardController :
+[756][Body Text] 
+[757][Normal] Potongan Kode 4. CmsDashboardController::index() dengan role-based routing internal.
+[758][Body Text] Pada method index() , sistem memeriksa role pengguna dari JWT token yang ter-decode. Jika role adalah admin, sistem memanggil getAdminStats() yang mengembalikan statistik analitik visitor (page views, total berita, user baru, sparklines, dan visitor data). Jika role adalah editor atau jurnalis, sistem memanggil getEditorStats() yang mengembalikan statistik personal.
+[759][Body Text] Berikut adalah implementasi method getEditorStats() yang menghitung statistik berdasarkan role:
+[760][Body Text] 
+[761][Body Text] 
+[762][Body Text] 
+[763][Normal] 
+[764][Normal] Potongan Kode 5. Method getEditorStats() dengan query role-based dan agregasi data.
+[765][Body Text] Method getEditorStats() menerapkan filter query berdasarkan role pengguna. Jurnalis hanya melihat artikel yang ditulisnya sendiri ( author_id = user.id ), sementara editor melihat artikel yang ditulisnya ditambah artikel yang dipublikasikannya ( author_id OR published_by ). Sistem menghitung tiga metrik utama: jumlah artikel published, jumlah draft, dan jumlah kategori aktif. Selain itu, sistem menyediakan data tahunan untuk visualisasi BarChart dan distribusi kategori untuk PieChart menggunakan agregasi DB::raw() .
+[766][Body Text] 
+[767][Body Text] 
+[768][Body Text] 
+[769][Heading 4] Definisi Route API
+[770][Body Text] Seluruh endpoint API didefinisikan pada berkas routes/api.php dengan pengelompokan berdasarkan middleware dan modul. Berikut adalah potongan kode routing untuk endpoint yang dikembangkan oleh penulis:
+[771][Body Text] 
+[772][Normal] Potongan Kode 6. Definisi route API untuk Bookmark dan CMS Statistics pada routes/api.php.
+[773][Body Text] Seluruh endpoint di dalam grup auth:api dilindungi oleh middleware JWT yang memverifikasi access token pada setiap request. Middleware memastikan bahwa hanya pengguna terautentikasi yang dapat mengakses endpoint-endpoint tersebut.
+[774][Heading 4] Ringkasan Endpoint REST API
+[775][Body Text] Sistem Klojen.com menyediakan lebih dari 50 endpoint REST API yang dikelompokkan berdasarkan modul fungsionalnya. Berikut adalah ringkasan seluruh endpoint yang tersedia:
+[776][Heading 3] Tabel 3.15 — Endpoint Autentikasi (4 endpoint)
+[777][Body Text] 
+[778][Heading 3] Tabel 3.16 — Endpoint Artikel (8 endpoint)
+[779][Body Text] 
+[780][Table Paragraph] 
+[781][Body Text] 
+[782][Table Paragraph] 
+[783][Body Text] 
+[784][Heading 3] Tabel 3.17 — Endpoint Kategori (4 endpoint)
+[785][Body Text] 
+[786][Heading 3] Tabel 3.18 — Endpoint Tag (4 endpoint)
+[787][Body Text] 
+[788][Heading 3] Tabel 3.19 — Endpoint Komentar (6 endpoint)
+[789][Body Text] 
+[790][Heading 3] Tabel 3.20 — Endpoint Bookmark (2 endpoint)
+[791][Body Text] 
+[792][Table Paragraph] 
+[793][Body Text] 
+[794][Heading 3] Tabel 3.21 — Endpoint Media (4 endpoint)
+[795][Body Text] 
+[796][Heading 3] Tabel 3.22 — Endpoint CMS Dashboard (1 endpoint)
+[797][Body Text] 
+[798][Heading 3] Tabel 3.23 — Endpoint Pencarian (1 endpoint)
+[799][Body Text] 
+[800][Heading 3] Tabel 3.24 — Endpoint Manajemen Pengguna (5 endpoint)
+[801][Body Text] 
+[802][Body Text] Dengan total lebih dari 39 endpoint API yang terorganisir dalam 9 modul, sistem Klojen.com menyediakan antarmuka komunikasi yang lengkap antara frontend dan backend. Seluruh endpoint mengikuti konvensi RESTful dengan format respons JSON yang konsisten:  { "status": "success", "data": { ... } } untuk respons
+[803][Body Text] 
+[804][Normal] sukses, dan { "status": "error", "error": "ERROR_CODE", "message": "..."
+[805][Body Text] } untuk respons error.
+[806][Body Text] 
+[807][Body Text] 
+[808][Body Text] 
+[809][Heading 4] Contoh Request dan Response API
+[810][Body Text] Berikut adalah contoh konkret format request dan response untuk beberapa endpoint utama, yang menunjukkan struktur data JSON yang dikembalikan oleh backend:
+[811][Heading 3] Login (POST /api/auth/login)
+[812][Body Text] 
+[813][Heading 3] Detail Artikel (GET /api/articles/:slug)
+[814][Body Text] 
+[815][List Paragraph] Daftar Artikel dengan Pagination (GET /api/articles?page=1&limit=10)
+[816][List Paragraph] 
+[817][Body Text] 
+[818][Normal] 
+[819][Normal] 
+[820][Body Text] 
+[821][Heading 3] Toggle Bookmark (POST /api/bookmarks)
+[822][Body Text] 
+[823][Heading 3] Ubah Status Artikel (PATCH /api/articles/:id/status)
+[824][Body Text] 
+[825][List Paragraph] Pencarian Artikel (GET /api/search?q=pemilu&page=1)
+[826][Body Text] 
+[827][Heading 3] Upload Media (POST /api/media) — multipart/form-data
+[828][Heading 3] 
+[829][Body Text] 
+[830][Normal] 
+[831][Body Text] 
+[832][Heading 4] Middleware Autentikasi & Otorisasi
+[833][Body Text] Autentikasi JWT ditangani oleh middleware dari package php-open-source-saver/jwt-auth yang memverifikasi tanda tangan digital JWT dan masa berlaku token secara otomatis. Untuk otorisasi berbasis role, sistem menggunakan middleware custom EnsureAdmin yang membatasi akses hanya untuk pengguna dengan role admin:
+[834][Body Text] 
+[835][Normal] Potongan Kode 11. Middleware EnsureAdmin untuk otorisasi berbasis role.
+[836][Normal] 
+[837][Body Text] Middleware ini memeriksa apakah user yang terautentikasi memiliki role admin . Jika tidak, request ditolak dengan respons 403 FORBIDDEN. Untuk endpoint yang memerlukan role lain (editor, journalist), pengecekan role dilakukan langsung di Service layer melalui method seperti validateRole() atau di Controller.
+[838][Body Text] 
+[839][Body Text] 
+[840][Body Text] 
+[841][Heading 4] Migrasi Database dan Seeder
+[842][Body Text] Laravel Migration digunakan sebagai version control untuk skema database. Setiap tabel dibuat melalui file migration yang dapat dijalankan ulang di lingkungan manapun. Berikut adalah contoh migration untuk tabel articles yang merupakan tabel inti sistem:
+[843][Body Text] 
+[844][Normal] // database/migrations/2026_05_19_100004_create_articles_table.php use Illuminate\Database\Migrations\Migration;
+[845][Normal] use Illuminate\Database\Schema\Blueprint; use Illuminate\Support\Facades\Schema;
+[846][Body Text] 
+[847][Normal] return new class extends Migration
+[848][Normal] {
+[849][Normal] public function up(): void
+[850][Normal] {
+[851][Normal] Schema::create('articles', function (Blueprint $table) {
+[852][Normal] $table->uuid('id')->primary();
+[853][Normal] $table->foreignId('author_id')->constrained('users')
+[854][Normal] ->cascadeOnDelete();
+[855][Normal] $table->foreignId('published_by')->nullable()
+[856][Normal] ->constrained('users')->nullOnDelete();
+[857][Normal] $table->foreignId('locked_by')->nullable()
+[858][Normal] ->constrained('users')->nullOnDelete();
+[859][Normal] $table->foreignUuid('category_id')
+[860][Normal] ->constrained('categories')->restrictOnDelete();
+[861][Normal] $table->string('title');
+[862][Normal] $table->string('slug')->unique();
+[863][Normal] $table->longText('content');
+[864][Normal] $table->enum('status', ['draft','review','scheduled', 'published','archived'])->default('draft')->index();
+[865][Normal] $table->boolean('is_featured')->default(false);
+[866][Normal] $table->unsignedBigInteger('view_count')->default(0)->index();
+[867][Normal] $table->string('featured_image_url')->nullable();
+[868][Normal] $table->timestamp('published_at')->nullable()->index();
+[869][Normal] $table->timestamps();
+[870][Normal] $table->softDeletes();
+[871][Normal] });
+[872][Normal] }
+[873][Body Text] 
+[874][Normal] public function down(): void
+[875][Normal] {
+[876][Normal] Schema::dropIfExists('articles');
+[877][Normal] }
+[878][Normal] };
+[879][Body Text] 
+[880][Normal] Potongan Kode 12. Migration tabel articles dengan foreign key constraints dan indexing.
+[881][Normal] Pada migration di atas, kolom author_id memiliki constraint cascadeOnDelete() yang berarti jika user penulis dihapus, seluruh artikelnya juga ikut terhapus. Kolom published_by menggunakan  nullOnDelete() agar jika user
+[882][Normal] 
+[883][Body Text] yang mempublikasikan dihapus, artikel tetap ada dengan kolom publisher bernilai null. Kolom status dan view_count diberi index untuk mempercepat query filtering dan sorting.
+[884][Body Text] Untuk mengisi data awal database, digunakan Seeder yang memuat data dari file JSON. Berikut adalah implementasi UserSeeder:
+[885][Body Text] 
+[886][Normal] Potongan Kode 13. UserSeeder dengan pemuatan data dari file JSON.
+[887][Normal] Seeder ini menggunakan pendekatan hybrid: Query Builder ( DB::table()-
+[888][Body Text] >insert() ) digunakan untuk operasi tulis karena memberikan kontrol eksplisit terhadap field yang di-insert, sementara Eloquent ORM tidak digunakan di sini karena tidak memerlukan eager loading relasi. Data user dimuat dari file JSON eksternal ( dummy2.json ) untuk memudahkan pengelolaan data dummy tanpa mengubah kode seeder.
+[889][Body Text] 
+[890][Heading 4] Scheduled Publishing dengan Artisan Command
+[891][Body Text] Fitur penjadwalan penerbitan artikel diimplementasikan melalui Artisan Command yang dijalankan secara berkala menggunakan Laravel Scheduler (cron job). Command ini memeriksa tabel scheduled_articles dan mempublikasikan artikel yang sudah mencapai waktu tayangnya:
+[892][Body Text] 
+[893][Normal] Potongan Kode 14. Artisan Command dengan Dependency Injection ke ScheduledPublishService.
+[894][Body Text] Command ini mengikuti prinsip Service-Repository Pattern — logika bisnis (query scheduled_articles,	update	status,	reindex)	didelegasikan	ke ScheduledPublishService , sementara Command hanya bertanggung jawab sebagai entry point CLI. Dependency Injection dilakukan melalui constructor, memanfaatkan RepositoryServiceProvider untuk binding interface ke implementasi. Command ini didaftarkan di Laravel Scheduler untuk berjalan setiap menit melalui konfigurasi pada
+[895][Body Text] 
+[896][Normal] routes/console.php :	Schedule::command('articles:publish-scheduled')-
+[897][Normal] >everyMinute() .
+[898][Normal] 
+[899][Body Text] 
+[900][Body Text] 
+[901][Heading 3] Implementasi Frontend
+[902][Body Text] Frontend Portal Berita Klojen.com dikembangkan menggunakan framework Next.js 15 dengan bahasa pemrograman TypeScript 5 dan framework CSS Tailwind CSS 4. Next.js dipilih karena menyediakan fitur Server-Side Rendering (SSR) dan Static Site Generation (SSG) yang sangat penting untuk optimasi SEO pada portal berita. TypeScript digunakan untuk menjamin type safety dan mengurangi bug pada saat pengembangan.
+[903][Body Text] Frontend dibagi menjadi dua bagian utama: Portal Publik (halaman yang dapat diakses oleh semua pengunjung) dan Dashboard CMS (panel khusus untuk tim redaksi: jurnalis, editor, dan admin).
+[904][Heading 4] Struktur Folder Frontend
+[905][Body Text] Struktur folder frontend mengikuti konvensi Next.js App Router dengan pengelompokan berdasarkan route group:
+[906][Body Text] 
+[907][Body Text] 
+[908][Body Text] 
+[909][Body Text] 
+[910][Body Text] 
+[911][Body Text] 
+[912][Body Text] 
+[913][Body Text] 
+[914][Body Text] 
+[915][Body Text] 
+[916][Body Text] 
+[917][Body Text] 
+[918][Table Paragraph] 
+[919][Body Text] 
+[920][Body Text] 
+[921][Body Text] 
+[922][Body Text] 
+[923][Body Text] 
+[924][Body Text] 
+[925][Heading 4] Stack Teknologi Frontend
+[926][Body Text] 
+[927][Normal] Tabel 3.25 Stack teknologi frontend Klojen.com
+[928][Normal] 
+[929][Body Text] 
+[930][Body Text] 
+[931][Heading 4] Implementasi Dashboard CMS
+[932][Body Text] Dashboard CMS adalah halaman utama untuk tim redaksi yang diakses melalui URL /cms/dashboard . Halaman ini menampilkan data statistik yang berbeda berdasarkan role pengguna. Implementasi dashboard menggunakan pola role-based rendering di mana komponen yang ditampilkan disesuaikan dengan role pengguna yang sedang login.
+[933][Body Text] Berikut adalah implementasi komponen DashboardPage yang melakukan routing berdasarkan role:
+[934][Body Text] 
+[935][Normal] Potongan Kode 7. Komponen DashboardPage dengan role-based rendering menggunakan Zustand store.
+[936][Body Text] Komponen DashboardPage memeriksa role pengguna yang tersimpan di Zustand auth store. Jika role adalah admin, komponen AdminDashboard ditampilkan yang berisi analitik visitor (page views, sparklines, visitor data). Jika role adalah editor atau jurnalis, komponen EditorDashboardView ditampilkan yang berisi statistik personal.
+[937][Body Text] Berikut adalah implementasi komponen EditorDashboardView yang mengambil data dari API dan menampilkannya menggunakan Recharts:
+[938][Body Text] 
+[939][Body Text] 
+[940][Body Text] 
+[941][Normal] 
+[942][Normal] Potongan Kode 8. EditorDashboardView dengan integrasi API dan visualisasi Recharts.
+[943][Body Text] Pada komponen ini, useEffect dipanggil saat halaman pertama kali dimuat untuk mengambil data statistik dari endpoint GET /api/cms/statistics menggunakan axiosInstance yang sudah dikonfigurasi dengan Bearer token otomatis. Data yang diterima (statCards, yearlyData, categoryData) kemudian divisualisasikan menggunakan library Recharts dalam bentuk BarChart (tren tahunan) dan PieChart (distribusi kategori).
+[944][Body Text] Layout CMS dilengkapi dengan Sidebar navigasi dan Topbar yang memiliki auth guard serta role-based navigation. Setiap role hanya melihat menu yang sesuai dengan hak aksesnya: admin melihat menu Pengguna, sedangkan jurnalis dan editor tidak. CMS dilindungi oleh auth guard yang mengarahkan pengguna yang belum login ke halaman
+[945][Normal] /login .
+[946][Normal] 
+[947][Body Text] 
+[948][Body Text] 
+[949][Heading 4] Implementasi Portal Berita (Dashboard Reader)
+[950][Body Text] Dashboard Reader adalah halaman utama portal berita Klojen.com yang diakses oleh pembaca umum. Halaman ini menampilkan artikel dari berbagai kategori (pendidikan, wisata, kuliner, hotel) dalam format card yang terorganisir. Halaman ini dibangun menggunakan Next.js 15 dengan SSR untuk memastikan konten langsung tersedia saat halaman dimuat, yang penting untuk SEO.
+[951][Body Text] Halaman dashboard reader menerapkan prinsip responsive design agar dapat diakses dengan optimal pada perangkat desktop maupun mobile. Antarmuka dirancang menggunakan warna yang konsisten, tipografi yang mudah dibaca, dan navigasi yang intuitif. Artikel ditampilkan dalam format card yang dikelompokkan berdasarkan kategori, memudahkan pembaca untuk menjelajahi konten yang sesuai dengan minat mereka.
+[952][Heading 4] Implementasi Halaman Detail Artikel
+[953][Body Text] Halaman detail artikel ( /[slug] ) merupakan halaman terpenting dari sisi SEO. Halaman ini menggunakan fitur Static Site Generation (SSG) dari Next.js untuk menghasilkan HTML statis pada saat build, sehingga mesin pencari dapat mengindeks konten dengan optimal.
+[954][Body Text] Setiap halaman artikel dilengkapi dengan:
+[955][List Paragraph] Metadata SEO dinamis — title, description, dan canonical URL yang di-generate dari data artikel
+[956][List Paragraph] JSON-LD Structured Data — schema.org Article yang membantu mesin pencari memahami struktur konten
+[957][List Paragraph] Open Graph meta tags — untuk preview yang optimal saat dibagikan di media sosial
+[958][List Paragraph] Tombol bookmark — terintegrasi dengan endpoint POST /api/bookmarks untuk menyimpan artikel
+[959][List Paragraph] Form komentar — memungkinkan pembaca meninggalkan komentar dengan rate limiting
+[960][List Paragraph] Komentar threaded — menampilkan komentar dengan dukungan balasan bersarang (maksimal 2 level)
+[961][List Paragraph] Artikel terkait — rekomendasi artikel berdasarkan kategori yang sama
+[962][Body Text] Data artikel di-fetch dari endpoint GET /api/articles/{slug} menggunakan SSG. Setiap kali halaman diakses, backend secara otomatis meng-increment view_count pada artikel tersebut untuk keperluan statistik popularitas.
+[963][Body Text] 
+[964][Heading 4] Implementasi Halaman Bookmark
+[965][Body Text] Halaman bookmark ( /bookmark ) menampilkan daftar artikel yang telah disimpan oleh pengguna dalam format grid card. Halaman ini memerlukan autentikasi dan diakses melalui URL /bookmark . Fitur yang tersedia meliputi:
+[966][List Paragraph] Grid card layout — menampilkan bookmark dalam format card responsif dengan gambar sampul, judul, kategori, dan nama penulis
+[967][List Paragraph] Pagination — menampilkan 6 item per halaman dengan navigasi halaman
+[968][List Paragraph] Toggle real-time — tombol bookmark pada setiap card dapat diklik untuk menghapus bookmark secara langsung tanpa reload halaman
+[969][List Paragraph] Sidebar artikel populer — menampilkan rekomendasi artikel populer berdasarkan view_count
+[970][Body Text] Halaman bookmark terintegrasi dengan dua endpoint: GET /api/bookmarks untuk mengambil daftar bookmark, dan POST /api/bookmarks untuk toggle bookmark. Berikut adalah implementasi fungsi API frontend untuk bookmark:
+[971][Body Text] 
+[972][Normal] Potongan Kode 9. Fungsi API frontend untuk bookmark dengan TypeScript generics.
+[973][Body Text] Fungsi getBookmarks() mengambil daftar bookmark dari backend menggunakan GET request. Fungsi toggleBookmark() mengirim POST request dengan article_id sebagai parameter — backend secara otomatis menambah atau menghapus bookmark berdasarkan keberadaan data (toggle pattern). Kedua fungsi menggunakan axiosInstance yang sudah dikonfigurasi dengan base URL dan Bearer token otomatis, serta menggunakan TypeScript generics untuk type safety pada respons API.
+[974][Body Text] 
+[975][Body Text] 
+[976][Body Text] 
+[977][Heading 4] Mekanisme Autentikasi di Frontend
+[978][Body Text] Siklus autentikasi di frontend diimplementasikan menggunakan kombinasi Zustand auth store, Axios interceptor, dan AuthProvider. Axios interceptor dikonfigurasi untuk menangani dua tugas utama: menyertakan Bearer token pada setiap request, dan melakukan silent token refresh secara transparan saat access token kedaluwarsa.
+[979][Body Text] Berikut adalah implementasi Axios interceptor dengan mekanisme silent token refresh:
+[980][Body Text] 
+[981][Body Text] 
+[982][Normal] Potongan Kode 10. Axios Interceptor dengan mekanisme Silent Token Refresh.
+[983][Body Text] Mekanisme silent token refresh berjalan secara transparan tanpa mengganggu pengalaman pengguna. Saat backend mengembalikan error TOKEN_EXPIRED , interceptor secara otomatis memanggil endpoint /auth/refresh untuk mendapatkan access token baru, lalu mengulang request asli dengan token baru. Flag _retry mencegah pemanggilan refresh berulang (infinite loop). Jika refresh gagal (misalnya refresh token kedaluwarsa atau dicabut), pengguna dipaksa logout dan diarahkan ke halaman login.
+[984][Heading 4] State Management dengan Zustand
+[985][Body Text] State management di frontend menggunakan Zustand, sebuah state management library yang ringan (kurang dari 1 KB) dan sederhana. Zustand dipilih karena tidak memerlukan provider wrapper di root komponen, mendukung TypeScript secara native, dan memiliki fitur persist middleware untuk menyimpan state ke localStorage.
+[986][Body Text] Auth store di Zustand menyimpan tiga data utama:
+[987][List Paragraph] accessToken — JWT access token yang digunakan untuk autentikasi API (disimpan di memory)
+[988][List Paragraph] user — data pengguna yang terautentikasi (id, name, email, role)
+[989][List Paragraph] isAuthenticated — status boolean yang menunjukkan apakah pengguna sedang login
+[990][Body Text] Dengan persist middleware, data user dan status autentikasi tetap terjaga meskipun halaman di-refresh. Access token disimpan di memory (variabel JavaScript) untuk keamanan, sehingga akan hilang saat browser ditutup. Refresh token disimpan di localStorage untuk memungkinkan silent refresh setelah halaman di-refresh.
+[991][Heading 4] Halaman-halaman CMS
+[992][Body Text] Selain dashboard, frontend CMS menyediakan beberapa halaman untuk mendukung alur kerja redaksi:
+[993][List Paragraph] Bank Berita ( /cms/artikel ) — Menampilkan daftar artikel dalam format tabel dengan filter status (draft, review, published, archived), filter kategori, dan pencarian. Jurnalis melihat artikel miliknya sendiri, editor dan admin melihat seluruh artikel.
+[994][List Paragraph] Tulis Berita ( /cms/artikel/tulis ) — Form penulisan artikel dengan rich text editor TipTap, upload gambar sampul, pemilihan kategori, tag, dan preview sebelum submit.
+[995][List Paragraph] Tinjauan ( /cms/artikel/tinjauan ) — Halaman khusus editor untuk mereview artikel yang berstatus review. Editor dapat menyetujui, menolak, atau meminta
+[996][List Paragraph] 
+[997][Body Text] revisi.
+[998][List Paragraph] Media ( /cms/media ) — Manajemen file media (gambar, video) dalam format grid. Mendukung upload, preview, dan penghapusan file.
+[999][List Paragraph] Komentar ( /cms/komentar ) — Panel moderasi komentar dengan filter status (pending, approved, rejected). Editor dan admin dapat menyetujui atau menolak komentar.
+[1000][List Paragraph] Pengguna ( /cms/pengguna ) — Halaman khusus admin untuk mengelola pengguna: membuat akun baru, mengubah role, menonaktifkan akun.
+[1001][List Paragraph] 
+[1002][Body Text] 
+[1003][Body Text] 
+[1004][Heading 4] Definisi Tipe Data TypeScript
+[1005][Body Text] Frontend menggunakan TypeScript untuk menjamin type safety di seluruh aplikasi. Seluruh tipe data yang diterima dari backend didefinisikan sebagai TypeScript interfaces pada berkas types/index.ts . Definisi tipe ini memastikan bahwa setiap data yang dikonsumsi frontend sesuai dengan kontrak API yang telah disepakati:
+[1006][Body Text] 
+[1007][Body Text] 
+[1008][Body Text] 
+[1009][Normal] 
+[1010][Normal] Potongan Kode 15. Definisi TypeScript interfaces untuk data API.
+[1011][Body Text] Penggunaan Pick<User, 'id' | 'name'> pada interface Article memungkinkan TypeScript mengambil hanya field yang diperlukan dari interface User, mengurangi ukuran tipe data yang harus ditulis. Tipe generik ApiSuccess<T> dan ApiError digunakan di seluruh fungsi API frontend untuk memastikan konsistensi respons.
+[1012][Body Text] 
+[1013][Heading 4] Schema Validasi Form dengan Zod
+[1014][Body Text] Seluruh validasi form di frontend menggunakan Zod schema yang dipasang ke React Hook Form. Validasi berjalan di client sebelum request dikirim ke server, memberikan feedback instan kepada pengguna. Berikut adalah definisi schema validasi:
+[1015][Body Text] 
+[1016][Body Text] 
+[1017][Body Text] 
+[1018][Normal] 
+[1019][Normal] Potongan Kode 16. Schema validasi Zod untuk form login, register, artikel, komentar, dan jadwal.
+[1020][Body Text] Setiap schema memvalidasi tipe data, panjang minimum/maximum, format email, dan format UUID. Schema scheduleSchema menggunakan method refine() untuk validasi custom yang memastikan waktu tayang minimal 5 menit dari waktu sekarang (sesuai Business Rule BR-04). React Hook Form mengintegrasikan schema ini secara otomatis dan menampilkan error message di bawah field yang bermasalah.
+[1021][Body Text] 
+[1022][Body Text] 
+[1023][Body Text] 
+[1024][Heading 4] Spesifikasi Halaman Portal Publik
+[1025][Body Text] Berikut adalah spesifikasi detail setiap halaman portal publik beserta data API yang dikonsumsi dan perilaku (behavior) masing-masing halaman:
+[1026][Heading 3] Tabel 3.29 — Spesifikasi Halaman Portal Publik
+[1027][Body Text] 
+[1028][Table Paragraph] 
+[1029][Body Text] 
+[1030][Body Text] 
+[1031][Heading 4] Spesifikasi Halaman CMS Redaksi
+[1032][Body Text] Berikut adalah spesifikasi detail setiap halaman CMS redaksi:
+[1033][Body Text] 
+[1034][Heading 3] Tabel 3.30 — Spesifikasi Halaman CMS Redaksi
+[1035][Body Text] 
+[1036][Body Text] 
+[1037][Heading 4] Konstanta dan Konfigurasi Frontend
+[1038][Body Text] Frontend mendefinisikan konstanta yang digunakan di seluruh aplikasi untuk memastikan konsistensi behavior:
+[1039][Body Text] 
+[1040][Body Text] 
+[1041][Body Text] 
+[1042][Normal] 
+[1043][Normal] Potongan Kode 17. Konstanta konfigurasi frontend.
+[1044][Body Text] 
+[1045][Heading 4] Fungsi API Frontend untuk Artikel
+[1046][Body Text] Selain fungsi API bookmark yang telah dijelaskan sebelumnya, berikut adalah fungsi API untuk mengelola artikel:
+[1047][Body Text] 
+[1048][Normal] // lib/api/articles.ts — Fungsi API untuk artikel import axiosInstance from '@/lib/axios';
+[1049][Normal] import { ApiSuccess, Article, ArticleStatus, Pagination, Comment } from '@/app/types';
+[1050][Body Text] 
+[1051][Normal] export const getArticles = (params?: {
+[1052][Normal] status?: ArticleStatus; category?: string; tag?: string; page?: number; limit?: number; featured?: boolean;
+[1053][Normal] }) => axiosInstance.get<ApiSuccess<{ articles: Article[]; pagination:
+[1054][Normal] Pagination }>>( '/articles', { params }
+[1055][Normal] );
+[1056][Body Text] 
+[1057][Normal] export const getCmsArticles = () => axiosInstance.get<ApiSuccess<Article[]>>('/cms/articles');
+[1058][Body Text] 
+[1059][Normal] export const getArticleBySlug = (slug: string) => axiosInstance.get<ApiSuccess<Article>>(`/articles/${slug}`);
+[1060][Body Text] 
+[1061][Normal] export const createArticle = (data: {
+[1062][Normal] title: string; content: string; category_id: string; tags?: string[]; featured_image_url?: string;
+[1063][Normal] }) => axiosInstance.post<ApiSuccess<{ id: string; slug: string; status: ArticleStatus }>>(
+[1064][Normal] '/cms/articles', data
+[1065][Normal] );
+[1066][Body Text] 
+[1067][Normal] export const updateArticleStatus = (id: string, data: {
+[1068][Normal] status: ArticleStatus; scheduled_at?: string; change_note?: string;
+[1069][Normal] }) => axiosInstance.patch<ApiSuccess<{ id: string; status: ArticleStatus
+[1070][Normal] }>>(
+[1071][Normal] `/cms/articles/${id}/status`, data
+[1072][Normal] );
+[1073][Body Text] 
+[1074][Normal] export const lockArticle = (id: string) => axiosInstance.post<ApiSuccess<null>>(`/cms/articles/${id}/lock`);
+[1075][Body Text] 
+[1076][Normal] export const unlockArticle = (id: string) => axiosInstance.post<ApiSuccess<null>>(`/cms/articles/${id}/unlock`);
+[1077][Normal] 
+[1078][Normal] Potongan Kode 18. Fungsi API frontend untuk CRUD artikel dengan TypeScript generics.
+[1079][Normal] Fungsi getArticles() digunakan untuk portal publik (hanya artikel published), sementara getCmsArticles() digunakan untuk CMS dengan filter berdasarkan role. Fungsi  createArticle()  dan  updateArticleStatus()  menggunakan  prefix
+[1080][Normal] /cms/articles karena merupakan operasi CMS. Fungsi lockArticle() dan unlockArticle() digunakan editor untuk mengunci artikel dari editing bersamaan. Seluruh fungsi menggunakan TypeScript generics ( ApiSuccess<T> ) untuk type safety.
+[1081][Normal] E. State Management Frontend (Zustand + Axios)
+[1082][Body Text] Frontend menggunakan Zustand sebagai state manager untuk autentikasi karena ringannya dan tanpa boilerplate. Auth Store ( authStore.ts ) menyimpan access token, data user, dan status autentikasi dengan menggunakan persist middleware agar state tersimpan di localStorage.
+[1083][Body Text] 
+[1084][Body Text] 
+[1085][Body Text] 
+[1086][Normal] 
+[1087][Normal] Potongan Kode 19. Implementasi Zustand Auth Store dengan persist middleware.
+[1088][Body Text] Auth Store menggunakan method setAuth() untuk login (menyimpan token dan data user sekaligus), setAccessToken() untuk update token saat silent refresh, updateUser() untuk update data profil, dan logout() untuk menghapus seluruh state. persist middleware menyimpan state ke localStorage dengan key auth-storage , memungkinkan rehidrasi otomatis saat halaman di-refresh. Helper functions ( getAccessToken , setAccessToken ) disediakan untuk mengakses store dari luar komponen React, terutama dari Axios interceptor.
+[1089][Normal] Axios Interceptors ( lib/axios.ts ) menyediakan dua interceptor utama:
+[1090][List Paragraph] Request Interceptor — Sebelum setiap request, baca accessToken dari Zustand store dan attach ke header: Authorization: Bearer <token>
+[1091][List Paragraph] Response Interceptor — Jika response error TOKEN_EXPIRED : (1) queue request yang gagal, (2) POST /auth/refresh dengan refresh_token, (3) update access_token di store, (4) retry semua queued request. Jika refresh gagal → force logout.
+[1092][Body Text] AuthProvider ( components/AuthProvider.tsx ) adalah komponen wrapper yang membungkus root layout. Saat halaman pertama kali dimuat (mount), AuthProvider  mengecek  refresh_token  di  localStorage,  jika  ada  →  silent  call
+[1093][Body Text] /auth/refresh → rehydrate user session. Ini memastikan user otomatis login saat refresh halaman tanpa perlu login ulang.
+[1094][Body Text] AnalyticsTracker ( components/AnalyticsTracker.tsx ) adalah komponen invisible (tidak render UI) yang listen perubahan pathname (navigasi). Setiap navigasi terdeteksi, komponen ini mengirim POST /analytics/track dengan data path, ip, dan user_agent. Anti-spam (dedup 5 menit) ditangani di backend.
+[1095][Heading 4] F. Fitur SEO (Search Engine Optimization)
+[1096][Body Text] Portal berita Klojen.com menerapkan beberapa strategi SEO untuk memastikan konten terindeks mesin pencari dengan baik:
+[1097][Body Text] 
+[1098][Table Paragraph] 
+[1099][Body Text] 
+[1100][Normal] Tabel 3.31 Fitur SEO yang Diimplementasikan
+[1101][Body Text] 
+[1102][Heading 4] G. Full-Text Search Implementation
+[1103][Normal] Pencarian artikel menggunakan MySQL FULLTEXT pada tabel search_indexes . Kolom search_vector menyimpan gabungan: judul artikel + konten (strip HTML) + nama-nama tag. Index diperbarui otomatis setiap kali artikel dibuat, diupdate, atau dipublish melalui SearchService . Query pencarian menggunakan MATCH(search_vector) AGAINST('keyword' IN NATURAL LANGUAGE MODE) untuk ranking relevansi otomatis oleh MySQL. Artisan command php artisan articles:reindex tersedia untuk rebuild seluruh search index dari awal jika diperlukan.
+[1104][Heading 4] H. Scheduled Publishing (Cron Job)
+[1105][Normal] Fitur penjadwalan tayang otomatis bekerja sebagai berikut: (1) Editor/Admin mengubah status artikel ke scheduled dengan scheduled_at minimal 5 menit dari sekarang, (2) Data disimpan di tabel scheduled_articles (article_id, scheduled_by, scheduled_at), (3) Cron job menjalankan Artisan command php artisan articles:publish-scheduled setiap menit, (4) Command mencari artikel yang sudah waktunya tayang, lalu mengubah status menjadi published , set published_at = NOW() , dan reindex search_indexes.
+[1106][Normal] 
+[1107][Body Text] 
+[1108][Body Text] 
+[1109][Heading 3] Pengujian Sistem
+[1110][Body Text] Setelah tahap implementasi selesai, dilakukan pengujian sistem untuk memastikan seluruh fitur berjalan sesuai spesifikasi yang telah ditetapkan pada tahap analisis kebutuhan. Pengujian dilakukan menggunakan metode Black Box Testing, yaitu pengujian yang berfokus pada fungsionalitas sistem tanpa melihat struktur kode internal. Pengujian dilakukan menggunakan Postman untuk endpoint API dan browser untuk antarmuka pengguna.
+[1111][Heading 4] Pengujian Autentikasi dan Otorisasi
+[1112][Body Text] Pengujian autentikasi mencakup seluruh alur login, registrasi, refresh token, dan logout serta mekanisme proteksi berdasarkan role.
+[1113][Body Text] 
+[1114][Table Paragraph] 
+[1115][Normal] Tabel 3.26 Hasil pengujian autentikasi dan otorisasi
+[1116][Body Text] 
+[1117][Heading 4] Pengujian Fitur Bookmark
+[1118][Body Text] 
+[1119][Normal] Tabel 3.27 Hasil pengujian fitur bookmark
+[1120][Normal] 
+[1121][Body Text] 
+[1122][Body Text] 
+[1123][Heading 4] Pengujian Portal Publik
+[1124][Body Text] 
+[1125][Normal] Tabel 3.28 Hasil pengujian portal publik
+[1126][Body Text] 
+[1127][Heading 4] Pengujian Dashboard CMS
+[1128][Body Text] 
+[1129][Table Paragraph] 
+[1130][Body Text] 
+[1131][Normal] Tabel 3.29 Hasil pengujian dashboard CMS
+[1132][Normal] 
+[1133][Body Text] 
+[1134][Body Text] 
+[1135][Heading 4] Pengujian Alur Kerja Editorial
+[1136][Body Text] 
+[1137][Normal] Tabel 3.30 Hasil pengujian alur kerja editorial
+[1138][Body Text] 
+[1139][Heading 4] Pengujian Keamanan
+[1140][Body Text] 
+[1141][Table Paragraph] 
+[1142][Body Text] 
+[1143][Normal] Tabel 3.31 Hasil pengujian keamanan
+[1144][Body Text] Berdasarkan hasil pengujian yang telah dilakukan, seluruh fitur berjalan sesuai spesifikasi yang telah ditetapkan. Seluruh skenario pengujian menghasilkan status Berhasil, yang menunjukkan bahwa sistem berfungsi dengan baik dan siap untuk digunakan.
+[1145][Body Text] 
+[1146][Body Text] 
+[1147][Heading 1] BAB IV
+[1148][Normal] HASIL DAN PEMBAHASAN
+[1149][Normal] 
+[1150][Body Text] 
+[1151][Body Text] 
+[1152][Heading 3] Hasil Pekerjaan
+[1153][Body Text] Selama pelaksanaan Praktek Kerja Lapangan di PT. Ketik Media Siber, penulis telah berhasil mengembangkan Portal Berita Klojen.com yang terdiri dari portal publik dan Content Management System (CMS) dengan arsitektur Headless CMS. Berikut adalah ringkasan hasil pekerjaan yang telah dicapai:
+[1154][List Paragraph] Perancangan UI/UX — Seluruh desain antarmuka berhasil dirancang menggunakan Figma, mencakup halaman Dashboard Reader, Detail Artikel, Bookmark, Dashboard CMS untuk tiga role (jurnalis, editor, admin), Bank Berita, Tulis Berita, Tinjauan, Media, dan Komentar. Desain menerapkan prinsip responsive design untuk desktop dan mobile.
+[1155][List Paragraph] Backend REST API — Backend berhasil dikembangkan menggunakan Laravel 12 dengan 50 endpoint REST API yang terorganisir dalam 12 modul (autentikasi, beranda, artikel publik, kategori, tag, komentar, bookmark, media, analitik, CMS artikel, CMS komentar/statistik/kategori/tag, dan manajemen pengguna). Autentikasi menggunakan JWT dengan mekanisme token pair dan silent refresh.
+[1156][List Paragraph] Frontend Portal Publik — Halaman Dashboard Reader, Detail Artikel (dengan SSG, JSON-LD, Open Graph), dan Bookmark berhasil diimplementasikan menggunakan Next.js 15 dengan TypeScript dan Tailwind CSS. Optimasi SEO diterapkan untuk memastikan konten terindeks mesin pencari.
+[1157][List Paragraph] Frontend Dashboard CMS — Dashboard CMS dengan role-based rendering berhasil diimplementasikan. Admin melihat analitik visitor, sedangkan editor dan jurnalis melihat statistik personal. Visualisasi data menggunakan Recharts (BarChart dan PieChart).
+[1158][List Paragraph] Fitur Bookmark — Implementasi bookmark dengan toggle pattern berhasil diterapkan di backend (BookmarkService dan BookmarkController) dan frontend (halaman bookmark dengan grid card, pagination, dan toggle real-time).
+[1159][List Paragraph] Fitur Statistik Dashboard — Endpoint GET /api/cms/statistics berhasil menghasilkan statistik yang berbeda berdasarkan role: admin mendapat analitik visitor, editor/jurnalis mendapat statistik personal dengan aggregasi data.
+[1160][List Paragraph] Alur Kerja Editorial — State machine editorial (draft → review → published/scheduled/rejected → archived) berhasil diimplementasikan dengan seluruh transisi status.
+[1161][List Paragraph] Integrasi Frontend-Backend — Seluruh halaman frontend berhasil terhubung dengan backend melalui REST API. Axios interceptor menangani penyertaan Bearer token dan silent refresh secara otomatis.
+[1162][List Paragraph] 
+[1163][List Paragraph] Pencarian Artikel — Fitur pencarian artikel menggunakan FULLTEXT index MySQL pada tabel search_indexes yang mendukung pencarian berdasarkan judul dan konten artikel. Index diperbarui otomatis setiap kali artikel di-publish atau di-update.
+[1164][List Paragraph] Manajemen Media — Sistem upload dan pengelolaan file media (gambar, video) dengan penyimpanan cloud storage. Mendukung validasi tipe file dan ukuran, serta fitur library media global yang bisa digunakan di berbagai artikel.
+[1165][List Paragraph] Penjadwalan Artikel — Editor dapat menjadwalkan artikel untuk tayang otomatis pada waktu tertentu. Cron job ( articles:publish-scheduled ) berjalan setiap menit untuk memproses artikel yang sudah waktunya tayang.
+[1166][List Paragraph] Manajemen Pengguna (RBAC) — Sistem Role-Based Access Control dengan empat role (Reader, Journalist, Editor, Admin) yang masing-masing memiliki hak akses berbeda. Admin dapat mengelola akun pengguna melalui panel CMS.
+[1167][Body Text] 
+[1168][Heading 3] Pembahasan
+[1169][Body Text] Pada bagian ini dibahas analisis terhadap keputusan arsitektural dan pola desain yang diterapkan selama pengembangan sistem.
+[1170][Heading 4] Arsitektur Headless CMS
+[1171][Body Text] Pemilihan arsitektur Headless CMS yang memisahkan backend dan frontend terbukti memberikan beberapa keuntungan: (1) backend dan frontend dapat dikembangkan secara paralel dan independen, (2) API yang sama dapat digunakan oleh berbagai jenis klien (web, mobile app), (3) tim dapat memilih teknologi yang paling sesuai untuk setiap sisi — Laravel untuk backend yang membutuhkan ORM dan validasi yang kuat, Next.js untuk frontend yang membutuhkan SSR/SSG untuk SEO.
+[1172][Heading 4] Service-Repository Pattern
+[1173][Body Text] Penerapan Service-Repository Pattern pada backend Laravel menghasilkan kode yang lebih terstruktur dan mudah dipelihara. Pemisahan logika bisnis (Service) dari akses data (Repository) memudahkan pengujian unit karena setiap layer dapat diuji secara terpisah. Selain itu, pattern ini memungkinkan penggantian implementasi repository tanpa mempengaruhi service layer, misalnya untuk berpindah dari MySQL ke PostgreSQL.
+[1174][Heading 4] Toggle Pattern untuk Bookmark
+[1175][Body Text] Keputusan menggunakan toggle pattern untuk bookmark (satu endpoint POST untuk dua operasi) menyederhanakan API dan mengurangi kompleksitas frontend. Frontend tidak perlu membedakan antara endpoint tambah dan hapus, cukup memanggil
+[1176][Body Text] 
+[1177][Body Text] satu endpoint yang sama. Backend menangani logika check-then-insert/delete secara transparan.
+[1178][Heading 4] JWT Token Pair dan Silent Refresh
+[1179][Body Text] Mekanisme token pair (access token pendek + refresh token panjang) memberikan keseimbangan antara keamanan dan kenyamanan pengguna. Access token berumur pendek (15 menit) meminimalkan risiko jika token dicuri, sedangkan refresh token berumur panjang (30 hari) menjaga pengguna tetap login tanpa perlu autentikasi berulang. Axios interceptor yang melakukan silent refresh secara transparan memastikan pengalaman pengguna tidak terganggu saat access token berganti.
+[1180][Heading 4] State Machine Editorial Workflow
+[1181][Body Text] Alur kerja editorial menggunakan state machine dengan lima status: draft , review , published , scheduled , dan archived . Pendekatan ini memastikan bahwa setiap transisi status mengikuti aturan yang telah ditentukan dan mencegah transisi ilegal (misalnya, artikel yang sudah published tidak bisa kembali ke draft). CmsArticleService memvalidasi setiap transisi melalui method validateTransition() sebelum mengupdate status di database. Pendekatan ini memberikan kepastian bahwa alur kerja redaksi berjalan konsisten dan dapat diprediksi.
+[1182][Heading 4] Optimasi SEO pada Portal Berita
+[1183][Body Text] Portal berita Klojen.com menerapkan beberapa strategi SEO untuk memastikan konten terindeks mesin pencari dengan baik. Pertama, Static Site Generation (SSG) pada Next.js menghasilkan halaman HTML statis yang dapat langsung di-crawl oleh bot mesin pencari. Kedua, JSON-LD structured data (schema.org/NewsArticle) memberikan informasi terstruktur tentang artikel kepada mesin pencari. Ketiga, Open Graph meta tags memastikan artikel tampil dengan preview yang menarik saat dibagikan di media sosial. Keempat, sitemap.xml dan news-sitemap.xml yang digenerate secara otomatis memudahkan mesin pencari menemukan dan mengindeks seluruh halaman.
+[1184][Heading 4] Penanganan Error dan Konsistensi API
+[1185][Body Text] Backend menerapkan format respons error yang konsisten dalam bentuk JSON dengan field error (kode error), message (pesan deskriptif), dan details (detail tambahan opsional). Setiap modul memiliki kode error spesifik (misalnya AUTH_001 untuk kredensial invalid, ARTICLE_003 untuk artikel tidak ditemukan) yang memudahkan frontend mengidentifikasi jenis error dan menampilkan pesan yang sesuai kepada pengguna. Pendekatan ini juga memudahkan debugging karena setiap error dapat dilacak berdasarkan kode uniknya.
+[1186][Heading 4] Validasi Form Berbasis Schema (Zod)
+[1187][Heading 4] 
+[1188][Body Text] Frontend menggunakan Zod untuk validasi form berbasis schema. Setiap form (login, registrasi, artikel, komentar, jadwal publish) memiliki schema Zod yang mendefinisikan aturan validasi secara deklaratif. Schema ini diintegrasikan dengan React Hook Form melalui resolver, memastikan validasi terjadi secara real-time saat pengguna mengisi form. Keuntungan pendekatan ini: (1) aturan validasi terpusat dalam satu tempat, (2) type-safe karena TypeScript dapat menginfer tipe data dari schema, dan
+[1189][Body Text] (3) pesan error yang dihasilkan otomatis dan konsisten.
+[1190][Body Text] 
+[1191][Heading 4] I. Peningkatan Sistem dari Desain Awal
+[1192][Body Text] Selama proses pengembangan, beberapa komponen sistem ditambahkan atau disempurnakan dari desain awal untuk meningkatkan keamanan, kelengkapan fungsional, dan ketahanan sistem. Berikut adalah peningkatan-peningkatan yang dilakukan:
+[1193][Heading 3] Manajemen Sesi dengan Refresh Token
+[1194][Body Text] Desain awal hanya menggunakan JWT stateless tanpa mekanisme revokasi. Masalahnya: JWT yang sudah diterbitkan tidak bisa dicabut sebelum expired. Jika akun di-suspend atau token dicuri, token tersebut tetap berlaku hingga masa berlakunya habis
+[1195][Body Text] — ini merupakan celah keamanan serius. Solusinya, sistem menggunakan dua jenis token secara bersamaan: Access Token (JWT berumur pendek 15 menit, dikirim di header setiap request API) dan Refresh Token (token berumur panjang 30 hari, disimpan sebagai hash SHA-256 di tabel refresh_tokens , digunakan hanya untuk meminta access token baru). Token direvoke dalam tiga skenario: user melakukan logout, admin menonaktifkan akun, atau deteksi aktivitas mencurigakan.
+[1196][Heading 3] Audit Trail Revisi Artikel
+[1197][Body Text] Tabel article_revisions disempurnakan dengan penambahan kolom edited_by (mencatat siapa yang melakukan perubahan), title_snapshot (menyimpan judul sebelum diubah), dan change_note (catatan singkat alasan perubahan). Penyempurnaan ini membuat audit trail benar-benar berguna untuk kebutuhan redaksi nyata, memungkinkan editor melihat riwayat perubahan lengkap beserta siapa yang mengubah dan alasannya.
+[1198][Heading 3] Scheduled Publish (Penjadwalan Tayang Otomatis)
+[1199][Body Text] Portal berita membutuhkan kemampuan menjadwalkan artikel untuk tayang pada waktu tertentu — misalnya berita embargo atau siaran pers terjadwal. Ditambahkan tabel scheduled_articles dan status baru scheduled . Sebuah Artisan command ( articles:publish-scheduled ) dijalankan melalui cron job setiap menit untuk memproses artikel yang sudah waktunya tayang secara otomatis.
+[1200][Heading 3] Full-Text Search dengan MySQL
+[1201][Heading 3] 
+[1202][Body Text] Pencarian berdasarkan kata kunci di desain awal menggunakan query LIKE '%kata%' yang tidak bisa memanfaatkan index dan menjadi lambat seiring bertambahnya jumlah artikel. Solusinya, ditambahkan tabel search_indexes terpisah yang menyimpan title dan content dalam format yang dioptimalkan untuk pencarian FULLTEXT MySQL. Index diperbarui secara otomatis setiap kali artikel di-publish atau di-update melalui SearchService.
+[1203][Heading 3] Rate Limiting Komentar
+[1204][Body Text] Untuk mencegah spam komentar, ditambahkan mekanisme rate limiting menggunakan tabel comment_rate_limits . Setiap user dibatasi maksimal 10 komentar per jam. Sistem menghitung jumlah komentar yang dibuat user dalam satu jam terakhir dan menolak permintaan baru jika batas tercapai, mengembalikan respons HTTP 429 (Too Many Requests).
+[1205][Body Text] 
+[1206][Body Text] 
+[1207][Body Text] 
+[1208][Heading 3] Hambatan dan Solusi
+[1209][Body Text] Selama pelaksanaan PKL, penulis menghadapi beberapa hambatan yang berhasil diatasi dengan solusi berikut:
+[1210][Body Text] 
+[1211][Table Paragraph] 
+[1212][Body Text] 
+[1213][Normal] Tabel 4.1 Hambatan dan solusi selama pelaksanaan PKL
+[1214][Body Text] 
+[1215][Heading 3] Pengembangan yang Disarankan
+[1216][Body Text] Beberapa saran pengembangan yang dapat dilakukan untuk meningkatkan kualitas dan fungsionalitas sistem di masa mendatang:
+[1217][List Paragraph] Real-time Notification — Implementasi WebSocket untuk memberikan notifikasi real-time kepada pengguna ketika ada perubahan pada artikel, komentar, atau bookmark mereka. Teknologi seperti Laravel Echo dan Pusher dapat diintegrasikan untuk keperluan ini.
+[1218][List Paragraph] Automated Testing — Penambahan automated testing menggunakan PHPUnit untuk backend dan React Testing Library untuk frontend guna memastikan kualitas kode secara otomatis dan mencegah regresi.
+[1219][List Paragraph] Export Data Statistik — Penambahan fitur export data statistik dashboard CMS ke format PDF atau Excel untuk keperluan laporan dan analisis offline.
+[1220][List Paragraph] Caching Layer — Implementasi caching menggunakan Redis untuk query yang sering diakses (seperti daftar artikel published dan statistik dashboard) guna meningkatkan waktu respons API.
+[1221][List Paragraph] Content Delivery Network (CDN) — Integrasi dengan CDN untuk mempercepat distribusi konten statis dan gambar ke pengguna di berbagai lokasi geografis.
+[1222][List Paragraph] Progressive Web App (PWA) — Konversi portal berita menjadi PWA untuk memberikan pengalaman mobile app-like dengan kemampuan offline reading dan push notification.
+[1223][List Paragraph] Multi-language Support — Penambahan dukungan multi-bahasa (internasionalisasi) menggunakan library seperti next-intl atau i18next untuk menjangkau pembaca yang lebih luas.
+[1224][List Paragraph] AI-Powered Content Recommendation — Implementasi sistem rekomendasi artikel berbasis machine learning yang menganalisis pola baca pengguna untuk menyarankan artikel yang relevan secara personal.
+[1225][List Paragraph] 
+[1226][List Paragraph] Social Media Integration — Integrasi dengan API media sosial (Twitter/X, Facebook, Instagram) untuk fitur auto-share artikel yang baru diterbitkan dan social login.
+[1227][List Paragraph] 
+[1228][Body Text] 
+[1229][Heading 1] BAB V PENUTUP
+[1230][Heading 1] 
+[1231][Body Text] 
+[1232][Body Text] 
+[1233][Heading 3] Kesimpulan
+[1234][Body Text] Berdasarkan pelaksanaan Praktek Kerja Lapangan yang telah dilakukan di PT. Ketik Media Siber dalam pengembangan Portal Berita Klojen.com, dapat ditarik beberapa kesimpulan sebagai berikut:
+[1235][List Paragraph] Arsitektur Headless CMS yang memisahkan backend (Laravel 12) dan frontend (Next.js 15) terbukti efektif dalam membangun portal berita modern yang mendukung alur kerja redaksi secara terintegrasi, mulai dari penulisan artikel, proses editorial, penerbitan, hingga interaksi pembaca.
+[1236][List Paragraph] Penerapan Service-Repository Pattern pada backend menghasilkan kode yang terstruktur, mudah diuji, dan dapat dipelihara. Pemisahan tanggung jawab antara controller, service, dan repository memudahkan pengembangan dan debugging.
+[1237][List Paragraph] Fitur bookmark dengan toggle pattern berhasil menyederhanakan API dengan satu endpoint POST yang menangani dua operasi (tambah dan hapus), mengurangi kompleksitas frontend, dan memberikan pengalaman pengguna yang responsif.
+[1238][List Paragraph] Dashboard CMS dengan role-based rendering berhasil menyediakan statistik yang relevan untuk setiap role: admin mendapat analitik visitor, editor dan jurnalis mendapat statistik personal. Visualisasi data menggunakan Recharts (BarChart dan PieChart) membantu tim redaksi memahami data dengan mudah.
+[1239][List Paragraph] Mekanisme autentikasi JWT dengan token pair dan silent token refresh memberikan keseimbangan optimal antara keamanan dan kenyamanan pengguna, memastikan sesi tetap aktif tanpa gangguan re-login.
+[1240][List Paragraph] Optimasi SEO pada portal berita berhasil diterapkan melalui Static Site Generation (SSG), JSON-LD structured data, Open Graph meta tags, dan metadata dinamis yang memastikan konten terindeks mesin pencari dengan baik.
+[1241][List Paragraph] Hasil pengujian Black Box Testing menunjukkan bahwa seluruh fitur yang dikembangkan berfungsi sesuai spesifikasi, mencakup autentikasi, bookmark, portal publik, dashboard CMS, alur kerja editorial, dan keamanan.
+[1242][Body Text] 
+[1243][Heading 3] Saran
+[1244][Body Text] Beberapa saran yang dapat dipertimbangkan untuk berbagai pihak:
+[1245][Heading 3] Untuk Perusahaan (PT. Ketik Media Siber):
+[1246][List Paragraph] Dilakukan pengembangan fitur real-time notification menggunakan WebSocket untuk meningkatkan pengalaman pengguna.
+[1247][List Paragraph] Dilakukan implementasi caching layer menggunakan Redis untuk meningkatkan performa API, terutama pada endpoint yang sering diakses.
+[1248][List Paragraph] 
+[1249][List Paragraph] Dilakukan penambahan automated testing (PHPUnit dan React Testing Library) untuk menjaga kualitas kode secara berkelanjutan.
+[1250][Heading 3] Untuk Program Studi Informatika UPN “Veteran” Jawa Timur:
+[1251][List Paragraph] Diharapkan materi tentang arsitektur Headless CMS dan Service-Repository Pattern dapat dimasukkan ke dalam kurikulum untuk mempersiapkan mahasiswa menghadapi tren pengembangan web modern.
+[1252][List Paragraph] Diharapkan kerja sama dengan PT. Ketik Media Siber dapat dilanjutkan dan diperluas untuk memberikan lebih banyak kesempatan PKL bagi mahasiswa.
+[1253][Heading 3] Untuk Pengembang Selanjutnya:
+[1254][List Paragraph] Dokumentasi API yang telah disusun (Lampiran B) dapat digunakan sebagai referensi untuk pengembangan fitur baru.
+[1255][List Paragraph] Disarankan untuk mengikuti konvensi kode dan pola arsitektur yang telah ditetapkan (Service-Repository Pattern) agar konsistensi kode tetap terjaga.
+[1256][List Paragraph] 
+[1257][Body Text] 
+[1258][Heading 1] DAFTAR PUSTAKA
+[1259][Body Text] 
+[1260][Body Text] 
+[1261][Normal] Otwell, T. (2025). Laravel 12 — The PHP Framework for Web Artisans. Diakses dari https://laravel.com/docs
+[1262][Body Text] 
+[1263][Normal] Vercel. (2025). Next.js 15 Documentation — The React Framework for the Web. Diakses dari https://nextjs.org/docs
+[1264][Body Text] 
+[1265][Normal] Tailwind Labs. (2025). Tailwind CSS — Rapidly Build Modern Websites. Diakses dari https://tailwindcss.com/docs
+[1266][Body Text] 
+[1267][Normal] Microsoft. (2025). TypeScript: JavaScript With Syntax For Types. Diakses dari https://www.typescriptlang.org/docs
+[1268][Body Text] 
+[1269][Normal] Auth0.	(2024).	Introduction	to	JSON	Web	Tokens.	Diakses	dari https://jwt.io/introduction
+[1270][Body Text] 
+[1271][Normal] Oracle.	(2024).	MySQL	8.0	Reference	Manual.	Diakses	dari https://dev.mysql.com/doc/refman/8.0/en/
+[1272][Body Text] 
+[1273][Normal] Strapi.	(2024).	What	is	a	Headless	CMS?	Diakses	dari https://strapi.io/resources/articles/what-is-headless-cms
+[1274][Body Text] 
+[1275][Normal] Recharts. (2025). Recharts — A Composable Charting Library Built on React Components. Diakses dari https://recharts.org
+[1276][Body Text] 
+[1277][Normal] Poeldijk, R. (2023). Service-Repository Pattern in Laravel. Diakses dari https://laravel-news.com/service-repository-pattern
+[1278][Body Text] 
+[1279][Normal] Sommerville, I. (2016). Software Engineering (10th ed.). Pearson Education.
+[1280][Body Text] 
+[1281][Body Text] 
+[1282][Normal] Pressman, R. S., & Maxim, B. R. (2020). Software Engineering: A Practitioner’s Approach (9th ed.). McGraw-Hill Education.
+[1283][Normal] 
+[1284][Body Text] 
+[1285][Normal] Fowler, M. (2002). Patterns of Enterprise Application Architecture. Addison-Wesley Professional.
+[1286][Body Text] 
+[1287][Normal] Freeman, E., & Robson, E. (2020). Head First Design Patterns (2nd ed.). O’Reilly Media.
+[1288][Body Text] 
+[1289][Normal] Vercel.	(2025).	Next.js	App	Router	—	Rendering	Strategies.	Diakses	dari https://nextjs.org/docs/app/building-your-application/rendering
+[1290][Body Text] 
+[1291][Normal] tymon. (2024). JWT Auth — JSON Web Token Authentication for Laravel. Diakses dari https://github.com/tymondesigns/jwt-auth
+[1292][Body Text] 
+[1293][Normal] Colby,  C.  (2023).  Zod  —  TypeScript-First  Schema  Validation.  Diakses  dari https://zod.dev
+[1294][Body Text] 
+[1295][Normal] Zustand Contributors. (2025). Zustand — Bear Necessities for State Management.
+[1296][Body Text] Diakses dari https://docs.pmnd.rs/zustand
+[1297][Body Text] 
+[1298][Body Text] 
+[1299][Normal] Axios Contributors. (2025). Axios — Promise Based HTTP Client for the Browser and Node.js. Diakses dari https://axios-http.com/docs/intro
+[1300][Body Text] 
+[1301][Normal] TipTap.	(2025).	TipTap	—	The	Headless	Editor	Framework.	Diakses	dari https://tiptap.dev/docs
+[1302][Body Text] 
+[1303][Normal] Cloudinary. (2024). Cloudinary — Media Management and Delivery Platform. Diakses dari https://cloudinary.com/documentation
+[1304][Normal] 
+[1305][Body Text] 
+[1306][Heading 1] LAMPIRAN A
+[1307][Normal] LOG ACTIVITY PELAKSANAAN PKL
+[1308][Body Text] 
+[1309][Body Text] 
+[1310][Body Text] 
+[1311][Normal] 
+[1312][Body Text] 
+[1313][Table Paragraph] 
+[1314][Body Text] 
+[1315][Heading 1] LAMPIRAN B
+[1316][Normal] API ENDPOINT QUICK REFERENCE
+[1317][Body Text] 
+[1318][Body Text] Berikut adalah daftar lengkap endpoint REST API yang tersedia pada Portal Berita Klojen.com:
+[1319][Body Text] 
+[1320][Table Paragraph] 
+[1321][Body Text] 
+[1322][Table Paragraph] 
+[1323][Body Text] 
+[1324][Normal] Tabel B.1 Daftar lengkap 50 endpoint REST API Klojen.com
+[1325][Body Text] 
+[1326][Heading 3] Error Codes Reference
+[1327][Body Text] Berikut adalah daftar lengkap error code yang digunakan di seluruh API Klojen.com:
+[1328][Body Text] 
+[1329][Table Paragraph] 
+[1330][Body Text] 
+[1331][Normal] Tabel B.2 Error Codes Reference
+[1332][Normal] 
+[1333][Body Text] 
+[1334][Heading 1] LAMPIRAN C
+[1335][Normal] SURAT KETERANGAN SELESAI PKL
+[1336][Body Text] 
+[1337][Body Text] 
+[1338][Body Text] 
+[1339][Body Text] 
+[1340][Body Text] 
+[1341][Body Text] 
+[1342][Body Text] 
+
+
+=== TABLES ===
+
+--- Table 0 ---
+  Row 0: ['Singkatan', 'Keterangan']
+  Row 1: ['API', 'Application Programming Interface — antarmuka pemrograman yang memungkinkan komunikasi antar sistem perangkat lunak']
+  Row 2: ['CMS', 'Content Management System — sistem manajemen konten untuk mengelola dan mempublikasikan konten digital']
+  Row 3: ['CRUD', 'Create, Read, Update, Delete — empat operasi dasar pada pengelolaan data']
+  Row 4: ['CSR', 'Client-Side Rendering — mekanisme rendering halaman di sisi klien (browser)']
+  Row 5: ['JWT', 'JSON Web Token — standar token berbasis JSON untuk autentikasi yang aman dan stateless']
+  Row 6: ['ORM', 'Object-Relational Mapping — teknik pemetaan objek perangkat lunak ke tabel database']
+  Row 7: ['PKL', 'Praktek Kerja Lapangan — kegiatan praktik kerja di instansi atau perusahaan']
+  Row 8: ['RBAC', 'Role-Based Access Control — mekanisme kontrol akses berdasarkan peran pengguna']
+  Row 9: ['REST', 'Representational State Transfer — gaya arsitektur perangkat lunak untuk sistem terdistribusi']
+  Row 10: ['SEO', 'Search Engine Optimization — optimasi visibilitas konten pada mesin pencari']
+  Row 11: ['SSG', 'Static Site Generation — mekanisme pre-rendering halaman saat build time']
+  Row 12: ['SSR', 'Server-Side Rendering — mekanisme rendering halaman di sisi server']
+  Row 13: ['UI/UX', 'User Interface / User Experience — antarmuka dan pengalaman pengguna']
+  Row 14: ['UML', 'Unified Modeling Language — bahasa pemodelan standar untuk sistem berorientasi objek']
+
+--- Table 1 ---
+  Row 0: ['Minggu', 'Periode', 'Kegiatan', 'Jam']
+  Row 1: ['Minggu 1', '9 – 14 Feb 2026', 'Pengenalan Laravel, Git, struktur proyek, setup lokal & Docker', '48']
+  Row 2: ['Minggu 2', '16 – 21 Feb 2026', 'MVC, Routing, Controller, Blade, validasi form', '48']
+  Row 3: ['Minggu 3', '23 – 28 Feb 2026', 'Relasi model, migration, seeder, Eloquent ORM', '48']
+  Row 4: ['Minggu 4', '2 – 7 Mar 2026', 'REST API, Auth Sanctum, middleware dasar, pengujian dengan Postman', '48']
+  Row 5: ['Minggu 5', '9 – 14 Mar 2026', 'Upload file, storage, konfigurasi Nginx, cronjob backup', '48']
+  Row 6: ['Minggu 6', '16 – 21 Mar 2026', 'Optimasi API, rate limit, logging, policy, penanganan exception', '48']
+  Row 7: ['Minggu 7', '23 – 28 Mar 2026', 'Uji coba, refactor controller, custom error handler', '48']
+  Row 8: ['Minggu 8', '30 Mar – 4 Apr 2026', 'Setup proyek Next.js, konfigurasi Tailwind CSS, struktur folder, routing dasar', '48']
+  Row 9: ['Minggu 9', '6 – 11 Apr 2026', 'SSR & SSG di Next.js, konsumsi API Laravel, komponen UI dengan Tailwind', '48']
+  Row 10: ['Minggu 10–12', '13 Apr – 2 Mei 2026', 'Infinite scroll, search & filter, lazy loading, image optimization, dynamic routing', '144']
+  Row 11: ['Minggu 13–14', '4 – 16 Mei 2026', 'Kontribusi fitur pada platform Ketik.com: kategori, trending, UX improvements', '96']
+
+--- Table 2 ---
+  Row 0: ['Minggu 15–19', '18 Mei – 19 Jun 2026', 'Proyek akhir fullstack (Laravel API + Next.js), testing, debugging, finalisasi, presentasi', '240']
+
+--- Table 3 ---
+  Row 0: ['Teknologi', 'Alasan Pemilihan']
+  Row 1: ['Laravel 12 (Backend)', 'Dipilih karena menyediakan ekosistem lengkap untuk pengembangan REST API: Eloquent ORM untuk akses database yang elegan, Artisan CLI untuk command scheduling, migration & seeder untuk versioning database, middleware untuk autentikasi dan otorisasi, serta dukungan JWT melalui package php-open-source-saver/jwt-auth . Sintaks PHP 8.2+ yang modern (readonly properties, constructor promotion) menghasilkan kode yang lebih ringkas dan maintainable.']
+  Row 2: ['Next.js 15 (Frontend)', 'Dipilih karena menyediakan tiga mode rendering dalam satu framework: SSG (Static Site Generation) untuk halaman artikel yang optimal untuk SEO — mesin pencari dapat meng-crawl HTML statis, SSR (Server-Side Rendering) untuk halaman yang membutuhkan data real-time, dan CSR (Client-Side Rendering) untuk halaman CMS yang sangat interaktif. App Router di Next.js 15 mendukung route group, parallel routes, dan server components yang memudahkan organisasi kode.']
+  Row 3: ['TypeScript 5', 'Dipilih karena memberikan type safety yang mencegah bug saat development. Interface dan generic type memastikan konsistensi data antara frontend dan backend — misalnya interface ApiSuccess<T> memastikan response API selalu memiliki struktur yang benar. TypeScript juga meningkatkan developer experience melalui auto-completion dan refactoring yang lebih aman di IDE.']
+  Row 4: ['Tailwind CSS 4', 'Dipilih karena pendekatan utility-first yang memungkinkan pengembangan UI yang cepat tanpa meninggalkan file komponen. Tidak memerlukan file CSS terpisah, mendukung responsive design melalui breakpoint classes, dan menghasilkan bundle CSS yang sangat kecil karena hanya menyertakan class yang digunakan (tree-shaking).']
+  Row 5: ['Zustand 5 (State Management)', 'Dipilih sebagai alternatif Redux yang lebih ringan (kurang dari 1KB) dan tanpa boilerplate. Tidak memerlukan Provider wrapper, action creators, atau reducer — cukup satu fungsi create() untuk mendefinisikan store. Fitur persist middleware secara otomatis menyimpan state ke localStorage, memungkinkan rehidrasi otomatis saat refresh halaman.']
+
+--- Table 4 ---
+  Row 0: ['Zod 3 (Validasi)', 'Dipilih karena menyediakan schema validation yang TypeScript-first. Schema Zod dapat digunakan untuk menginfer type TypeScript secara otomatis ( z.infer<typeof schema> ), menghilangkan duplikasi antara validasi runtime dan type definition. Terintegrasi dengan React Hook Form melalui resolver, memberikan validasi real-time pada form.']
+  Row 1: ['TipTap 2 (Rich Text Editor)', 'Dipilih karena bersifat headless (tanpa UI bawaan) sehingga tampilan editor dapat dikustomisasi sepenuhnya sesuai desain Figma. Mendukung output HTML yang dapat disimpan langsung di database dan ditampilkan di portal publik tanpa konversi tambahan. Mendukung extension seperti image upload, heading, list, dan blockquote.']
+  Row 2: ['MySQL 8 (Database)', 'Dipilih karena menyediakan fitur FULLTEXT indexing yang memungkinkan pencarian teks lengkap tanpa memerlukan engine terpisah seperti Elasticsearch. UUID primary key didukung secara native, kompatibilitas penuh dengan Laravel, dan dukungan komunitas yang luas. Fitur JSON data type dan Window Functions tersedia untuk kebutuhan query kompleks.']
+  Row 3: ['Recharts 2 (Visualisasi Data)', 'Dipilih karena dibangun di atas React components sehingga integrasi dengan Next.js sangat natural. Komponen chart deklaratif ( <BarChart> , <PieChart> ) memudahkan pembuatan dashboard statistik tanpa perlu mempelajari API yang kompleks. Mendukung responsive container untuk tampilan mobile.']
+  Row 4: ['Axios (HTTP Client)', 'Dipilih karena menyediakan fitur interceptor yang sangat penting untuk implementasi silent token refresh. Request interceptor menyertakan Bearer token secara otomatis, response interceptor mendeteksi token expired dan melakukan refresh tanpa interaksi user. Fitur ini tidak tersedia di native fetch() API tanpa implementasi manual yang kompleks.']
+
+--- Table 5 ---
+  Row 0: ['Controllers (Thin) AuthController, ArticleController BookmarkController, MediaCtrl', '', 'Services (Business Logic) AuthService, CmsArticleService BookmarkService, SearchService', '', 'Repositories (Data Access) ArticleRepo, UserRepo BookmarkRepo, MediaRepo']
+  Row 1: ['Controllers (Thin) AuthController, ArticleController BookmarkController, MediaCtrl', '', 'Services (Business Logic) AuthService, CmsArticleService BookmarkService, SearchService', '', 'Repositories (Data Access) ArticleRepo, UserRepo BookmarkRepo, MediaRepo']
+
+--- Table 6 ---
+  Row 0: ['Pattern', 'Implementasi']
+  Row 1: ['Service-Repository Pattern', 'Controller → Service → Repository → Database. Controller bersifat thin (hanya menerima request dan mengembalikan response), logika bisnis berada di Service, dan query database ditangani oleh Repository. Pola ini memisahkan tanggung jawab secara jelas antar lapisan.']
+  Row 2: ['Dependency Injection', 'Repository interface (ArticleRepositoryInterface, UserRepositoryInterface, dll.) di-bind ke implementasi konkretnya melalui RepositoryServiceProvider. Memudahkan pertukaran sumber data tanpa mengubah Service atau Controller, misalnya beralih dari MySQL ke PostgreSQL.']
+  Row 3: ['JWT Token Pair', 'Access token (umur pendek) + refresh token (14 hari, di-hash SHA-256). Silent refresh otomatis di Axios interceptor memastikan pengalaman pengguna tidak terganggu saat token berganti.']
+  Row 4: ['State Machine', 'Status artikel mengikuti aturan transisi ketat: draft → review → published/scheduled/rejected → archived. Method validateTransition() di CmsArticleService memastikan hanya transisi yang valid yang diizinkan.']
+  Row 5: ['Toggle Pattern', 'Bookmark menggunakan satu endpoint POST untuk dua operasi: add jika belum ada, remove jika sudah ada. Menyederhanakan API dan mengurangi kompleksitas frontend.']
+  Row 6: ['Observer/Tracker', 'AnalyticsTracker component secara otomatis mencatat page view setiap terjadi navigasi halaman, tanpa perlu kode tambahan di setiap halaman.']
+
+--- Table 7 ---
+  Row 0: ['Fitur', 'Reader', 'Journalist', 'Editor', 'Admin']
+  Row 1: ['Membaca artikel', '✓', '✓', '✓', '✓']
+  Row 2: ['Mencari artikel', '✓', '✓', '✓', '✓']
+  Row 3: ['Memberi komentar', '✓*', '✓', '✓', '✓']
+  Row 4: ['Bookmark artikel', '✓*', '✓', '✓', '✓']
+  Row 5: ['Buat/edit artikel', '✗', '✓', '✓', '✓']
+  Row 6: ['Review & publish artikel', '✗', '✗', '✓', '✓']
+  Row 7: ['Lock/Unlock artikel', '✗', '✗', '✓', '✓']
+  Row 8: ['Moderasi komentar', '✗', '✗', '✓', '✓']
+  Row 9: ['Dashboard analitik visitor', '✗', '✗', '✗', '✓']
+  Row 10: ['Kelola user, kategori, tag', '✗', '✗', '✗', '✓']
+
+--- Table 8 ---
+  Row 0: ['Halaman', 'Fitur Utama', 'Sumber API']
+  Row 1: ['Beranda ( /pages/beranda )', 'Hero/Featured article (is_featured=true), 5 artikel populer (view_count tertinggi), 6 artikel terbaru, daftar kategori dengan sub-kategori', 'GET /beranda']
+  Row 2: ['Detail Artikel ( /artikel/[slug] )', 'Konten HTML (TipTap), featured image, author info, kategori & tags, tombol bookmark (toggle), form komentar, komentar threaded (max 2 level), JSON-LD, Open Graph meta tags', 'GET /articles/{slug}']
+
+--- Table 9 ---
+  Row 0: ['Pencarian', 'FULLTEXT search pada judul + konten + tags, ranking relevansi otomatis MySQL, filter kategori/tag', 'GET /articles?search=']
+  Row 1: ['Kategori & Tag', 'Navigasi dinamis dari API, hierarki parent-child untuk kategori, pagination artikel per kategori/tag', 'GET /categories, GET /articles?category=']
+  Row 2: ['Bookmark', 'Toggle pattern (klik sekali tambah, klik lagi hapus), daftar bookmark terpisah, requires login', 'POST /bookmarks, GET /bookmarks']
+  Row 3: ['Komentar', 'Threaded (max 2 level: comment → reply), rate limiting 10/jam per user, moderasi editor/admin', 'POST /articles/{id}/comments']
+
+--- Table 10 ---
+  Row 0: ['Halaman', 'Deskripsi', 'Akses']
+  Row 1: ['Dashboard ( /cms/dashboard )', 'Admin: statistik visitor (page views), sparklines tren, distribusi kategori, filter waktu. Editor/Journalist: statistik personal, grafik Recharts', 'Semua CMS role']
+  Row 2: ['Bank Berita ( /cms/artikel )', 'Daftar semua artikel CMS, filter status (Draft/Review/Published/Scheduled/Archived), pencarian, filter kategori, pagination, lock indicator', 'Semua CMS role']
+  Row 3: ['Tulis Berita ( /cms/tulis-berita )', 'Form artikel: judul (auto-slug), konten (TipTap), kategori, tags (multi-select + auto-create), featured image, excerpt, change note', 'Journalist+']
+  Row 4: ['Tinjauan Artikel ( /cms/tinjauan-artikel )', 'Daftar artikel status review, tombol Approve/Schedule/Reject, filter & pencarian', 'Editor+']
+  Row 5: ['Media Tersimpan ( /cms/media )', 'Galeri media global, upload gambar (PNG/JPG, max 5MB), kategori media, alt text, is_library flag', 'Journalist+']
+
+--- Table 11 ---
+  Row 0: ['Komentar ( /cms/komentar )', 'Daftar komentar semua artikel, status (pending/approved/rejected), aksi approve/reject/delete', 'Editor+']
+  Row 1: ['Karyawan ( /cms/karyawan )', 'CRUD akun karyawan (journalist/editor/admin), password auto-generate + kirim email', 'Admin']
+  Row 2: ['Pengguna ( /cms/pengguna )', 'CRUD akun pembaca (reader)', 'Admin']
+  Row 3: ['Kategori & Tag ( /cms/kategori )', 'CRUD kategori (hierarki parent-child) & tag, auto-generate slug', 'Admin']
+  Row 4: ['Profil ( /cms/profil )', 'Edit profil (nama, email, avatar), ganti password', 'Semua CMS role']
+
+--- Table 12 ---
+  Row 0: ['Token', 'Umur', 'Penyimpanan', 'Fungsi']
+  Row 1: ['Access Token', 'Sesuai config JWT (pendek)', 'Zustand store (memory + persist)', 'Bearer token untuk setiap API request']
+  Row 2: ['Refresh Token', '14 hari', 'localStorage + hash SHA-256 di DB', 'Mendapatkan access token baru saat expired']
+
+--- Table 13 ---
+  Row 0: ['Fitur', 'Implementasi']
+  Row 1: ['Password hashing', 'bcrypt (Laravel default)']
+  Row 2: ['Anti user-enumeration', 'Forgot password selalu return 200 (email terdaftar/tidak)']
+  Row 3: ['Reset password revoke all', 'Semua refresh token di-revoke saat reset password']
+  Row 4: ['Rate limiting komentar', '10 komentar/jam per user (tabel comment_rate_limits)']
+  Row 5: ['Anti-spam analytics', 'Dedup 5 menit per IP + path (tidak INSERT duplikat)']
+  Row 6: ['Article locking', 'Editor lock artikel untuk mencegah concurrent editing']
+  Row 7: ['Admin self-protection', 'Admin tidak bisa edit/hapus akun sendiri via user management']
+
+--- Table 14 ---
+  Row 0: ['Dari', 'Ke', 'Oleh', 'Keterangan']
+  Row 1: ['draft', 'review', 'Journalist, Editor, Admin', 'Kirim ke review']
+  Row 2: ['review', 'published', 'Editor, Admin', 'Langsung terbit']
+
+--- Table 15 ---
+  Row 0: ['review', 'scheduled', 'Editor, Admin', 'Terbit terjadwal (min 5 menit)']
+  Row 1: ['review', 'rejected', 'Editor, Admin', 'Ditolak dengan alasan']
+  Row 2: ['review', 'draft', 'Editor, Admin', 'Dikembalikan ke author']
+  Row 3: ['scheduled', 'published', 'Editor, Admin, Cron', 'Terbit otomatis/melewatkan jadwal']
+  Row 4: ['published', 'archived', 'Editor, Admin', 'Arsip (satu arah, final)']
+
+--- Table 16 ---
+  Row 0: ['Aktor', 'Use Case']
+  Row 1: ['Pengunjung (Public)', 'Melihat beranda, membaca artikel, mencari artikel, melihat kategori/tag, register, login, melihat sitemap']
+  Row 2: ['Reader', 'Semua hak Pengunjung + memberi komentar, menyimpan bookmark, melihat daftar bookmark, mengelola profil pribadi']
+  Row 3: ['Journalist', 'Semua hak Reader + menulis artikel baru (draft), mengedit artikel milik sendiri, mengirim ke review, upload media, mengakses Bank Berita']
+  Row 4: ['Editor', 'Semua hak Journalist + mereview artikel, publish/schedule/reject artikel, lock/unlock artikel, moderasi komentar']
+  Row 5: ['Admin', 'Semua hak Editor + mengelola akun karyawan dan pengguna, mengelola kategori dan tag, melihat dashboard analitik visitor']
+
+--- Table 17 ---
+  Row 0: ['Notasi', 'Nama', 'Keterangan']
+  Row 1: ['(Lingkaran penuh hitam)', 'Initial Node', 'Titik awal proses / START']
+  Row 2: ['◎ (Lingkaran ganda)', 'Final Node', 'Titik akhir proses / END']
+  Row 3: ['[ Kotak ]', 'Action / Process', 'Aksi atau proses yang dilakukan']
+  Row 4: ['< Belah Ketupat >', 'Decision', 'Percabangan berdasarkan kondisi']
+  Row 5: ['━━━ (Bar tebal)', 'Fork / Merge', 'Proses paralel atau penggabungan']
+
+--- Table 18 ---
+  Row 0: ['Komponen', 'Peran']
+  Row 1: ['Pengguna / Aktor', 'Entitas yang memulai aksi (Reader, Journalist, Editor, Admin)']
+  Row 2: ['Frontend', 'Antarmuka web (portal publik atau CMS) yang dibangun dengan Next.js 15']
+  Row 3: ['Backend API', 'Server REST API yang dibangun dengan Laravel 12']
+  Row 4: ['Database', 'MySQL 8 — menyimpan seluruh data sistem']
+  Row 5: ['Cloud Storage', 'Penyimpanan file media (S3/Cloudinary)']
+
+--- Table 19 ---
+  Row 0: ['Lapisan', 'Kelas', 'Method Utama']
+  Row 1: ['Controller', 'AuthController, ArticleController, BookmarkController, CmsDashboardController, CommentController, MediaController, UserController', 'index(), store(), show(), update(), destroy(), toggle(), login(), refresh()']
+  Row 2: ['Service', 'AuthService, ArticleService, CmsArticleService, BookmarkService, CommentService, MediaService, SearchService, UserService, ScheduledPublishService, BerandaService, CategoryService, TagService', 'login(), register(), toggle(), getBookmarks(), create(), updateStatus(), index(), search()']
+
+--- Table 20 ---
+  Row 0: ['Repository', 'ArticleRepository, UserRepository, CategoryRepository, TagRepository, CommentRepository, MediaRepository, BookmarkRepository, RefreshTokenRepository, PasswordResetTokenRepository', 'find(), findAll(), create(), update(), delete(), findBySlug(), findByEmail()']
+  Row 1: ['Model', 'User, Article, Category, Tag, Comment, Media, Bookmark, RefreshToken, SearchIndex, ArticleRevision, ScheduledArticle', 'Relasi Eloquent: hasMany(), belongsTo(), belongsToMany()']
+
+--- Table 21 ---
+  Row 0: ['Komponen', 'Fungsi']
+  Row 1: ['AuthStore (Zustand)', 'Menyimpan access token, data user, status autentikasi dengan persist middleware']
+  Row 2: ['Axios Instance', 'Custom Axios dengan request interceptor (attach Bearer token) dan response interceptor (silent refresh)']
+  Row 3: ['AuthProvider', 'Wrapper di root layout, silent rehydration saat halaman pertama kali dimuat']
+  Row 4: ['AnalyticsTracker', 'Invisible component yang track page view setiap navigasi halaman']
+  Row 5: ['CMS Layout', 'Auth guard + role check + Sidebar + Topbar']
+  Row 6: ['Halaman Portal', 'Beranda, DetailArtikel, Bookmark, Search, Kategori']
+  Row 7: ['Halaman CMS', 'Dashboard, BankBerita, TulisBerita, TinjauanArtikel, Media, Komentar, Karyawan, Pengguna, Kategori']
+
+--- Table 22 ---
+  Row 0: ['Entitas', 'Relasi Utama', 'Cardinality']
+  Row 1: ['User', 'Menulis Article (author), memiliki Comment, Bookmark, Media, RefreshToken', '1:N']
+  Row 2: ['Article', 'Dimiliki Category, memiliki Comment, Media, Bookmark, SearchIndex, Revision, ScheduledArticle', '1:N, M:N (Tag)']
+  Row 3: ['Category', 'Hierarki parent-child (self-reference), memiliki Article', '1:N, self-ref']
+  Row 4: ['Tag', 'Ditempel ke Article (many-to-many)', 'M:N (via article_tags)']
+  Row 5: ['Comment', 'Milik Article, mendukung threading (self-ref, max 2 level)', '1:N, self-ref']
+
+--- Table 23 ---
+  Row 0: ['Bookmark', 'Penghubung User dan Article (unique: 1 user = 1 bookmark per artikel)', 'N:1, N:1']
+  Row 1: ['Media', 'Terikat Article (nullable) atau berdiri sendiri (library)', 'N:1']
+  Row 2: ['SearchIndex', 'Index full-text, 1:1 dengan Article', '1:1']
+  Row 3: ['ArticleRevision', 'Snapshot riwayat perubahan Article', 'N:1']
+  Row 4: ['ScheduledArticle', 'Jadwal penerbitan, 1:1 dengan Article', '1:1']
+  Row 5: ['RefreshToken', 'Token refresh JWT milik User', 'N:1']
+  Row 6: ['CommentRateLimit', 'Pembatasan rate komentar per User', '1:1']
+  Row 7: ['PageView', 'Pencatatan kunjungan halaman', 'Standalone']
+
+--- Table 24 ---
+  Row 0: ['Kolom', 'Tipe Data', 'Constraint', 'Keterangan']
+  Row 1: ['id', 'BIGINT UNSIGNED', 'PK, AUTO_INCREMENT', 'Primary key']
+  Row 2: ['name', 'VARCHAR(255)', 'NOT NULL', 'Nama lengkap']
+  Row 3: ['email', 'VARCHAR(255)', 'UNIQUE, NOT NULL', 'Email untuk login']
+  Row 4: ['role', 'ENUM', "DEFAULT 'reader'", 'admin/editor/journalist/reader']
+  Row 5: ['is_active', 'BOOLEAN', 'DEFAULT true', 'Status akun aktif']
+  Row 6: ['password', 'VARCHAR(255)', 'NOT NULL', 'Hash bcrypt']
+  Row 7: ['avatar_url', 'VARCHAR(255)', 'NULLABLE', 'URL foto profil']
+
+--- Table 25 ---
+  Row 0: ['Kolom', 'Tipe Data', 'Constraint', 'Keterangan']
+  Row 1: ['id', 'UUID', 'PK', 'Primary key']
+  Row 2: ['author_id', 'BIGINT UNSIGNED', 'FK→users(id) CASCADE', 'Penulis artikel']
+  Row 3: ['published_by', 'BIGINT UNSIGNED', 'FK→users(id) SET NULL', 'User yang publish']
+  Row 4: ['locked_by', 'BIGINT UNSIGNED', 'FK→users(id) SET NULL', 'Editor yang mengunci']
+  Row 5: ['category_id', 'UUID', 'FK→categories(id) RESTRICT', 'Kategori artikel']
+  Row 6: ['title', 'VARCHAR(255)', 'NOT NULL', 'Judul artikel']
+  Row 7: ['slug', 'VARCHAR(255)', 'UNIQUE, NOT NULL', 'URL slug']
+  Row 8: ['content', 'LONGTEXT', 'NOT NULL', 'Konten lengkap (HTML)']
+  Row 9: ['status', 'ENUM', "DEFAULT 'draft', INDEX", 'draft/review/scheduled/published/archived']
+  Row 10: ['view_count', 'BIGINT UNSIGNED', 'DEFAULT 0, INDEX', 'Jumlah view']
+
+--- Table 26 ---
+  Row 0: ['published_at', 'TIMESTAMP', 'NULLABLE, INDEX', 'Waktu publikasi']
+
+--- Table 27 ---
+  Row 0: ['Kolom', 'Tipe Data', 'Constraint', 'Keterangan']
+  Row 1: ['id', 'UUID', 'PK', 'Primary key']
+  Row 2: ['parent_id', 'UUID', 'FK→categories(id) SET NULL', 'Parent kategori (hierarki)']
+  Row 3: ['name', 'VARCHAR(255)', 'NOT NULL', 'Nama kategori']
+  Row 4: ['slug', 'VARCHAR(255)', 'UNIQUE, NOT NULL', 'URL slug']
+
+--- Table 28 ---
+  Row 0: ['Kolom', 'Tipe Data', 'Constraint', 'Keterangan']
+  Row 1: ['id', 'UUID', 'PK', 'Primary key']
+  Row 2: ['article_id', 'UUID', 'FK→articles(id) CASCADE', 'Artikel terkait']
+  Row 3: ['user_id', 'BIGINT UNSIGNED', 'FK→users(id) CASCADE', 'Pembuat komentar']
+  Row 4: ['parent_id', 'UUID', 'FK→comments(id) CASCADE', 'Reply dari komentar (max 2 level)']
+  Row 5: ['content', 'TEXT', 'NOT NULL', 'Isi komentar']
+  Row 6: ['status', 'ENUM', "DEFAULT 'pending'", 'pending/approved/rejected']
+
+--- Table 29 ---
+  Row 0: ['Kolom', 'Tipe Data', 'Constraint', 'Keterangan']
+  Row 1: ['id', 'UUID', 'PK', 'Primary key']
+  Row 2: ['user_id', 'BIGINT UNSIGNED', 'FK→users(id) CASCADE', 'User yang bookmark']
+  Row 3: ['article_id', 'UUID', 'NOT NULL', 'ID artikel']
+  Row 4: ['created_at', 'TIMESTAMP', 'DEFAULT CURRENT_TIMESTAMP', 'Waktu bookmark']
+  Row 5: ['UNIQUE (user_id, article_id)', 'UNIQUE (user_id, article_id)', 'UNIQUE (user_id, article_id)', '1 bookmark per user per artikel']
+
+--- Table 30 ---
+  Row 0: ['Kolom', 'Tipe Data', 'Constraint', 'Keterangan']
+  Row 1: ['id', 'UUID', 'PK', 'Primary key']
+  Row 2: ['article_id', 'UUID', 'FK→articles(id) SET NULL', 'Artikel terkait (nullable = library)']
+  Row 3: ['uploaded_by', 'BIGINT UNSIGNED', 'FK→users(id) SET NULL', 'User yang upload']
+  Row 4: ['file_url', 'VARCHAR(255)', 'NOT NULL', 'URL file']
+  Row 5: ['is_library', 'BOOLEAN', 'DEFAULT false', 'true = Media Tersimpan global']
+  Row 6: ['alt_text', 'VARCHAR(255)', 'NULLABLE', 'Teks alternatif']
+
+--- Table 31 ---
+  Row 0: ['Kolom', 'Tipe Data', 'Constraint', 'Keterangan']
+  Row 1: ['id', 'UUID', 'PK', 'Primary key tag']
+  Row 2: ['name', 'VARCHAR(255)', 'UNIQUE, NOT NULL', 'Nama tag (contoh: "Pemilu 2024", "KPU")']
+  Row 3: ['slug', 'VARCHAR(255)', 'UNIQUE, NOT NULL', 'URL-friendly version untuk routing (/tag/pemilu-2024)']
+
+--- Table 32 ---
+  Row 0: ['Kolom', 'Tipe Data', 'Constraint', 'Keterangan']
+  Row 1: ['article_id', 'UUID', 'FK→articles(id) CASCADE, Composite PK', 'Referensi ke artikel yang diberi tag']
+  Row 2: ['tag_id', 'UUID', 'FK→tags(id) CASCADE, Composite PK', 'Referensi ke tag yang ditempel']
+
+--- Table 33 ---
+  Row 0: ['Kolom', 'Tipe Data', 'Constraint', 'Keterangan']
+  Row 1: ['id', 'UUID', 'PK', 'Primary key token']
+  Row 2: ['user_id', 'BIGINT UNSIGNED', 'FK→users(id) CASCADE', 'Pemilik sesi login']
+  Row 3: ['token_hash', 'VARCHAR(64)', 'NOT NULL', 'Hash SHA-256 dari refresh token']
+  Row 4: ['is_revoked', 'BOOLEAN', 'DEFAULT false', 'true = token sudah tidak valid meski belum expired']
+  Row 5: ['expires_at', 'TIMESTAMP', 'NOT NULL', 'Waktu kedaluwarsa token (30 hari dari pembuatan)']
+  Row 6: ['created_at', 'TIMESTAMP', 'DEFAULT CURRENT_TIMESTAMP', 'Waktu token dibuat / sesi dimulai']
+
+--- Table 34 ---
+  Row 0: ['Kolom', 'Tipe Data', 'Constraint', 'Keterangan']
+  Row 1: ['id', 'UUID', 'PK', 'Primary key revisi']
+
+--- Table 35 ---
+  Row 0: ['article_id', 'UUID', 'FK→articles(id) CASCADE', 'Artikel yang direvisi']
+  Row 1: ['edited_by', 'BIGINT UNSIGNED', 'FK→users(id) SET NULL', 'User yang melakukan perubahan (jurnalis/editor)']
+  Row 2: ['title_snapshot', 'VARCHAR(255)', 'NOT NULL', 'Judul artikel sebelum diubah']
+  Row 3: ['content_snapshot', 'LONGTEXT', 'NOT NULL', 'Isi lengkap artikel sebelum diubah']
+  Row 4: ['change_note', 'TEXT', 'NULLABLE', 'Catatan alasan perubahan (contoh: "Koreksi data korban")']
+  Row 5: ['created_at', 'TIMESTAMP', 'DEFAULT CURRENT_TIMESTAMP', 'Waktu revisi dibuat']
+
+--- Table 36 ---
+  Row 0: ['Kolom', 'Tipe Data', 'Constraint', 'Keterangan']
+  Row 1: ['id', 'UUID', 'PK', 'Primary key jadwal']
+  Row 2: ['article_id', 'UUID', 'UNIQUE, FK→articles(id) CASCADE', 'Artikel yang dijadwalkan (1 artikel = 1 jadwal)']
+  Row 3: ['scheduled_by', 'BIGINT UNSIGNED', 'FK→users(id) SET NULL', 'Editor yang menetapkan jadwal tayang']
+  Row 4: ['scheduled_at', 'TIMESTAMP', 'NOT NULL, INDEX', 'Waktu artikel akan otomatis diterbitkan']
+  Row 5: ['is_published', 'BOOLEAN', 'DEFAULT false', 'true = scheduler sudah memproses artikel ini']
+  Row 6: ['created_at', 'TIMESTAMP', 'DEFAULT CURRENT_TIMESTAMP', 'Waktu jadwal dibuat']
+
+--- Table 37 ---
+  Row 0: ['Kolom', 'Tipe Data', 'Constraint', 'Keterangan']
+  Row 1: ['id', 'UUID', 'PK', 'Primary key index']
+  Row 2: ['article_id', 'UUID', 'UNIQUE, FK→articles(id) CASCADE', '1 artikel = 1 baris index pencarian']
+  Row 3: ['search_vector', 'TEXT', 'FULLTEXT INDEX', 'Teks gabungan judul + konten + tag yang diindeks']
+  Row 4: ['tags_cache', 'TEXT', 'NULLABLE', 'Gabungan nama tag dalam satu string untuk percepatan']
+  Row 5: ['updated_at', 'TIMESTAMP', 'DEFAULT CURRENT_TIMESTAMP', 'Waktu terakhir index diperbarui']
+
+--- Table 38 ---
+  Row 0: ['comment_count', 'INTEGER', 'DEFAULT 0', 'Jumlah komentar dalam jendela waktu berjalan']
+  Row 1: ['window_start', 'TIMESTAMP', 'DEFAULT CURRENT_TIMESTAMP', 'Waktu mulai jendela rate limit (reset tiap periode)']
+  Row 2: ['is_blocked', 'BOOLEAN', 'DEFAULT false', 'true = user sementara diblokir dari komentar']
+  Row 3: ['blocked_until', 'TIMESTAMP', 'NULLABLE', 'Waktu blokir berakhir']
+
+--- Table 39 ---
+  Row 0: ['Kolom', 'Tipe Data', 'Constraint', 'Keterangan']
+  Row 1: ['id', 'BIGINT UNSIGNED', 'PK, AUTO_INCREMENT', 'Primary key']
+  Row 2: ['path', 'VARCHAR(255)', 'NOT NULL, INDEX', 'Path halaman yang dikunjungi (contoh: /berita/judul)']
+  Row 3: ['ip_address', 'VARCHAR(45)', 'NOT NULL', 'Alamat IP pengunjung']
+  Row 4: ['user_agent', 'TEXT', 'NULLABLE', 'Informasi browser dan perangkat']
+  Row 5: ['created_at', 'TIMESTAMP', 'DEFAULT CURRENT_TIMESTAMP, INDEX', 'Waktu kunjungan']
+
+--- Table 40 ---
+  Row 0: ['Dari Tabel', 'Kardinalitas', 'Ke Tabel', 'Keterangan']
+  Row 1: ['users', '1 : N', 'articles', 'Satu user bisa menulis banyak artikel (author_id)']
+  Row 2: ['users', '1 : N', 'comments', 'Satu user bisa membuat banyak komentar']
+  Row 3: ['users', '1 : N', 'bookmarks', 'Satu user bisa menyimpan banyak bookmark']
+  Row 4: ['users', '1 : N', 'refresh_tokens', 'Satu user bisa memiliki banyak sesi aktif']
+  Row 5: ['users', '1 : N', 'article_revisions', 'Satu user bisa melakukan banyak revisi']
+  Row 6: ['users', '1 : 1', 'comment_rate_limits', 'Satu user memiliki satu record rate limit']
+  Row 7: ['categories', '1 : N', 'articles', 'Satu kategori memiliki banyak artikel']
+
+--- Table 41 ---
+  Row 0: ['categories', '1 : N', 'categories', 'Sub-kategori mereferensikan kategori induk (self-ref)']
+  Row 1: ['articles', 'M : N', 'tags', 'Via tabel article_tags sebagai pivot']
+  Row 2: ['articles', '1 : N', 'comments', 'Satu artikel bisa menerima banyak komentar']
+  Row 3: ['articles', '1 : N', 'media', 'Satu artikel bisa memiliki banyak file media']
+  Row 4: ['articles', '1 : N', 'bookmarks', 'Satu artikel bisa disimpan banyak pengguna']
+  Row 5: ['articles', '1 : N', 'article_revisions', 'Satu artikel memiliki riwayat revisi']
+  Row 6: ['articles', '1 : 1', 'scheduled_articles', 'Satu artikel hanya boleh punya satu jadwal aktif']
+  Row 7: ['articles', '1 : 1', 'search_indexes', 'Satu artikel memiliki satu baris index pencarian']
+  Row 8: ['comments', '1 : N', 'comments', 'Komentar bisa dibalas membentuk thread (self-ref)']
+
+--- Table 42 ---
+  Row 0: ['Kode', 'Aturan', 'Keterangan']
+  Row 1: ['BR-01', 'Jurnalis hanya bisa membuat artikel dengan status draft atau mengajukan ke review', 'Tidak bisa langsung publish']
+  Row 2: ['BR-02', 'Hanya Editor dan Admin yang bisa mengubah status artikel ke published , scheduled , atau archived', 'Jurnalis tidak memiliki akses publish']
+  Row 3: ['BR-03', 'Artikel wajib melewati review Editor sebelum bisa diterbitkan', 'Jurnalis tidak bisa menerbitkan artikel sendiri']
+  Row 4: ['BR-04', 'scheduled_at harus minimal 5 menit dari waktu sekarang', 'Mencegah jadwal yang sudah lewat']
+  Row 5: ['BR-05', 'Artikel yang sudah published hanya bisa diubah ke archived , tidak bisa kembali ke draft', 'Status bersifat satu arah setelah tayang']
+  Row 6: ['BR-06', 'Artikel yang di- archived tidak tampil di portal publik', 'Artikel tersembunyi dari pembaca']
+
+--- Table 43 ---
+  Row 0: ['Kode', 'Aturan', 'Keterangan']
+  Row 1: ['BR-07', 'User wajib login untuk bisa berkomentar', 'Reader yang belum login tidak bisa mengirim komentar']
+  Row 2: ['BR-08', 'Panjang komentar minimal 3 karakter, maksimal 1000 karakter', 'Mencegah komentar kosong atau terlalu panjang']
+  Row 3: ['BR-09', 'Rate limit: maksimal 10 komentar per jam per user', 'Mencegah spam komentar']
+  Row 4: ['BR-10', 'Kedalaman thread balasan maksimal 2 level', 'Mencegah nested komentar yang terlalu dalam']
+
+--- Table 44 ---
+  Row 0: ['BR-11', 'Hanya Editor dan Admin yang bisa menghapus komentar', 'Jurnalis dan Reader tidak bisa hapus komentar']
+  Row 1: ['BR-12', 'Komentar langsung tampil tanpa moderasi ( status=published )', 'Tidak ada antrian moderasi']
+
+--- Table 45 ---
+  Row 0: ['Kode', 'Aturan', 'Keterangan']
+  Row 1: ['BR-13', 'Format file yang diizinkan: image/png , image/jpeg , image/jpg', 'Format lain ditolak']
+  Row 2: ['BR-14', 'Ukuran maksimal file: 2048 KB (2 MB)', 'File lebih besar dari 2 MB ditolak']
+  Row 3: ['BR-15', 'Hanya Jurnalis, Editor, dan Admin yang bisa upload media', 'Reader tidak bisa upload']
+  Row 4: ['BR-16', 'User wajib login untuk menyimpan bookmark', 'Reader yang belum login tidak bisa bookmark']
+  Row 5: ['BR-17', 'Satu user hanya bisa bookmark satu artikel satu kali — tidak bisa duplikat', 'Sistem menggunakan toggle pattern']
+  Row 6: ['BR-18', 'Hanya Admin yang bisa membuat, mengedit, menonaktifkan, dan menghapus akun', 'Role lain tidak punya akses ke /users']
+  Row 7: ['BR-19', 'Admin tidak bisa menghapus atau menonaktifkan akunnya sendiri', 'Mencegah admin terkunci dari sistem']
+  Row 8: ['BR-20', 'Saat akun dihapus, artikel milik user diarsipkan — bukan ikut terhapus', 'Konten tidak hilang meski akunnya dihapus']
+  Row 9: ['BR-21', 'Email bersifat unik — tidak boleh ada dua akun dengan email yang sama', 'Dicek saat register dan edit akun']
+
+--- Table 46 ---
+  Row 0: ['HTTP', 'Error Code', 'Message', 'Trigger']
+  Row 1: ['400', 'VALIDATION_ERROR', 'Field tidak boleh kosong', 'Field wajib tidak diisi']
+  Row 2: ['400', 'EMAIL_ALREADY_EXISTS', 'Email sudah terdaftar', 'Register dengan email duplikat']
+  Row 3: ['401', 'INVALID_CREDENTIALS', 'Email atau password salah', 'Login gagal']
+  Row 4: ['401', 'TOKEN_EXPIRED', 'Sesi telah berakhir', 'Access token expired']
+  Row 5: ['401', 'TOKEN_INVALID', 'Token tidak valid', 'Token malformed atau salah']
+  Row 6: ['401', 'TOKEN_REVOKED', 'Sesi tidak valid', 'Refresh token sudah di-revoke']
+  Row 7: ['403', 'ACCOUNT_INACTIVE', 'Akun telah dinonaktifkan', 'User is_active=false login']
+
+--- Table 47 ---
+  Row 0: ['HTTP', 'Error Code', 'Message', 'Trigger']
+  Row 1: ['403', 'FORBIDDEN', 'Anda tidak memiliki akses', 'Role tidak cukup']
+  Row 2: ['404', 'ARTICLE_NOT_FOUND', 'Artikel tidak ditemukan', 'Slug atau ID tidak ada']
+  Row 3: ['409', 'SLUG_ALREADY_EXISTS', 'Judul sudah digunakan', 'Slug duplikat']
+  Row 4: ['422', 'INVALID_STATUS_TRANSITION', 'Perubahan status tidak diizinkan', 'Contoh: published → draft']
+
+--- Table 48 ---
+  Row 0: ['422', 'SCHEDULED_TIME_TOO_SOON', 'Waktu tayang minimal 5 menit', 'scheduled_at terlalu dekat']
+
+--- Table 49 ---
+  Row 0: ['HTTP', 'Error Code', 'Message', 'Trigger']
+  Row 1: ['400', 'COMMENT_TOO_SHORT', 'Komentar minimal 3 karakter', 'Panjang < 3 karakter']
+  Row 2: ['400', 'COMMENT_TOO_LONG', 'Komentar maksimal 1000 karakter', 'Panjang > 1000 karakter']
+  Row 3: ['422', 'MAX_REPLY_DEPTH', 'Tidak bisa balas > 2 level', 'Nested > 2 level']
+  Row 4: ['429', 'COMMENT_RATE_LIMIT', 'Batas komentar tercapai', 'Rate limit 10/jam tercapai']
+  Row 5: ['400', 'INVALID_FILE_TYPE', 'Format file tidak didukung', 'Bukan PNG/JPG/JPEG']
+  Row 6: ['400', 'FILE_TOO_LARGE', 'Ukuran file maksimal 2 MB', 'File > 2048 KB']
+  Row 7: ['403', 'CANNOT_MODIFY_SELF', 'Tidak bisa mengubah akun sendiri', 'Admin hapus diri sendiri']
+  Row 8: ['404', 'USER_NOT_FOUND', 'Pengguna tidak ditemukan', 'ID tidak ada di database']
+
+--- Table 50 ---
+  Row 0: ['│', '│', '│', '├──', 'CategoryController.php', '#', 'CRUD kategori (hierarki)', 'CRUD kategori (hierarki)']
+  Row 1: ['│', '│', '│', '├──', 'TagController.php', '#', 'CRUD tag', 'CRUD tag']
+  Row 2: ['│', '│', '│', '├──', 'CommentController.php', '#', 'Komentar + moderasi', 'Komentar + moderasi']
+  Row 3: ['│', '│', '│', '├──', 'BookmarkController.php', '#', 'Toggle + daftar bookmark', 'Toggle + daftar bookmark']
+  Row 4: ['│', '│', '│', '├──', 'MediaController.php', '#', 'Upload + manajemen media', 'Upload + manajemen media']
+  Row 5: ['│', '│', '│', '├──', 'CmsDashboardController.php', '#', 'Statistik dashboard CMS', 'Statistik dashboard CMS']
+  Row 6: ['│', '│', '│', '├──', 'UserController.php', '#', 'Manajemen pengguna (admin)', 'Manajemen pengguna (admin)']
+  Row 7: ['│', '│', '│', '└──', 'SearchController.php', '#', 'Pencarian artikel (FULLTEXT)', 'Pencarian artikel (FULLTEXT)']
+  Row 8: ['│', '│', '└──', 'Middleware/', 'Middleware/', '', '', '']
+  Row 9: ['│', '│', '', '├── AuthenticateJwt.php', '├── AuthenticateJwt.php', '#', 'Verifikasi JWT access token', 'Verifikasi JWT access token']
+  Row 10: ['│', '│', '└── RoleGuard.php\t# Otorisasi berbasis role', '└── RoleGuard.php\t# Otorisasi berbasis role', '└── RoleGuard.php\t# Otorisasi berbasis role', '└── RoleGuard.php\t# Otorisasi berbasis role', '└── RoleGuard.php\t# Otorisasi berbasis role', '└── RoleGuard.php\t# Otorisasi berbasis role']
+  Row 11: ['│', '├──', 'Models/', 'Models/', 'Models/', 'Models/', 'Models/', 'Models/']
+  Row 12: ['│', '│', '├── User.php, Article.php, Category.php, Tag.php', '├── User.php, Article.php, Category.php, Tag.php', '├── User.php, Article.php, Category.php, Tag.php', '├── User.php, Article.php, Category.php, Tag.php', '├── User.php, Article.php, Category.php, Tag.php', '├── User.php, Article.php, Category.php, Tag.php']
+  Row 13: ['│', '│', '├── Comment.php, Bookmark.php, Media.php', '├── Comment.php, Bookmark.php, Media.php', '├── Comment.php, Bookmark.php, Media.php', '├── Comment.php, Bookmark.php, Media.php', '├── Comment.php, Bookmark.php, Media.php', '├── Comment.php, Bookmark.php, Media.php']
+  Row 14: ['│', '│', '├── RefreshToken.php, ArticleRevision.php', '├── RefreshToken.php, ArticleRevision.php', '├── RefreshToken.php, ArticleRevision.php', '├── RefreshToken.php, ArticleRevision.php', '├── RefreshToken.php, ArticleRevision.php', '├── RefreshToken.php, ArticleRevision.php']
+  Row 15: ['│', '│', '└── ScheduledArticle.php, SearchIndex.php', '└── ScheduledArticle.php, SearchIndex.php', '└── ScheduledArticle.php, SearchIndex.php', '└── ScheduledArticle.php, SearchIndex.php', '└── ScheduledArticle.php, SearchIndex.php', '└── ScheduledArticle.php, SearchIndex.php']
+  Row 16: ['│', '├──', 'Services/', 'Services/', 'Services/', 'Services/', 'Services/', 'Services/']
+  Row 17: ['│', '│', '├──', 'AuthService.php', 'AuthService.php', '#', 'Logika', 'autentikasi + JWT']
+  Row 18: ['│', '│', '├──', 'ArticleService.php', 'ArticleService.php', '#', 'Logika', 'bisnis artikel']
+  Row 19: ['│', '│', '├──', 'BookmarkService.php', 'BookmarkService.php', '#', 'Logika', 'bookmark toggle']
+  Row 20: ['│', '│', '├──', 'CommentService.php', 'CommentService.php', '#', 'Logika', 'moderasi komentar']
+  Row 21: ['│', '│', '├──', 'CmsStatisticsService.php', 'CmsStatisticsService.php', '# Agregasi statistik dashboard', '# Agregasi statistik dashboard', '# Agregasi statistik dashboard']
+  Row 22: ['│', '│', '└──', 'MediaService.php', 'MediaService.php', '# Logika upload media', '# Logika upload media', '# Logika upload media']
+
+--- Table 51 ---
+  Row 0: ['Komponen', 'Teknologi', 'Versi', 'Fungsi']
+  Row 1: ['Framework', 'Laravel', '12', 'Full-stack PHP framework untuk membangun REST API']
+  Row 2: ['Bahasa', 'PHP', '8.2+', 'Bahasa pemrograman server-side']
+  Row 3: ['Database', 'MySQL', '8.0', 'Relational database management system']
+  Row 4: ['Autentikasi', 'tymon/jwt-auth', '2.x', 'Library JWT untuk autentikasi stateless']
+  Row 5: ['Query Builder', 'Laravel DB', 'Bawaan', 'Operasi tulis database (INSERT, UPDATE, DELETE)']
+  Row 6: ['ORM', 'Eloquent', 'Bawaan', 'Operasi baca database dengan eager loading']
+  Row 7: ['Validasi', 'Laravel Validator', 'Bawaan', 'Validasi input request secara deklaratif']
+  Row 8: ['Migrasi', 'Laravel Migration', 'Bawaan', 'Version control skema database']
+
+--- Table 52 ---
+  Row 0: ['No', 'Method', 'Endpoint', 'Deskripsi', 'Auth']
+  Row 1: ['1', 'POST', '/api/auth/register', 'Registrasi akun baru (Reader)', '—']
+  Row 2: ['2', 'POST', '/api/auth/login', 'Login dan mendapat token pair', '—']
+  Row 3: ['3', 'POST', '/api/auth/refresh', 'Refresh access token', '—']
+  Row 4: ['4', 'POST', '/api/auth/logout', 'Logout (cabut refresh token)', 'Ya']
+
+--- Table 53 ---
+  Row 0: ['No', 'Method', 'Endpoint', 'Deskripsi', 'Role']
+
+--- Table 54 ---
+  Row 0: ['1', 'GET', '/api/articles', 'Daftar artikel (filter status, kategori, tag, pagination)', 'Publik']
+  Row 1: ['2', 'GET', '/api/articles/:slug', 'Detail artikel (auto increment view_count)', 'Publik']
+  Row 2: ['3', 'POST', '/api/articles', 'Buat artikel baru (status: draft)', 'Journalist+']
+  Row 3: ['4', 'PATCH', '/api/articles/:id', 'Update artikel', 'Journalist+']
+  Row 4: ['5', 'DELETE', '/api/articles/:id', 'Hapus artikel', 'Editor+']
+  Row 5: ['6', 'PATCH', '/api/articles/:id/status', 'Ubah status (workflow editorial)', 'Journalist+']
+  Row 6: ['7', 'POST', '/api/articles/:id/schedule', 'Jadwalkan penerbitan', 'Editor+']
+  Row 7: ['8', 'GET', '/api/articles/:id/revisions', 'Riwayat revisi artikel', 'Editor+']
+
+--- Table 55 ---
+  Row 0: ['No', 'Method', 'Endpoint', 'Deskripsi', 'Role']
+  Row 1: ['1', 'GET', '/api/categories', 'Daftar kategori (hierarki)', 'Publik']
+  Row 2: ['2', 'POST', '/api/categories', 'Buat kategori baru', 'Admin']
+  Row 3: ['3', 'PATCH', '/api/categories/:id', 'Update kategori', 'Admin']
+  Row 4: ['4', 'DELETE', '/api/categories/:id', 'Hapus kategori', 'Admin']
+
+--- Table 56 ---
+  Row 0: ['No', 'Method', 'Endpoint', 'Deskripsi', 'Role']
+  Row 1: ['1', 'GET', '/api/tags', 'Daftar tag', 'Publik']
+  Row 2: ['2', 'POST', '/api/tags', 'Buat tag baru', 'Journalist+']
+  Row 3: ['3', 'PATCH', '/api/tags/:id', 'Update tag', 'Editor+']
+  Row 4: ['4', 'DELETE', '/api/tags/:id', 'Hapus tag', 'Admin']
+
+--- Table 57 ---
+  Row 0: ['No', 'Method', 'Endpoint', 'Deskripsi', 'Role']
+  Row 1: ['1', 'GET', '/api/articles/:slug/comments', 'Daftar komentar artikel (threaded)', 'Publik']
+  Row 2: ['2', 'POST', '/api/articles/:slug/comments', 'Tambah komentar (rate limited)', 'Reader+']
+  Row 3: ['3', 'POST', '/api/comments/:id/reply', 'Balas komentar (maks 2 level)', 'Reader+']
+  Row 4: ['4', 'PATCH', '/api/comments/:id/status', 'Moderasi komentar (approve/reject)', 'Editor+']
+  Row 5: ['5', 'DELETE', '/api/comments/:id', 'Hapus komentar', 'Editor+']
+  Row 6: ['6', 'POST', '/api/comments/:id/rate', 'Like/dislike komentar', 'Reader+']
+
+--- Table 58 ---
+  Row 0: ['No', 'Method', 'Endpoint', 'Deskripsi', 'Role']
+
+--- Table 59 ---
+  Row 0: ['1', 'GET', '/api/bookmarks', 'Daftar bookmark pengguna (+ data artikel)', 'Semua']
+  Row 1: ['2', 'POST', '/api/bookmarks', 'Toggle bookmark (tambah/hapus)', 'Semua']
+
+--- Table 60 ---
+  Row 0: ['No', 'Method', 'Endpoint', 'Deskripsi', 'Role']
+  Row 1: ['1', 'GET', '/api/media', 'Daftar media (library)', 'Journalist+']
+  Row 2: ['2', 'POST', '/api/media', 'Upload file media', 'Journalist+']
+  Row 3: ['3', 'PATCH', '/api/media/:id', 'Update metadata media', 'Journalist+']
+  Row 4: ['4', 'DELETE', '/api/media/:id', 'Hapus media', 'Journalist+']
+
+--- Table 61 ---
+  Row 0: ['No', 'Method', 'Endpoint', 'Deskripsi', 'Role']
+  Row 1: ['1', 'GET', '/api/cms/statistics', 'Statistik dashboard (role-based)', 'Journalist+']
+
+--- Table 62 ---
+  Row 0: ['No', 'Method', 'Endpoint', 'Deskripsi', 'Role']
+  Row 1: ['1', 'GET', '/api/search', 'Cari artikel (FULLTEXT search)', 'Publik']
+
+--- Table 63 ---
+  Row 0: ['No', 'Method', 'Endpoint', 'Deskripsi', 'Role']
+  Row 1: ['1', 'GET', '/api/users', 'Daftar seluruh pengguna', 'Admin']
+  Row 2: ['2', 'GET', '/api/users/:id', 'Detail pengguna', 'Admin']
+  Row 3: ['3', 'POST', '/api/users', 'Buat akun (journalist/editor)', 'Admin']
+  Row 4: ['4', 'PATCH', '/api/users/:id', 'Update data pengguna', 'Admin']
+  Row 5: ['5', 'DELETE', '/api/users/:id', 'Hapus akun', 'Admin']
+
+--- Table 64 ---
+  Row 0: ['├──', 'src/', '', '', '', '']
+  Row 1: ['│ │', '├── │', 'app/ ├──', ' (public)/', '# #', 'Next.js App Router Route group portal publik']
+  Row 2: ['│', '│', '│', '├── page.tsx', '#', 'Halaman utama (Dashboard Reader)']
+  Row 3: ['│', '│', '│', '├── [slug]/', '#', 'Detail artikel (SSG)']
+  Row 4: ['│', '│', '│', '├── kategori/[slug]/', '#', 'Listing artikel per kategori']
+  Row 5: ['│', '│', '│', '├── tag/[slug]/', '#', 'Listing artikel per tag']
+  Row 6: ['│', '│', '│', '└── cari/', '#', 'Halaman pencarian']
+  Row 7: ['│', '│', '├──', '(auth)/', '#', 'Route group autentikasi']
+  Row 8: ['│', '│', '│', '├── login/', '#', 'Halaman login']
+  Row 9: ['│', '│', '│', '└── register/', '#', 'Halaman registrasi']
+  Row 10: ['│', '│', '├──', 'bookmark/', '#', 'Halaman bookmark (requires auth)']
+  Row 11: ['│', '│', '└──', 'cms/', '#', 'Route group CMS redaksi']
+  Row 12: ['│', '│', '', '├── layout.tsx', '#', 'Layout CMS + auth guard + role guard']
+  Row 13: ['│', '│', '', '├── dashboard/', '#', 'Dashboard statistik']
+  Row 14: ['│', '│', '', '├── artikel/', '#', 'Bank berita + tulis berita']
+  Row 15: ['│ │', '│ │', '', '├── media/ ├── komentar/', '# #', 'Manajemen media Moderasi komentar']
+  Row 16: ['│', '│', '', '└── pengguna/', '#', 'Manajemen pengguna (admin only)']
+
+--- Table 65 ---
+  Row 0: ['│', '│', '├──', 'auth.ts', '#', 'Helper token (save, get, clear)']
+  Row 1: ['│', '│', '└──', 'api/', '#', 'Fungsi API per modul (bookmarks,']
+
+--- Table 66 ---
+  Row 0: ['│', '├──', 'hooks/', '#', 'Custom React hooks']
+  Row 1: ['│', '├──', 'stores/', '#', 'Zustand stores (authStore, uiStore)']
+  Row 2: ['│', '├──', 'types/', '#', 'TypeScript interfaces & types']
+  Row 3: ['│', '└──', 'constants/', '#', 'Konstanta (role, status, config)']
+
+--- Table 67 ---
+  Row 0: ['Komponen', 'Teknologi', 'Versi', 'Fungsi']
+  Row 1: ['Framework', 'Next.js (App Router)', '15', 'React framework dengan SSR/SSG untuk SEO']
+  Row 2: ['Bahasa', 'TypeScript', '5', 'Type-safe JavaScript superset']
+  Row 3: ['Styling', 'Tailwind CSS', '4', 'Utility-first CSS framework']
+  Row 4: ['State Management', 'Zustand', '5', 'Lightweight state management dengan persist']
+  Row 5: ['HTTP Client', 'Axios', '1.x', 'HTTP client dengan interceptor']
+  Row 6: ['Form', 'React Hook Form + Zod', 'Terbaru', 'Form handling dengan validasi schema']
+  Row 7: ['Rich Text Editor', 'TipTap', '2.x', 'WYSIWYG editor untuk menulis artikel']
+  Row 8: ['Visualisasi', 'Recharts', '2.x', 'Library chart untuk dashboard CMS']
+  Row 9: ['Tanggal/Waktu', 'day.js', '1.x', 'Manipulasi dan format tanggal']
+
+--- Table 68 ---
+  Row 0: ['Route', 'Komponen', 'Data API', 'Deskripsi & Behavior']
+  Row 1: ['/', 'HomePage', 'GET /articles? featured=true&limit=5 GET /articles? page=1&limit=10', 'Hero section (1 featured), grid featured (4 artikel), listing terbaru dengan pagination. Loading: skeleton card.']
+  Row 2: ['/[slug]', 'ArticleDetailPage', 'GET /articles/:slug GET /articles/:id/comments', 'Header (judul, kategori, penulis, view count), konten HTML, tag list, tombol bookmark, form komentar (login only), komentar threaded (max 2 level). Auto-']
+
+--- Table 69 ---
+  Row 0: ['', '', '', 'increment view_count.']
+  Row 1: ['/kategori/[slug]', 'CategoryPage', 'GET /articles? category=:slug&limit=12', 'Header kategori, grid 12 artikel per halaman, sub-kategori (jika ada), pagination.']
+  Row 2: ['/tag/[slug]', 'TagPage', 'GET /articles? tag=:slug&limit=12', 'Listing artikel berdasarkan tag dengan pagination.']
+  Row 3: ['/cari', 'SearchPage', 'GET /search?q=:keyword', 'Input dengan debounce 300ms, highlight kata kunci, minimum 2 karakter, pesan jika tidak ada hasil.']
+  Row 4: ['/bookmark', 'BookmarkPage', 'GET /bookmarks', 'Grid card bookmark, toggle hapus real-time, sidebar artikel populer. Auth required.']
+
+--- Table 70 ---
+  Row 0: ['Route', 'Komponen', 'Role', 'Deskripsi & Behavior']
+  Row 1: ['/cms/dashboard', 'DashboardPage', 'Semua CMS', 'Role-based rendering: Admin = analitik visitor; Editor/Jurnalis = statistik personal (Berita Publish, Draft, BarChart, PieChart).']
+  Row 2: ['/cms/artikel', 'ArticleListPage', 'Semua CMS', 'Tabel artikel dengan filter status (badge warna), filter kategori, pencarian judul. Aksi: Edit, Publish, Arsipkan per baris.']
+  Row 3: ['/cms/artikel/baru', 'ArticleFormPage', 'Semua CMS', 'Form dengan TipTap rich text editor, upload gambar, pilih kategori/tag. Auto-save draft setiap 30 detik. Tombol aksi berdasarkan role.']
+  Row 4: ['/cms/media', 'MediaPage', 'Semua CMS', 'Grid thumbnail, drag & drop upload, validasi tipe/ukuran file, progress bar, hapus file.']
+  Row 5: ['/cms/komentar', 'CommentPage', 'Editor, Admin', 'Tabel komentar dari semua artikel, aksi hapus dengan dialog konfirmasi.']
+  Row 6: ['/cms/pengguna', 'UserPage', 'Admin', 'Tabel pengguna, aksi Edit/Nonaktifkan/Hapus. BR-19: tombol disable untuk akun sendiri.']
+
+--- Table 71 ---
+  Row 0: ['Fitur', 'Implementasi']
+
+--- Table 72 ---
+  Row 0: ['XML Sitemap', 'GET /articles/sitemap → frontend generate XML sitemap semua artikel published']
+  Row 1: ['News Sitemap', 'GET /articles/news-sitemap → hanya artikel 48 jam terakhir (Google News requirement)']
+  Row 2: ['JSON-LD', 'Structured data Article (schema.org) di setiap halaman artikel detail']
+  Row 3: ['Open Graph', 'Meta tag og:title, og:description, og:image, og:url untuk social sharing']
+  Row 4: ['Twitter Cards', 'Meta tag twitter:card, twitter:title, twitter:description']
+  Row 5: ['robots.ts', 'Konfigurasi crawler (allow/disallow path CMS)']
+  Row 6: ['Dynamic Meta', 'Setiap halaman artikel memiliki meta tags dinamis dari data API']
+  Row 7: ['Clean URLs', 'Slug-based article URLs (/artikel/judul-berita)']
+
+--- Table 73 ---
+  Row 0: ['No', 'Skenario Pengujian', 'Langkah', 'Hasil yang Diharapkan', 'Status']
+  Row 1: ['1', 'Registrasi akun baru', 'Kirim POST ke /api/auth/register dengan data valid', 'Respons 201, user terdaftar dengan role reader', 'Berhasil']
+  Row 2: ['2', 'Login dengan kredensial valid', 'Kirim POST ke /api/auth/login', 'Respons 200, menerima access_token dan refresh_token', 'Berhasil']
+  Row 3: ['3', 'Login dengan password salah', 'Kirim POST ke /api/auth/login dengan password salah', 'Respons 401 INVALID_CREDENTIALS', 'Berhasil']
+  Row 4: ['4', 'Silent token refresh', 'Tunggu access token expired, kirim request baru', 'Frontend auto-refresh, request berhasil tanpa re-login', 'Berhasil']
+  Row 5: ['5', 'Refresh token expired', 'Gunakan refresh token yang sudah expired', 'Redirect ke halaman login', 'Berhasil']
+  Row 6: ['6', 'Logout (cabut refresh token)', 'Kirim POST ke /api/auth/logout', 'Refresh token ditandai is_revoked=true', 'Berhasil']
+  Row 7: ['7', 'Akses endpoint tanpa token', 'Kirim GET ke /api/bookmarks tanpa Authorization header', 'Respons 401 Unauthorized', 'Berhasil']
+  Row 8: ['8', 'Role guard (reader akses CMS)', 'Login sebagai reader, akses /cms/dashboard', 'Redirect ke halaman utama', 'Berhasil']
+
+--- Table 74 ---
+  Row 0: ['No', 'Skenario Pengujian', 'Langkah', 'Hasil yang Diharapkan', 'Status']
+  Row 1: ['1', 'Toggle bookmark (tambah)', 'Klik tombol bookmark pada artikel yang belum di-bookmark', 'Bookmark ditambahkan, tombol berubah aktif, respons bookmarked=true', 'Berhasil']
+  Row 2: ['2', 'Toggle bookmark (hapus)', 'Klik tombol bookmark pada artikel yang sudah di-bookmark', 'Bookmark dihapus, tombol berubah non-aktif, respons bookmarked=false', 'Berhasil']
+  Row 3: ['3', 'Lihat daftar bookmark', 'Navigasi ke halaman /bookmark', 'Tampil daftar artikel bookmark dalam grid card', 'Berhasil']
+  Row 4: ['4', 'Bookmark tanpa login', 'Klik tombol bookmark tanpa login', 'Redirect ke halaman login', 'Berhasil']
+  Row 5: ['5', 'Pagination bookmark', 'Scroll ke bawah pada halaman bookmark', 'Artikel berikutnya dimuat (6 item per halaman)', 'Berhasil']
+  Row 6: ['6', 'Toggle dari halaman detail', 'Klik bookmark dari halaman detail artikel', 'Status bookmark ter-update real-time', 'Berhasil']
+
+--- Table 75 ---
+  Row 0: ['No', 'Skenario Pengujian', 'Langkah', 'Hasil yang Diharapkan', 'Status']
+  Row 1: ['1', 'Dashboard Reader', 'Buka halaman utama portal', 'Tampil artikel dari kategori (pendidikan, wisata, kuliner, hotel)', 'Berhasil']
+  Row 2: ['2', 'Navigasi kategori', 'Klik salah satu kategori', 'Tampil artikel sesuai kategori yang dipilih', 'Berhasil']
+  Row 3: ['3', 'Buka detail artikel', 'Klik salah satu card artikel', 'Tampil konten lengkap, gambar, tag, penulis', 'Berhasil']
+  Row 4: ['4', 'SEO metadata', 'View source halaman detail artikel', 'Meta tags (title, description, OG, JSON-LD) terisi benar', 'Berhasil']
+  Row 5: ['5', 'Increment view count', 'Buka artikel, cek view_count di database', 'view_count bertambah 1 setiap akses', 'Berhasil']
+  Row 6: ['6', 'Tambah komentar', 'Isi form komentar dan submit', 'Komentar tersimpan dengan status pending', 'Berhasil']
+  Row 7: ['7', 'Balas komentar', 'Klik balas pada komentar existing', 'Balasan tersimpan dengan parent_id terisi', 'Berhasil']
+  Row 8: ['8', 'Responsivitas mobile', 'Buka portal di layar mobile', 'Tampilan responsif dan mudah dibaca', 'Berhasil']
+  Row 9: ['9', 'Pencarian artikel', 'Ketik kata kunci di kolom pencarian', 'Tampil hasil pencarian yang relevan', 'Berhasil']
+
+--- Table 76 ---
+  Row 0: ['No', 'Skenario Pengujian', 'Langkah', 'Hasil yang Diharapkan', 'Status']
+  Row 1: ['1', 'Dashboard admin', 'Login sebagai admin, buka /cms/dashboard', 'Tampil analitik visitor (page views, sparklines, pie chart)', 'Berhasil']
+  Row 2: ['2', 'Dashboard editor', 'Login sebagai editor, buka /cms/dashboard', 'Tampil statistik personal (berita publish, draft,', 'Berhasil']
+
+--- Table 77 ---
+  Row 0: ['', '', '', 'BarChart)', '']
+  Row 1: ['3', 'Dashboard jurnalis', 'Login sebagai jurnalis, buka /cms/dashboard', 'Tampil statistik personal (hanya artikel miliknya)', 'Berhasil']
+  Row 2: ['4', 'Filter periode (admin)', 'Pilih filter periode (7 hari, 30 hari)', 'Data statistik berubah sesuai periode', 'Berhasil']
+  Row 3: ['5', 'Bank Berita', 'Buka /cms/artikel', 'Tampil daftar artikel dengan filter status dan kategori', 'Berhasil']
+  Row 4: ['6', 'Tulis berita', 'Buka /cms/artikel/tulis, isi form dan submit', 'Artikel tersimpan dengan status draft', 'Berhasil']
+  Row 5: ['7', 'Upload media', 'Upload gambar melalui /cms/media', 'File tersimpan dan tampil di library', 'Berhasil']
+  Row 6: ['8', 'Moderasi komentar', 'Approve komentar pending di /cms/komentar', 'Status berubah menjadi approved', 'Berhasil']
+  Row 7: ['9', 'Role-based navigation', 'Cek sidebar sebagai jurnalis', 'Menu Pengguna tidak tampil untuk jurnalis', 'Berhasil']
+  Row 8: ['10', 'Responsivitas CMS', 'Buka dashboard CMS di mobile', 'Tampilan tetap rapi dan bisa digunakan', 'Berhasil']
+
+--- Table 78 ---
+  Row 0: ['No', 'Skenario Pengujian', 'Langkah', 'Hasil yang Diharapkan', 'Status']
+  Row 1: ['1', 'Draft → Review', 'Jurnalis ubah status draft ke review', 'Status berubah, artikel masuk antrean editor', 'Berhasil']
+  Row 2: ['2', 'Review → Published', 'Editor setujui artikel', 'Status published, published_at terisi, tampil di portal', 'Berhasil']
+  Row 3: ['3', 'Review → Rejected', 'Editor tolak artikel dengan catatan', 'Status rejected, change_note tersimpan', 'Berhasil']
+  Row 4: ['4', 'Rejected → Draft', 'Jurnalis perbaiki dan ubah ke draft', 'Status kembali ke draft, bisa diedit ulang', 'Berhasil']
+  Row 5: ['5', 'Published → Archived', 'Editor arsipkan artikel published', 'Status archived, tidak tampil di portal', 'Berhasil']
+  Row 6: ['6', 'Review → Scheduled', 'Editor jadwalkan penerbitan', 'Status scheduled, record di scheduled_articles', 'Berhasil']
+  Row 7: ['7', 'Scheduled auto-publish', 'Tunggu waktu scheduled tiba', 'Status otomatis berubah menjadi published', 'Berhasil']
+  Row 8: ['8', 'Revisi tersimpan', 'Cek riwayat revisi artikel', 'Snapshot tersimpan di article_revisions', 'Berhasil']
+
+--- Table 79 ---
+  Row 0: ['No', 'Skenario Pengujian', 'Langkah', 'Hasil yang Diharapkan', 'Status']
+  Row 1: ['1', 'JWT token validation', 'Kirim request dengan token yang dimodifikasi', 'Respons 401, request ditolak', 'Berhasil']
+  Row 2: ['2', 'Role authorization', 'Jurnalis coba akses endpoint admin', 'Respons 403 Forbidden', 'Berhasil']
+  Row 3: ['3', 'Input validation', 'Kirim request dengan data tidak valid', 'Respons 422 Validation Error', 'Berhasil']
+  Row 4: ['4', 'SQL injection prevention', 'Kirim input berisi SQL injection', 'Input di-escape oleh Query Builder/ORM', 'Berhasil']
+
+--- Table 80 ---
+  Row 0: ['5', 'Password hashing', 'Cek kolom password di database', 'Password tersimpan dalam bentuk hash (bcrypt)', 'Berhasil']
+  Row 1: ['6', 'Refresh token hashing', 'Cek kolom token_hash di refresh_tokens', 'Token tersimpan dalam bentuk SHA-256 hash', 'Berhasil']
+  Row 2: ['7', 'Comment rate limiting', 'Kirim komentar berturut-turut melebihi batas', 'Request ditolak setelah melewati batas', 'Berhasil']
+
+--- Table 81 ---
+  Row 0: ['No', 'Hambatan', 'Solusi']
+  Row 1: ['1', 'Kurangnya pemahaman awal tentang arsitektur Headless CMS dan perbedaannya dengan CMS tradisional (WordPress)', 'Mempelajari dokumentasi dan referensi arsitektur Headless CMS, serta berdiskusi dengan pembimbing lapangan']
+  Row 2: ['2', 'Kesulitan dalam mengimplementasikan mekanisme silent token refresh di Axios interceptor karena race condition', 'Menambahkan flag _retry pada config object untuk mencegah pemanggilan refresh berulang']
+  Row 3: ['3', 'Masalah N+1 query pada method getBookmarks() yang mengambil data artikel satu per satu', 'Menerapkan batch loading menggunakan whereIn() dan eager loading menggunakan with()']
+  Row 4: ['4', 'Kesulitan merancang role-based dashboard yang menampilkan data berbeda untuk setiap role', 'Menerapkan role-based routing di controller (CmsDashboardController) dan role-based filtering di query (getEditorStats)']
+  Row 5: ['5', 'Tantangan optimasi SEO pada halaman detail artikel yang menggunakan framework client-side', 'Memanfaatkan SSG dari Next.js dan mengintegrasikan JSON-LD structured data serta Open Graph meta tags']
+  Row 6: ['6', 'Implementasi state machine editorial workflow yang kompleks dengan banyak transisi status dan aturan bisnis', 'Membuat method validateTransition() di CmsArticleService yang memetakan setiap transisi yang diperbolehkan dan menolak transisi ilegal']
+  Row 7: ['7', 'Menangani upload file media berukuran besar yang sering timeout pada koneksi jaringan yang tidak stabil', 'Menerapkan validasi client-side sebelum upload dan menggunakan progress indicator untuk memberikan feedback visual kepada pengguna']
+  Row 8: ['8', 'Performa query pencarian artikel yang lambat menggunakan operator LIKE pada jumlah data besar', 'Membuat tabel terpisah search_indexes dengan FULLTEXT index MySQL dan reindex otomatis saat artikel di-publish']
+  Row 9: ['9', 'Penanganan error yang tidak konsisten antar endpoint sehingga', 'Merancang format respons error standar dengan kode error spesifik per modul']
+
+--- Table 82 ---
+  Row 0: ['', 'frontend kesulitan membedakan jenis error', '(AUTH_001, ARTICLE_003, dll.) dan middleware global exception handler']
+  Row 1: ['10', 'Validasi form di frontend dan backend yang tidak sinkron menyebabkan data yang lolos validasi client ditolak server', 'Menyamakan aturan validasi menggunakan Zod schema di frontend dan Laravel Form Request di backend dengan rule yang setara']
+
+--- Table 83 ---
+  Row 0: ['Minggu/Tgl', 'Kegiatan', 'Hasil', 'Validasi']
+  Row 1: ['Minggu 1 9–14 Feb 2026', 'Mengikuti hari pertama magang dengan sesi perkenalan bersama tim dan pembimbing lapangan, serta mendapatkan penjelasan mengenai sistem kerja dan agenda kegiatan selama magang.', 'Memahami alur kerja dan pembagian tugas selama magang.', '']
+  Row 2: ['Minggu 2 16–21 Feb 2026', 'Mempelajari dasar-dasar penulisan berita, teknik foto jurnalistik, dan melakukan praktik liputan sederhana.', 'Memahami proses publikasi berita dan mampu membuat berita secara mandiri.', '']
+  Row 3: ['Minggu 3 23–28 Feb 2026', 'Melanjutkan penulisan dan penyempurnaan berita serta rutin membuat berita harian.', 'Berita harian berhasil diselesaikan sesuai target.', '']
+  Row 4: ['Minggu 4', 'Mendapatkan pengarahan dari', 'Memahami dasar', '']
+  Row 5: ['2–7 Mar 2026', 'pembimbing IT mengenai proyek yang', 'penggunaan Git dan GitHub', '']
+  Row 6: ['', 'akan dikerjakan. Penjelasan mengenai', 'serta alur kerja kolaborasi', '']
+  Row 7: ['', 'penggunaan Git dan GitHub.', 'proyek.', '']
+  Row 8: ['Minggu 5 9–14 Mar 2026', 'Mulai mengerjakan project website dengan melakukan penambahan data dan mempelajari struktur halaman website.', 'Memahami proses input dan pengelolaan data pada website.', '']
+  Row 9: ['Minggu 6', 'Melanjutkan pengerjaan project website', 'Menambah pemahaman', '']
+  Row 10: ['16–21 Mar 2026', 'dengan pembaruan data dan perbaikan', 'mengenai workflow GitHub', '']
+  Row 11: ['', 'tampilan.', 'dan pengelolaan data', '']
+  Row 12: ['', '', 'website.', '']
+  Row 13: ['Minggu 7 23–28 Mar 2026', 'Membantu pengecekan dan revisi data, serta memperbaiki kesalahan tampilan pada website.', 'Data website menjadi lebih lengkap dan rapi.', '']
+  Row 14: ['Minggu 8', 'Melanjutkan pengembangan dan', 'Memahami proses', '']
+  Row 15: ['30 Mar–4 Apr', 'pengelolaan website dengan', 'pengelolaan dan', '']
+  Row 16: ['2026', 'menambahkan data baru dan update', 'pengembangan website', '']
+  Row 17: ['', 'konten.', 'secara lebih detail.', '']
+  Row 18: ['Minggu 9', 'Merancang UI/UX menggunakan Figma', 'Berhasil membuat desain', '']
+  Row 19: ['6–11 Apr 2026', 'untuk halaman CMS (dashboard', 'UI/UX yang responsif dan', '']
+  Row 20: ['', 'statistik) dan portal berita (detail artikel,', 'modern menggunakan', '']
+  Row 21: ['', 'bookmark, dashboard reader).', 'Figma.', '']
+
+--- Table 84 ---
+  Row 0: ['Minggu 10 13–18 Apr 2026', 'Melakukan perancangan sistem menggunakan Activity Diagram serta perancangan database.', 'Berhasil menyusun dokumentasi perancangan sistem.', '']
+  Row 1: ['Minggu 11 20–25 Apr 2026', 'Setup project Next.js 15 dan Tailwind CSS. Mulai implementasi layout dasar dan halaman-halaman CMS.', 'Project frontend berhasil di-setup dengan layout dasar yang berfungsi.', '']
+  Row 2: ['Minggu 12 27 Apr–2 Mei 2026', 'Pengembangan halaman dashboard/beranda reader, detail artikel, dan bookmark berdasarkan desain Figma.', 'Halaman dashboard reader, detail artikel, dan bookmark berhasil dikembangkan sesuai desain.', '']
+  Row 3: ['Minggu 13 4–9 Mei 2026', 'Melanjutkan pengembangan halaman bookmark dan dashboard CMS dengan integrasi Recharts.', 'Fitur bookmark dan dashboard CMS berhasil dikembangkan.', '']
+  Row 4: ['Minggu 14 11–16 Mei 2026', 'Pengembangan frontend portal berita: halaman detail artikel dengan SEO (JSON-LD, Open Graph), halaman bookmark dengan grid card dan pagination.', 'Portal berita berhasil dikembangkan dengan tampilan yang responsif.', '']
+  Row 5: ['Minggu 15 18–23 Mei 2026', 'Mulai integrasi frontend dengan REST API backend. Implementasi fitur bookmark toggle dan integrasi API dashboard CMS.', 'Frontend berhasil terhubung dengan API dan fitur bookmark toggle berjalan.', '']
+  Row 6: ['Minggu 16 25–30 Mei 2026', 'Pengembangan backend: endpoint bookmark (toggle pattern) dan statistik dashboard CMS menggunakan Laravel 12.', 'Backend berhasil dibuat dan terintegrasi dengan frontend.', '']
+  Row 7: ['Minggu 17 1–6 Jun 2026', 'Penyempurnaan fitur: memperbaiki bug, optimasi komponen, dan memperbaiki struktur kode.', 'Beberapa bug berhasil diperbaiki dan performa menjadi lebih baik.', '']
+  Row 8: ['Minggu 18 8–13 Jun 2026', 'Testing seluruh fitur website, pengecekan responsivitas, serta penyesuaian data dan endpoint API.', 'Fitur website berhasil diuji dan berjalan dengan baik.', '']
+  Row 9: ['Minggu 19 15–19 Jun 2026', 'Finalisasi project: pengecekan keseluruhan fitur, debugging, penyusunan dokumentasi, dan persiapan presentasi.', 'Project berhasil diselesaikan. Dokumentasi dan bahan presentasi berhasil disusun.', '']
+
+--- Table 85 ---
+  Row 0: ['No', 'Method', 'Endpoint', 'Modul', 'Auth', 'Role']
+  Row 1: ['1', 'POST', '/api/auth/register', 'Auth', '—', 'Publik']
+  Row 2: ['2', 'POST', '/api/auth/login', 'Auth', '—', 'Publik']
+  Row 3: ['3', 'POST', '/api/auth/refresh', 'Auth', '—', 'Publik']
+  Row 4: ['4', 'POST', '/api/auth/logout', 'Auth', 'Ya', 'Semua']
+  Row 5: ['5', 'GET', '/api/articles', 'Artikel', '—', 'Publik']
+  Row 6: ['6', 'GET', '/api/articles/:slug', 'Artikel', '—', 'Publik']
+  Row 7: ['7', 'POST', '/api/articles', 'Artikel', 'Ya', 'Journalist+']
+  Row 8: ['8', 'PATCH', '/api/articles/:id', 'Artikel', 'Ya', 'Journalist+']
+  Row 9: ['9', 'DELETE', '/api/articles/:id', 'Artikel', 'Ya', 'Editor+']
+  Row 10: ['10', 'PATCH', '/api/articles/:id/status', 'Artikel', 'Ya', 'Journalist+']
+  Row 11: ['11', 'POST', '/api/articles/:id/schedule', 'Artikel', 'Ya', 'Editor+']
+  Row 12: ['12', 'GET', '/api/articles/:id/revisions', 'Artikel', 'Ya', 'Editor+']
+  Row 13: ['13', 'GET', '/api/categories', 'Kategori', '—', 'Publik']
+  Row 14: ['14', 'POST', '/api/categories', 'Kategori', 'Ya', 'Admin']
+  Row 15: ['15', 'PATCH', '/api/categories/:id', 'Kategori', 'Ya', 'Admin']
+  Row 16: ['16', 'DELETE', '/api/categories/:id', 'Kategori', 'Ya', 'Admin']
+  Row 17: ['17', 'GET', '/api/tags', 'Tag', '—', 'Publik']
+  Row 18: ['18', 'POST', '/api/tags', 'Tag', 'Ya', 'Journalist+']
+  Row 19: ['19', 'PATCH', '/api/tags/:id', 'Tag', 'Ya', 'Editor+']
+  Row 20: ['20', 'DELETE', '/api/tags/:id', 'Tag', 'Ya', 'Admin']
+  Row 21: ['21', 'GET', '/api/articles/:slug/comments', 'Komentar', '—', 'Publik']
+  Row 22: ['22', 'POST', '/api/articles/:slug/comments', 'Komentar', 'Ya', 'Reader+']
+
+--- Table 86 ---
+  Row 0: ['23', 'POST', '/api/comments/:id/reply', 'Komentar', 'Ya', 'Reader+']
+  Row 1: ['24', 'PATCH', '/api/comments/:id/status', 'Komentar', 'Ya', 'Editor+']
+  Row 2: ['25', 'DELETE', '/api/comments/:id', 'Komentar', 'Ya', 'Editor+']
+  Row 3: ['26', 'POST', '/api/comments/:id/rate', 'Komentar', 'Ya', 'Reader+']
+  Row 4: ['27', 'GET', '/api/bookmarks', 'Bookmark', 'Ya', 'Semua']
+  Row 5: ['28', 'POST', '/api/bookmarks', 'Bookmark', 'Ya', 'Semua']
+  Row 6: ['29', 'GET', '/api/media', 'Media', 'Ya', 'Journalist+']
+  Row 7: ['30', 'POST', '/api/media', 'Media', 'Ya', 'Journalist+']
+  Row 8: ['31', 'PATCH', '/api/media/:id', 'Media', 'Ya', 'Journalist+']
+  Row 9: ['32', 'DELETE', '/api/media/:id', 'Media', 'Ya', 'Journalist+']
+  Row 10: ['33', 'GET', '/api/cms/statistics', 'CMS', 'Ya', 'Journalist+']
+  Row 11: ['34', 'GET', '/api/search', 'Pencarian', '—', 'Publik']
+  Row 12: ['35', 'GET', '/api/users', 'Pengguna', 'Ya', 'Admin']
+  Row 13: ['36', 'GET', '/api/users/:id', 'Pengguna', 'Ya', 'Admin']
+  Row 14: ['37', 'POST', '/api/users', 'Pengguna', 'Ya', 'Admin']
+  Row 15: ['38', 'PATCH', '/api/users/:id', 'Pengguna', 'Ya', 'Admin']
+  Row 16: ['39', 'DELETE', '/api/users/:id', 'Pengguna', 'Ya', 'Admin']
+  Row 17: ['40', 'GET', '/api/auth/me', 'Auth', 'Ya', 'Semua']
+  Row 18: ['41', 'PUT', '/api/auth/profile', 'Auth', 'Ya', 'Semua']
+  Row 19: ['42', 'PUT', '/api/auth/change-password', 'Auth', 'Ya', 'Semua']
+  Row 20: ['43', 'POST', '/api/auth/forgot-password', 'Auth', '—', 'Publik']
+  Row 21: ['44', 'POST', '/api/auth/reset-password', 'Auth', '—', 'Publik']
+  Row 22: ['45', 'GET', '/api/beranda', 'Beranda', '—', 'Publik']
+  Row 23: ['46', 'POST', '/api/articles/:id/lock', 'CMS Artikel', 'Ya', 'Editor+']
+  Row 24: ['47', 'POST', '/api/articles/:id/unlock', 'CMS Artikel', 'Ya', 'Editor+']
+  Row 25: ['48', 'GET', '/api/articles/sitemap', 'SEO', '—', 'Publik']
+  Row 26: ['49', 'GET', '/api/articles/news-sitemap', 'SEO', '—', 'Publik']
+
+--- Table 87 ---
+  Row 0: ['50', 'POST', '/api/analytics/track', 'Analitik', '—', 'Publik']
+
+--- Table 88 ---
+  Row 0: ['Error Code', 'HTTP Status', 'Keterangan']
+  Row 1: ['INVALID_CREDENTIALS', '401', 'Email atau password salah saat login']
+  Row 2: ['ACCOUNT_INACTIVE', '403', 'Akun nonaktif (is_active = false)']
+  Row 3: ['TOKEN_REVOKED', '401', 'Refresh token sudah di-revoke']
+  Row 4: ['TOKEN_EXPIRED', '401', 'JWT atau refresh token sudah kedaluwarsa']
+  Row 5: ['TOKEN_NOT_FOUND', '400', 'Refresh token tidak ditemukan di DB']
+  Row 6: ['FORBIDDEN_ROLE', '403', 'User tidak memiliki role yang diperlukan']
+  Row 7: ['FORBIDDEN_OWNERSHIP', '403', 'Journalist mencoba akses artikel orang lain']
+  Row 8: ['FORBIDDEN_STATUS', '403', 'Aksi tidak diizinkan pada status artikel saat ini']
+  Row 9: ['LOCKED_BY_OTHER', '403', 'Artikel sedang dikunci editor lain']
+  Row 10: ['ARTICLE_NOT_FOUND', '404', 'Artikel tidak ditemukan']
+  Row 11: ['COMMENT_NOT_FOUND', '404', 'Komentar tidak ditemukan']
+  Row 12: ['USER_NOT_FOUND', '404', 'User tidak ditemukan']
+  Row 13: ['SLUG_ALREADY_EXISTS', '409', 'Slug artikel sudah dipakai']
+  Row 14: ['EMAIL_ALREADY_EXISTS', '409', 'Email sudah terdaftar']
+  Row 15: ['CANNOT_MODIFY_SELF', '403', 'Admin tidak bisa edit/hapus akun sendiri']
+  Row 16: ['INVALID_STATUS_TRANSITION', '400', 'Transisi status artikel tidak valid']
+  Row 17: ['SCHEDULED_TIME_TOO_SOON', '400', 'scheduled_at kurang dari 5 menit']
+
+--- Table 89 ---
+  Row 0: ['RATE_LIMIT_EXCEEDED', '429', 'Melebihi batas 10 komentar/jam']
+  Row 1: ['MAX_NESTING', '400', 'Reply sudah max 2 level']
+  Row 2: ['PARENT_MISMATCH', '400', 'Parent comment bukan di artikel yang sama']
+  Row 3: ['VALIDATION_ERROR', '422', 'Input tidak lolos validasi Laravel']
+  Row 4: ['INTERNAL_ERROR', '500', 'Error internal server']

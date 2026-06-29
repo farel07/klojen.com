@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   transpilePackages: ["recharts", "es-toolkit"],
+  turbopack: {
+    root: process.cwd(),
+  },
   images: {
     // Izinkan optimasi gambar dari URL eksternal (S3, Cloudinary, CDN)
     // Perketat ke domain spesifik saat produksi, contoh:

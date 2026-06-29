@@ -1,0 +1,15 @@
+https://etd.repository.ugm.ac.id/penelitian/detail/236477
+https://jurnal.itg.ac.id/index.php/algoritma/article/view/959
+https://journal.eng.unila.ac.id/index.php/jitet/article/view/7070?utm_source=chatgpt.com
+https://ojs.trigunadharma.ac.id/index.php/jis/article/view/11912?utm_source=chatgpt.com
+https://ojs.uajy.ac.id/index.php/jiaj/article/view/5908?utm_source=chatgpt.com
+https://www.researchgate.net/publication/400916191_Implementing_Fast_Content_Management_to_Accelerate_Editorial_Workflows_in_a_Digital_Newsroom
+https://ojs.trigunadharma.ac.id/index.php/jsi/article/view/12379?utm_source=chatgpt.com
+https://www.researchgate.net/publication/394251781_Design_of_Web-Based_Project_Management_System_with_Multi-Level_Role-Based_Access_Control
+https://csrc.nist.gov/csrc/media/projects/role-based-access-control/documents/sandhu96.pdf
+https://shift.sin.fst.uin-alauddin.ac.id/index.php/shift/article/view/148?utm_source=chatgpt.com
+https://jesr.eng.unila.ac.id/index.php/ojs/article/view/110?utm_source=chatgpt.com
+https://jurnal.ubhinus.ac.id/index.php/SMATIKA/article/view/2174?utm_source=chatgpt.com
+https://www.researchgate.net/publication/380411312_React_Apps_with_Server-Side_Rendering_Nextjs
+https://ejournal.uksw.edu/itexplore/article/view/6656?utm_source=chatgpt.com
+https://www.researchgate.net/publication/2670701_The_Performance_of_Decoupled_Architectures
