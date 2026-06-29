@@ -1,15 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import {
   getCmsCategories,
-  createCmsCategory,
-  updateCmsCategory,
   deleteCmsCategory,
   CategoryItem,
   getCmsTags,
-  createCmsTag,
-  updateCmsTag,
   deleteCmsTag,
   TagItem,
 } from '@/lib/api/taxonomy';
@@ -17,8 +15,10 @@ import { Plus, Edit3, Trash2, Hash, LayoutGrid, X } from 'lucide-react';
 
 type Tab = 'category' | 'tag';
 
-export default function KategoriPage() {
-  const [activeTab, setActiveTab] = useState<Tab>('category');
+function KategoriContent() {
+  const searchParams = useSearchParams();
+  const initialTab = (searchParams.get('tab') as Tab) || 'category';
+  const [activeTab, setActiveTab] = useState<Tab>(initialTab);
 
   // Categories
   const [categories, setCategories] = useState<CategoryItem[]>([]);
@@ -28,16 +28,10 @@ export default function KategoriPage() {
   const [tags, setTags] = useState<TagItem[]>([]);
   const [loadingTags, setLoadingTags] = useState(true);
 
-  // Modals state
-  const [showCatModal, setShowCatModal] = useState(false);
-  const [editCat, setEditCat] = useState<CategoryItem | null>(null);
-  const [catName, setCatName] = useState('');
-  
-  const [showTagModal, setShowTagModal] = useState(false);
-  const [editTag, setEditTag] = useState<TagItem | null>(null);
-  const [tagName, setTagName] = useState('');
-
-  const [loadingAction, setLoadingAction] = useState(false);
+  // Modals state for Delete Confirmation
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [deleteType, setDeleteType] = useState<'category' | 'tag' | null>(null);
 
   useEffect(() => {
     fetchCategories();
@@ -68,335 +62,243 @@ export default function KategoriPage() {
     }
   };
 
-  // ─── Category Actions ───────────────────────────────────────────────────
+  // ─── Delete Actions ───────────────────────────────────────────────────
 
-  const handleSaveCategory = async () => {
-    if (!catName.trim()) return;
-    setLoadingAction(true);
+  const handleDeleteClick = (id: string, type: 'category' | 'tag') => {
+    setDeleteTargetId(id);
+    setDeleteType(type);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteTargetId || !deleteType) return;
+    
     try {
-      if (editCat) {
-        await updateCmsCategory(editCat.id, { name: catName });
+      if (deleteType === 'category') {
+        await deleteCmsCategory(deleteTargetId);
+        fetchCategories();
       } else {
-        await createCmsCategory({ name: catName });
+        await deleteCmsTag(deleteTargetId);
+        fetchTags();
       }
-      setShowCatModal(false);
-      setCatName('');
-      setEditCat(null);
-      fetchCategories();
+      setIsDeleteModalOpen(false);
+      setDeleteTargetId(null);
+      setDeleteType(null);
     } catch (error: any) {
       console.error(error);
-      alert(error?.response?.data?.message || 'Gagal menyimpan kategori');
-    } finally {
-      setLoadingAction(false);
+      alert(error?.response?.data?.message || `Gagal menghapus ${deleteType}`);
     }
   };
 
-  const handleDeleteCategory = async (id: string) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus kategori ini?')) return;
-    try {
-      await deleteCmsCategory(id);
-      fetchCategories();
-    } catch (error: any) {
-      console.error(error);
-      alert(error?.response?.data?.message || 'Gagal menghapus kategori');
-    }
-  };
-
-  const openEditCat = (cat: CategoryItem) => {
-    setEditCat(cat);
-    setCatName(cat.name);
-    setShowCatModal(true);
-  };
-
-  const openAddCat = () => {
-    setEditCat(null);
-    setCatName('');
-    setShowCatModal(true);
-  };
-
-  // ─── Tag Actions ────────────────────────────────────────────────────────
-
-  const handleSaveTag = async () => {
-    if (!tagName.trim()) return;
-    setLoadingAction(true);
-    try {
-      if (editTag) {
-        await updateCmsTag(editTag.id, { name: tagName });
-      } else {
-        await createCmsTag({ name: tagName });
-      }
-      setShowTagModal(false);
-      setTagName('');
-      setEditTag(null);
-      fetchTags();
-    } catch (error: any) {
-      console.error(error);
-      alert(error?.response?.data?.message || 'Gagal menyimpan tag');
-    } finally {
-      setLoadingAction(false);
-    }
-  };
-
-  const handleDeleteTag = async (id: string) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus tag ini?')) return;
-    try {
-      await deleteCmsTag(id);
-      fetchTags();
-    } catch (error: any) {
-      console.error(error);
-      alert(error?.response?.data?.message || 'Gagal menghapus tag');
-    }
-  };
-
-  const openEditTag = (tag: TagItem) => {
-    setEditTag(tag);
-    setTagName(tag.name);
-    setShowTagModal(true);
-  };
-
-  const openAddTag = () => {
-    setEditTag(null);
-    setTagName('');
-    setShowTagModal(true);
+  const cancelDelete = () => {
+    setIsDeleteModalOpen(false);
+    setDeleteTargetId(null);
+    setDeleteType(null);
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-64px)] overflow-hidden bg-gray-50/50">
-      
-      {/* Header */}
-      <div className="shrink-0 bg-white border-b border-gray-200 px-6 py-6">
-        <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight mb-2">
-          Kategori dan Tag
-        </h1>
-        <p className="text-sm font-medium text-gray-500">
-          Kelola kategori berita dan tagar (hashtag) untuk mempermudah navigasi portal.
-        </p>
-      </div>
+    <div className="flex flex-col h-[calc(100vh-64px)] overflow-y-auto bg-[#f8fafc]">
+      <div className="p-6 lg:p-8 w-full space-y-8">
+        
+        {/* Header Section */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          {/* Left: Title & Add Button */}
+          <div className="flex flex-col gap-5">
+            <h1 className="text-[28px] font-extrabold text-gray-900 tracking-tight">
+              {activeTab === 'category' ? 'Kategori' : 'Tag'}
+            </h1>
+            <div className="flex items-center gap-3">
+              {activeTab === 'category' && (
+                <Link
+                  href="/cms/kategori/tambah"
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#2B2A4C] hover:bg-[#1e1d35] text-white rounded-xl text-[13px] font-bold shadow-md transition-all w-fit"
+                >
+                  <Plus size={16} strokeWidth={2.5} />
+                  Tambah Kategori
+                </Link>
+              )}
+            </div>
+          </div>
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-y-auto p-6">
-        <div className="border border-gray-200 rounded-xl bg-white overflow-hidden max-w-5xl">
-          
-          {/* Tabs */}
-          <div className="flex items-center gap-3 p-4 border-b border-gray-200">
-            <button
+          {/* Right: Stat Cards (Act as Tabs) */}
+          <div className="flex gap-4">
+            {/* Category Card */}
+            <div 
               onClick={() => setActiveTab('category')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-bold transition-all ${
-                activeTab === 'category' ? 'bg-blue-50 text-blue-700' : 'text-gray-500 hover:bg-gray-100'
+              className={`cursor-pointer flex flex-col justify-between w-[140px] h-[100px] rounded-2xl p-4 shadow-sm transition-all border ${
+                activeTab === 'category' 
+                  ? 'bg-[#2B2A4C] text-white border-transparent' 
+                  : 'bg-white text-gray-800 border-gray-200 hover:border-gray-300'
               }`}
             >
-              <LayoutGrid size={16} />
-              Kategori
-            </button>
-            <button
+              <div className="flex justify-between items-start">
+                <span className={`text-[9px] font-extrabold tracking-wide uppercase leading-tight ${activeTab === 'category' ? 'text-[#a1a1c9]' : 'text-gray-500'}`}>TOTAL<br/>KATEGORI</span>
+                <div className={`p-1.5 rounded-lg ${activeTab === 'category' ? 'bg-white/10' : 'bg-gray-100'}`}>
+                  <LayoutGrid size={14} className={activeTab === 'category' ? 'text-white' : 'text-gray-500'} />
+                </div>
+              </div>
+              <div className="text-3xl font-extrabold tracking-tight">
+                {categories.length}
+              </div>
+            </div>
+
+            {/* Tag Card */}
+            <div 
               onClick={() => setActiveTab('tag')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-bold transition-all ${
-                activeTab === 'tag' ? 'bg-blue-50 text-blue-700' : 'text-gray-500 hover:bg-gray-100'
+              className={`cursor-pointer flex flex-col justify-between w-[140px] h-[100px] rounded-2xl p-4 shadow-sm transition-all border ${
+                activeTab === 'tag' 
+                  ? 'bg-[#2B2A4C] text-white border-transparent' 
+                  : 'bg-white text-gray-800 border-gray-200 hover:border-gray-300'
               }`}
             >
-              <Hash size={16} />
-              Tag
-            </button>
-          </div>
-
-          {/* Action Bar */}
-          <div className="p-4 flex justify-end bg-gray-50/50 border-b border-gray-100">
-            <button
-              onClick={activeTab === 'category' ? openAddCat : openAddTag}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold shadow-sm transition-colors"
-            >
-              <Plus size={16} strokeWidth={2.5} />
-              Tambah {activeTab === 'category' ? 'Kategori' : 'Tag'}
-            </button>
-          </div>
-
-          {/* Content */}
-          <div className="p-0">
-            {activeTab === 'category' && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="bg-gray-50 border-b border-gray-200 text-[11px] uppercase tracking-wider text-gray-500 font-extrabold">
-                      <th className="px-5 py-4 w-10">No</th>
-                      <th className="px-5 py-4">Nama Kategori</th>
-                      <th className="px-5 py-4">Slug</th>
-                      <th className="px-5 py-4 text-center">Sub-Kategori</th>
-                      <th className="px-5 py-4 text-right w-28">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-[13px] font-semibold text-gray-700 divide-y divide-gray-100">
-                    {loadingCategories ? (
-                      <tr><td colSpan={5} className="px-5 py-10 text-center text-gray-400">Memuat kategori...</td></tr>
-                    ) : categories.length === 0 ? (
-                      <tr><td colSpan={5} className="px-5 py-10 text-center text-gray-400">Belum ada kategori.</td></tr>
-                    ) : (
-                      categories.map((cat, idx) => (
-                        <tr key={cat.id} className="hover:bg-blue-50/30 transition-colors">
-                          <td className="px-5 py-4 text-gray-400">{idx + 1}</td>
-                          <td className="px-5 py-4 text-gray-900 font-bold">{cat.name}</td>
-                          <td className="px-5 py-4 text-gray-500">{cat.slug}</td>
-                          <td className="px-5 py-4 text-center">
-                            <span className="inline-flex items-center justify-center bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5 text-xs font-bold">
-                              {cat.children_count || 0}
-                            </span>
-                          </td>
-                          <td className="px-5 py-4">
-                            <div className="flex items-center justify-end gap-3">
-                              <button onClick={() => openEditCat(cat)} className="text-blue-500 hover:text-blue-700" title="Edit">
-                                <Edit3 size={18} strokeWidth={2.5} />
-                              </button>
-                              <button onClick={() => handleDeleteCategory(cat.id)} className="text-red-400 hover:text-red-600" title="Hapus">
-                                <Trash2 size={18} strokeWidth={2.5} />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
+              <div className="flex justify-between items-start">
+                <span className={`text-[9px] font-extrabold tracking-wide uppercase leading-tight ${activeTab === 'tag' ? 'text-[#a1a1c9]' : 'text-gray-500'}`}>TOTAL<br/>TAG</span>
+                <div className={`p-1.5 rounded-lg ${activeTab === 'tag' ? 'bg-white/10' : 'bg-blue-50'}`}>
+                  <Hash size={14} className={activeTab === 'tag' ? 'text-white' : 'text-blue-500'} />
+                </div>
               </div>
-            )}
-
-            {activeTab === 'tag' && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="bg-gray-50 border-b border-gray-200 text-[11px] uppercase tracking-wider text-gray-500 font-extrabold">
-                      <th className="px-5 py-4 w-10">No</th>
-                      <th className="px-5 py-4">Nama Tag</th>
-                      <th className="px-5 py-4">Slug</th>
-                      <th className="px-5 py-4 text-right w-28">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-[13px] font-semibold text-gray-700 divide-y divide-gray-100">
-                    {loadingTags ? (
-                      <tr><td colSpan={4} className="px-5 py-10 text-center text-gray-400">Memuat tag...</td></tr>
-                    ) : tags.length === 0 ? (
-                      <tr><td colSpan={4} className="px-5 py-10 text-center text-gray-400">Belum ada tag.</td></tr>
-                    ) : (
-                      tags.map((tag, idx) => (
-                        <tr key={tag.id} className="hover:bg-blue-50/30 transition-colors">
-                          <td className="px-5 py-4 text-gray-400">{idx + 1}</td>
-                          <td className="px-5 py-4 text-gray-900 font-bold flex items-center gap-1.5">
-                            <Hash size={14} className="text-blue-500" />
-                            {tag.name}
-                          </td>
-                          <td className="px-5 py-4 text-gray-500">{tag.slug}</td>
-                          <td className="px-5 py-4">
-                            <div className="flex items-center justify-end gap-3">
-                              <button onClick={() => openEditTag(tag)} className="text-blue-500 hover:text-blue-700" title="Edit">
-                                <Edit3 size={18} strokeWidth={2.5} />
-                              </button>
-                              <button onClick={() => handleDeleteTag(tag.id)} className="text-red-400 hover:text-red-600" title="Hapus">
-                                <Trash2 size={18} strokeWidth={2.5} />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
+              <div className="text-3xl font-extrabold tracking-tight">
+                {tags.length}
               </div>
-            )}
+            </div>
           </div>
+        </div>
+
+        {/* Table Section */}
+        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+          {activeTab === 'category' ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="text-sm text-[#152A4A] bg-white border-b border-gray-200">
+                  <tr>
+                    <th className="px-6 py-4 font-bold w-16 text-center">NO.</th>
+                    <th className="px-6 py-4 font-bold">Kategori</th>
+                    <th className="px-6 py-4 font-bold text-center">Jumlah Artikel</th>
+                    <th className="px-6 py-4 font-bold text-center w-28">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 text-sm">
+                  {loadingCategories ? (
+                    <tr><td colSpan={4} className="px-6 py-10 text-center text-gray-400 font-medium">Memuat kategori...</td></tr>
+                  ) : categories.length === 0 ? (
+                    <tr><td colSpan={4} className="px-6 py-10 text-center text-gray-400 font-medium">Belum ada kategori.</td></tr>
+                  ) : (
+                    categories.map((cat, idx) => (
+                      <tr key={cat.id} className={`hover:bg-gray-50/50 transition-colors ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
+                        <td className="px-6 py-4 text-center font-medium text-gray-500">{idx + 1}</td>
+                        <td className="px-6 py-4 font-medium text-gray-900">{cat.name}</td>
+                        <td className="px-6 py-4 text-center font-medium text-gray-600">0</td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center justify-center gap-3">
+                            <Link 
+                              href={`/cms/kategori/edit/${cat.id}`}
+                              className="text-green-500 hover:text-green-600 transition-colors bg-green-50 p-1.5 rounded-md border border-green-100 block" 
+                              title="Edit"
+                            >
+                              <Edit3 size={16} />
+                            </Link>
+                            <button 
+                              onClick={() => handleDeleteClick(cat.id, 'category')} 
+                              className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100" 
+                              title="Hapus"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="text-sm text-[#152A4A] bg-white border-b border-gray-200">
+                  <tr>
+                    <th className="px-6 py-4 font-bold w-16 text-center">NO.</th>
+                    <th className="px-6 py-4 font-bold">Tag</th>
+                    <th className="px-6 py-4 font-bold text-center">Jumlah Artikel</th>
+                    <th className="px-6 py-4 font-bold text-center w-28">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 text-sm">
+                  {loadingTags ? (
+                    <tr><td colSpan={4} className="px-6 py-10 text-center text-gray-400 font-medium">Memuat tag...</td></tr>
+                  ) : tags.length === 0 ? (
+                    <tr><td colSpan={4} className="px-6 py-10 text-center text-gray-400 font-medium">Belum ada tag.</td></tr>
+                  ) : (
+                    tags.map((tag, idx) => (
+                      <tr key={tag.id} className={`hover:bg-gray-50/50 transition-colors ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
+                        <td className="px-6 py-4 text-center font-medium text-gray-500">{idx + 1}</td>
+                        <td className="px-6 py-4 flex items-center gap-1.5 font-medium text-gray-900">
+                          <Hash size={14} className="text-blue-500 shrink-0" />
+                          {tag.name}
+                        </td>
+                        <td className="px-6 py-4 text-center font-medium text-gray-600">0</td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center justify-center">
+                            {/* Hanya ada tombol Hapus untuk Tag */}
+                            <button 
+                              onClick={() => handleDeleteClick(tag.id, 'tag')} 
+                              className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100" 
+                              title="Hapus"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Modal Kategori */}
-      {showCatModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-              <h3 className="text-lg font-bold text-gray-900">
-                {editCat ? 'Edit Kategori' : 'Tambah Kategori'}
-              </h3>
-              <button onClick={() => setShowCatModal(false)} className="text-gray-400 hover:text-gray-600">
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-6 text-center relative">
+              <button
+                onClick={cancelDelete}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition-colors"
+              >
                 <X size={20} />
               </button>
-            </div>
-            <div className="p-6">
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Nama Kategori</label>
-                  <input
-                    type="text"
-                    value={catName}
-                    onChange={(e) => setCatName(e.target.value)}
-                    placeholder="Contoh: Pendidikan"
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all text-sm font-semibold outline-none text-black"
-                  />
-                </div>
+              <h3 className="text-lg font-bold text-gray-900 mt-4 mb-8 leading-tight">
+                Apakah Anda Yakin<br />Ingin Menghapus Data Ini?
+              </h3>
+              <div className="flex items-center justify-center gap-4">
+                <button
+                  onClick={confirmDelete}
+                  className="px-8 py-2 bg-[#69c77e] hover:bg-[#5db471] text-white text-sm font-bold rounded-lg shadow-sm transition-colors"
+                >
+                  Ya
+                </button>
+                <button
+                  onClick={cancelDelete}
+                  className="px-8 py-2 bg-[#ef6e6e] hover:bg-[#d96464] text-white text-sm font-bold rounded-lg shadow-sm transition-colors"
+                >
+                  Tidak
+                </button>
               </div>
-            </div>
-            <div className="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
-              <button
-                onClick={() => setShowCatModal(false)}
-                className="px-4 py-2 rounded-lg text-sm font-bold text-gray-600 hover:bg-gray-200 transition-colors"
-              >
-                Batal
-              </button>
-              <button
-                onClick={handleSaveCategory}
-                disabled={loadingAction || !catName.trim()}
-                className="px-4 py-2 rounded-lg text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 transition-colors"
-              >
-                {loadingAction ? 'Menyimpan...' : 'Simpan'}
-              </button>
             </div>
           </div>
         </div>
       )}
-
-      {/* Modal Tag */}
-      {showTagModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-              <h3 className="text-lg font-bold text-gray-900">
-                {editTag ? 'Edit Tag' : 'Tambah Tag'}
-              </h3>
-              <button onClick={() => setShowTagModal(false)} className="text-gray-400 hover:text-gray-600">
-                <X size={20} />
-              </button>
-            </div>
-            <div className="p-6">
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-[13px] font-bold text-gray-700 mb-1.5">Nama Tag</label>
-                  <div className="relative">
-                    <Hash size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input
-                      type="text"
-                      value={tagName}
-                      onChange={(e) => setTagName(e.target.value)}
-                      placeholder="Contoh: KulinerMalang"
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all text-sm font-semibold outline-none text-black"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
-              <button
-                onClick={() => setShowTagModal(false)}
-                className="px-4 py-2 rounded-lg text-sm font-bold text-gray-600 hover:bg-gray-200 transition-colors"
-              >
-                Batal
-              </button>
-              <button
-                onClick={handleSaveTag}
-                disabled={loadingAction || !tagName.trim()}
-                className="px-4 py-2 rounded-lg text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 transition-colors"
-              >
-                {loadingAction ? 'Menyimpan...' : 'Simpan'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
     </div>
+  );
+}
+
+export default function KategoriPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-gray-500">Memuat halaman...</div>}>
+      <KategoriContent />
+    </Suspense>
   );
 }

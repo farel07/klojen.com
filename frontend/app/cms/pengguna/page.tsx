@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search, Calendar, UserX, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Calendar, Trash2, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 import axiosInstance from '@/lib/axios';
 import { User } from '@/app/types';
 import dayjs from 'dayjs';
@@ -16,7 +16,8 @@ export default function KelolaPenggunaPage() {
     try {
       const response = await axiosInstance.get('/users');
       const allUsers = response.data.data?.users || response.data.data || [];
-      const readers = allUsers.filter((u: User) => u.role === 'reader');
+      // Hanya tampilkan akun reader yang masih aktif (akun nonaktif/"dihapus" disembunyikan)
+      const readers = allUsers.filter((u: User) => u.role === 'reader' && u.is_active !== false);
       setData(readers);
     } catch (error) {
       console.error('Failed to fetch users:', error);
@@ -254,9 +255,9 @@ export default function KelolaPenggunaPage() {
                             <button
                               onClick={() => handleDeleteClick(item.id)}
                               className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100"
-                              title="Nonaktifkan"
+                              title="Hapus"
                             >
-                              <UserX size={16} />
+                              <Trash2 size={16} />
                             </button>
                           )}
                         </div>
@@ -370,7 +371,7 @@ export default function KelolaPenggunaPage() {
                 <X size={20} />
               </button>
               <h3 className="text-lg font-bold text-gray-900 mt-4 mb-8 leading-tight">
-                Apakah Anda Yakin<br />Ingin Menonaktifkan Akun Ini?
+                Apakah Anda Yakin<br />Ingin Menghapus Akun Ini?
               </h3>
               <div className="flex items-center justify-center gap-4">
                 <button
@@ -400,7 +401,7 @@ export default function KelolaPenggunaPage() {
                 <CheckCircle2 size={32} className="text-[#69c77e]" />
               </div>
               <h3 className="text-xl font-bold text-gray-900">
-                Akun Telah Dinonaktifkan!
+                Akun Berhasil Dihapus!
               </h3>
             </div>
           </div>

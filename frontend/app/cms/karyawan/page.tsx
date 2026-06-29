@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, Plus, Calendar, Edit, UserX, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Plus, Calendar, Edit, Trash2, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 import axiosInstance from '@/lib/axios';
 import { User } from '@/app/types';
 import dayjs from 'dayjs';
@@ -20,7 +20,8 @@ export default function KelolaKaryawanPage() {
       // Hanya tampilkan user dengan role admin, editor, atau jurnalis/journalist
       const allowedRoles = ['admin', 'editor', 'jurnalis', 'journalist'];
       const allUsers = response.data.data?.users || response.data.data || [];
-      setData(allUsers.filter((user: any) => allowedRoles.includes(user.role?.toLowerCase())));
+      // Hanya tampilkan akun aktif dengan role yang sesuai (akun nonaktif/"dihapus" disembunyikan)
+      setData(allUsers.filter((user: any) => allowedRoles.includes(user.role?.toLowerCase()) && user.is_active !== false));
     } catch (error) {
       console.error('Failed to fetch users:', error);
       // Fallback to empty array on error so UI doesn't crash
@@ -295,9 +296,9 @@ export default function KelolaKaryawanPage() {
                             <button
                               onClick={() => handleDeleteClick(item.id)}
                               className="text-red-500 hover:text-red-600 transition-colors bg-red-50 p-1.5 rounded-md border border-red-100"
-                              title="Nonaktifkan"
+                              title="Hapus"
                             >
-                              <UserX size={16} />
+                              <Trash2 size={16} />
                             </button>
                           )}
                         </div>
@@ -411,7 +412,7 @@ export default function KelolaKaryawanPage() {
                 <X size={20} />
               </button>
               <h3 className="text-lg font-bold text-gray-900 mt-4 mb-8 leading-tight">
-                Apakah Anda Yakin<br />Ingin Menonaktifkan Akun Ini?
+                Apakah Anda Yakin<br />Ingin Menghapus Akun Ini?
               </h3>
               <div className="flex items-center justify-center gap-4">
                 <button
@@ -441,7 +442,7 @@ export default function KelolaKaryawanPage() {
                 <CheckCircle2 size={32} className="text-[#69c77e]" />
               </div>
               <h3 className="text-xl font-bold text-gray-900">
-                Akun Telah Dinonaktifkan!
+                Akun Berhasil Dihapus!
               </h3>
             </div>
           </div>

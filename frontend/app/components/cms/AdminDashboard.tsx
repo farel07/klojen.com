@@ -142,7 +142,11 @@ export default function AdminDashboard() {
     '1_tahun': '1 Tahun Terakhir'
   };
 
-  const activeCategoryData = categoryData[timeFilter] || [];
+  const rawCategoryData = categoryData[timeFilter] || [];
+  // Filter item placeholder dari backend (misal: "Belum ada data" dengan value dummy)
+  const activeCategoryData = rawCategoryData.filter(
+    (item: any) => item.name !== 'Belum ada data' && item.value > 0
+  );
   const totalBerita = activeCategoryData.reduce((acc: any, item: any) => acc + item.value, 0);
   const activeSummaryData = summaryData[timeFilter] || INITIAL_SUMMARY_DATA[timeFilter];
 
@@ -370,43 +374,54 @@ export default function AdminDashboard() {
                 <span className="text-[13px] font-semibold text-[#475569]">Berita</span>
               </div>
               <div className="relative z-10 w-full h-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={activeCategoryData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={65}
-                      outerRadius={95}
-                      paddingAngle={0}
-                      dataKey="value"
-                      stroke="#ffffff"
-                      strokeWidth={4}
-                    >
-                      {activeCategoryData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
-                      itemStyle={{ fontWeight: 'bold' }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
+                {totalBerita === 0 ? (
+                  /* Tampilan kosong saat belum ada berita */
+                  <svg viewBox="0 0 190 190" width="190" height="190">
+                    <circle cx="95" cy="95" r="80" fill="none" stroke="#f1f5f9" strokeWidth="30" />
+                  </svg>
+                ) : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={activeCategoryData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={65}
+                        outerRadius={95}
+                        paddingAngle={0}
+                        dataKey="value"
+                        stroke="#ffffff"
+                        strokeWidth={4}
+                      >
+                        {activeCategoryData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
+                        itemStyle={{ fontWeight: 'bold' }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                )}
               </div>
             </div>
             <div className="flex flex-col justify-center gap-5 shrink-0 min-w-[130px] pr-2">
-              {activeCategoryData.map((item, index) => (
-                <div key={index} className="flex justify-between items-center w-full gap-2">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
-                    <span className="text-xs font-bold text-[#1e293b]">{item.name}</span>
+              {totalBerita === 0 ? (
+                <span className="text-xs font-semibold text-gray-400">Belum ada data kategori.</span>
+              ) : (
+                activeCategoryData.map((item, index) => (
+                  <div key={index} className="flex justify-between items-center w-full gap-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
+                      <span className="text-xs font-bold text-[#1e293b]">{item.name}</span>
+                    </div>
+                    <span className="text-xs font-semibold text-[#334155]">
+                      {item.value} <span className="text-[#64748b]">({item.percent})</span>
+                    </span>
                   </div>
-                  <span className="text-xs font-semibold text-[#334155]">
-                    {item.value} <span className="text-[#64748b]">({item.percent})</span>
-                  </span>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>
